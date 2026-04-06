@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alrayyan Group – Premium Office Rentals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <!-- Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+  <style>
+    :root {
+      --black:      #050505;
+      --dark:       #0a0a0a;
+      --dark2:      #111111;
+      --gold:       #b87333;
+      --gold-light: #d4976a;
+      --gold-dim:   #8b5e34;
+      --white:      #ffffff;
+      --off-white:  #f5f0e8;
+      --muted:      #888888;
+      --card-bg:    rgba(255,255,255,0.03);
+      --card-border:rgba(184,115,51,0.18);
+      --radius:     16px;
+      --t:          0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 6%;
+      height: 80px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(5,5,5,0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(184,115,51,0.1);
+      transition: height var(--t), background var(--t);
+    }
+    nav.scrolled { height: 64px; background: rgba(5,5,5,0.97); }
+
+    /* ===== OFFICE CARD EXTRAS ===== */
+    .avail-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: .58rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 2px; margin-bottom: 10px;
+    }
+    .avail-badge.available { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
+    .avail-badge.low       { background: rgba(234,179,8,0.12);  color: #facc15; border: 1px solid rgba(234,179,8,0.25); }
+    .avail-badge.full      { background: rgba(239,68,68,0.12);  color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+    .avail-badge::before   { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    .office-card-btns { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+    .btn-detail {
+      font-size: .62rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--gold); border-bottom: 1px solid rgba(184,115,51,0.35); padding-bottom: 2px;
+      transition: color var(--t); cursor: pointer; background: none; border-top: none; border-left: none; border-right: none;
+    }
+    .btn-detail:hover { color: var(--gold-light); }
+    .btn-book-visit {
+      font-size: .62rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--black); background: linear-gradient(135deg,var(--gold-dim),var(--gold));
+      border: none; padding: 6px 14px; border-radius: 2px; cursor: pointer; transition: var(--t);
+    }
+    .btn-book-visit:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(184,115,51,0.35); }
+
+    /* ===== AVAILABLE FLOORS SECTION ===== */
+    #available {
+      background: #070707;
+      border-top: 1px solid rgba(184,115,51,0.08);
+      border-bottom: 1px solid rgba(184,115,51,0.08);
+    }
+    .avail-header { text-align: center; margin-bottom: 52px; }
+    .avail-header .gold-line { margin: 18px auto 0; }
+    .avail-table-wrap {
+      background: rgba(10,8,4,0.6);
+      border: 1px solid rgba(184,115,51,0.14);
+      border-radius: 4px;
+      overflow: hidden;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .avail-tb-head {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 2.4fr 0.9fr;
+      gap: 0;
+      background: linear-gradient(135deg, rgba(184,115,51,0.15), rgba(139,94,52,0.1));
+      border-bottom: 1px solid rgba(184,115,51,0.22);
+      padding: 18px 28px;
+    }
+    .avail-tb-head > div {
+      font-size: .6rem; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--gold);
+    }
+    .avail-row {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 2.4fr 0.9fr;
+      gap: 0;
+      align-items: center;
+      padding: 22px 28px;
+      border-bottom: 1px solid rgba(184,115,51,0.08);
+      transition: var(--t);
+    }
+    .avail-row:last-child { border-bottom: none; }
+    .avail-row:hover { background: rgba(184,115,51,0.04); }
+    .avail-row .fl-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--off-white);
+    }
+    .avail-row .fl-name small {
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: .58rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 2px;
+    }
+    .avail-row .fl-size {
+      font-size: .85rem;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+    .avail-row .fl-units {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .unit-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 6px 12px;
+      border-radius: 2px;
+      border: 1px solid rgba(184,115,51,0.15);
+    }
+    .unit-chip.on {
+      background: rgba(34,197,94,0.1);
+      border-color: rgba(34,197,94,0.3);
+      color: #4ade80;
+    }
+    .unit-chip.on::before { content: '✓'; font-weight: 700; }
+    .unit-chip.off {
+      background: rgba(136,136,136,0.05);
+      border-color: rgba(136,136,136,0.15);
+      color: rgba(136,136,136,0.55);
+      text-decoration: line-through;
+      text-decoration-color: rgba(136,136,136,0.4);
+    }
+    .unit-chip.off::before { content: '✗'; text-decoration: none; display: inline-block; }
+    .unit-chip.exception {
+      background: rgba(184,115,51,0.1);
+      border-color: rgba(184,115,51,0.3);
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+    .unit-chip.exception::before { content: '★'; }
+    .avail-row .fl-action {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn-book-row {
+      font-size: .62rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--black);
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold), var(--gold-light));
+      border: none; padding: 10px 22px; border-radius: 2px;
+      cursor: pointer; transition: var(--t);
+      white-space: nowrap;
+    }
+    .btn-book-row:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(184,115,51,0.35);
+    }
+    .avail-summary {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 36px;
+      flex-wrap: wrap;
+    }
+    .avail-sum-item {
+      text-align: center;
+      padding: 14px 22px;
+      background: rgba(184,115,51,0.04);
+      border: 1px solid rgba(184,115,51,0.12);
+      border-radius: 3px;
+      min-width: 150px;
+    }
+    .avail-sum-item .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .avail-sum-item .lbl {
+      font-size: .58rem; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--muted); margin-top: 4px;
+    }
+    @media (max-width: 900px) {
+      .avail-tb-head { display: none; }
+      .avail-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 20px 20px;
+      }
+      .avail-row .fl-action { justify-content: flex-start; }
+    }
+
+    /* ===== BOOK VISIT MODAL ===== */
+    .bv-modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 5000;
+      background: rgba(0,0,0,0.85); align-items: center; justify-content: center; padding: 20px;
+    }
+    .bv-modal-overlay.open { display: flex; }
+    .bv-modal {
+      background: #0c0a06; border: 1px solid rgba(184,115,51,0.25); border-radius: 4px;
+      width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+      position: relative; animation: bvIn .35s ease;
+    }
+    @keyframes bvIn { from{transform:translateY(24px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .bv-head {
+      background: linear-gradient(135deg,var(--gold-dim),var(--gold));
+      padding: 22px 28px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .bv-head h3 { font-family:'Cormorant Garamond',serif; font-size:1.25rem; font-weight:700; color:var(--black); }
+    .bv-head p { font-size:.68rem; color:rgba(5,5,5,.65); margin-top:2px; }
+    .bv-close { background:none; border:none; color:rgba(5,5,5,.6); font-size:1.3rem; cursor:pointer; }
+    .bv-body { padding: 28px; }
+    .bv-form-row { display: grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .bv-group { margin-bottom: 16px; }
+    .bv-label { display:block; font-size:.6rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+    .bv-input {
+      width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(184,115,51,0.18);
+      color:var(--off-white); font-family:'Montserrat',sans-serif; font-size:.82rem;
+      padding:10px 14px; border-radius:2px; outline:none; transition:border-color var(--t);
+    }
+    .bv-input:focus { border-color: rgba(184,115,51,0.6); }
+    .bv-input option { background:#1a1200; }
+    .bv-input::placeholder { color:rgba(136,136,136,0.4); }
+    .bv-success { display:none; padding:28px; text-align:center; }
+    .bv-success .s-icon { font-size:2.5rem; margin-bottom:14px; }
+    .bv-success h4 { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--gold-light); margin-bottom:8px; }
+    .bv-success p  { font-size:.82rem; color:var(--muted); line-height:1.7; }
+
+    /* ===== RESPONSIVE PATCHES ===== */
+    @media (max-width: 576px) {
+      .bv-form-row { grid-template-columns: 1fr; }
+      .avail-strip { gap: 6px; }
+      .avail-chip { min-width: 80px; padding: 10px 10px; }
+      .office-card-btns { gap: 6px; }
+    }
+
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .nav-logo img {
+      height: 48px; width: auto;
+      filter: drop-shadow(0 0 8px rgba(184,115,51,0.4));
+      transition: var(--t);
+    }
+    nav.scrolled .nav-logo img { height: 38px; }
+    .nav-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .nav-logo-text .name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 700;
+      color: var(--gold-light); letter-spacing: 2px;
+    }
+    .nav-logo-text .tagline {
+      font-size: 0.65rem; font-weight: 400;
+      color: var(--muted); letter-spacing: 3px; text-transform: uppercase;
+    }
+
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; }
+    .nav-links a {
+      font-size: 0.82rem; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--muted);
+      transition: color var(--t); position: relative; padding-bottom: 4px;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px; background: var(--gold); transition: width var(--t);
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cta {
+      background: transparent !important;
+      border: 1px solid var(--gold) !important;
+      color: var(--gold) !important;
+      padding: 9px 22px; border-radius: 2px;
+      transition: background var(--t), color var(--t) !important;
+    }
+    .nav-cta:hover { background: var(--gold) !important; color: var(--black) !important; }
+    .nav-cta::after { display: none !important; }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 6px; z-index: 1001;
+    }
+    .hamburger span {
+      width: 26px; height: 1.5px; background: var(--gold); border-radius: 2px;
+      transition: var(--t);
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+    /* ===== HERO ===== */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      position: relative; overflow: hidden;
+      padding-top: 80px; /* nav only */
+      background: radial-gradient(ellipse at 50% 60%, #1a1008 0%, #0a0806 40%, #050505 100%);
+    }
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(184,115,51,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(184,115,51,0.03) 1px, transparent 1px);
+      background-size: 70px 70px;
+      pointer-events: none;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(184,115,51,0.08) 0%, transparent 65%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: glow-pulse 5s ease-in-out infinite;
+    }
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+      50%       { opacity: 1;   transform: translate(-50%,-50%) scale(1.15); }
+    }
+
+    .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .particle {
+      position: absolute; border-radius: 50%;
+      background: var(--gold); opacity: 0;
+      animation: float-p linear infinite;
+    }
+    @keyframes float-p {
+      0%   { transform: translateY(100vh); opacity: 0; }
+      10%  { opacity: 0.25; }
+      90%  { opacity: 0.08; }
+      100% { transform: translateY(-80px); opacity: 0; }
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 0 20px;
+      animation: hero-in 1.4s cubic-bezier(0.4,0,0.2,1) forwards;
+      opacity: 0; transform: translateY(30px);
+    }
+    @keyframes hero-in {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-logo {
+      width: clamp(180px, 28vw, 300px);
+      height: auto;
+      margin-bottom: 32px;
+      filter:
+        drop-shadow(0 0 30px rgba(184,115,51,0.5))
+        drop-shadow(0 0 60px rgba(184,115,51,0.2));
+      animation: logo-float 6s ease-in-out infinite;
+    }
+    @keyframes logo-float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-12px); }
+    }
+
+    .hero-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 700; letter-spacing: 8px; text-transform: uppercase;
+      color: var(--off-white); margin-bottom: 8px;
+    }
+    .hero-brand .gold-word {
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold), var(--gold-light), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-divider {
+      display: flex; align-items: center; gap: 16px; margin: 18px 0 20px;
+    }
+    .hero-divider::before, .hero-divider::after {
+      content: ''; flex: 1; height: 1px; width: 80px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+    .hero-divider::after { background: linear-gradient(270deg, transparent, var(--gold)); }
+    .hero-divider-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold); box-shadow: 0 0 10px var(--gold);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(0.78rem, 1.5vw, 0.95rem);
+      letter-spacing: 5px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 48px;
+    }
+
+    .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold), var(--gold-light));
+      color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      padding: 15px 40px; border: none; border-radius: 2px;
+      cursor: pointer; transition: transform var(--t), box-shadow var(--t);
+    }
+    .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(184,115,51,0.4); }
+
+    .btn-ghost {
+      background: transparent; color: var(--gold);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      padding: 14px 40px;
+      border: 1px solid rgba(184,115,51,0.5); border-radius: 2px;
+      cursor: pointer; transition: var(--t);
+    }
+    .btn-ghost:hover { background: rgba(184,115,51,0.08); border-color: var(--gold); }
+
+    .scroll-hint {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--muted); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+      animation: bounce 2.5s ease-in-out infinite; z-index: 2;
+    }
+    .scroll-mouse {
+      width: 22px; height: 34px;
+      border: 1px solid rgba(184,115,51,0.4); border-radius: 12px;
+      display: flex; justify-content: center; padding-top: 6px;
+    }
+    .scroll-mouse::before {
+      content: ''; width: 3px; height: 7px; border-radius: 2px;
+      background: var(--gold); animation: scroll-dot 2s ease-in-out infinite;
+    }
+    @keyframes scroll-dot {
+      0%, 100% { transform: translateY(0); opacity: 1; }
+      50%       { transform: translateY(8px); opacity: 0.3; }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ===== SECTION COMMONS ===== */
+    section { padding: 110px 6%; }
+
+    .section-eyebrow {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700; color: var(--off-white);
+      line-height: 1.15; margin-bottom: 18px;
+    }
+    .section-desc {
+      font-size: 0.9rem; color: var(--muted); max-width: 560px; line-height: 1.9;
+    }
+    .gold-line {
+      width: 50px; height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin: 18px 0 40px; border-radius: 2px;
+    }
+
+    .fade-in {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== STATS ===== */
+    #stats {
+      padding: 60px 6%;
+      background: #070707;
+      border-top: 1px solid rgba(184,115,51,0.08);
+      border-bottom: 1px solid rgba(184,115,51,0.08);
+    }
+    .stats-row {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1px; background: rgba(184,115,51,0.08);
+    }
+    .stat-cell {
+      background: var(--dark); text-align: center; padding: 40px 20px;
+      transition: background var(--t);
+    }
+    .stat-cell:hover { background: #0f0c05; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-lbl {
+      font-size: 0.72rem; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--muted); margin-top: 8px;
+    }
+
+    /* ===== ABOUT ===== */
+    #about { background: var(--black); }
+    .about-wrap {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .about-img-wrap { position: relative; }
+    .about-img-wrap img {
+      width: 100%; height: 680px; object-fit: cover;
+      border-radius: 4px; filter: brightness(0.85);
+    }
+    .about-img-wrap::before {
+      content: ''; position: absolute;
+      top: -16px; left: -16px; right: 16px; bottom: 16px;
+      border: 1px solid rgba(184,115,51,0.2); border-radius: 4px;
+      pointer-events: none; z-index: -1;
+    }
+    .about-img-badge {
+      position: absolute; bottom: -20px; right: -20px;
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+      color: var(--black); padding: 20px 28px; border-radius: 4px; text-align: center;
+    }
+    .about-img-badge .num {
+      font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 700;
+    }
+    .about-img-badge .lbl {
+      font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600;
+    }
+
+    /* ===== OFFICES ===== */
+    #offices { background: #070707; }
+    .offices-header { text-align: center; margin-bottom: 64px; }
+    .offices-header .gold-line { margin: 18px auto 0; }
+
+    .offices-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1px; background: rgba(184,115,51,0.08);
+    }
+    .office-card {
+      background: var(--dark); overflow: hidden;
+      transition: var(--t); position: relative;
+    }
+    .office-card:hover { background: #0c0b06; }
+    .office-card > div { overflow: hidden; }
+    .office-card img {
+      width: 100%; height: 220px; object-fit: cover;
+      filter: brightness(0.7);
+      transition: filter 0.5s ease, transform 0.5s ease;
+    }
+    .office-card:hover img { filter: brightness(0.9); transform: scale(1.04); }
+    .office-card-body { padding: 28px 24px 32px; }
+    .office-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem; font-weight: 700;
+      color: rgba(184,115,51,0.12);
+      position: absolute; top: 210px; right: 20px; line-height: 1;
+    }
+    .office-card-body h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--off-white); margin-bottom: 10px;
+    }
+    .office-card-body p { font-size: 0.83rem; color: var(--muted); line-height: 1.8; }
+    .office-tag {
+      display: inline-block; margin-top: 16px;
+      font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); border-bottom: 1px solid rgba(184,115,51,0.35); padding-bottom: 2px;
+    }
+
+    /* ===== FEATURES ===== */
+    #features { background: var(--black); }
+    .features-wrap {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .features-img img {
+      width: 100%; height: 560px; object-fit: cover;
+      border-radius: 4px; filter: brightness(0.8);
+    }
+    .features-list { display: flex; flex-direction: column; gap: 0; }
+    .feature-item {
+      display: flex; align-items: flex-start; gap: 20px;
+      padding: 24px 0; border-bottom: 1px solid rgba(184,115,51,0.08);
+      transition: var(--t);
+    }
+    .feature-item:hover { padding-left: 8px; }
+    .feature-item:last-child { border-bottom: none; }
+    .feature-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 700;
+      color: rgba(184,115,51,0.3); min-width: 36px; line-height: 1;
+    }
+    .feature-text h4 {
+      font-size: 0.95rem; font-weight: 600; color: var(--off-white);
+      margin-bottom: 6px; letter-spacing: 0.5px;
+    }
+    .feature-text p { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+
+    /* ===== OUR BUSINESSES ===== */
+    #businesses {
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+    #businesses::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(184,115,51,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(184,115,51,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+    .businesses-header { text-align: center; margin-bottom: 72px; position: relative; z-index: 1; }
+    .businesses-header .gold-line { margin: 18px auto 0; }
+
+    .businesses-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      position: relative; z-index: 1;
+    }
+
+    /* 3D flip card */
+    .biz-card-wrap {
+      perspective: 1000px;
+      height: 420px;
+    }
+    .biz-card {
+      width: 100%; height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    .biz-card-wrap:hover .biz-card { transform: rotateY(180deg); }
+
+    .biz-front, .biz-back {
+      position: absolute; inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    /* FRONT */
+    .biz-front {
+      background: var(--dark);
+      border: 1px solid rgba(184,115,51,0.12);
+      display: flex; flex-direction: column;
+    }
+    .biz-front-img {
+      width: 100%; height: 260px; object-fit: cover;
+      filter: brightness(0.6) saturate(0.7);
+      transition: filter 0.5s;
+    }
+    .biz-card-wrap:hover .biz-front-img { filter: brightness(0.4) saturate(0.5); }
+    .biz-front-body {
+      flex: 1;
+      padding: 28px 28px 24px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      background: linear-gradient(180deg, var(--dark) 0%, #0c0a04 100%);
+    }
+    .biz-front-icon {
+      font-size: 1.8rem; margin-bottom: 10px;
+    }
+    .biz-front-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 700;
+      color: var(--off-white); letter-spacing: 1px;
+    }
+    .biz-front-name span {
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold), var(--gold-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .biz-hover-hint {
+      font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(184,115,51,0.45); margin-top: 6px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .biz-hover-hint::after {
+      content: ''; display: inline-block;
+      width: 16px; height: 1px; background: var(--gold-dim);
+    }
+
+    /* BACK */
+    .biz-back {
+      transform: rotateY(180deg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 40px 32px; text-align: center;
+      border: 1px solid rgba(184,115,51,0.3);
+    }
+    .biz-back-fashion {
+      background: linear-gradient(145deg, #0d0a00, #1a1100, #0d0800);
+    }
+    .biz-back-arts {
+      background: linear-gradient(145deg, #080d0a, #0a150f, #050d08);
+    }
+    .biz-back-land {
+      background: linear-gradient(145deg, #08080d, #0f0a15, #08050d);
+    }
+
+    .biz-back-icon { font-size: 3rem; margin-bottom: 20px; }
+    .biz-back-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem; font-weight: 700;
+      color: var(--gold-light); letter-spacing: 2px; margin-bottom: 16px;
+    }
+    .biz-back-desc {
+      font-size: 0.82rem; color: rgba(245,240,232,0.75); line-height: 1.8;
+      margin-bottom: 28px;
+    }
+    .biz-back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+      color: var(--black);
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      padding: 12px 28px; border-radius: 2px;
+      transition: transform 0.25s, box-shadow 0.25s;
+      text-decoration: none;
+    }
+    .biz-back-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(184,115,51,0.35); }
+    .biz-back-btn svg { width: 14px; height: 14px; }
+
+    /* Corner accent lines */
+    .biz-back::before, .biz-back::after {
+      content: '';
+      position: absolute;
+      width: 40px; height: 40px;
+    }
+    .biz-back::before {
+      top: 16px; left: 16px;
+      border-top: 1px solid rgba(184,115,51,0.4);
+      border-left: 1px solid rgba(184,115,51,0.4);
+    }
+    .biz-back::after {
+      bottom: 16px; right: 16px;
+      border-bottom: 1px solid rgba(184,115,51,0.4);
+      border-right: 1px solid rgba(184,115,51,0.4);
+    }
+
+    /* ===== GALLERY ===== */
+    #gallery { background: #070707; }
+    .gallery-header { text-align: center; margin-bottom: 56px; }
+    .gallery-header .gold-line { margin: 18px auto 0; }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 8px;
+    }
+    .gallery-grid .g-item:first-child { grid-column: span 2; }
+
+    .g-item {
+      overflow: hidden; position: relative; cursor: pointer;
+      border: 1px solid transparent; transition: border-color var(--t);
+    }
+    .g-item:hover { border-color: rgba(184,115,51,0.3); }
+    .g-item img {
+      width: 100%; height: 260px; object-fit: cover;
+      transition: transform 0.5s ease, filter 0.5s ease;
+      filter: brightness(0.75) saturate(0.8);
+    }
+    .g-item:first-child img { height: 100%; min-height: 260px; }
+    .g-item:hover img { transform: scale(1.06); filter: brightness(0.95) saturate(1); }
+    .g-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(5,5,5,0.85) 0%, transparent 55%);
+      display: flex; align-items: flex-end; padding: 20px;
+      opacity: 0; transition: opacity var(--t);
+    }
+    .g-item:hover .g-overlay { opacity: 1; }
+    .g-overlay span {
+      font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold-light);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.97);
+      align-items: center; justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 88vw; max-height: 78vh; object-fit: contain;
+      border: 1px solid rgba(184,115,51,0.15);
+    }
+    .lightbox-close {
+      position: absolute; top: 28px; right: 28px;
+      width: 46px; height: 46px; border-radius: 50%;
+      background: rgba(184,115,51,0.1); border: 1px solid rgba(184,115,51,0.25);
+      color: var(--gold); font-size: 1.3rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: var(--t);
+    }
+    .lightbox-close:hover { background: var(--gold); color: var(--black); }
+
+    /* ===== CONTACT ===== */
+    #contact { background: var(--black); text-align: center; }
+    .contact-logo {
+      width: 110px; margin: 0 auto 28px;
+      filter: drop-shadow(0 0 20px rgba(184,115,51,0.3));
+    }
+    .contact-cards {
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 48px 0;
+    }
+    .c-card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 4px; padding: 28px 32px; min-width: 160px; transition: var(--t);
+    }
+    .c-card:hover { border-color: var(--gold); transform: translateY(-5px); }
+    .c-card .icon { font-size: 1.6rem; margin-bottom: 12px; }
+    .c-card h4 {
+      font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 8px;
+    }
+    .c-card p { font-size: 0.9rem; color: var(--off-white); direction: ltr; }
+
+    .contact-btns {
+      display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 36px;
+    }
+    .btn-wa {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #25d366; color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: 14px 28px; border-radius: 2px; transition: var(--t);
+    }
+    .btn-wa:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(37,211,102,0.3); }
+    .btn-ring {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; border: 1px solid rgba(184,115,51,0.4); color: var(--gold);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+      padding: 13px 28px; border-radius: 2px; transition: var(--t);
+    }
+    .btn-ring:hover { background: rgba(184,115,51,0.08); border-color: var(--gold); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #030303;
+      border-top: 1px solid rgba(184,115,51,0.08);
+      padding: 64px 6% 32px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 56px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(184,115,51,0.06);
+      margin-bottom: 28px;
+    }
+    .footer-brand img {
+      height: 70px; margin-bottom: 20px;
+      filter: drop-shadow(0 0 10px rgba(184,115,51,0.2));
+    }
+    .footer-brand .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; color: var(--gold-light); letter-spacing: 3px; margin-bottom: 12px;
+    }
+    .footer-brand p { font-size: 0.82rem; color: var(--muted); line-height: 1.9; }
+    .footer-col h4 {
+      font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 22px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 12px; }
+    .footer-col ul li a { font-size: 0.82rem; color: var(--muted); transition: color var(--t); }
+    .footer-col ul li a:hover { color: var(--gold-light); }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 10px; font-size: 0.75rem; color: rgba(255,255,255,0.2);
+    }
+
+    /* ===== MOBILE MENU ===== */
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(3,3,3,0.99);
+      flex-direction: column; align-items: center; justify-content: center; gap: 36px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 600; letter-spacing: 3px;
+      color: var(--off-white); transition: color var(--t);
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .about-wrap, .features-wrap { grid-template-columns: 1fr; }
+      .about-img-wrap { display: none; }
+      .features-img  { display: none; }
+      .offices-grid  { grid-template-columns: repeat(2,1fr); }
+      .stats-row     { grid-template-columns: repeat(2,1fr); }
+      .footer-top    { grid-template-columns: 1fr 1fr; }
+      .businesses-grid { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .offices-grid, .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-grid .g-item:first-child { grid-column: span 1; }
+      .stats-row { grid-template-columns: repeat(2,1fr); }
+      .footer-top { grid-template-columns: 1fr; }
+      .hero-brand { letter-spacing: 4px; }
+      .businesses-grid { grid-template-columns: 1fr; }
+      .biz-card-wrap { height: 380px; }
+    }
+    /* ===== LANGUAGE SWITCHER ===== */
+    .lang-sw{display:flex;align-items:center;gap:0;margin-left:16px;}
+    .lang-btn{background:none;border:1px solid rgba(184,115,51,0.3);color:var(--muted);font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:5px 10px;cursor:pointer;transition:var(--t);}
+    .lang-btn:first-child{border-radius:2px 0 0 2px;border-right:none;}
+    .lang-btn:last-child{border-radius:0 2px 2px 0;}
+    .lang-btn.active{background:var(--gold);color:var(--black);border-color:var(--gold);}
+    .lang-btn:hover:not(.active){color:var(--gold);border-color:var(--gold);}
+    html[dir="rtl"] body{direction:rtl;text-align:right;}
+    html[dir="rtl"] .nav-links{flex-direction:row-reverse;}
+    html[dir="rtl"] .hero-divider::before{background:linear-gradient(270deg,transparent,var(--gold));}
+    html[dir="rtl"] .hero-divider::after{background:linear-gradient(90deg,transparent,var(--gold));}
+    html[dir="rtl"] .gold-line{background:linear-gradient(270deg,var(--gold),transparent);}
+    html[dir="rtl"] .about-img-wrap::before{left:16px;right:-16px;}
+    html[dir="rtl"] .about-img-badge{right:auto;left:-20px;}
+    html[dir="rtl"] .feature-item:hover{padding-left:0;padding-right:8px;}
+    html[dir="rtl"] .footer-top{direction:rtl;}
+    html[dir="rtl"] .c-card p{direction:ltr;}
+  </style>
+</head>
+<body>
+
+  <!-- ====== NAVBAR ====== -->
+  <nav id="navbar">
+    <div class="nav-logo">
+      <img src="logo.png" alt="Alrayyan Group Logo"/>
+      <div class="nav-logo-text">
+        <span class="name">ALRAYYAN GROUP</span>
+        <span class="tagline">Premium Office Rentals</span>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#offices">Offices</a></li>
+      <li><a href="#available" style="color:var(--gold);font-weight:700;" id="nav-avail-link">🏢 <span data-i18n="navAvailable">Available</span> <span id="nav-avail-count" style="background:var(--gold);color:var(--black);font-size:.55rem;font-weight:700;padding:1px 6px;border-radius:8px;vertical-align:middle;margin-left:3px;">8</span></a></li>
+      <li><a href="#businesses">Our Businesses</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+    </ul>
+    <div class="lang-sw">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('ar')">AR</button>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#hero"         onclick="closeMobile()">Home</a>
+    <a href="#about"        onclick="closeMobile()">About</a>
+    <a href="#offices"      onclick="closeMobile()">Offices</a>
+    <a href="#available"    onclick="closeMobile()" style="color:var(--gold)">🏢 Available Floors</a>
+    <a href="#businesses"   onclick="closeMobile()">Our Businesses</a>
+    <a href="#gallery"      onclick="closeMobile()">Gallery</a>
+    <a href="#contact"      onclick="closeMobile()">Contact</a>
+    <a href="admin.html"    style="font-size:1rem;color:var(--muted)">⚙ Admin</a>
+  </div>
+
+  <!-- ====== HERO ====== -->
+  <section id="hero">
+    <div class="particles" id="particles"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-content">
+      <img src="logo.png" alt="Alrayyan Group" class="hero-logo"/>
+      <h1 class="hero-brand"><span class="gold-word">ALRAYYAN</span> GROUP</h1>
+      <div class="hero-divider"><div class="hero-divider-dot"></div></div>
+      <p class="hero-subtitle">Where Prestige Meets Productivity</p>
+      <div class="hero-buttons">
+        <button class="btn-gold" onclick="document.querySelector('#offices').scrollIntoView({behavior:'smooth'})">
+          Explore Offices
+        </button>
+        <button class="btn-ghost" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">
+          Get In Touch
+        </button>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-mouse"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- ====== STATS ====== -->
+  <section id="stats">
+    <div class="stats-row fade-in">
+      <div class="stat-cell">
+        <div class="stat-num">200+</div>
+        <div class="stat-lbl">Office Units</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">15+</div>
+        <div class="stat-lbl">Prime Locations</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">500+</div>
+        <div class="stat-lbl">Happy Tenants</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">10+</div>
+        <div class="stat-lbl">Years of Excellence</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== ABOUT ====== -->
+  <section id="about">
+    <div class="about-wrap">
+      <div class="about-img-wrap fade-in">
+        <img src="images/index-about-office-interior.webp" alt="About Alrayyan"/>
+        <div class="about-img-badge">
+          <div class="num">10+</div>
+          <div class="lbl">Years of Trust</div>
+        </div>
+      </div>
+      <div class="fade-in">
+        <p class="section-eyebrow">Who We Are</p>
+        <h2 class="section-title">The Kingdom's Premier<br/>Office Rental Destination</h2>
+        <div class="gold-line"></div>
+        <p class="section-desc">
+          Alrayyan Group is a leading Saudi real estate company specializing in premium office rental solutions.
+          We provide fully equipped, flexible, and prestigious workspaces designed to elevate your business.
+        </p>
+        <p class="section-desc" style="margin-top:16px">
+          From executive suites to collaborative co-working spaces, our portfolio spans prime locations
+          across the Kingdom — blending luxury with functionality.
+        </p>
+        <div style="margin-top:36px; display:flex; gap:16px; flex-wrap:wrap">
+          <button class="btn-gold" onclick="document.querySelector('#offices').scrollIntoView({behavior:'smooth'})">
+            View Offices
+          </button>
+          <button class="btn-ghost" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">
+            Learn More
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== AVAILABLE FLOORS & UNITS ====== -->
+  <section id="available">
+    <div class="avail-header fade-in">
+      <p class="section-eyebrow" data-i18n="availEye">Current Availability</p>
+      <h2 class="section-title" data-i18n="availTitle">Available Floors &amp; Units</h2>
+      <div class="gold-line"></div>
+      <p class="section-desc" style="margin:18px auto 0" data-i18n="availDesc">
+        Real-time inventory across Alrayyan Tower — 8 floors plus B1 and the 9th-floor terrace suites. Click any row to view the full space details.
+      </p>
+    </div>
+
+    <div class="avail-table-wrap fade-in">
+      <div class="avail-tb-head">
+        <div data-i18n="availColFloor">Floor</div>
+        <div data-i18n="availColSize">Total Size</div>
+        <div data-i18n="availColStatus">Unit Availability</div>
+        <div style="text-align:right" data-i18n="availColAction">Action</div>
+      </div>
+
+      <!-- B1 -->
+      <div class="avail-row">
+        <div class="fl-name"><span data-i18n="flB1">B1 Floor</span><small data-i18n="flB1Sub">Underground · Exception</small></div>
+        <div class="fl-size">1,000 m²</div>
+        <div class="fl-units">
+          <span class="unit-chip exception" data-i18n="unitFullB1">1,000 m² Full Available</span>
+        </div>
+        <div class="fl-action">
+          <button class="btn-book-row" onclick="location.href='floor-detail.html?floor=b1'" data-i18n="bookVisit">Book a Visit</button>
+        </div>
+      </div>
+
+      <!-- 1st -->
+      <div class="avail-row">
+        <div class="fl-name"><span data-i18n="fl1">1st Floor</span><small data-i18n="fl1Sub">Fully Occupied</small></div>
+        <div class="fl-size">400 m²</div>
+        <div class="fl-units">
+          <span class="unit-chip off">80 m²</span>
+          <span class="unit-chip off">160 m²</span>
+          <span class="unit-chip off">400 m²</span>
+        </div>
+        <div class="fl-action">
+          <button class="btn-book-row" disabled style="opacity:.35;cursor:not-allowed" data-i18n="unavailable">Unavailable</button>
+        </div>
+      </div>
+
+      <!-- 2nd -->
+      <div class="avail-row">
+        <div class="fl-name"><span data-i18n="fl2">2nd Floor</span><small data-i18n="fl2Sub">Fully Occupied</small></div>
+        <div class="fl-size">400 m²</div>
+        <div class="fl-units">
+          <span class="unit-chip off">80 m²</span>
+          <span class="unit-chip off">160 m²</span>
+          <span class="unit-chip off">400 m²</span>
+        </div>
+        <div class="fl-action">
+          <button class="btn-book-row" disabled style="opacity:.35;cursor:not-allowed" data-i18n="unavailable">Unavailable</button>
+        </div>
+      </div>
+
+      <!-- 3rd -->
+      <div class="avail-row">
+        <div class="fl-name"><span data-i18n="fl3">3rd Floor</span><small data-i18n="fl3Sub">Mid Level</small></div>
+        <div class="fl-size">400 m²</div>
+        <div class="fl-units">
+          <span class="unit-chip on">80 m²</span>
+          <span class="unit-chip off">160 m²</span>
+          <span class="unit-chip off">400 m²</span>
+        </div>
+        <div class="fl-action">
+          <button class="btn-book-row" onclick="location.href='floor-detail.html?floor=3'" data-i18n="bookVisit">Book a Visit</button>
+        </div>
+      </div>
+
+      <!-- 4th -->
+      <div class="avail-row">
+        <div class="fl-name"><span data-i18n="fl4">4th Floor</span><small data-i18n="fl4Sub">Full Floor Available</small></div>
+        <div class="fl-size">400 m²</div>
+        <div class="fl-units">
+          <span class="unit-chip off">80 m²</span>
+          <span class="unit-chip off">160 m²</span>
+          <span class="unit-chip on">400 m²</span>
+        </div>
+        <div class="fl-action">
+          <button class="btn-book-row" onclick="location.href='floor-detail.html?floor=4'" data-i18n="bookVisit">Book a Visit</button>
+        </div>
+      </div>
+
+      <!-- 5th -->
+      <div class="avail-row">
+        <div class="fl-name"><span data-i18n="fl5">5th Floor</span><small data-i18n="fl5Sub">Mid Level</small></div>
+        <div class="fl-size">400 m²</div>
+        <div class="fl-units">
+          <span class="unit-chip on">80 m²</span>
+          <span class="unit-chip off">160 m²</span>
+          <span class="unit-chip off">400 m²</span>
+        </div>
+        <div class="fl-action">
+          <button class="btn-book-row" onclick="location.href='floor-detail.html?floor=5'" data-i18n="bookVisit">Book a Visit</button>
+        </div>
+      </div>
+
+      <!-- 6th -->
+      <div class="avail-row">
+        <div class="fl-name"><span data-i18n="fl6">6th Floor</span><small data-i18n="fl6Sub">Full Floor Available</small></div>
+        <div class="fl-size">400 m²</div>
+        <div class="fl-units">
+          <span class="unit-chip off">80 m²</span>
+          <span class="unit-chip off">160 m²</span>
+          <span class="unit-chip on">400 m²</span>
+        </div>
+        <div class="fl-action">
+          <button class="btn-book-row" onclick="location.href='floor-detail.html?floor=6'" data-i18n="bookVisit">Book a Visit</button>
+        </div>
+      </div>
+
+      <!-- 7th -->
+      <div class="avail-row">
+        <div class="fl-name"><span data-i18n="fl7">7th Floor</span><small data-i18n="fl7Sub">Full Floor Available</small></div>
+        <div class="fl-size">400 m²</div>
+        <div class="fl-units">
+          <span class="unit-chip off">80 m²</span>
+          <span class="unit-chip off">160 m²</span>
+          <span class="unit-chip on">400 m²</span>
+        </div>
+        <div class="fl-action">
+          <button class="btn-book-row" onclick="location.href='floor-detail.html?floor=7'" data-i18n="bookVisit">Book a Visit</button>
+        </div>
+      </div>
+
+      <!-- 8th -->
+      <div class="avail-row">
+        <div class="fl-name"><span data-i18n="fl8">8th Floor</span><small data-i18n="fl8Sub">Fully Occupied</small></div>
+        <div class="fl-size">400 m²</div>
+        <div class="fl-units">
+          <span class="unit-chip off">80 m²</span>
+          <span class="unit-chip off">160 m²</span>
+          <span class="unit-chip off">400 m²</span>
+        </div>
+        <div class="fl-action">
+          <button class="btn-book-row" disabled style="opacity:.35;cursor:not-allowed" data-i18n="unavailable">Unavailable</button>
+        </div>
+      </div>
+
+      <!-- 9th Outdoor -->
+      <div class="avail-row">
+        <div class="fl-name"><span data-i18n="fl9Out">9th Floor</span><small data-i18n="fl9OutSub">Outdoor Terrace · Exception</small></div>
+        <div class="fl-size">300 m²</div>
+        <div class="fl-units">
+          <span class="unit-chip exception" data-i18n="unit9Out">300 m² Outdoor Available</span>
+        </div>
+        <div class="fl-action">
+          <button class="btn-book-row" onclick="location.href='floor-detail.html?floor=9-outdoor'" data-i18n="bookVisit">Book a Visit</button>
+        </div>
+      </div>
+
+      <!-- 9th Indoor -->
+      <div class="avail-row">
+        <div class="fl-name"><span data-i18n="fl9In">9th Floor</span><small data-i18n="fl9InSub">Indoor Suite · Exception</small></div>
+        <div class="fl-size">100 m²</div>
+        <div class="fl-units">
+          <span class="unit-chip exception" data-i18n="unit9In">100 m² Indoor Available</span>
+        </div>
+        <div class="fl-action">
+          <button class="btn-book-row" onclick="location.href='floor-detail.html?floor=9-indoor'" data-i18n="bookVisit">Book a Visit</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="avail-summary fade-in">
+      <div class="avail-sum-item"><div class="num">8</div><div class="lbl" data-i18n="sumFloors">Spaces Available</div></div>
+      <div class="avail-sum-item"><div class="num">3,280</div><div class="lbl" data-i18n="sumTotalM">Total m² Available</div></div>
+      <div class="avail-sum-item"><div class="num">4</div><div class="lbl" data-i18n="sumFull">Full Floors</div></div>
+      <div class="avail-sum-item"><div class="num">2</div><div class="lbl" data-i18n="sumExcept">Special Spaces</div></div>
+    </div>
+  </section>
+
+  <!-- ====== OFFICES ====== -->
+  <section id="offices">
+    <div class="offices-header fade-in">
+      <p class="section-eyebrow">Our Portfolio</p>
+      <h2 class="section-title">Office Rental Solutions</h2>
+      <div class="gold-line"></div>
+    </div>
+
+    <div class="offices-grid">
+      <div class="office-card fade-in">
+        <div><img src="images/index-office-executive-suites.jpg" alt="Executive Suites"/></div>
+        <div class="office-num">01</div>
+        <div class="office-card-body">
+          <div class="avail-badge available">8 Units Available</div>
+          <h3>Executive Suites</h3>
+          <p>Private, fully furnished executive offices with dedicated reception, high-speed internet, and premium finishes.</p>
+          <span class="office-tag">From JOD 3,500 / month</span>
+          <div class="office-card-btns">
+            <a href="office-detail.html?id=1" class="btn-detail">View Details →</a>
+            <button class="btn-book-visit" onclick="openBookVisit('Executive Suites')">Book a Visit</button>
+          </div>
+        </div>
+      </div>
+      <div class="office-card fade-in">
+        <div><img src="images/index-office-coworking.jpg" alt="Co-Working"/></div>
+        <div class="office-num">02</div>
+        <div class="office-card-body">
+          <div class="avail-badge available">24 Desks Available</div>
+          <h3>Co-Working Spaces</h3>
+          <p>Flexible shared workspaces designed for startups and freelancers — dynamic, inspiring environments.</p>
+          <span class="office-tag">From JOD 800 / month</span>
+          <div class="office-card-btns">
+            <a href="office-detail.html?id=2" class="btn-detail">View Details →</a>
+            <button class="btn-book-visit" onclick="openBookVisit('Co-Working Spaces')">Book a Visit</button>
+          </div>
+        </div>
+      </div>
+      <div class="office-card fade-in">
+        <div><img src="images/index-office-meeting-rooms.jpg" alt="Meeting Rooms"/></div>
+        <div class="office-num">03</div>
+        <div class="office-card-body">
+          <div class="avail-badge available">6 Rooms Available</div>
+          <h3>Meeting Rooms</h3>
+          <p>State-of-the-art conference facilities available hourly or daily, fully equipped with AV technology.</p>
+          <span class="office-tag">From JOD 250 / hour</span>
+          <div class="office-card-btns">
+            <a href="office-detail.html?id=3" class="btn-detail">View Details →</a>
+            <button class="btn-book-visit" onclick="openBookVisit('Meeting Rooms')">Book a Visit</button>
+          </div>
+        </div>
+      </div>
+      <div class="office-card fade-in">
+        <div><img src="images/index-office-virtual.jpg" alt="Virtual Offices"/></div>
+        <div class="office-num">04</div>
+        <div class="office-card-body">
+          <div class="avail-badge available">12 Packages Available</div>
+          <h3>Virtual Offices</h3>
+          <p>Prestigious business address with mail handling and call answering — your identity, without the overhead.</p>
+          <span class="office-tag">From JOD 400 / month</span>
+          <div class="office-card-btns">
+            <a href="office-detail.html?id=4" class="btn-detail">View Details →</a>
+            <button class="btn-book-visit" onclick="openBookVisit('Virtual Offices')">Book a Visit</button>
+          </div>
+        </div>
+      </div>
+      <div class="office-card fade-in">
+        <div><img src="images/index-office-full-floor.jpg" alt="Full Floors"/></div>
+        <div class="office-num">05</div>
+        <div class="office-card-body">
+          <div class="avail-badge low">2 Floors Available</div>
+          <h3>Full Floor Offices</h3>
+          <p>Entire floors available for enterprise clients requiring expansive, customisable corporate headquarters.</p>
+          <span class="office-tag">Custom Pricing</span>
+          <div class="office-card-btns">
+            <a href="office-detail.html?id=5" class="btn-detail">View Details →</a>
+            <button class="btn-book-visit" onclick="openBookVisit('Full Floor Offices')">Book a Visit</button>
+          </div>
+        </div>
+      </div>
+      <div class="office-card fade-in">
+        <div><img src="images/index-office-smart.jpg" alt="Smart Offices"/></div>
+        <div class="office-num">06</div>
+        <div class="office-card-body">
+          <div class="avail-badge low">4 Units Available</div>
+          <h3>Smart Offices</h3>
+          <p>Tech-integrated spaces with IoT controls, automated lighting, climate management and smart security.</p>
+          <span class="office-tag">From JOD 5,000 / month</span>
+          <div class="office-card-btns">
+            <a href="office-detail.html?id=6" class="btn-detail">View Details →</a>
+            <button class="btn-book-visit" onclick="openBookVisit('Smart Offices')">Book a Visit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FEATURES ====== -->
+  <section id="features">
+    <div class="features-wrap">
+      <div class="features-img fade-in">
+        <img src="images/index-features-why-us.jpg" alt="Why Alrayyan"/>
+      </div>
+      <div>
+        <div class="fade-in">
+          <p class="section-eyebrow">Why Choose Us</p>
+          <h2 class="section-title">A Standard Above<br/>The Rest</h2>
+          <div class="gold-line"></div>
+        </div>
+        <div class="features-list">
+          <div class="feature-item fade-in">
+            <div class="feature-num">01</div>
+            <div class="feature-text">
+              <h4>Prime Locations</h4>
+              <p>Strategically positioned in the Kingdom's top business districts — Riyadh, Jeddah, Dammam and beyond.</p>
+            </div>
+          </div>
+          <div class="feature-item fade-in">
+            <div class="feature-num">02</div>
+            <div class="feature-text">
+              <h4>All-Inclusive Packages</h4>
+              <p>Utilities, maintenance, security and cleaning all bundled in — one invoice, zero surprises.</p>
+            </div>
+          </div>
+          <div class="feature-item fade-in">
+            <div class="feature-num">03</div>
+            <div class="feature-text">
+              <h4>Flexible Lease Terms</h4>
+              <p>Monthly, quarterly or annual contracts tailored to your business timeline and growth plans.</p>
+            </div>
+          </div>
+          <div class="feature-item fade-in">
+            <div class="feature-num">04</div>
+            <div class="feature-text">
+              <h4>Luxury Finishing</h4>
+              <p>European-grade materials, ergonomic furniture and curated interiors that impress every visitor.</p>
+            </div>
+          </div>
+          <div class="feature-item fade-in">
+            <div class="feature-num">05</div>
+            <div class="feature-text">
+              <h4>24/7 Support</h4>
+              <p>Our dedicated facilities team is on-call around the clock to ensure your operations never pause.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== OUR BUSINESSES ====== -->
+  <section id="businesses">
+    <div class="businesses-header fade-in">
+      <p class="section-eyebrow">The Alrayyan Universe</p>
+      <h2 class="section-title">Our Businesses</h2>
+      <p style="font-size:0.88rem; color:var(--muted); margin-top:12px; letter-spacing:0.5px;">
+        Hover each card to discover our ventures
+      </p>
+      <div class="gold-line"></div>
+    </div>
+
+    <div class="businesses-grid">
+
+      <!-- FASHION -->
+      <div class="biz-card-wrap fade-in">
+        <div class="biz-card">
+          <div class="biz-front">
+            <img class="biz-front-img"
+              src="images/index-biz-fashion.jpg"
+              alt="Alrayyan Fashion"/>
+            <div class="biz-front-body">
+              <div>
+                <div class="biz-front-icon">👗</div>
+                <div class="biz-front-name">Alrayyan <span>Fashion</span></div>
+              </div>
+              <div class="biz-hover-hint">Hover to explore</div>
+            </div>
+          </div>
+          <div class="biz-back biz-back-fashion">
+            <div class="biz-back-icon">👗</div>
+            <div class="biz-back-title">Alrayyan Fashion</div>
+            <p class="biz-back-desc">
+              Curated luxury and contemporary fashion for the modern Arab individual.
+              From bespoke tailoring to exclusive designer collections — style elevated to an art form.
+            </p>
+            <a href="fashion.html" class="biz-back-btn">
+              Visit Website
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARTS -->
+      <div class="biz-card-wrap fade-in">
+        <div class="biz-card">
+          <div class="biz-front">
+            <img class="biz-front-img"
+              src="images/index-biz-arts.jpg"
+              alt="Alrayyan Calligraphy Arts"/>
+            <div class="biz-front-body">
+              <div>
+                <div class="biz-front-icon">🎨</div>
+                <div class="biz-front-name">Alrayyan <span>Arts</span></div>
+              </div>
+              <div class="biz-hover-hint">Hover to explore</div>
+            </div>
+          </div>
+          <div class="biz-back biz-back-arts">
+            <div class="biz-back-icon">🎨</div>
+            <div class="biz-back-title">Alrayyan Arts</div>
+            <p class="biz-back-desc">
+              A gallery and creative studio celebrating Arab artists and global contemporary works.
+              Discover, collect, and commission original art that transforms spaces and stories.
+            </p>
+            <a href="arts.html" class="biz-back-btn">
+              Visit Website
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAND -->
+      <div class="biz-card-wrap fade-in">
+        <div class="biz-card">
+          <div class="biz-front">
+            <img class="biz-front-img"
+              src="images/index-biz-land.jpg"
+              alt="Alrayyan Land"/>
+            <div class="biz-front-body">
+              <div>
+                <div class="biz-front-icon">🏔️</div>
+                <div class="biz-front-name">Alrayyan <span>Land</span></div>
+              </div>
+              <div class="biz-hover-hint">Hover to explore</div>
+            </div>
+          </div>
+          <div class="biz-back biz-back-land">
+            <div class="biz-back-icon">🏔️</div>
+            <div class="biz-back-title">Alrayyan Land</div>
+            <p class="biz-back-desc">
+              Premium land plots across Amman's most sought-after districts — Abdoun, Dabouq, Khalda and more.
+              Secure your investment in Jordan's fastest-growing real estate market.
+            </p>
+            <a href="land.html" class="biz-back-btn">
+              Visit Website
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====== GALLERY ====== -->
+  <section id="gallery">
+    <div class="gallery-header fade-in">
+      <p class="section-eyebrow">Our Spaces</p>
+      <h2 class="section-title">A Glimpse Inside</h2>
+      <div class="gold-line"></div>
+    </div>
+
+    <div class="gallery-grid fade-in">
+      <div class="g-item" onclick="openLB(this)">
+        <img src="images/index-gallery-executive-hall.jpg" alt="Executive Hall"/>
+        <div class="g-overlay"><span>Executive Hall</span></div>
+      </div>
+      <div class="g-item" onclick="openLB(this)">
+        <img src="images/index-gallery-private-office.jpg" alt="Private Office"/>
+        <div class="g-overlay"><span>Private Office</span></div>
+      </div>
+      <div class="g-item" onclick="openLB(this)">
+        <img src="images/index-gallery-lounge-area.jpg" alt="Lounge Area"/>
+        <div class="g-overlay"><span>Lounge Area</span></div>
+      </div>
+      <div class="g-item" onclick="openLB(this)">
+        <img src="images/index-gallery-open-workspace.jpg" alt="Open Workspace"/>
+        <div class="g-overlay"><span>Open Workspace</span></div>
+      </div>
+      <div class="g-item" onclick="openLB(this)">
+        <img src="images/index-gallery-boardroom.jpg" alt="Boardroom"/>
+        <div class="g-overlay"><span>Boardroom</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== BOOK VISIT MODAL ====== -->
+  <div class="bv-modal-overlay" id="bvOverlay" onclick="if(event.target===this)closeBookVisit()">
+    <div class="bv-modal">
+      <div class="bv-head">
+        <div>
+          <h3>Book a Site Visit</h3>
+          <p>Our team confirms within 24 hours</p>
+        </div>
+        <button class="bv-close" onclick="closeBookVisit()">✕</button>
+      </div>
+      <div class="bv-body" id="bv-form-wrap">
+        <form onsubmit="submitBookVisit(event)">
+          <input type="hidden" id="bv-office-type"/>
+          <div class="bv-group">
+            <label class="bv-label">Office Type</label>
+            <select class="bv-input" id="bv-office-select">
+              <option value="Executive Suites">Executive Suites</option>
+              <option value="Co-Working Spaces">Co-Working Spaces</option>
+              <option value="Meeting Rooms">Meeting Rooms</option>
+              <option value="Virtual Offices">Virtual Offices</option>
+              <option value="Full Floor Offices">Full Floor Offices</option>
+              <option value="Smart Offices">Smart Offices</option>
+            </select>
+          </div>
+          <div class="bv-form-row">
+            <div class="bv-group">
+              <label class="bv-label" for="bv-fname">First Name *</label>
+              <input class="bv-input" type="text" id="bv-fname" placeholder="Ahmad" required/>
+            </div>
+            <div class="bv-group">
+              <label class="bv-label" for="bv-lname">Last Name *</label>
+              <input class="bv-input" type="text" id="bv-lname" placeholder="Al-Hassan" required/>
+            </div>
+          </div>
+          <div class="bv-group">
+            <label class="bv-label" for="bv-company">Company Name</label>
+            <input class="bv-input" type="text" id="bv-company" placeholder="Your company"/>
+          </div>
+          <div class="bv-form-row">
+            <div class="bv-group">
+              <label class="bv-label" for="bv-phone">Phone / WhatsApp *</label>
+              <input class="bv-input" type="tel" id="bv-phone" placeholder="+962 7X XXX XXXX" required/>
+            </div>
+            <div class="bv-group">
+              <label class="bv-label" for="bv-email">Email</label>
+              <input class="bv-input" type="email" id="bv-email" placeholder="your@email.com"/>
+            </div>
+          </div>
+          <div class="bv-form-row">
+            <div class="bv-group">
+              <label class="bv-label" for="bv-date">Preferred Date *</label>
+              <input class="bv-input" type="date" id="bv-date" required/>
+            </div>
+            <div class="bv-group">
+              <label class="bv-label" for="bv-time">Preferred Time</label>
+              <select class="bv-input" id="bv-time">
+                <option value="">Any time</option>
+                <option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
+                <option>12:00 PM</option><option>2:00 PM</option><option>3:00 PM</option>
+                <option>4:00 PM</option><option>5:00 PM</option>
+              </select>
+            </div>
+          </div>
+          <div class="bv-group">
+            <label class="bv-label" for="bv-notes">Notes (Optional)</label>
+            <textarea class="bv-input" id="bv-notes" rows="3" placeholder="Any specific requirements or questions…" style="resize:vertical"></textarea>
+          </div>
+          <button type="submit" class="btn-gold" style="width:100%;margin-top:4px;">Confirm Visit Request →</button>
+          <p style="font-size:.62rem;color:var(--muted);text-align:center;margin-top:10px;">Free of charge · No obligation · Sun–Thu 9am–6pm</p>
+        </form>
+      </div>
+      <div class="bv-success" id="bv-success">
+        <div class="s-icon">✅</div>
+        <h4>Visit Request Sent!</h4>
+        <p>Thank you. Our team will contact you within 24 hours to confirm your visit appointment.</p>
+        <p style="margin-top:10px;font-size:.72rem;color:var(--gold)">Reference: <span id="bv-ref"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLB(event)">
+    <button class="lightbox-close" onclick="closeLB()">✕</button>
+    <img id="lbImg" src="" alt=""/>
+  </div>
+
+  <!-- ====== CONTACT ====== -->
+  <section id="contact">
+    <img src="logo.png" alt="Alrayyan Group" class="contact-logo fade-in"/>
+    <div class="fade-in">
+      <p class="section-eyebrow">Get In Touch</p>
+      <h2 class="section-title">Let's Find Your Perfect Office</h2>
+      <div class="gold-line" style="margin: 18px auto 0"></div>
+    </div>
+
+    <div class="contact-cards fade-in">
+      <div class="c-card" onclick="openGoogleMaps()" style="cursor:pointer;" title="Open in Google Maps">
+        <div class="icon">📍</div>
+        <h4>Location</h4>
+        <p>Amman, Jordan</p>
+        <p style="font-size:.62rem;color:var(--gold);margin-top:6px;letter-spacing:1px;">View on Maps →</p>
+      </div>
+      <div class="c-card">
+        <div class="icon">📞</div>
+        <h4>Phone</h4>
+        <p>+962 79 055 0787</p>
+      </div>
+      <div class="c-card">
+        <div class="icon">✉️</div>
+        <h4>Email</h4>
+        <p><a href="mailto:info@alrayyangroup.com">info@alrayyangroup.com</a></p>
+      </div>
+      <div class="c-card">
+        <div class="icon">🕐</div>
+        <h4>Hours</h4>
+        <p>Sun–Thu: 9am–6pm</p>
+      </div>
+    </div>
+
+    <div class="contact-btns fade-in">
+      <a href="https://wa.me/966530559095" class="btn-wa" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        WhatsApp Us
+      </a>
+      <a href="tel:+966530559095" class="btn-ring">📞 Call Direct</a>
+      <a href="mailto:info@alrayyangroup.com" class="btn-ring">✉️ Email Us</a>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="logo.png" alt="Alrayyan Group"/>
+        <div class="brand-name">ALRAYYAN GROUP</div>
+        <p>Your first choice for premium office rentals and diversified business ventures — where ambition finds its address.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#offices">Offices</a></li>
+          <li><a href="#businesses">Our Businesses</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Our Businesses</h4>
+        <ul>
+          <li><a href="fashion.html">Alrayyan Fashion</a></li>
+          <li><a href="arts.html">Alrayyan Arts</a></li>
+          <li><a href="land.html">Alrayyan Land</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+96279055 0787">+962 79 055 0787</a></li>
+          <li><a href="mailto:info@alrayyangroup.com">info@alrayyangroup.com</a></li>
+          <li><a>Amman, Jordan</a></li>
+          <li><a>Sun–Thu: 9am–6pm</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Alrayyan Group. All rights reserved.</span>
+      <span>Premium Office Rentals · Jordan</span>
+    </div>
+  </footer>
+
+  <!-- ====== JAVASCRIPT ====== -->
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    (function createParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 35; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 3 + 1;
+        p.style.cssText = `
+          width: ${size}px; height: ${size}px;
+          left: ${Math.random() * 100}%;
+          animation-duration: ${Math.random() * 18 + 10}s;
+          animation-delay: ${Math.random() * 12}s;
+        `;
+        container.appendChild(p);
+      }
+    })();
+
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    function openLB(card) {
+      const img = card.querySelector('img');
+      document.getElementById('lbImg').src = img.src;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLB(event) {
+      if (event) { event.stopPropagation(); }
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* ===== GOOGLE MAPS ===== */
+    function openGoogleMaps() {
+      window.open('https://www.google.com/maps/search/Alrayyan+Group+Amman+Jordan/@31.9539,35.9106,14z', '_blank');
+    }
+
+    /* ===== BOOK VISIT MODAL ===== */
+    function openBookVisit(officeType) {
+      const sel = document.getElementById('bv-office-select');
+      if (officeType) {
+        for (let i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].value === officeType) { sel.selectedIndex = i; break; }
+        }
+      }
+      // set min date
+      document.getElementById('bv-date').min = new Date().toISOString().split('T')[0];
+      document.getElementById('bv-form-wrap').style.display = 'block';
+      document.getElementById('bv-success').style.display = 'none';
+      document.getElementById('bvOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeBookVisit() {
+      document.getElementById('bvOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function submitBookVisit(e) {
+      e.preventDefault();
+      const ref = 'ARG-' + Date.now().toString(36).toUpperCase().slice(-6);
+      document.getElementById('bv-ref').textContent = ref;
+      document.getElementById('bv-form-wrap').style.display = 'none';
+      document.getElementById('bv-success').style.display = 'block';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeBookVisit(); closeLB(); } });
+
+    /* ===== LANGUAGE SWITCHER ===== */
+    const i18n = {
+      en: {
+        navHome:'Home', navAbout:'About', navOffices:'Offices', navBiz:'Our Businesses', navGallery:'Gallery', navContact:'Contact Us',
+        heroSubtitle:'Where Prestige Meets Productivity', heroBtnExplore:'Explore Offices', heroBtnTouch:'Get In Touch', heroScroll:'Scroll',
+        stat1:'Office Units', stat2:'Prime Locations', stat3:'Happy Tenants', stat4:'Years of Excellence',
+        aboutEye:'Who We Are', aboutTitle:"The Kingdom's Premier<br/>Office Rental Destination",
+        aboutP1:'Alrayyan Group is a leading real estate company specializing in premium office rental solutions. We provide fully equipped, flexible, and prestigious workspaces designed to elevate your business.',
+        aboutP2:'From executive suites to collaborative co-working spaces, our portfolio spans prime locations across the Kingdom — blending luxury with functionality.',
+        aboutBtnView:'View Offices', aboutBtnLearn:'Learn More', aboutBadge:'Years of Trust',
+        offEye:'Our Portfolio', offTitle:'Office Rental Solutions',
+        off1T:'Executive Suites', off1D:'Private, fully furnished executive offices with dedicated reception, high-speed internet, and premium finishes.',
+        off2T:'Co-Working Spaces', off2D:'Flexible shared workspaces designed for startups and freelancers — dynamic, inspiring environments.',
+        off3T:'Meeting Rooms', off3D:'State-of-the-art conference facilities available hourly or daily, fully equipped with AV technology.',
+        off4T:'Virtual Offices', off4D:'Prestigious business address with mail handling and call answering — your identity, without the overhead.',
+        off5T:'Full Floor Offices', off5D:'Entire floors available for enterprise clients requiring expansive, customisable corporate headquarters.',
+        off6T:'Smart Offices', off6D:'Tech-integrated spaces with IoT controls, automated lighting, climate management and smart security.',
+        featEye:'Why Choose Us', featTitle:'A Standard Above<br/>The Rest',
+        feat1T:'Prime Locations', feat1D:"Strategically positioned in the Kingdom's top business districts — Riyadh, Jeddah, Dammam and beyond.",
+        feat2T:'All-Inclusive Packages', feat2D:'Utilities, maintenance, security and cleaning all bundled in — one invoice, zero surprises.',
+        feat3T:'Flexible Lease Terms', feat3D:'Monthly, quarterly or annual contracts tailored to your business timeline and growth plans.',
+        feat4T:'Luxury Finishing', feat4D:'European-grade materials, ergonomic furniture and curated interiors that impress every visitor.',
+        feat5T:'24/7 Support', feat5D:'Our dedicated facilities team is on-call around the clock to ensure your operations never pause.',
+        bizEye:'The Alrayyan Universe', bizTitle:'Our Businesses', bizHover:'Hover each card to discover our ventures',
+        bizFashBack:'Alrayyan Fashion', bizFashDesc:'Curated luxury and contemporary fashion for the modern Arab individual. From bespoke tailoring to exclusive designer collections — style elevated to an art form.',
+        bizArtsBack:'Alrayyan Arts', bizArtsDesc:'A gallery and creative studio celebrating Arab artists and global contemporary works. Discover, collect, and commission original art that transforms spaces and stories.',
+        bizLandBack:'Alrayyan Land', bizLandDesc:"Premium land plots across Amman's most sought-after districts — Abdoun, Dabouq, Khalda and more. Secure your investment in Jordan's fastest-growing real estate market.",
+        bizVisit:'Visit Website',
+        bizFashHint:'Hover to explore', bizArtsHint:'Hover to explore', bizLandHint:'Hover to explore',
+        galEye:'Our Spaces', galTitle:'A Glimpse Inside',
+        gal1:'Executive Hall', gal2:'Private Office', gal3:'Lounge Area', gal4:'Open Workspace', gal5:'Boardroom',
+        conEye:'Get In Touch', conTitle:"Let's Find Your Perfect Office",
+        conLoc:'Location', conLocV:'Amman, Jordan', conPhone:'Phone', conEmail:'Email', conHours:'Hours', conHoursV:'Sun–Thu: 9am–6pm',
+        conWA:'WhatsApp Us', conCall:'📞 Call Direct', conMail:'✉️ Email Us',
+        footDesc:'Your first choice for premium office rentals and diversified business ventures — where ambition finds its address.',
+        footQL:'Quick Links', footOB:'Our Businesses', footCon:'Contact',
+        footCopy:'© 2025 Alrayyan Group. All rights reserved.', footTag:'Premium Office Rentals · Jordan',
+        mHome:'Home', mAbout:'About', mOffices:'Offices', mBiz:'Our Businesses', mGallery:'Gallery', mContact:'Contact',
+        navAvailable:'Available',
+        availEye:'Current Availability', availTitle:'Available Floors & Units',
+        availDesc:'Real-time inventory across Alrayyan Tower — 8 floors plus B1 and the 9th-floor terrace suites. Click any row to view the full space details.',
+        availColFloor:'Floor', availColSize:'Total Size', availColStatus:'Unit Availability', availColAction:'Action',
+        flB1:'B1 Floor', flB1Sub:'Underground · Exception',
+        fl1:'1st Floor', fl1Sub:'Fully Occupied',
+        fl2:'2nd Floor', fl2Sub:'Fully Occupied',
+        fl8:'8th Floor', fl8Sub:'Fully Occupied',
+        unavailable:'Unavailable',
+        fl3:'3rd Floor', fl3Sub:'Mid Level',
+        fl4:'4th Floor', fl4Sub:'Full Floor Available',
+        fl5:'5th Floor', fl5Sub:'Mid Level',
+        fl6:'6th Floor', fl6Sub:'Full Floor Available',
+        fl7:'7th Floor', fl7Sub:'Full Floor Available',
+        fl9Out:'9th Floor', fl9OutSub:'Outdoor Terrace · Exception',
+        fl9In:'9th Floor', fl9InSub:'Indoor Suite · Exception',
+        unitFullB1:'1,000 m² Full Available',
+        unit9Out:'300 m² Outdoor Available',
+        unit9In:'100 m² Indoor Available',
+        bookVisit:'Book a Visit',
+        sumFloors:'Spaces Available', sumTotalM:'Total m² Available', sumFull:'Full Floors', sumExcept:'Special Spaces',
+      },
+      ar: {
+        navHome:'الرئيسية', navAbout:'من نحن', navOffices:'المكاتب', navBiz:'أعمالنا', navGallery:'المعرض', navContact:'تواصل معنا',
+        heroSubtitle:'حيث تلتقي الفخامة بالإنتاجية', heroBtnExplore:'استكشف المكاتب', heroBtnTouch:'تواصل معنا', heroScroll:'تصفح',
+        stat1:'وحدة مكتبية', stat2:'موقع متميز', stat3:'مستأجر سعيد', stat4:'سنوات من التميز',
+        aboutEye:'من نحن', aboutTitle:'الوجهة الأولى<br/>لتأجير المكاتب الفاخرة',
+        aboutP1:'مجموعة الريان هي شركة عقارية رائدة متخصصة في حلول تأجير المكاتب الفاخرة. نقدم مساحات عمل مجهزة بالكامل ومرنة ومتميزة.',
+        aboutP2:'من الأجنحة التنفيذية إلى مساحات العمل المشتركة، تمتد محفظتنا عبر مواقع رئيسية تمزج بين الفخامة والوظيفية.',
+        aboutBtnView:'عرض المكاتب', aboutBtnLearn:'اعرف المزيد', aboutBadge:'سنوات من الثقة',
+        offEye:'محفظتنا', offTitle:'حلول تأجير المكاتب',
+        off1T:'الأجنحة التنفيذية', off1D:'مكاتب تنفيذية خاصة ومفروشة بالكامل مع استقبال مخصص وإنترنت عالي السرعة.',
+        off2T:'مساحات العمل المشتركة', off2D:'مساحات عمل مشتركة مرنة مصممة للشركات الناشئة والمستقلين.',
+        off3T:'قاعات الاجتماعات', off3D:'مرافق مؤتمرات حديثة متاحة بالساعة أو اليوم ومجهزة بالكامل.',
+        off4T:'المكاتب الافتراضية', off4D:'عنوان تجاري مرموق مع خدمات البريد والرد على المكالمات.',
+        off5T:'مكاتب طابق كامل', off5D:'طوابق كاملة متاحة للشركات التي تحتاج مقرات واسعة وقابلة للتخصيص.',
+        off6T:'المكاتب الذكية', off6D:'مساحات متكاملة مع التقنية وعناصر تحكم إنترنت الأشياء والإضاءة الآلية.',
+        featEye:'لماذا نحن', featTitle:'معيار أعلى<br/>من البقية',
+        feat1T:'مواقع رئيسية', feat1D:'موقع استراتيجي في أفضل المناطق التجارية — عمّان وأكثر.',
+        feat2T:'باقات شاملة', feat2D:'المرافق والصيانة والأمن والتنظيف — فاتورة واحدة بدون مفاجآت.',
+        feat3T:'شروط إيجار مرنة', feat3D:'عقود شهرية أو ربعية أو سنوية مصممة وفقاً لجدولك الزمني.',
+        feat4T:'تشطيبات فاخرة', feat4D:'مواد أوروبية الجودة وأثاث مريح وتصاميم داخلية منتقاة.',
+        feat5T:'دعم على مدار الساعة', feat5D:'فريق المرافق المخصص جاهز على مدار الساعة لضمان استمرارية عملياتك.',
+        bizEye:'عالم الريان', bizTitle:'أعمالنا', bizHover:'مرر على كل بطاقة لاستكشاف مشاريعنا',
+        bizFashBack:'أزياء الريان', bizFashDesc:'أزياء فاخرة ومعاصرة للفرد العربي الحديث. من الخياطة حسب الطلب إلى مجموعات المصممين الحصرية.',
+        bizArtsBack:'فنون الريان', bizArtsDesc:'معرض واستوديو إبداعي يحتفي بالفنانين العرب والأعمال المعاصرة العالمية.',
+        bizLandBack:'أراضي الريان', bizLandDesc:'قطع أراضٍ فاخرة في أكثر مناطق عمّان طلباً — عبدون، دابوق، خلدا والمزيد.',
+        bizVisit:'زيارة الموقع',
+        bizFashHint:'مرر للاستكشاف', bizArtsHint:'مرر للاستكشاف', bizLandHint:'مرر للاستكشاف',
+        galEye:'مساحاتنا', galTitle:'لمحة من الداخل',
+        gal1:'القاعة التنفيذية', gal2:'مكتب خاص', gal3:'منطقة الاستراحة', gal4:'مساحة عمل مفتوحة', gal5:'غرفة الاجتماعات',
+        conEye:'تواصل معنا', conTitle:'دعنا نجد مكتبك المثالي',
+        conLoc:'الموقع', conLocV:'عمّان، الأردن', conPhone:'الهاتف', conEmail:'البريد', conHours:'ساعات العمل', conHoursV:'أحد–خميس: 9ص–6م',
+        conWA:'واتساب', conCall:'📞 اتصل مباشرة', conMail:'✉️ راسلنا',
+        footDesc:'خيارك الأول لتأجير المكاتب الفاخرة والمشاريع التجارية المتنوعة — حيث يجد الطموح عنوانه.',
+        footQL:'روابط سريعة', footOB:'أعمالنا', footCon:'تواصل',
+        footCopy:'© 2025 مجموعة الريان. جميع الحقوق محفوظة.', footTag:'تأجير مكاتب فاخرة · الأردن',
+        mHome:'الرئيسية', mAbout:'من نحن', mOffices:'المكاتب', mBiz:'أعمالنا', mGallery:'المعرض', mContact:'تواصل',
+        navAvailable:'المتاح',
+        availEye:'التوافر الحالي', availTitle:'الطوابق والوحدات المتاحة',
+        availDesc:'المخزون المباشر في برج الريان — 8 طوابق بالإضافة إلى B1 وأجنحة الطابق التاسع. انقر على أي صف لعرض تفاصيل المساحة الكاملة.',
+        availColFloor:'الطابق', availColSize:'المساحة الإجمالية', availColStatus:'حالة الوحدات', availColAction:'الإجراء',
+        flB1:'الطابق B1', flB1Sub:'تحت الأرض · استثناء',
+        fl1:'الطابق الأول', fl1Sub:'مشغول بالكامل',
+        fl2:'الطابق الثاني', fl2Sub:'مشغول بالكامل',
+        fl8:'الطابق الثامن', fl8Sub:'مشغول بالكامل',
+        unavailable:'غير متاح',
+        fl3:'الطابق الثالث', fl3Sub:'طابق متوسط',
+        fl4:'الطابق الرابع', fl4Sub:'طابق كامل متاح',
+        fl5:'الطابق الخامس', fl5Sub:'طابق متوسط',
+        fl6:'الطابق السادس', fl6Sub:'طابق كامل متاح',
+        fl7:'الطابق السابع', fl7Sub:'طابق كامل متاح',
+        fl9Out:'الطابق التاسع', fl9OutSub:'تراس خارجي · استثناء',
+        fl9In:'الطابق التاسع', fl9InSub:'جناح داخلي · استثناء',
+        unitFullB1:'1,000 م² كامل متاح',
+        unit9Out:'300 م² تراس خارجي متاح',
+        unit9In:'100 م² داخلي متاح',
+        bookVisit:'احجز زيارة',
+        sumFloors:'مساحة متاحة', sumTotalM:'إجمالي م² المتاح', sumFull:'طوابق كاملة', sumExcept:'مساحات خاصة',
+      }
+    };
+
+    // Map: CSS selector → translation key
+    const selMap = [
+      // Nav
+      ['.nav-links a[href="#hero"]', 'navHome'],
+      ['.nav-links a[href="#about"]', 'navAbout'],
+      ['.nav-links a[href="#offices"]', 'navOffices'],
+      ['.nav-links a[href="#businesses"]', 'navBiz'],
+      ['.nav-links a[href="#gallery"]', 'navGallery'],
+      ['.nav-links a[href="#contact"]', 'navContact'],
+      // Mobile
+      ['.mobile-menu a[href="#hero"]', 'mHome'],
+      ['.mobile-menu a[href="#about"]', 'mAbout'],
+      ['.mobile-menu a[href="#offices"]', 'mOffices'],
+      ['.mobile-menu a[href="#businesses"]', 'mBiz'],
+      ['.mobile-menu a[href="#gallery"]', 'mGallery'],
+      ['.mobile-menu a[href="#contact"]', 'mContact'],
+      // Hero
+      ['.hero-subtitle', 'heroSubtitle'],
+      ['#hero .btn-gold', 'heroBtnExplore'],
+      ['#hero .btn-ghost', 'heroBtnTouch'],
+      // Stats
+      ['.stat-cell:nth-child(1) .stat-lbl', 'stat1'],
+      ['.stat-cell:nth-child(2) .stat-lbl', 'stat2'],
+      ['.stat-cell:nth-child(3) .stat-lbl', 'stat3'],
+      ['.stat-cell:nth-child(4) .stat-lbl', 'stat4'],
+      // About
+      ['#about .section-eyebrow', 'aboutEye'],
+      ['#about .section-title', 'aboutTitle'],
+      ['#about .section-desc:first-of-type', 'aboutP1'],
+      ['#about .section-desc:last-of-type', 'aboutP2'],
+      ['#about .btn-gold', 'aboutBtnView'],
+      ['#about .btn-ghost', 'aboutBtnLearn'],
+      ['.about-img-badge .lbl', 'aboutBadge'],
+      // Offices
+      ['#offices .section-eyebrow', 'offEye'],
+      ['#offices .section-title', 'offTitle'],
+      ['.office-card:nth-child(1) h3', 'off1T'], ['.office-card:nth-child(1) p', 'off1D'],
+      ['.office-card:nth-child(2) h3', 'off2T'], ['.office-card:nth-child(2) p', 'off2D'],
+      ['.office-card:nth-child(3) h3', 'off3T'], ['.office-card:nth-child(3) p', 'off3D'],
+      ['.office-card:nth-child(4) h3', 'off4T'], ['.office-card:nth-child(4) p', 'off4D'],
+      ['.office-card:nth-child(5) h3', 'off5T'], ['.office-card:nth-child(5) p', 'off5D'],
+      ['.office-card:nth-child(6) h3', 'off6T'], ['.office-card:nth-child(6) p', 'off6D'],
+      // Features
+      ['#features .section-eyebrow', 'featEye'],
+      ['#features .section-title', 'featTitle'],
+      ['.feature-item:nth-child(1) h4', 'feat1T'], ['.feature-item:nth-child(1) p', 'feat1D'],
+      ['.feature-item:nth-child(2) h4', 'feat2T'], ['.feature-item:nth-child(2) p', 'feat2D'],
+      ['.feature-item:nth-child(3) h4', 'feat3T'], ['.feature-item:nth-child(3) p', 'feat3D'],
+      ['.feature-item:nth-child(4) h4', 'feat4T'], ['.feature-item:nth-child(4) p', 'feat4D'],
+      ['.feature-item:nth-child(5) h4', 'feat5T'], ['.feature-item:nth-child(5) p', 'feat5D'],
+      // Businesses
+      ['#businesses .section-eyebrow', 'bizEye'],
+      ['#businesses .section-title', 'bizTitle'],
+      ['.biz-back-fashion .biz-back-title', 'bizFashBack'],
+      ['.biz-back-fashion .biz-back-desc', 'bizFashDesc'],
+      ['.biz-back-arts .biz-back-title', 'bizArtsBack'],
+      ['.biz-back-arts .biz-back-desc', 'bizArtsDesc'],
+      ['.biz-back-land .biz-back-title', 'bizLandBack'],
+      ['.biz-back-land .biz-back-desc', 'bizLandDesc'],
+      // Gallery
+      ['#gallery .section-eyebrow', 'galEye'],
+      ['#gallery .section-title', 'galTitle'],
+      // Contact
+      ['#contact .section-eyebrow', 'conEye'],
+      ['#contact .section-title', 'conTitle'],
+      ['.c-card:nth-child(1) h4', 'conLoc'], ['.c-card:nth-child(1) p', 'conLocV'],
+      ['.c-card:nth-child(2) h4', 'conPhone'],
+      ['.c-card:nth-child(3) h4', 'conEmail'],
+      ['.c-card:nth-child(4) h4', 'conHours'], ['.c-card:nth-child(4) p', 'conHoursV'],
+      ['.btn-wa', 'conWA'],
+      ['.btn-ring:nth-child(2)', 'conCall'],
+      ['.btn-ring:nth-child(3)', 'conMail'],
+      // Footer
+      ['.footer-brand p', 'footDesc'],
+      ['.footer-col:nth-child(2) h4', 'footQL'],
+      ['.footer-col:nth-child(3) h4', 'footOB'],
+      ['.footer-col:nth-child(4) h4', 'footCon'],
+      ['.footer-bottom span:first-child', 'footCopy'],
+      ['.footer-bottom span:last-child', 'footTag'],
+    ];
+
+    // Biz hover hints & visit buttons via querySelectorAll
+    const hintMap = [
+      ['.biz-card-wrap:nth-child(1) .biz-hover-hint', 'bizFashHint'],
+      ['.biz-card-wrap:nth-child(2) .biz-hover-hint', 'bizArtsHint'],
+      ['.biz-card-wrap:nth-child(3) .biz-hover-hint', 'bizLandHint'],
+    ];
+
+    // Gallery overlay spans
+    const galMap = [
+      ['.g-item:nth-child(1) .g-overlay span', 'gal1'],
+      ['.g-item:nth-child(2) .g-overlay span', 'gal2'],
+      ['.g-item:nth-child(3) .g-overlay span', 'gal3'],
+      ['.g-item:nth-child(4) .g-overlay span', 'gal4'],
+      ['.g-item:nth-child(5) .g-overlay span', 'gal5'],
+    ];
+
+    function setLang(lang) {
+      localStorage.setItem('al_lang', lang);
+      const html = document.documentElement;
+      html.lang = lang === 'ar' ? 'ar' : 'en';
+      html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+
+      document.querySelectorAll('.lang-btn').forEach(b => {
+        b.classList.toggle('active', b.textContent.trim() === (lang === 'ar' ? 'AR' : 'EN'));
+      });
+
+      const t = i18n[lang];
+      if (!t) return;
+
+      selMap.concat(hintMap, galMap).forEach(([sel, key]) => {
+        const el = document.querySelector(sel);
+        if (el && t[key]) el.innerHTML = t[key];
+      });
+
+      // data-i18n attribute support
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+      });
+
+      // Visit Website buttons
+      document.querySelectorAll('.biz-back-btn').forEach(btn => {
+        const svg = btn.querySelector('svg');
+        const svgHTML = svg ? svg.outerHTML : '';
+        btn.innerHTML = t.bizVisit + ' ' + svgHTML;
+      });
+    }
+
+    // Persist language
+    (function() {
+      const saved = localStorage.getItem('al_lang');
+      if (saved === 'ar') setLang('ar');
+    })();
+
+    // ── ADMIN SITE CONTENT OVERRIDE (from admin.html → localStorage ar_site_content) ──
+    (function applyAdminSiteContent(){
+      try {
+        const c = JSON.parse(localStorage.getItem('ar_site_content') || 'null');
+        if (!c) return;
+        const lang = localStorage.getItem('al_lang') || 'en';
+        const pick = (en, ar) => (lang === 'ar' ? (ar || en) : (en || ar));
+
+        const heroSub = document.querySelector('.hero-subtitle');
+        if (heroSub && (c.heroSubEn || c.heroSubAr)) heroSub.textContent = pick(c.heroSubEn, c.heroSubAr);
+
+        const aboutTitle = document.querySelector('#about .section-title');
+        if (aboutTitle && (c.aboutTitleEn || c.aboutTitleAr)) aboutTitle.textContent = pick(c.aboutTitleEn, c.aboutTitleAr);
+
+        const aboutP1 = document.querySelector('#about .section-desc');
+        if (aboutP1 && (c.aboutBodyEn || c.aboutBodyAr)) aboutP1.textContent = pick(c.aboutBodyEn, c.aboutBodyAr);
+
+        if (c.phone) {
+          document.querySelectorAll('[data-admin="phone"], .c-card:nth-child(2) p, .c-card:nth-child(2) a').forEach(el => { el.textContent = c.phone; });
+        }
+        if (c.email) {
+          document.querySelectorAll('[data-admin="email"], .c-card:nth-child(3) p, .c-card:nth-child(3) a').forEach(el => { el.textContent = c.email; });
+        }
+        if (c.address) {
+          const addr = document.querySelector('.c-card:nth-child(1) p');
+          if (addr) addr.textContent = c.address;
+        }
+      } catch(e) { console.warn('admin site content override skipped', e); }
+    })();
+  </script>
+</body>
+</html>

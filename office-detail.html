@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Office Detail – Alrayyan Group</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+  <style>
+    :root{
+      --black:#050505;--dark:#0a0a0a;--dark2:#111111;
+      --gold:#b87333;--gold-light:#d4976a;--gold-dim:#8b5e34;
+      --white:#ffffff;--off-white:#f5f0e8;--muted:#888888;
+      --t:0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Montserrat',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;}
+    html[dir="rtl"] body{font-family:'Cairo','Montserrat',sans-serif;}
+    html[dir="rtl"] .detail-info{border-right:none;border-left:1px solid rgba(184,115,51,0.08);padding:52px 0 80px 56px;}
+    html[dir="rtl"] .book-col{padding:52px 48px 80px 0;}
+    html[dir="rtl"] .gold-line{background:linear-gradient(270deg,var(--gold),transparent);}
+    .lang-sw{display:flex;align-items:center;margin-left:10px;}
+    .lang-btn{background:none;border:1px solid rgba(184,115,51,0.3);color:var(--muted);
+      font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:1.5px;
+      text-transform:uppercase;padding:5px 10px;cursor:pointer;transition:.3s;}
+    .lang-btn:first-child{border-radius:2px 0 0 2px;border-right:none;}
+    .lang-btn:last-child{border-radius:0 2px 2px 0;}
+    .lang-btn.active{background:var(--gold);color:var(--black);border-color:var(--gold);}
+    .lang-btn:hover:not(.active){color:var(--gold);border-color:var(--gold);}
+    a{text-decoration:none;color:inherit;}
+    img{max-width:100%;display:block;}
+    ::-webkit-scrollbar{width:4px;}
+    ::-webkit-scrollbar-track{background:var(--black);}
+    ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:900;padding:0 5%;height:68px;
+      display:flex;align-items:center;justify-content:space-between;
+      background:rgba(5,5,5,0.97);backdrop-filter:blur(20px);
+      border-bottom:1px solid rgba(184,115,51,0.1);transition:var(--t);}
+    nav.scrolled{height:56px;}
+    .nav-brand{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;letter-spacing:2px;color:var(--gold-light);}
+    .nav-right{display:flex;align-items:center;gap:12px;}
+    .nav-back{font-size:.66rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+      color:var(--gold);border:1px solid rgba(184,115,51,0.35);padding:6px 14px;border-radius:2px;transition:var(--t);}
+    .nav-back:hover{background:rgba(184,115,51,0.1);}
+
+    /* BREADCRUMB */
+    .breadcrumb-bar{padding:80px 5% 0;font-size:.68rem;color:var(--muted);
+      display:flex;gap:8px;align-items:center;border-bottom:1px solid rgba(184,115,51,0.07);padding-bottom:14px;}
+    .breadcrumb-bar a{color:var(--gold);}
+    .breadcrumb-bar span{color:rgba(184,115,51,0.3);}
+
+    /* HERO BANNER */
+    .detail-hero{position:relative;height:52vh;min-height:320px;display:flex;align-items:flex-end;overflow:hidden;}
+    .detail-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.3) saturate(0.6);}
+    .detail-hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,5,0.97) 0%,rgba(5,5,5,0.2) 60%,transparent 100%);}
+    .detail-hero-content{position:relative;z-index:2;padding:0 5% 48px;width:100%;animation:fadeUp .9s ease forwards;opacity:0;transform:translateY(20px);}
+    @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+    .detail-eyebrow{font-size:.62rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:12px;}
+    .detail-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold);}
+    .detail-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;color:var(--off-white);line-height:1.1;margin-bottom:10px;}
+    .detail-price-tag{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--gold-light);}
+
+    /* LAYOUT */
+    .detail-wrap{display:grid;grid-template-columns:1fr 380px;gap:0;padding:0 5%;max-width:1300px;margin:0 auto;}
+    .detail-info{padding:52px 56px 80px 0;border-right:1px solid rgba(184,115,51,0.08);}
+    .book-col{padding:52px 0 80px 48px;}
+    .book-sticky{position:sticky;top:80px;}
+
+    /* SECTION LABELS */
+    .sec-eye{font-size:.62rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+    .sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.5vw,1.9rem);font-weight:700;color:var(--off-white);line-height:1.2;margin-bottom:10px;}
+    .gold-line{width:44px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);margin:12px 0 28px;}
+
+    /* AVAILABILITY TABLE */
+    .avail-table{width:100%;border-collapse:collapse;margin-bottom:44px;font-size:.8rem;}
+    .avail-table thead tr{border-bottom:1px solid rgba(184,115,51,0.2);}
+    .avail-table th{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;padding:8px 14px;text-align:left;}
+    .avail-table td{padding:12px 14px;border-bottom:1px solid rgba(184,115,51,0.07);color:var(--off-white);}
+    .avail-table tbody tr:hover td{background:rgba(184,115,51,0.04);}
+    .avail-dot{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:600;}
+    .avail-dot::before{content:'';width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0;}
+    .avail-dot.available{color:#4ade80;}
+    .avail-dot.low{color:#facc15;}
+    .avail-dot.full{color:#f87171;}
+
+    /* SPECS GRID */
+    .specs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(184,115,51,0.08);border:1px solid rgba(184,115,51,0.08);border-radius:3px;overflow:hidden;margin-bottom:44px;}
+    .spec-item{background:#0d0d0d;padding:20px 16px;}
+    .spec-label{font-size:.58rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+    .spec-value{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold-light);font-weight:700;}
+    .spec-value.sm{font-size:.88rem;font-family:'Montserrat',sans-serif;color:var(--off-white);}
+
+    /* AMENITIES */
+    .amenities-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:44px;}
+    .amenity-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(184,115,51,0.07);font-size:.8rem;color:var(--off-white);}
+    .amenity-item::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
+
+    /* DESCRIPTION */
+    .detail-desc{font-size:.86rem;color:var(--muted);line-height:1.95;margin-bottom:40px;}
+    .detail-desc p+p{margin-top:14px;}
+
+    /* FLOOR PLAN PLACEHOLDER */
+    .floor-plan-box{width:100%;height:220px;background:rgba(184,115,51,0.04);border:1px dashed rgba(184,115,51,0.2);border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);margin-bottom:44px;}
+    .floor-plan-box .fp-icon{font-size:2rem;}
+    .floor-plan-box p{font-size:.72rem;letter-spacing:1px;}
+
+    /* BOOK VISIT CARD */
+    .book-card{background:#0d0a06;border:1px solid rgba(184,115,51,0.18);border-radius:4px;overflow:hidden;}
+    .book-card-head{background:linear-gradient(135deg,var(--gold-dim),var(--gold));padding:22px 26px;}
+    .book-card-head h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:var(--black);margin-bottom:3px;}
+    .book-card-head p{font-size:.7rem;color:rgba(5,5,5,.65);}
+    .book-form{padding:24px;}
+    .bf-group{margin-bottom:14px;}
+    .bf-label{display:block;font-size:.58rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+    .bf-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(184,115,51,0.18);color:var(--off-white);font-family:'Montserrat',sans-serif;font-size:.8rem;padding:10px 12px;border-radius:2px;outline:none;transition:border-color var(--t);}
+    .bf-input:focus{border-color:rgba(184,115,51,0.55);}
+    .bf-input::placeholder{color:rgba(136,136,136,0.4);}
+    .bf-input option{background:#1a1200;}
+    textarea.bf-input{resize:vertical;min-height:80px;}
+    .bf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .btn-gold-full{width:100%;background:linear-gradient(135deg,var(--gold-dim),var(--gold),var(--gold-light));color:var(--black);font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border:none;border-radius:2px;cursor:pointer;transition:transform var(--t),box-shadow var(--t);margin-top:4px;}
+    .btn-gold-full:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(184,115,51,0.35);}
+    .book-note{font-size:.62rem;color:var(--muted);text-align:center;margin-top:12px;line-height:1.6;}
+    .book-success{display:none;padding:28px;text-align:center;}
+    .book-success .s-icon{font-size:2.5rem;margin-bottom:14px;}
+    .book-success h4{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--gold-light);margin-bottom:8px;}
+    .book-success p{font-size:.8rem;color:var(--muted);line-height:1.7;}
+
+    /* QUICK CONTACT */
+    .quick-contact{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .q-chip{background:rgba(255,255,255,0.02);border:1px solid rgba(184,115,51,0.12);border-radius:3px;padding:14px;text-align:center;transition:var(--t);cursor:pointer;}
+    .q-chip:hover{border-color:var(--gold);}
+    .q-chip .ico{font-size:1.1rem;margin-bottom:5px;}
+    .q-chip p{font-size:.62rem;color:var(--muted);}
+    .q-chip a{color:var(--gold-light);font-size:.72rem;font-weight:600;}
+
+    /* RELATED */
+    .related-section{padding:70px 5%;background:#070707;}
+    .related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(184,115,51,0.08);margin-top:36px;}
+    .rel-card{background:var(--dark);overflow:hidden;cursor:pointer;transition:var(--t);border:1px solid rgba(184,115,51,0.04);}
+    .rel-card:hover{background:#0c0b06;}
+    .rel-card img{width:100%;height:180px;object-fit:cover;filter:brightness(0.7);transition:filter .5s,transform .5s;}
+    .rel-card:hover img{filter:brightness(0.9);transform:scale(1.04);}
+    .rel-card-body{padding:16px 18px 20px;border-top:1px solid rgba(184,115,51,0.07);}
+    .rel-name{font-size:.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--off-white);margin-bottom:4px;}
+    .rel-price{font-size:.7rem;color:var(--muted);}
+    .rel-avail{font-size:.6rem;letter-spacing:1px;color:#4ade80;margin-top:4px;}
+
+    /* FOOTER */
+    footer{background:#030303;border-top:1px solid rgba(184,115,51,0.07);padding:32px 5% 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+    .f-brand{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;letter-spacing:2px;color:var(--gold-light);}
+    .f-copy{font-size:.68rem;color:rgba(255,255,255,0.18);}
+
+    /* FADE */
+    .fade-in{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+    .fade-in.visible{opacity:1;transform:translateY(0);}
+
+    @media(max-width:1024px){
+      .detail-wrap{grid-template-columns:1fr;}
+      .detail-info{padding:40px 0 0;border-right:none;}
+      .book-col{padding:36px 0 60px;}
+      .book-sticky{position:static;}
+      .related-grid{grid-template-columns:1fr 1fr;}
+    }
+    @media(max-width:576px){
+      .specs-grid{grid-template-columns:1fr 1fr;}
+      .amenities-grid{grid-template-columns:1fr;}
+      .related-grid{grid-template-columns:1fr;}
+      .bf-row{grid-template-columns:1fr;}
+      .quick-contact{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html"><div class="nav-brand">ALRAYYAN GROUP</div></a>
+  <div class="nav-right">
+    <a href="index.html#offices" class="nav-back" data-i18n="navBack">← All Offices</a>
+    <div class="lang-sw">
+      <button class="lang-btn active" onclick="setPageLang('en')">EN</button>
+      <button class="lang-btn" onclick="setPageLang('ar')">AR</button>
+    </div>
+  </div>
+</nav>
+
+<div class="breadcrumb-bar" id="breadcrumb-bar">
+  <a href="index.html">Alrayyan Group</a>
+  <span>/</span>
+  <a href="index.html#offices">Offices</a>
+  <span>/</span>
+  <span id="bc-name">Office</span>
+</div>
+
+<!-- HERO -->
+<div class="detail-hero">
+  <img id="hero-img" src="" alt=""/>
+  <div class="detail-hero-grad"></div>
+  <div class="detail-hero-content">
+    <div class="detail-eyebrow" id="hero-eyebrow">Office Type</div>
+    <h1 class="detail-title" id="hero-title">Office Name</h1>
+    <div class="detail-price-tag" id="hero-price">JOD —</div>
+  </div>
+</div>
+
+<div class="detail-wrap">
+
+  <!-- INFO COLUMN -->
+  <div class="detail-info">
+
+    <!-- SPECS -->
+    <div class="fade-in">
+      <p class="sec-eye" data-i18n="ecSpecs">Specifications</p>
+      <h2 class="sec-title"><span data-i18n="ttSpaceA">Space</span> <em style="font-style:italic;color:var(--gold-light);" data-i18n="ttSpaceB">Details</em></h2>
+      <div class="gold-line"></div>
+      <div class="specs-grid" id="specs-grid"></div>
+    </div>
+
+    <!-- AVAILABILITY -->
+    <div class="fade-in" style="margin-bottom:44px">
+      <p class="avail-text" id="avail-text" style="font-size:.95rem;color:var(--off-white);letter-spacing:.3px;padding:18px 22px;background:rgba(184,115,51,0.04);border-left:3px solid var(--gold);border-radius:3px;"></p>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="fade-in">
+      <p class="sec-eye" data-i18n="ecAbout">About This Space</p>
+      <h2 class="sec-title"><span data-i18n="ttOvA">Space</span> <em style="font-style:italic;color:var(--gold-light);" data-i18n="ttOvB">Overview</em></h2>
+      <div class="gold-line"></div>
+      <div class="detail-desc" id="detail-desc"></div>
+    </div>
+
+    <!-- AMENITIES -->
+    <div class="fade-in">
+      <p class="sec-eye" data-i18n="ecIncl">What's Included</p>
+      <h2 class="sec-title"><span data-i18n="ttAmA">Amenities &amp;</span> <em style="font-style:italic;color:var(--gold-light);" data-i18n="ttAmB">Features</em></h2>
+      <div class="gold-line"></div>
+      <div class="amenities-grid" id="amenities-grid"></div>
+    </div>
+
+    <!-- FLOOR PLAN -->
+    <div class="fade-in">
+      <p class="sec-eye" data-i18n="ecLayout">Layout</p>
+      <h2 class="sec-title"><span data-i18n="ttPlA">Floor</span> <em style="font-style:italic;color:var(--gold-light);" data-i18n="ttPlB">Plan</em></h2>
+      <div class="gold-line"></div>
+      <div class="floor-plan-box">
+        <div class="fp-icon">🗺️</div>
+        <p data-i18n="planText">Detailed floor plans available on request</p>
+        <p style="font-size:.62rem;color:rgba(136,136,136,0.5)" data-i18n="planNote">Contact our team or book a visit to view the full layout</p>
+      </div>
+    </div>
+
+    <!-- LOCATION -->
+    <div class="fade-in">
+      <p class="sec-eye" data-i18n="ecLoc">Location</p>
+      <h2 class="sec-title"><span data-i18n="ttFuA">Find</span> <em style="font-style:italic;color:var(--gold-light);" data-i18n="ttFuB">Us</em></h2>
+      <div class="gold-line"></div>
+      <div style="width:100%;height:220px;background:rgba(184,115,51,0.04);border:1px solid rgba(184,115,51,0.12);border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;" onclick="window.open('https://www.google.com/maps/search/Alrayyan+Group+Amman+Jordan/@31.9539,35.9106,14z','_blank')">
+        <span style="font-size:2rem">📍</span>
+        <p style="font-size:.78rem;color:var(--off-white);" data-i18n="locAddr">Amman, Jordan</p>
+        <p style="font-size:.65rem;color:var(--gold);letter-spacing:1px;" data-i18n="locClick">Click to open in Google Maps →</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOOK VISIT COLUMN -->
+  <div class="book-col" id="book">
+    <div class="book-sticky">
+      <p class="sec-eye" data-i18n="ecSched">Schedule a Visit</p>
+      <h2 class="sec-title" style="font-size:1.3rem"><span data-i18n="ttBkA">Book a</span> <em style="font-style:italic;color:var(--gold-light);" data-i18n="ttBkB">Site Visit</em></h2>
+      <div class="gold-line"></div>
+
+      <div class="book-card">
+        <div class="book-card-head">
+          <h3 data-i18n="bkHead">Request a Visit</h3>
+          <p data-i18n="bkSub">Our team confirms within 24 hours</p>
+        </div>
+        <form class="book-form" id="book-form" onsubmit="submitVisit(event)">
+          <input type="hidden" id="bf-office" name="office"/>
+          <div class="bf-row">
+            <div class="bf-group">
+              <label class="bf-label" data-i18n="lblFname">First Name *</label>
+              <input class="bf-input" type="text" placeholder="Ahmad" required/>
+            </div>
+            <div class="bf-group">
+              <label class="bf-label" data-i18n="lblLname">Last Name *</label>
+              <input class="bf-input" type="text" placeholder="Al-Hassan" required/>
+            </div>
+          </div>
+          <div class="bf-group">
+            <label class="bf-label" data-i18n="lblCompany">Company</label>
+            <input class="bf-input" type="text" placeholder="Your company name"/>
+          </div>
+          <div class="bf-group">
+            <label class="bf-label" data-i18n="lblPhone">Phone / WhatsApp *</label>
+            <input class="bf-input" type="tel" placeholder="+962 7X XXX XXXX" required/>
+          </div>
+          <div class="bf-row">
+            <div class="bf-group">
+              <label class="bf-label" data-i18n="lblDate">Preferred Date *</label>
+              <input class="bf-input" type="date" id="bf-date" required/>
+            </div>
+            <div class="bf-group">
+              <label class="bf-label" data-i18n="lblTime">Preferred Time</label>
+              <select class="bf-input">
+                <option data-i18n="anyTime">Any time</option>
+                <option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
+                <option>12:00 PM</option><option>2:00 PM</option><option>3:00 PM</option>
+                <option>4:00 PM</option><option>5:00 PM</option>
+              </select>
+            </div>
+          </div>
+          <div class="bf-group">
+            <label class="bf-label" data-i18n="lblNotes">Notes</label>
+            <textarea class="bf-input" placeholder="Questions or requirements…"></textarea>
+          </div>
+          <button type="submit" class="btn-gold-full" data-i18n="btnConfirm">Confirm Visit →</button>
+          <p class="book-note" data-i18n="bkNote">Free of charge · No obligation · Sun–Thu 9am–6pm</p>
+        </form>
+        <div class="book-success" id="book-success">
+          <div class="s-icon">✅</div>
+          <h4 data-i18n="sxTitle">Visit Requested!</h4>
+          <p data-i18n="sxBody">Our team will contact you within 24 hours to confirm your appointment.</p>
+          <p style="margin-top:10px;font-size:.7rem;color:var(--gold)"><span data-i18n="sxRef">Ref</span>: <span id="visit-ref"></span></p>
+        </div>
+      </div>
+
+      <div class="quick-contact">
+        <div class="q-chip">
+          <div class="ico">📞</div>
+          <p data-i18n="qcCall">Call Us</p>
+          <a href="tel:+96279055 0787">+962 79 055 0787</a>
+        </div>
+        <div class="q-chip">
+          <div class="ico">💬</div>
+          <p data-i18n="qcWA">WhatsApp</p>
+          <a href="https://wa.me/96279055 0787" target="_blank" data-i18n="qcChat">Chat Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- RELATED -->
+<div class="related-section">
+  <div class="fade-in">
+    <p class="sec-eye">Other Spaces</p>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:700;color:var(--off-white);">More <em style="font-style:italic;color:var(--gold-light);">Options</em></h2>
+    <div class="gold-line"></div>
+  </div>
+  <div class="related-grid fade-in" id="related-grid"></div>
+</div>
+
+<footer>
+  <div class="f-brand">ALRAYYAN GROUP</div>
+  <div class="f-copy">© 2025 Alrayyan Group. All rights reserved.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ── OFFICE DATA ──────────────────────────────────────────────────────────────
+// Standard amenity additions required on every office sub-page
+const STD_AMENITIES_EXTRA = {
+  en:[
+    '24/7 security for the building',
+    '10% extra on rent price for electricity, water, and tower cleaning',
+  ],
+  ar:[
+    'أمن على مدار الساعة للمبنى',
+    'إضافة 10% على سعر الإيجار للكهرباء والماء وتنظيف البرج',
+  ],
+};
+
+const offices = [
+  {
+    id:1, typeEn:'Executive Suites', typeAr:'أجنحة تنفيذية', price:'From JOD 3,500 / month', priceAr:'من 3,500 دينار / شهر',
+    img:'images/index-office-executive-suites.jpg',
+    specs:[
+      {label:{en:'Office Size',ar:'مساحة المكتب'},    value:{en:'25 – 80 m²',ar:'25 – 80 م²'}},
+      {label:{en:'Capacity',ar:'السعة'},               value:{en:'1 – 8 persons',ar:'1 – 8 أشخاص'}},
+      {label:{en:'Floors',ar:'الطوابق'},               value:{en:'3rd – 15th',ar:'3 – 15'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Monthly / Annual',ar:'شهري / سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'},       value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'8 Units Now',ar:'8 وحدات الآن'}},
+    ],
+    availText:{ en:'This space is available in: 3rd Floor 80m²', ar:'هذه المساحة متوفرة في: الطابق الثالث 80م²' },
+    description:{
+      en:`<p>Alrayyan's Executive Suites are the ultimate expression of corporate prestige — fully furnished private offices designed for the modern executive. Each suite features bespoke furniture, premium lighting, and floor-to-ceiling glass panels that flood the space with natural light and commanding city views.</p>
+      <p>Suites range from compact single-occupancy spaces to expansive eight-person offices, all within a dedicated secure corridor. Your suite comes with a personalised plaque at reception, and your team has access to all shared premium amenities on the same floor.</p>`,
+      ar:`<p>أجنحة الريان التنفيذية هي التعبير الأسمى عن الهيبة المؤسسية — مكاتب خاصة مجهزة بالكامل مصممة للقيادات التنفيذية الحديثة. يضم كل جناح أثاثاً مصمماً خصيصاً وإضاءة فاخرة وواجهات زجاجية ممتدة من الأرض إلى السقف تغمر المساحة بالضوء الطبيعي وتطل على المدينة.</p>
+      <p>تتراوح الأجنحة من مساحات فردية مدمجة إلى مكاتب واسعة تتسع لثمانية أشخاص، جميعها ضمن ممر آمن مخصص. يأتي جناحك مع لوحة شخصية عند الاستقبال، ويتمتع فريقك بالوصول إلى جميع المرافق المشتركة الفاخرة في نفس الطابق.</p>`,
+    },
+    amenities:{
+      en:[
+        'Personalised building directory listing',
+        'Complimentary 8 meeting room hours/month',
+        'Shared premium lounge & kitchen access',
+        'Underground parking — 2 spaces included',
+      ],
+      ar:[
+        'إدراج شخصي في دليل المبنى',
+        '8 ساعات قاعة اجتماعات مجانية / شهر',
+        'وصول لصالة وبار فاخرين مشتركين',
+        'موقف تحت الأرض — مكانان ضمن السعر',
+      ],
+    },
+  },
+  {
+    id:2, typeEn:'Co-Working Spaces', typeAr:'مساحات العمل المشترك', price:'From JOD 800 / month', priceAr:'من 800 دينار / شهر',
+    img:'images/index-office-coworking.jpg',
+    specs:[
+      {label:{en:'Desk Options',ar:'خيارات المكاتب'},  value:{en:'Hot / Dedicated',ar:'مرن / مخصص'}},
+      {label:{en:'Capacity',ar:'السعة'},               value:{en:'1 – 300 persons',ar:'1 – 300 شخص'}},
+      {label:{en:'Floors',ar:'الطوابق'},               value:{en:'2nd Floor',ar:'الطابق الثاني'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Daily / Monthly',ar:'يومي / شهري'}},
+      {label:{en:'Open Hours',ar:'ساعات العمل'},       value:{en:'7am – 11pm',ar:'7ص – 11م'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'24 Desks Now',ar:'24 مكتب الآن'}},
+    ],
+    availText:{ en:'This space is available in: 5th Floor 80m²', ar:'هذه المساحة متوفرة في: الطابق الخامس 80م²' },
+    description:{
+      en:`<p>The Alrayyan Co-Working floor is a dynamic, inspiring environment where ambition is the common language. Spread across an open, beautifully designed 1,200 m² floor, it offers hot desks, dedicated desks, and quiet focus pods — all within a vibrant professional community.</p>
+      <p>Members gain access to one of Amman's most connected workspaces, a fully-stocked kitchen, barista coffee service, and a rooftop terrace for breaks and informal meetings.</p>`,
+      ar:`<p>طابق العمل المشترك في الريان بيئة ديناميكية ملهمة حيث الطموح هو اللغة المشتركة. ممتد على مساحة 1200 م² بتصميم مفتوح أنيق، يوفر مكاتب مرنة ومكاتب مخصصة وقمرات تركيز هادئة — جميعها ضمن مجتمع مهني نابض بالحياة.</p>
+      <p>يحصل الأعضاء على وصول إلى واحدة من أكثر مساحات العمل اتصالاً في عمّان، ومطبخ كامل التجهيز، وخدمة قهوة من الباريستا، وتراس على السطح للاستراحات والاجتماعات غير الرسمية.</p>`,
+    },
+    amenities:{
+      en:[
+        'Hot desks, dedicated desks & quiet pods',
+        'Rooftop terrace & outdoor workspace',
+        'Locker storage for personal items',
+        'Weekly community events & networking',
+        'Access to all building meeting rooms',
+        'Fully stocked kitchen & microwave',
+        'Cycle storage & showers available',
+      ],
+      ar:[
+        'مكاتب مرنة ومخصصة وقمرات هادئة',
+        'تراس على السطح ومساحة عمل خارجية',
+        'خزائن لحفظ الأغراض الشخصية',
+        'فعاليات أسبوعية للمجتمع والتواصل',
+        'الوصول إلى جميع قاعات اجتماعات المبنى',
+        'مطبخ كامل التجهيز وميكروويف',
+        'موقف دراجات ودش متاحان',
+      ],
+    },
+  },
+  {
+    id:3, typeEn:'Meeting Rooms', typeAr:'قاعات الاجتماعات', price:'From JOD 250 / hour', priceAr:'من 250 دينار / ساعة',
+    img:'images/index-office-meeting-rooms.jpg',
+    specs:[
+      {label:{en:'Room Sizes',ar:'أحجام القاعات'},     value:{en:'4 – 40 persons',ar:'4 – 40 شخص'}},
+      {label:{en:'Total Rooms',ar:'إجمالي القاعات'},   value:{en:'12 Rooms',ar:'12 قاعة'}},
+      {label:{en:'Booking',ar:'الحجز'},                value:{en:'Hourly / Daily',ar:'ساعي / يومي'}},
+      {label:{en:'AV Equipment',ar:'المعدات'},         value:{en:'Full HD / 4K',ar:'Full HD / 4K'}},
+      {label:{en:'Setup',ar:'التجهيز'},                value:{en:'Theatre / Board',ar:'مسرحي / اجتماعات'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'6 Rooms Today',ar:'6 قاعات اليوم'}},
+    ],
+    availText:{ en:'This space is available in: 6th Floor 400m²', ar:'هذه المساحة متوفرة في: الطابق السادس 400م²' },
+    description:{
+      en:`<p>Alrayyan's meeting rooms are designed to impress — whether hosting a client pitch, an all-hands, or a high-stakes negotiation. Each room is equipped with enterprise-grade AV, motorised blinds, and acoustic-treated walls for privacy and focus.</p>
+      <p>Rooms seat 4 to 40 guests and can be configured for boardroom, theatre, U-shape, or classroom layouts. Same-day booking is available through our online portal or reception.</p>`,
+      ar:`<p>قاعات اجتماعات الريان مصممة لترك انطباع قوي — سواء لعرض تقديمي للعميل، أو اجتماع عام، أو مفاوضة حاسمة. كل قاعة مجهزة بمعدات صوت وصورة من الدرجة المؤسسية، وستائر كهربائية، وجدران معالجة صوتياً للخصوصية والتركيز.</p>
+      <p>تتسع القاعات من 4 إلى 40 ضيفاً ويمكن تهيئتها بتخطيط اجتماعات أو مسرحي أو حرف U أو قاعة دراسية. الحجز في نفس اليوم متاح عبر بوابتنا الإلكترونية أو الاستقبال.</p>`,
+    },
+    amenities:{
+      en:[
+        '4K UHD displays & wireless screen sharing',
+        'High-quality video conferencing (Zoom/Teams ready)',
+        'Whiteboard & flip chart stands',
+        'Acoustic-treated walls — full privacy',
+        'Catering service available on request',
+        'Dedicated AV technician on standby',
+        'Natural lighting with motorised blinds',
+        'Multiple layout configurations',
+      ],
+      ar:[
+        'شاشات 4K UHD ومشاركة شاشة لاسلكية',
+        'مؤتمرات فيديو عالية الجودة (Zoom/Teams)',
+        'سبورة بيضاء وحوامل للشارت',
+        'جدران معالجة صوتياً — خصوصية كاملة',
+        'خدمة ضيافة متاحة عند الطلب',
+        'فني صوت وصورة مخصص جاهز',
+        'إضاءة طبيعية مع ستائر كهربائية',
+        'تهيئات تخطيط متعددة',
+      ],
+    },
+  },
+  {
+    id:4, typeEn:'Virtual Offices', typeAr:'المكاتب الافتراضية', price:'From JOD 400 / month', priceAr:'من 400 دينار / شهر',
+    img:'images/index-office-virtual.jpg',
+    specs:[
+      {label:{en:'Packages',ar:'الباقات'},             value:{en:'3 Tiers',ar:'3 مستويات'}},
+      {label:{en:'Address',ar:'العنوان'},              value:{en:'Prime Business District',ar:'منطقة أعمال مميزة'}},
+      {label:{en:'Contract',ar:'العقد'},               value:{en:'Monthly / Annual',ar:'شهري / سنوي'}},
+      {label:{en:'Phone Line',ar:'خط هاتف'},           value:{en:'Dedicated Number',ar:'رقم مخصص'}},
+      {label:{en:'Mail Handling',ar:'البريد'},         value:{en:'Included',ar:'مشمول'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'12 Packages',ar:'12 باقة'}},
+    ],
+    availText:{ en:'This space is available in: 9th Floor Indoor 100m²', ar:'هذه المساحة متوفرة في: الطابق التاسع الداخلي 100م²' },
+    description:{
+      en:`<p>Establish a premium Amman business presence without the overhead of a physical office. The Alrayyan Virtual Office gives your company a prestigious address in one of the Kingdom's most recognised business towers — the perfect foundation for any growing company.</p>
+      <p>From mail collection and forwarding to dedicated phone answering in your company name, our packages flex to meet your exact needs.</p>`,
+      ar:`<p>أنشئ حضوراً تجارياً مميزاً في عمّان دون تكاليف المكتب الفعلي. يمنح المكتب الافتراضي من الريان شركتك عنواناً مرموقاً في أحد أكثر أبراج الأعمال شهرةً في المملكة — أساس مثالي لأي شركة نامية.</p>
+      <p>من استلام البريد وإعادة توجيهه إلى الرد على الهاتف باسم شركتك، تتكيف باقاتنا لتلبية احتياجاتك بدقة.</p>`,
+    },
+    amenities:{
+      en:[
+        'Prestigious registered business address',
+        'Mail receipt, scanning & forwarding',
+        'Dedicated local phone number',
+        'Professional call answering in your company name',
+        'Company name on building directory',
+        'Meeting room access at preferential rates',
+        'Digital mail portal — access from anywhere',
+        'Certificate of address for licensing',
+        'Flexible monthly or annual contracts',
+      ],
+      ar:[
+        'عنوان تجاري مسجل ومرموق',
+        'استلام البريد ومسحه وإعادة توجيهه',
+        'رقم هاتف محلي مخصص',
+        'رد احترافي على المكالمات باسم شركتك',
+        'اسم الشركة في دليل المبنى',
+        'وصول لقاعات الاجتماعات بأسعار تفضيلية',
+        'بوابة بريد رقمية — وصول من أي مكان',
+        'شهادة عنوان للترخيص',
+        'عقود مرنة شهرية أو سنوية',
+      ],
+    },
+  },
+  {
+    id:5, typeEn:'Full Floor Offices', typeAr:'مكاتب طابق كامل', price:'Custom Pricing', priceAr:'تسعير مخصص',
+    img:'images/index-office-full-floor.jpg',
+    specs:[
+      {label:{en:'Floor Size',ar:'مساحة الطابق'},      value:{en:'400 m² – 1,000 m²',ar:'400 م² – 1000 م²'}},
+      {label:{en:'Capacity',ar:'السعة'},               value:{en:'40 – 200 persons',ar:'40 – 200 شخص'}},
+      {label:{en:'Available',ar:'المتاح'},             value:{en:'3 Floors',ar:'3 طوابق'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Annual / 3-Year',ar:'سنوي / 3 سنوات'}},
+      {label:{en:'Fit-Out',ar:'التشطيب'},              value:{en:'Turnkey or Shell',ar:'جاهز أو هيكلي'}},
+      {label:{en:'Handover',ar:'التسليم'},             value:{en:'60 days',ar:'60 يوماً'}},
+    ],
+    availText:{ en:'This space is available in: 4th Floor 400m², 6th Floor 400m², 7th Floor 400m²', ar:'هذه المساحة متوفرة في: الطابق الرابع 400م²، الطابق السادس 400م²، الطابق السابع 400م²' },
+    description:{
+      en:`<p>For enterprises that demand space, privacy, and identity — a full floor at Alrayyan Tower is the definitive statement. Three entire floors are currently available (4th, 6th, 7th), each 400 m², offered as shell-and-core or in a range of turnkey fit-out packages designed to your brand identity.</p>
+      <p>Full floors feature a dedicated lobby with your company branding, exclusive elevator access, and complete freedom to configure the layout. Our in-house design team manages the full process from concept to move-in.</p>`,
+      ar:`<p>للشركات التي تطلب المساحة والخصوصية والهوية — الطابق الكامل في برج الريان هو البيان النهائي. ثلاثة طوابق كاملة متاحة حالياً (الرابع، السادس، السابع)، كل منها 400 م²، معروضة كهيكلية أو ضمن باقات تشطيب جاهزة مصممة وفق هويتك.</p>
+      <p>تتميز الطوابق الكاملة بردهة مخصصة بعلامتك التجارية، ووصول حصري للمصعد، وحرية كاملة في تهيئة التخطيط. يدير فريق التصميم الداخلي لدينا العملية الكاملة من الفكرة إلى الانتقال.</p>`,
+    },
+    amenities:{
+      en:[
+        'Dedicated floor lobby with custom branding',
+        'Exclusive elevator and staircase access',
+        'Full M&E infrastructure in place',
+        'Turnkey fit-out packages available',
+        'In-house design and fit-out team',
+        'Up to 20 underground parking spaces',
+        'Dedicated building management contact',
+        'Flexible internal layout — open or cellular',
+        'Floor-to-ceiling glazing — panoramic views',
+        'VIP client entrance on ground floor',
+      ],
+      ar:[
+        'ردهة طابق مخصصة بعلامتك التجارية',
+        'وصول حصري للمصعد والدرج',
+        'بنية كهربائية وميكانيكية كاملة',
+        'باقات تشطيب جاهزة متاحة',
+        'فريق تصميم وتشطيب داخلي',
+        'حتى 20 موقف سيارات تحت الأرض',
+        'جهة اتصال مخصصة لإدارة المبنى',
+        'تخطيط داخلي مرن — مفتوح أو خلوي',
+        'زجاج من الأرض إلى السقف — إطلالات بانورامية',
+        'مدخل كبار الزوار في الطابق الأرضي',
+      ],
+    },
+  },
+  {
+    id:6, typeEn:'Smart Offices', typeAr:'المكاتب الذكية', price:'From JOD 5,000 / month', priceAr:'من 5,000 دينار / شهر',
+    img:'images/index-office-smart.jpg',
+    specs:[
+      {label:{en:'Office Size',ar:'مساحة المكتب'},     value:{en:'30 – 120 m²',ar:'30 – 120 م²'}},
+      {label:{en:'Smart Features',ar:'ميزات ذكية'},    value:{en:'Full IoT Suite',ar:'منظومة IoT كاملة'}},
+      {label:{en:'Floors',ar:'الطوابق'},               value:{en:'6th – 9th',ar:'6 – 9'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Monthly / Annual',ar:'شهري / سنوي'}},
+      {label:{en:'Setup',ar:'التجهيز'},                value:{en:'3 Days',ar:'3 أيام'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'4 Units Now',ar:'4 وحدات الآن'}},
+    ],
+    availText:{ en:'This space is available in: 9th Floor Outdoor 300m²', ar:'هذه المساحة متوفرة في: الطابق التاسع الخارجي 300م²' },
+    description:{
+      en:`<p>Alrayyan's Smart Offices represent the future of work — fully integrated spaces where technology works for you. Each office is equipped with a complete IoT management suite: automated lighting that adjusts to occupancy and daylight, smart climate control, biometric access, and an AI-powered air quality system.</p>
+      <p>Control every aspect of your environment from a single dashboard — or let the system learn your preferences and manage itself. Energy consumption is monitored and optimised in real time, resulting in significantly lower running costs.</p>`,
+      ar:`<p>المكاتب الذكية من الريان تمثل مستقبل العمل — مساحات متكاملة بالكامل حيث تعمل التكنولوجيا لصالحك. كل مكتب مجهز بمجموعة إدارة IoT كاملة: إضاءة آلية تتكيف مع الإشغال وضوء النهار، وتحكم ذكي بالمناخ، ووصول بيومتري، ونظام جودة هواء مدعوم بالذكاء الاصطناعي.</p>
+      <p>تحكم بكل جانب من بيئتك من لوحة واحدة — أو دع النظام يتعلم تفضيلاتك ويدير نفسه. استهلاك الطاقة يُراقب ويُحسَّن في الوقت الفعلي، مما يؤدي إلى تكاليف تشغيل أقل بكثير.</p>`,
+    },
+    amenities:{
+      en:[
+        'Full IoT control panel — lighting, climate, blinds',
+        'Biometric entry (fingerprint + face ID)',
+        'AI-powered air quality & temperature management',
+        'Automated occupancy detection & energy saving',
+        'Integrated noise-masking acoustic system',
+        'Smart coffee machine & pantry',
+        '10 Gbps dedicated fibre internet',
+        '4K display screens & wireless conferencing',
+        'Remote office management app',
+        'Predictive maintenance — zero downtime',
+        'Electric vehicle charging point included',
+      ],
+      ar:[
+        'لوحة تحكم IoT كاملة — إضاءة، مناخ، ستائر',
+        'دخول بيومتري (بصمة + التعرف على الوجه)',
+        'إدارة جودة الهواء والحرارة بالذكاء الاصطناعي',
+        'كشف الإشغال الآلي وتوفير الطاقة',
+        'نظام صوتي مدمج لإخفاء الضوضاء',
+        'ماكينة قهوة ذكية ومطبخ',
+        'إنترنت فايبر مخصص 10 جيجابت',
+        'شاشات 4K ومؤتمرات لاسلكية',
+        'تطبيق إدارة المكتب عن بُعد',
+        'صيانة تنبؤية — صفر توقف',
+        'نقطة شحن مركبات كهربائية مشمولة',
+      ],
+    },
+  },
+];
+
+// ── LOAD PAGE ────────────────────────────────────────────────────────────────
+const params = new URLSearchParams(window.location.search);
+const offId  = parseInt(params.get('id')) || 1;
+const o      = offices.find(x => x.id === offId) || offices[0];
+
+document.getElementById('hero-img').src = o.img;
+document.getElementById('hero-img').alt = o.typeEn;
+document.getElementById('bf-office').value = o.typeEn;
+document.getElementById('bf-date').min = new Date().toISOString().split('T')[0];
+
+function renderOffice(L){
+  document.title = o['type'+(L==='ar'?'Ar':'En')] + ' – Alrayyan Group';
+  document.getElementById('bc-name').textContent  = o['type'+(L==='ar'?'Ar':'En')];
+  document.getElementById('hero-eyebrow').textContent = (L==='ar'?'نوع المكتب':'Office Type');
+  document.getElementById('hero-title').textContent   = o['type'+(L==='ar'?'Ar':'En')];
+  document.getElementById('hero-price').textContent   = (L==='ar'? o.priceAr : o.price);
+
+  // Specs
+  const specsEl = document.getElementById('specs-grid');
+  specsEl.innerHTML = '';
+  o.specs.forEach(s => {
+    const lbl = typeof s.label === 'object' ? s.label[L] : s.label;
+    const val = typeof s.value === 'object' ? s.value[L] : s.value;
+    specsEl.innerHTML += `<div class="spec-item"><div class="spec-label">${lbl}</div><div class="spec-value sm">${val}</div></div>`;
+  });
+
+  // Availability (plain text)
+  document.getElementById('avail-text').textContent = o.availText[L];
+
+  // Description (Space Overview)
+  document.getElementById('detail-desc').innerHTML = o.description[L];
+
+  // Amenities (filtered + STD additions)
+  const amEl = document.getElementById('amenities-grid');
+  amEl.innerHTML = '';
+  const list = [...(o.amenities[L]||[]), ...STD_AMENITIES_EXTRA[L]];
+  list.forEach(a => { amEl.innerHTML += `<div class="amenity-item">${a}</div>`; });
+}
+
+// Related (other 3 offices)
+const relEl = document.getElementById('related-grid');
+offices.filter(x => x.id !== o.id).slice(0, 3).forEach(r => {
+  relEl.innerHTML += `
+    <div class="rel-card" onclick="location.href='office-detail.html?id=${r.id}'">
+      <img src="${r.img}" alt="${r.typeEn}" loading="lazy"/>
+      <div class="rel-card-body">
+        <div class="rel-name">${r.typeEn}</div>
+        <div class="rel-price">${r.price}</div>
+      </div>
+    </div>`;
+});
+
+// ── BOOK VISIT FORM ──────────────────────────────────────────────────────────
+function submitVisit(e) {
+  e.preventDefault();
+  const ref = 'ARG-' + Date.now().toString(36).toUpperCase().slice(-6);
+  document.getElementById('visit-ref').textContent = ref;
+  document.getElementById('book-form').style.display = 'none';
+  document.getElementById('book-success').style.display = 'block';
+}
+
+// ── SCROLL & FADE ────────────────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }});
+}, {threshold:0.1});
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+// ── LANGUAGE SWITCHER ────────────────────────────────────────────────────────
+const PAGE_I18N = {
+  en: {
+    navBack:'← All Offices',
+    ecSpecs:'Specifications', ttSpaceA:'Space', ttSpaceB:'Details',
+    ecAvail:'Current Availability', ttAvailA:'Available', ttAvailB:'Floors & Units',
+    thFloor:'Floor / Unit', thSize:'Size', thPrice:'Price', thStatus:'Status',
+    ecAbout:'About This Space', ttOvA:'Space', ttOvB:'Overview',
+    ecIncl:"What's Included", ttAmA:'Amenities &', ttAmB:'Features',
+    ecLayout:'Layout', ttPlA:'Floor', ttPlB:'Plan',
+    planText:'Detailed floor plans available on request',
+    planNote:'Contact our team or book a visit to view the full layout',
+    ecLoc:'Location', ttFuA:'Find', ttFuB:'Us',
+    locAddr:'Amman, Jordan', locClick:'Click to open in Google Maps →',
+    ecSched:'Schedule a Visit', ttBkA:'Book a', ttBkB:'Site Visit',
+    bkHead:'Request a Visit', bkSub:'Our team confirms within 24 hours',
+    lblFname:'First Name *', lblLname:'Last Name *', lblCompany:'Company',
+    lblPhone:'Phone / WhatsApp *', lblDate:'Preferred Date *', lblTime:'Preferred Time',
+    lblNotes:'Notes', anyTime:'Any time',
+    btnConfirm:'Confirm Visit →', bkNote:'Free of charge · No obligation · Sun–Thu 9am–6pm',
+    sxTitle:'Visit Requested!', sxBody:'Our team will contact you within 24 hours to confirm your appointment.', sxRef:'Ref',
+    qcCall:'Call Us', qcWA:'WhatsApp', qcChat:'Chat Now',
+  },
+  ar: {
+    navBack:'← كل المكاتب',
+    ecSpecs:'المواصفات', ttSpaceA:'تفاصيل', ttSpaceB:'المساحة',
+    ecAvail:'التوافر الحالي', ttAvailA:'الطوابق', ttAvailB:'والوحدات المتاحة',
+    thFloor:'الطابق / الوحدة', thSize:'المساحة', thPrice:'السعر', thStatus:'الحالة',
+    ecAbout:'عن هذه المساحة', ttOvA:'نظرة', ttOvB:'عامة',
+    ecIncl:'ما هو مُدرج', ttAmA:'المرافق', ttAmB:'والميزات',
+    ecLayout:'التخطيط', ttPlA:'مخطط', ttPlB:'الطابق',
+    planText:'مخططات الطوابق المفصلة متاحة عند الطلب',
+    planNote:'اتصل بفريقنا أو احجز زيارة لعرض التخطيط الكامل',
+    ecLoc:'الموقع', ttFuA:'اعثر', ttFuB:'علينا',
+    locAddr:'عمّان، الأردن', locClick:'انقر لفتح خرائط جوجل →',
+    ecSched:'جدولة زيارة', ttBkA:'احجز', ttBkB:'زيارة ميدانية',
+    bkHead:'اطلب زيارة', bkSub:'يؤكد فريقنا خلال 24 ساعة',
+    lblFname:'الاسم الأول *', lblLname:'اسم العائلة *', lblCompany:'الشركة',
+    lblPhone:'الهاتف / واتساب *', lblDate:'التاريخ المفضل *', lblTime:'الوقت المفضل',
+    lblNotes:'ملاحظات', anyTime:'أي وقت',
+    btnConfirm:'تأكيد الزيارة →', bkNote:'مجاناً · بدون التزام · أحد–خميس 9ص–6م',
+    sxTitle:'تم طلب الزيارة!', sxBody:'سيتصل فريقنا بك خلال 24 ساعة لتأكيد موعدك.', sxRef:'المرجع',
+    qcCall:'اتصل بنا', qcWA:'واتساب', qcChat:'محادثة',
+  }
+};
+function setPageLang(lang) {
+  localStorage.setItem('al_lang', lang);
+  const html = document.documentElement;
+  html.lang = lang === 'ar' ? 'ar' : 'en';
+  html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.trim() === (lang === 'ar' ? 'AR' : 'EN'));
+  });
+  const t = PAGE_I18N[lang] || PAGE_I18N.en;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (t[k]) el.textContent = t[k];
+  });
+  renderOffice(lang);
+}
+(function(){
+  const saved = localStorage.getItem('al_lang') || 'en';
+  setPageLang(saved);
+})();
+</script>
+</body>
+</html>

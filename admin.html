@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel – Alrayyan Group</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --black:#050505;--dark:#0c0a06;--gold:#b87333;--gold-light:#d4976a;
+      --gold-dim:#8b5e34;--off-white:#f5f0e8;--muted:#888;
+      --card-bg:rgba(255,255,255,0.03);--border:rgba(184,115,51,0.18);
+    }
+    body{font-family:'Montserrat',sans-serif;background:#070707;color:var(--off-white);min-height:100vh;}
+    a{text-decoration:none;color:inherit;}
+    ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:#050505;}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+
+    /* LOGIN SCREEN */
+    #login-screen{
+      position:fixed;inset:0;z-index:9999;background:#050505;
+      display:flex;align-items:center;justify-content:center;
+    }
+    #login-screen.hidden{display:none;}
+    .login-box{
+      background:#0c0a06;border:1px solid var(--border);border-radius:8px;
+      padding:48px 40px;width:100%;max-width:420px;
+    }
+    .login-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;letter-spacing:3px;
+      background:linear-gradient(135deg,var(--gold-dim),var(--gold),var(--gold-light));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      margin-bottom:4px;text-align:center;}
+    .login-sub{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:32px;}
+    .adm-label{display:block;font-size:.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+    .adm-input{
+      width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(184,115,51,0.2);
+      color:var(--off-white);font-family:'Montserrat',sans-serif;font-size:.85rem;
+      padding:11px 14px;border-radius:4px;outline:none;transition:.3s;margin-bottom:14px;
+    }
+    .adm-input:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(184,115,51,0.15);}
+    .adm-input::placeholder{color:rgba(136,136,136,0.4);}
+    .btn-login{
+      width:100%;background:linear-gradient(135deg,var(--gold-dim),var(--gold),var(--gold-light));
+      color:#050505;font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:700;
+      letter-spacing:2px;text-transform:uppercase;padding:13px;border:none;border-radius:4px;cursor:pointer;transition:.3s;
+    }
+    .btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(184,115,51,0.4);}
+    .login-error{display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);
+      color:#f87171;font-size:.75rem;padding:10px 14px;border-radius:4px;margin-bottom:14px;text-align:center;}
+    .login-error.show{display:block;}
+    .login-hint{font-size:.62rem;color:rgba(136,136,136,0.5);text-align:center;margin-top:16px;}
+
+    /* ADMIN LAYOUT */
+    #admin-screen{display:none;}
+    #admin-screen.show{display:block;}
+
+    /* SIDEBAR */
+    .adm-sidebar{
+      position:fixed;top:0;left:0;width:240px;height:100vh;
+      background:#080604;border-right:1px solid var(--border);
+      display:flex;flex-direction:column;z-index:100;
+      transition:.3s;
+    }
+    .adm-sidebar-logo{padding:22px 20px;border-bottom:1px solid var(--border);}
+    .adm-sidebar-logo .name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;
+      background:linear-gradient(135deg,var(--gold-dim),var(--gold));-webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;}
+    .adm-sidebar-logo .tag{font-size:.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+    .adm-nav{flex:1;padding:20px 0;overflow-y:auto;}
+    .adm-nav-item{
+      display:flex;align-items:center;gap:10px;
+      padding:10px 22px;font-size:.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+      color:var(--muted);cursor:pointer;transition:.25s;border-left:2px solid transparent;
+    }
+    .adm-nav-item:hover{color:var(--gold-light);background:rgba(184,115,51,0.05);}
+    .adm-nav-item.active{color:var(--gold-light);background:rgba(184,115,51,0.08);border-left-color:var(--gold);}
+    .adm-nav-item .ico{font-size:1rem;min-width:20px;}
+    .adm-sidebar-foot{padding:16px 20px;border-top:1px solid var(--border);}
+    .adm-logout-btn{display:flex;align-items:center;gap:8px;font-size:.68rem;font-weight:600;
+      letter-spacing:1px;text-transform:uppercase;color:var(--muted);cursor:pointer;background:none;
+      border:none;padding:0;transition:.25s;}
+    .adm-logout-btn:hover{color:#f87171;}
+
+    /* MAIN */
+    .adm-main{margin-left:240px;min-height:100vh;}
+    .adm-topbar{
+      position:sticky;top:0;z-index:50;background:rgba(7,7,7,0.97);backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);padding:14px 28px;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .adm-page-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--off-white);}
+    .adm-topbar-right{display:flex;align-items:center;gap:12px;}
+    .adm-admin-badge{font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;
+      color:var(--gold);background:rgba(184,115,51,0.1);border:1px solid rgba(184,115,51,0.2);
+      padding:4px 10px;border-radius:2px;}
+    .adm-content{padding:28px;}
+
+    /* STAT CARDS */
+    .adm-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+    .adm-stat-card{background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:20px 20px;}
+    .adm-stat-card .s-num{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;
+      background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;background-clip:text;}
+    .adm-stat-card .s-lbl{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+    .adm-stat-card .s-change{font-size:.65rem;color:#4ade80;margin-top:6px;}
+
+    /* PANELS */
+    .adm-panel{display:none;}
+    .adm-panel.active{display:block;}
+
+    /* TABLES */
+    .adm-card{background:var(--card-bg);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:24px;}
+    .adm-card-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+    .adm-card-head h5{font-size:.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+    .adm-table{width:100%;border-collapse:collapse;font-size:.78rem;}
+    .adm-table th{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+      padding:10px 16px;text-align:left;border-bottom:1px solid var(--border);font-weight:600;}
+    .adm-table td{padding:12px 16px;border-bottom:1px solid rgba(184,115,51,0.06);color:var(--off-white);vertical-align:middle;}
+    .adm-table tr:hover td{background:rgba(184,115,51,0.03);}
+    .adm-table tr:last-child td{border-bottom:none;}
+
+    /* STATUS BADGES */
+    .status-badge{display:inline-flex;align-items:center;gap:5px;font-size:.58rem;font-weight:700;
+      letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px;}
+    .status-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
+    .status-badge.available{color:#4ade80;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);}
+    .status-badge.low{color:#facc15;background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.2);}
+    .status-badge.occupied{color:#f87171;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.2);}
+
+    /* ACTION BUTTONS */
+    .btn-sm-gold{font-size:.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+      color:var(--black);background:linear-gradient(135deg,var(--gold-dim),var(--gold));
+      border:none;padding:5px 12px;border-radius:2px;cursor:pointer;transition:.2s;}
+    .btn-sm-gold:hover{opacity:.85;}
+    .btn-sm-ghost{font-size:.6rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+      color:var(--gold);background:none;border:1px solid rgba(184,115,51,0.3);
+      padding:4px 10px;border-radius:2px;cursor:pointer;transition:.2s;}
+    .btn-sm-ghost:hover{background:rgba(184,115,51,0.08);}
+    .btn-sm-danger{font-size:.6rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+      color:#f87171;background:none;border:1px solid rgba(248,113,113,0.3);
+      padding:4px 10px;border-radius:2px;cursor:pointer;transition:.2s;}
+    .btn-sm-danger:hover{background:rgba(248,113,113,0.08);}
+
+    /* ADD/EDIT MODAL */
+    .adm-modal-overlay{display:none;position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,0.85);
+      align-items:center;justify-content:center;padding:20px;}
+    .adm-modal-overlay.open{display:flex;}
+    .adm-modal{background:#0c0a06;border:1px solid var(--border);border-radius:6px;
+      width:100%;max-width:600px;max-height:90vh;overflow-y:auto;position:relative;}
+    .adm-modal-head{padding:20px 24px;border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;}
+    .adm-modal-head h4{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--gold-light);}
+    .adm-modal-close{background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;}
+    .adm-modal-body{padding:24px;}
+    .adm-modal-foot{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
+
+    /* CONFIRM MODAL */
+    .confirm-modal{background:#0c0a06;border:1px solid rgba(248,113,113,0.3);border-radius:6px;
+      width:100%;max-width:380px;padding:32px 28px;text-align:center;}
+    .confirm-modal h4{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:#f87171;margin-bottom:10px;}
+    .confirm-modal p{font-size:.8rem;color:var(--muted);margin-bottom:22px;line-height:1.6;}
+
+    /* FORM ELEMENTS */
+    .adm-form-group{margin-bottom:16px;}
+    .adm-form-label{display:block;font-size:.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+    .adm-form-control{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(184,115,51,0.2);
+      color:var(--off-white);font-family:'Montserrat',sans-serif;font-size:.82rem;
+      padding:10px 13px;border-radius:4px;outline:none;transition:.3s;}
+    .adm-form-control:focus{border-color:var(--gold);}
+    .adm-form-control::placeholder{color:rgba(136,136,136,0.4);}
+    .adm-form-control option{background:#1a1200;}
+    textarea.adm-form-control{resize:vertical;min-height:80px;}
+    .adm-form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+    /* TOAST */
+    .adm-toast{position:fixed;bottom:24px;right:24px;z-index:9999;
+      background:#0c0a06;border:1px solid rgba(184,115,51,0.3);color:var(--off-white);
+      font-size:.72rem;padding:12px 20px;border-radius:4px;
+      opacity:0;transform:translateY(10px);transition:.3s;pointer-events:none;}
+    .adm-toast.show{opacity:1;transform:translateY(0);}
+    .adm-toast.success{border-color:rgba(74,222,128,0.4);color:#4ade80;}
+    .adm-toast.error{border-color:rgba(248,113,113,0.4);color:#f87171;}
+
+    /* BOOKINGS PANEL */
+    .booking-status-badge{display:inline-flex;align-items:center;gap:4px;font-size:.58rem;font-weight:700;
+      letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px;}
+    .booking-status-badge.pending{color:#facc15;background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.2);}
+    .booking-status-badge.confirmed{color:#4ade80;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);}
+    .booking-status-badge.cancelled{color:#f87171;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.2);}
+
+    /* RESPONSIVE */
+    @media(max-width:992px){
+      .adm-sidebar{width:200px;}
+      .adm-main{margin-left:200px;}
+      .adm-stat-grid{grid-template-columns:repeat(2,1fr);}
+    }
+    @media(max-width:768px){
+      .adm-sidebar{transform:translateX(-100%);position:fixed;}
+      .adm-sidebar.mobile-open{transform:translateX(0);}
+      .adm-main{margin-left:0;}
+      .adm-stat-grid{grid-template-columns:1fr 1fr;}
+      .adm-form-row{grid-template-columns:1fr;}
+    }
+    @media(max-width:480px){
+      .adm-stat-grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ====== LOGIN SCREEN ====== -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">ALRAYYAN GROUP</div>
+    <div class="login-sub">Admin Panel · Secure Access</div>
+    <div class="login-error" id="login-error">Invalid credentials. Please try again.</div>
+    <label class="adm-label" for="login-user">Username</label>
+    <input class="adm-input" type="text" id="login-user" placeholder="admin" autocomplete="username"/>
+    <label class="adm-label" for="login-pass">Password</label>
+    <input class="adm-input" type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="btn-login" onclick="doLogin()">Sign In →</button>
+    <p class="login-hint">Restricted access. Unauthorised entry is prohibited.</p>
+  </div>
+</div>
+
+<!-- ====== ADMIN SCREEN ====== -->
+<div id="admin-screen">
+
+  <!-- SIDEBAR -->
+  <div class="adm-sidebar" id="adm-sidebar">
+    <div class="adm-sidebar-logo">
+      <div class="name">ALRAYYAN</div>
+      <div class="tag">Admin Dashboard</div>
+    </div>
+    <nav class="adm-nav">
+      <div class="adm-nav-item active" onclick="showPanel('dashboard',this)"><span class="ico">📊</span> Dashboard</div>
+      <div class="adm-nav-item" onclick="showPanel('offices',this)"><span class="ico">🏢</span> Offices</div>
+      <div class="adm-nav-item" onclick="showPanel('floors',this)"><span class="ico">🏗️</span> Floor Availability</div>
+      <div class="adm-nav-item" onclick="showPanel('bookings',this)"><span class="ico">📅</span> Visit Bookings</div>
+      <div class="adm-nav-item" onclick="showPanel('businesses',this)"><span class="ico">🌐</span> Businesses</div>
+      <div class="adm-nav-item" onclick="showPanel('floorDetails',this)"><span class="ico">🏙️</span> Floor Details</div>
+      <div class="adm-nav-item" onclick="showPanel('lands',this)"><span class="ico">🗺️</span> Land Listings</div>
+      <div class="adm-nav-item" onclick="showPanel('products',this)"><span class="ico">👗</span> Fashion Products</div>
+      <div class="adm-nav-item" onclick="showPanel('siteContent',this)"><span class="ico">📝</span> Site Content</div>
+      <div class="adm-nav-item" onclick="window.open('index.html','_blank')"><span class="ico">🔗</span> View Site</div>
+    </nav>
+    <div class="adm-sidebar-foot">
+      <button class="adm-logout-btn" onclick="doLogout()">
+        <span>⏏</span> Sign Out
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="adm-main">
+    <div class="adm-topbar">
+      <div class="adm-page-title" id="adm-page-title">Dashboard</div>
+      <div class="adm-topbar-right">
+        <span class="adm-admin-badge" id="adm-user-badge">Admin</span>
+        <button class="btn-sm-ghost" onclick="toggleMobileSidebar()">☰ Menu</button>
+      </div>
+    </div>
+
+    <div class="adm-content">
+
+      <!-- ── DASHBOARD ── -->
+      <div class="adm-panel active" id="panel-dashboard">
+        <div class="adm-stat-grid">
+          <div class="adm-stat-card"><div class="s-num" id="st-total">6</div><div class="s-lbl">Office Types</div><div class="s-change">↑ All managed</div></div>
+          <div class="adm-stat-card"><div class="s-num" id="st-avail">56</div><div class="s-lbl">Total Available Units</div><div class="s-change">↑ Updated live</div></div>
+          <div class="adm-stat-card"><div class="s-num" id="st-bookings">0</div><div class="s-lbl">Pending Bookings</div><div class="s-change">Via website form</div></div>
+          <div class="adm-stat-card"><div class="s-num" id="st-biz">3</div><div class="s-lbl">Active Businesses</div><div class="s-change">Fashion · Arts · Land</div></div>
+        </div>
+
+        <div class="adm-card">
+          <div class="adm-card-head">
+            <h5>Quick Overview — Office Availability</h5>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="adm-table" id="dash-overview-table"></table>
+          </div>
+        </div>
+
+        <div class="adm-card">
+          <div class="adm-card-head"><h5>Recent Visit Bookings</h5></div>
+          <div style="padding:20px;color:var(--muted);font-size:.8rem;text-align:center;" id="dash-bookings-preview">
+            No bookings yet. Bookings submitted via the website will appear here.
+          </div>
+        </div>
+      </div>
+
+      <!-- ── OFFICES ── -->
+      <div class="adm-panel" id="panel-offices">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+          <div style="font-size:.72rem;color:var(--muted);">Manage office types, pricing, and descriptions.</div>
+          <button class="btn-sm-gold" onclick="openAddOffice()">+ Add Office Type</button>
+        </div>
+        <div class="adm-card">
+          <div style="overflow-x:auto">
+            <table class="adm-table">
+              <thead><tr><th>#</th><th>Office Type</th><th>Pricing</th><th>Available Units</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="offices-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FLOORS ── -->
+      <div class="adm-panel" id="panel-floors">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+          <div style="font-size:.72rem;color:var(--muted);">Update floor-by-floor availability across the building.</div>
+          <button class="btn-sm-gold" onclick="openAddFloor()">+ Add Floor / Unit</button>
+        </div>
+        <div class="adm-card">
+          <div class="adm-card-head">
+            <h5>Floor & Unit Availability</h5>
+            <select class="adm-form-control" id="floor-filter" style="width:auto;font-size:.68rem;padding:4px 10px;" onchange="renderFloors()">
+              <option value="all">All Types</option>
+              <option value="Executive Suites">Executive Suites</option>
+              <option value="Co-Working Spaces">Co-Working Spaces</option>
+              <option value="Meeting Rooms">Meeting Rooms</option>
+              <option value="Virtual Offices">Virtual Offices</option>
+              <option value="Full Floor Offices">Full Floor Offices</option>
+              <option value="Smart Offices">Smart Offices</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="adm-table">
+              <thead><tr><th>Floor / Unit</th><th>Type</th><th>Size</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="floors-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── BOOKINGS ── -->
+      <div class="adm-panel" id="panel-bookings">
+        <div style="margin-bottom:20px;font-size:.72rem;color:var(--muted);">Visit booking requests submitted through the website.</div>
+        <div class="adm-card">
+          <div class="adm-card-head"><h5>Visit Booking Requests</h5>
+            <button class="btn-sm-ghost" onclick="addDemoBooking()">+ Add Demo Booking</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="adm-table">
+              <thead><tr><th>Ref</th><th>Name</th><th>Company</th><th>Office</th><th>Date</th><th>Phone</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="bookings-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FLOOR DETAILS (overview/amenities/specs per floor) ── -->
+      <div class="adm-panel" id="panel-floorDetails">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+          <div style="font-size:.72rem;color:var(--muted);">Edit the content shown on each floor's detail sub-page (floor-detail.html).</div>
+          <button class="btn-sm-gold" onclick="openAddFloorDetail()">+ Add Floor Detail</button>
+        </div>
+        <div class="adm-card">
+          <div style="overflow-x:auto">
+            <table class="adm-table">
+              <thead><tr><th>Key</th><th>Title (EN)</th><th>Title (AR)</th><th>Size</th><th>Actions</th></tr></thead>
+              <tbody id="floorDetails-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LAND LISTINGS ── -->
+      <div class="adm-panel" id="panel-lands">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+          <div style="font-size:.72rem;color:var(--muted);">Manage land plots shown on land.html &amp; land-detail.html.</div>
+          <button class="btn-sm-gold" onclick="openAddLand()">+ Add Land Plot</button>
+        </div>
+        <div class="adm-card">
+          <div style="overflow-x:auto">
+            <table class="adm-table">
+              <thead><tr><th>#</th><th>Title</th><th>Location</th><th>Size</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="lands-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FASHION PRODUCTS ── -->
+      <div class="adm-panel" id="panel-products">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+          <div style="font-size:.72rem;color:var(--muted);">Manage products shown on fashion.html &amp; fashion-product.html.</div>
+          <button class="btn-sm-gold" onclick="openAddProduct()">+ Add Product</button>
+        </div>
+        <div class="adm-card">
+          <div style="overflow-x:auto">
+            <table class="adm-table">
+              <thead><tr><th>#</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
+              <tbody id="products-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SITE CONTENT (homepage text) ── -->
+      <div class="adm-panel" id="panel-siteContent">
+        <div style="margin-bottom:20px;font-size:.72rem;color:var(--muted);">Edit homepage text content — hero, about, features, and section titles on index.html.</div>
+        <div class="adm-card">
+          <div class="adm-card-head"><h5>Homepage Text Content</h5>
+            <button class="btn-sm-gold" onclick="saveSiteContent()">Save Changes</button>
+          </div>
+          <div style="padding:22px">
+            <div class="adm-form-row">
+              <div class="adm-form-group">
+                <label class="adm-form-label">Hero Title (EN)</label>
+                <input class="adm-form-control" type="text" id="sc-hero-title-en"/>
+              </div>
+              <div class="adm-form-group">
+                <label class="adm-form-label">Hero Title (AR)</label>
+                <input class="adm-form-control" type="text" id="sc-hero-title-ar" dir="rtl"/>
+              </div>
+            </div>
+            <div class="adm-form-row">
+              <div class="adm-form-group">
+                <label class="adm-form-label">Hero Subtitle (EN)</label>
+                <input class="adm-form-control" type="text" id="sc-hero-sub-en"/>
+              </div>
+              <div class="adm-form-group">
+                <label class="adm-form-label">Hero Subtitle (AR)</label>
+                <input class="adm-form-control" type="text" id="sc-hero-sub-ar" dir="rtl"/>
+              </div>
+            </div>
+            <div class="adm-form-row">
+              <div class="adm-form-group">
+                <label class="adm-form-label">About Title (EN)</label>
+                <input class="adm-form-control" type="text" id="sc-about-title-en"/>
+              </div>
+              <div class="adm-form-group">
+                <label class="adm-form-label">About Title (AR)</label>
+                <input class="adm-form-control" type="text" id="sc-about-title-ar" dir="rtl"/>
+              </div>
+            </div>
+            <div class="adm-form-row">
+              <div class="adm-form-group">
+                <label class="adm-form-label">About Body (EN)</label>
+                <textarea class="adm-form-control" id="sc-about-body-en" style="min-height:100px"></textarea>
+              </div>
+              <div class="adm-form-group">
+                <label class="adm-form-label">About Body (AR)</label>
+                <textarea class="adm-form-control" id="sc-about-body-ar" dir="rtl" style="min-height:100px"></textarea>
+              </div>
+            </div>
+            <div class="adm-form-row">
+              <div class="adm-form-group">
+                <label class="adm-form-label">Contact Phone</label>
+                <input class="adm-form-control" type="text" id="sc-phone"/>
+              </div>
+              <div class="adm-form-group">
+                <label class="adm-form-label">Contact Email</label>
+                <input class="adm-form-control" type="text" id="sc-email"/>
+              </div>
+            </div>
+            <div class="adm-form-group">
+              <label class="adm-form-label">Contact Address</label>
+              <input class="adm-form-control" type="text" id="sc-address"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── BUSINESSES ── -->
+      <div class="adm-panel" id="panel-businesses">
+        <div style="margin-bottom:20px;font-size:.72rem;color:var(--muted);">Manage the group's business units shown on the main page.</div>
+        <div class="adm-card">
+          <div style="overflow-x:auto">
+            <table class="adm-table">
+              <thead><tr><th>Business</th><th>Website</th><th>Description</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="biz-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /adm-content -->
+  </div><!-- /adm-main -->
+</div><!-- /admin-screen -->
+
+<!-- ====== OFFICE ADD/EDIT MODAL ====== -->
+<div class="adm-modal-overlay" id="office-modal">
+  <div class="adm-modal">
+    <div class="adm-modal-head">
+      <h4 id="office-modal-title">Add Office Type</h4>
+      <button class="adm-modal-close" onclick="closeOfficeModal()">✕</button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="edit-office-id"/>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Office Type Name *</label>
+          <input class="adm-form-control" type="text" id="off-name" placeholder="e.g. Executive Suites"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Pricing *</label>
+          <input class="adm-form-control" type="text" id="off-price" placeholder="e.g. From JOD 3,500 / month"/>
+        </div>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Available Units</label>
+          <input class="adm-form-control" type="number" id="off-avail" placeholder="0" min="0"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Status</label>
+          <select class="adm-form-control" id="off-status">
+            <option value="available">Available</option>
+            <option value="low">Low Availability</option>
+            <option value="occupied">Fully Occupied</option>
+          </select>
+        </div>
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-form-label">Short Description *</label>
+        <textarea class="adm-form-control" id="off-desc" placeholder="Brief description shown on the main page…"></textarea>
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-form-label">Min Size</label>
+        <input class="adm-form-control" type="text" id="off-size" placeholder="e.g. 25 – 80 m²"/>
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn-sm-ghost" onclick="closeOfficeModal()">Cancel</button>
+      <button class="btn-sm-gold" onclick="saveOffice()">Save Office</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== FLOOR ADD/EDIT MODAL ====== -->
+<div class="adm-modal-overlay" id="floor-modal">
+  <div class="adm-modal">
+    <div class="adm-modal-head">
+      <h4 id="floor-modal-title">Add Floor / Unit</h4>
+      <button class="adm-modal-close" onclick="closeFloorModal()">✕</button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="edit-floor-id"/>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Floor / Unit Name *</label>
+          <input class="adm-form-control" type="text" id="fl-name" placeholder="e.g. 5th Floor – Unit 5A"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Office Type *</label>
+          <select class="adm-form-control" id="fl-type">
+            <option>Executive Suites</option>
+            <option>Co-Working Spaces</option>
+            <option>Meeting Rooms</option>
+            <option>Virtual Offices</option>
+            <option>Full Floor Offices</option>
+            <option>Smart Offices</option>
+          </select>
+        </div>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Size</label>
+          <input class="adm-form-control" type="text" id="fl-size" placeholder="e.g. 50 m²"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Price</label>
+          <input class="adm-form-control" type="text" id="fl-price" placeholder="e.g. JOD 5,800/mo"/>
+        </div>
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-form-label">Availability Status</label>
+        <select class="adm-form-control" id="fl-status">
+          <option value="available">Available</option>
+          <option value="low">Low (Last Unit)</option>
+          <option value="full">Occupied</option>
+        </select>
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn-sm-ghost" onclick="closeFloorModal()">Cancel</button>
+      <button class="btn-sm-gold" onclick="saveFloor()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== FLOOR DETAIL ADD/EDIT MODAL ====== -->
+<div class="adm-modal-overlay" id="fd-modal">
+  <div class="adm-modal">
+    <div class="adm-modal-head">
+      <h4 id="fd-modal-title">Edit Floor Detail</h4>
+      <button class="adm-modal-close" onclick="closeFdModal()">✕</button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="fd-edit-key"/>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Key * (e.g. 3, 4, 5, 6, 7, b1, 9-outdoor, 9-indoor)</label>
+          <input class="adm-form-control" type="text" id="fd-key" placeholder="4"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Size</label>
+          <input class="adm-form-control" type="text" id="fd-size" placeholder="e.g. 400 m²"/>
+        </div>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Title (EN)</label>
+          <input class="adm-form-control" type="text" id="fd-title-en" placeholder="4th Floor – Full Floor"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Title (AR)</label>
+          <input class="adm-form-control" type="text" id="fd-title-ar" dir="rtl" placeholder="الطابق الرابع"/>
+        </div>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Overview (EN)</label>
+          <textarea class="adm-form-control" id="fd-overview-en" style="min-height:110px"></textarea>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Overview (AR)</label>
+          <textarea class="adm-form-control" id="fd-overview-ar" dir="rtl" style="min-height:110px"></textarea>
+        </div>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Amenities (EN, one per line)</label>
+          <textarea class="adm-form-control" id="fd-amenities-en" style="min-height:120px" placeholder="High-speed internet&#10;Dedicated parking"></textarea>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Amenities (AR, one per line)</label>
+          <textarea class="adm-form-control" id="fd-amenities-ar" dir="rtl" style="min-height:120px"></textarea>
+        </div>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Price</label>
+          <input class="adm-form-control" type="text" id="fd-price" placeholder="Custom"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Status</label>
+          <select class="adm-form-control" id="fd-status">
+            <option value="available">Available</option>
+            <option value="low">Low</option>
+            <option value="full">Occupied</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn-sm-ghost" onclick="closeFdModal()">Cancel</button>
+      <button class="btn-sm-gold" onclick="saveFloorDetail()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== LAND ADD/EDIT MODAL ====== -->
+<div class="adm-modal-overlay" id="land-modal">
+  <div class="adm-modal">
+    <div class="adm-modal-head">
+      <h4 id="land-modal-title">Add Land Plot</h4>
+      <button class="adm-modal-close" onclick="closeLandModal()">✕</button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="land-edit-id"/>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Title *</label>
+          <input class="adm-form-control" type="text" id="ld-title" placeholder="Abdoun Corner Plot"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Location</label>
+          <input class="adm-form-control" type="text" id="ld-location" placeholder="Abdoun, Amman"/>
+        </div>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Size</label>
+          <input class="adm-form-control" type="text" id="ld-size" placeholder="1,200 m²"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Price</label>
+          <input class="adm-form-control" type="text" id="ld-price" placeholder="JOD 4,800,000"/>
+        </div>
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-form-label">Description</label>
+        <textarea class="adm-form-control" id="ld-desc" style="min-height:90px"></textarea>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Image URL</label>
+          <input class="adm-form-control" type="text" id="ld-image"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Status</label>
+          <select class="adm-form-control" id="ld-status">
+            <option value="available">Available</option>
+            <option value="reserved">Reserved</option>
+            <option value="sold">Sold</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn-sm-ghost" onclick="closeLandModal()">Cancel</button>
+      <button class="btn-sm-gold" onclick="saveLand()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== PRODUCT ADD/EDIT MODAL ====== -->
+<div class="adm-modal-overlay" id="product-modal">
+  <div class="adm-modal">
+    <div class="adm-modal-head">
+      <h4 id="product-modal-title">Add Product</h4>
+      <button class="adm-modal-close" onclick="closeProductModal()">✕</button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="product-edit-id"/>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Name *</label>
+          <input class="adm-form-control" type="text" id="pr-name" placeholder="Silk Evening Gown"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Category</label>
+          <input class="adm-form-control" type="text" id="pr-category" placeholder="Dresses"/>
+        </div>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Price</label>
+          <input class="adm-form-control" type="text" id="pr-price" placeholder="JOD 2,450"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Stock</label>
+          <input class="adm-form-control" type="number" id="pr-stock" placeholder="10" min="0"/>
+        </div>
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-form-label">Description</label>
+        <textarea class="adm-form-control" id="pr-desc" style="min-height:90px"></textarea>
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-form-label">Image URL</label>
+        <input class="adm-form-control" type="text" id="pr-image"/>
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn-sm-ghost" onclick="closeProductModal()">Cancel</button>
+      <button class="btn-sm-gold" onclick="saveProduct()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== DELETE CONFIRM MODAL ====== -->
+<div class="adm-modal-overlay" id="confirm-modal">
+  <div class="confirm-modal">
+    <h4>⚠ Confirm Delete</h4>
+    <p id="confirm-msg">Are you sure you want to delete this item? This cannot be undone.</p>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button class="btn-sm-ghost" onclick="closeConfirm()">Cancel</button>
+      <button class="btn-sm-danger" id="confirm-yes-btn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="adm-toast" id="adm-toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+// Simple credential check — suitable for a static site admin panel.
+// DO NOT expose real credentials in client-side code for production apps.
+const CREDS = { user: 'admin', passHash: btoa('Alrayyan@Admin2025') };
+
+function doLogin(){
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  if(u === CREDS.user && btoa(p) === CREDS.passHash){
+    sessionStorage.setItem('arAdminAuth','1');
+    sessionStorage.setItem('arAdminUser', u);
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('admin-screen').classList.add('show');
+    document.getElementById('adm-user-badge').textContent = u;
+    initAdmin();
+  } else {
+    document.getElementById('login-error').classList.add('show');
+    document.getElementById('login-pass').value = '';
+  }
+}
+function doLogout(){
+  sessionStorage.removeItem('arAdminAuth');
+  document.getElementById('admin-screen').classList.remove('show');
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+  document.getElementById('login-error').classList.remove('show');
+}
+// Auto-login bypass (auth disabled for direct access)
+sessionStorage.setItem('arAdminAuth','1');
+sessionStorage.setItem('arAdminUser','admin');
+document.getElementById('login-screen').classList.add('hidden');
+document.getElementById('admin-screen').classList.add('show');
+document.addEventListener('DOMContentLoaded', ()=>{
+  const badge = document.getElementById('adm-user-badge');
+  if (badge) badge.textContent = 'admin';
+  initAdmin();
+});
+
+// ── DATA (localStorage) ───────────────────────────────────────────────────────
+function loadOffices(){
+  const def = [
+    {id:1,name:'Executive Suites',     price:'From JOD 3,500 / month',avail:8, status:'available',desc:'Private, fully furnished executive offices with dedicated reception, high-speed internet, and premium finishes.',size:'25–80 m²'},
+    {id:2,name:'Co-Working Spaces',    price:'From JOD 800 / month',  avail:24,status:'available',desc:'Flexible shared workspaces designed for startups and freelancers — dynamic, inspiring environments.',size:'Open plan'},
+    {id:3,name:'Meeting Rooms',        price:'From JOD 250 / hour',   avail:6, status:'available',desc:'State-of-the-art conference facilities available hourly or daily, fully equipped with AV technology.',size:'4–40 persons'},
+    {id:4,name:'Virtual Offices',      price:'From JOD 400 / month',  avail:12,status:'available',desc:'Prestigious business address with mail handling and call answering — your identity, without the overhead.',size:'N/A'},
+    {id:5,name:'Full Floor Offices',   price:'Custom Pricing',        avail:2, status:'low',      desc:'Entire floors available for enterprise clients requiring expansive, customisable corporate headquarters.',size:'800–1,400 m²'},
+    {id:6,name:'Smart Offices',        price:'From JOD 5,000 / month',avail:4, status:'low',      desc:'Tech-integrated spaces with IoT controls, automated lighting, climate management and smart security.',size:'30–120 m²'},
+  ];
+  return JSON.parse(localStorage.getItem('ar_offices')||JSON.stringify(def));
+}
+function saveOffices(data){ localStorage.setItem('ar_offices',JSON.stringify(data)); }
+
+function loadFloors(){
+  const def = [
+    {id:1, name:'B1 Floor',           type:'Exception',   size:'1,000 m²', price:'Custom',       status:'available'},
+    {id:2, name:'3rd Floor – 80 m²',  type:'Unit',        size:'80 m²',    price:'JOD 4,000/mo', status:'available'},
+    {id:3, name:'3rd Floor – 160 m²', type:'Unit',        size:'160 m²',   price:'JOD 7,500/mo', status:'full'},
+    {id:4, name:'3rd Floor – 400 m²', type:'Full Floor',  size:'400 m²',   price:'Custom',       status:'full'},
+    {id:5, name:'4th Floor – 80 m²',  type:'Unit',        size:'80 m²',    price:'JOD 4,200/mo', status:'full'},
+    {id:6, name:'4th Floor – 160 m²', type:'Unit',        size:'160 m²',   price:'JOD 7,800/mo', status:'full'},
+    {id:7, name:'4th Floor – 400 m²', type:'Full Floor',  size:'400 m²',   price:'Custom',       status:'available'},
+    {id:8, name:'5th Floor – 80 m²',  type:'Unit',        size:'80 m²',    price:'JOD 4,400/mo', status:'available'},
+    {id:9, name:'5th Floor – 160 m²', type:'Unit',        size:'160 m²',   price:'JOD 8,200/mo', status:'full'},
+    {id:10,name:'5th Floor – 400 m²', type:'Full Floor',  size:'400 m²',   price:'Custom',       status:'full'},
+    {id:11,name:'6th Floor – 80 m²',  type:'Unit',        size:'80 m²',    price:'JOD 4,600/mo', status:'full'},
+    {id:12,name:'6th Floor – 160 m²', type:'Unit',        size:'160 m²',   price:'JOD 8,600/mo', status:'full'},
+    {id:13,name:'6th Floor – 400 m²', type:'Full Floor',  size:'400 m²',   price:'Custom',       status:'available'},
+    {id:14,name:'7th Floor – 80 m²',  type:'Unit',        size:'80 m²',    price:'JOD 4,800/mo', status:'full'},
+    {id:15,name:'7th Floor – 160 m²', type:'Unit',        size:'160 m²',   price:'JOD 9,000/mo', status:'full'},
+    {id:16,name:'7th Floor – 400 m²', type:'Full Floor',  size:'400 m²',   price:'Custom',       status:'available'},
+    {id:17,name:'9th Floor Outdoor',  type:'Exception',   size:'300 m²',   price:'Custom',       status:'available'},
+    {id:18,name:'9th Floor Indoor',   type:'Exception',   size:'100 m²',   price:'Custom',       status:'available'},
+  ];
+  return JSON.parse(localStorage.getItem('ar_floors')||JSON.stringify(def));
+}
+function saveFloors(data){ localStorage.setItem('ar_floors',JSON.stringify(data)); }
+
+function loadBookings(){ return JSON.parse(localStorage.getItem('ar_bookings')||'[]'); }
+function saveBookings(data){ localStorage.setItem('ar_bookings',JSON.stringify(data)); }
+
+function loadBiz(){
+  const def=[
+    {id:1,name:'Alrayyan Fashion',url:'fashion.html',desc:'Curated luxury fashion — online store and physical boutique.',status:'active'},
+    {id:2,name:'Alrayyan Arts',   url:'arts.html',   desc:'Gallery and creative studio celebrating Arab and global contemporary art.',status:'active'},
+    {id:3,name:'Alrayyan Land',   url:'land.html',   desc:'Premium land plots across Amman\'s most sought-after districts.',status:'active'},
+  ];
+  return JSON.parse(localStorage.getItem('ar_biz')||JSON.stringify(def));
+}
+function saveBiz(data){ localStorage.setItem('ar_biz',JSON.stringify(data)); }
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+function initAdmin(){
+  renderDashboard();
+  renderOffices();
+  renderFloors();
+  renderBookings();
+  renderBiz();
+  renderFloorDetails();
+  renderLands();
+  renderProducts();
+  renderSiteContent();
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+const panelTitles = {dashboard:'Dashboard',offices:'Offices',floors:'Floor Availability',bookings:'Visit Bookings',businesses:'Businesses',floorDetails:'Floor Details',lands:'Land Listings',products:'Fashion Products',siteContent:'Site Content'};
+function showPanel(name, el){
+  document.querySelectorAll('.adm-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.adm-nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('adm-page-title').textContent = panelTitles[name];
+}
+function toggleMobileSidebar(){
+  document.getElementById('adm-sidebar').classList.toggle('mobile-open');
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function renderDashboard(){
+  const offices = loadOffices();
+  const bookings = loadBookings();
+  const totalAvail = offices.reduce((s,o)=>s+o.avail,0);
+  document.getElementById('st-avail').textContent = totalAvail;
+  document.getElementById('st-bookings').textContent = bookings.filter(b=>b.status==='pending').length;
+  const tbl = document.getElementById('dash-overview-table');
+  tbl.innerHTML = `<thead><tr><th>#</th><th>Office Type</th><th>Available Units</th><th>Price</th><th>Status</th></tr></thead>
+    <tbody>${offices.map((o,i)=>`
+      <tr><td style="color:var(--muted)">${i+1}</td>
+      <td style="font-weight:600">${o.name}</td>
+      <td><span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold-light)">${o.avail}</span></td>
+      <td style="color:var(--muted)">${o.price}</td>
+      <td><span class="status-badge ${o.status}">${o.status}</span></td></tr>`).join('')}</tbody>`;
+}
+
+// ── OFFICES ───────────────────────────────────────────────────────────────────
+function renderOffices(){
+  const offices = loadOffices();
+  document.getElementById('offices-tbody').innerHTML = offices.map(o=>`
+    <tr>
+      <td>${o.id}</td>
+      <td style="font-weight:600">${o.name}</td>
+      <td style="color:var(--muted)">${o.price}</td>
+      <td><span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold-light)">${o.avail}</span></td>
+      <td><span class="status-badge ${o.status}">${o.status}</span></td>
+      <td>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn-sm-ghost" onclick="editOffice(${o.id})">Edit</button>
+          <button class="btn-sm-danger" onclick="confirmDelete('office',${o.id},'Delete office type &ldquo;${o.name}&rdquo;?')">Delete</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+let _editOfficeId = null;
+function openAddOffice(){
+  _editOfficeId = null;
+  document.getElementById('office-modal-title').textContent = 'Add Office Type';
+  ['off-name','off-price','off-size','off-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('off-avail').value = 0;
+  document.getElementById('off-status').value = 'available';
+  document.getElementById('edit-office-id').value = '';
+  document.getElementById('office-modal').classList.add('open');
+}
+function editOffice(id){
+  _editOfficeId = id;
+  const o = loadOffices().find(x=>x.id===id);
+  if(!o)return;
+  document.getElementById('office-modal-title').textContent = 'Edit Office Type';
+  document.getElementById('off-name').value  = o.name;
+  document.getElementById('off-price').value = o.price;
+  document.getElementById('off-avail').value = o.avail;
+  document.getElementById('off-status').value= o.status;
+  document.getElementById('off-desc').value  = o.desc;
+  document.getElementById('off-size').value  = o.size;
+  document.getElementById('edit-office-id').value = id;
+  document.getElementById('office-modal').classList.add('open');
+}
+function closeOfficeModal(){ document.getElementById('office-modal').classList.remove('open'); }
+function saveOffice(){
+  const name  = document.getElementById('off-name').value.trim();
+  const price = document.getElementById('off-price').value.trim();
+  if(!name||!price){ showToast('Please fill in required fields','error'); return; }
+  const offices = loadOffices();
+  const data = {
+    name, price,
+    avail: parseInt(document.getElementById('off-avail').value)||0,
+    status: document.getElementById('off-status').value,
+    desc: document.getElementById('off-desc').value.trim(),
+    size: document.getElementById('off-size').value.trim(),
+  };
+  if(_editOfficeId){
+    const idx = offices.findIndex(o=>o.id===_editOfficeId);
+    if(idx>-1){ offices[idx]={...offices[idx],...data}; }
+  } else {
+    data.id = Date.now();
+    offices.push(data);
+  }
+  saveOffices(offices);
+  closeOfficeModal();
+  renderOffices();
+  renderDashboard();
+  showToast(_editOfficeId?'Office updated successfully':'Office added successfully','success');
+}
+
+// ── FLOORS ────────────────────────────────────────────────────────────────────
+function renderFloors(){
+  const floors = loadFloors();
+  const filter = document.getElementById('floor-filter')?.value||'all';
+  const list   = filter==='all'?floors:floors.filter(f=>f.type===filter);
+  document.getElementById('floors-tbody').innerHTML = list.map(f=>`
+    <tr>
+      <td style="font-weight:600">${f.name}</td>
+      <td style="color:var(--muted);font-size:.7rem">${f.type}</td>
+      <td style="color:var(--muted)">${f.size}</td>
+      <td style="color:var(--gold-light);font-weight:600">${f.price}</td>
+      <td><span class="status-badge ${f.status==='available'?'available':f.status==='low'?'low':'occupied'}">${f.status==='available'?'Available':f.status==='low'?'Last Unit':'Occupied'}</span></td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-sm-ghost" onclick="editFloor(${f.id})">Edit</button>
+          <button class="btn-sm-danger" onclick="confirmDelete('floor',${f.id},'Delete &ldquo;${f.name}&rdquo;?')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+let _editFloorId = null;
+function openAddFloor(){
+  _editFloorId = null;
+  document.getElementById('floor-modal-title').textContent = 'Add Floor / Unit';
+  ['fl-name','fl-size','fl-price'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fl-status').value = 'available';
+  document.getElementById('floor-modal').classList.add('open');
+}
+function editFloor(id){
+  _editFloorId = id;
+  const f = loadFloors().find(x=>x.id===id);
+  if(!f)return;
+  document.getElementById('floor-modal-title').textContent = 'Edit Floor / Unit';
+  document.getElementById('fl-name').value  = f.name;
+  document.getElementById('fl-type').value  = f.type;
+  document.getElementById('fl-size').value  = f.size;
+  document.getElementById('fl-price').value = f.price;
+  document.getElementById('fl-status').value= f.status;
+  document.getElementById('floor-modal').classList.add('open');
+}
+function closeFloorModal(){ document.getElementById('floor-modal').classList.remove('open'); }
+function saveFloor(){
+  const name = document.getElementById('fl-name').value.trim();
+  if(!name){ showToast('Floor name required','error'); return; }
+  const floors = loadFloors();
+  const data = {
+    name,
+    type:   document.getElementById('fl-type').value,
+    size:   document.getElementById('fl-size').value.trim(),
+    price:  document.getElementById('fl-price').value.trim(),
+    status: document.getElementById('fl-status').value,
+  };
+  if(_editFloorId){
+    const idx = floors.findIndex(f=>f.id===_editFloorId);
+    if(idx>-1) floors[idx]={...floors[idx],...data};
+  } else {
+    data.id = Date.now();
+    floors.push(data);
+  }
+  saveFloors(floors);
+  closeFloorModal();
+  renderFloors();
+  showToast(_editFloorId?'Floor updated':'Floor added','success');
+}
+
+// ── BOOKINGS ──────────────────────────────────────────────────────────────────
+function renderBookings(){
+  const bookings = loadBookings();
+  const tbody = document.getElementById('bookings-tbody');
+  if(!bookings.length){
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:28px">No bookings yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = bookings.map(b=>`
+    <tr>
+      <td style="color:var(--gold);font-size:.65rem">${b.ref}</td>
+      <td style="font-weight:600">${b.name}</td>
+      <td style="color:var(--muted)">${b.company||'—'}</td>
+      <td style="color:var(--muted);font-size:.7rem">${b.office}</td>
+      <td style="color:var(--muted)">${b.date}</td>
+      <td style="color:var(--muted)">${b.phone}</td>
+      <td><span class="booking-status-badge ${b.status}">${b.status}</span></td>
+      <td>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          ${b.status==='pending'?`<button class="btn-sm-gold" onclick="updateBookingStatus(${b.id},'confirmed')">✓</button>`:''}
+          <button class="btn-sm-danger" onclick="confirmDelete('booking',${b.id},'Delete booking ${b.ref}?')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+  document.getElementById('st-bookings').textContent = bookings.filter(b=>b.status==='pending').length;
+}
+function updateBookingStatus(id,status){
+  const bookings = loadBookings();
+  const b = bookings.find(x=>x.id===id);
+  if(b){ b.status=status; saveBookings(bookings); renderBookings(); showToast('Booking '+status,'success'); }
+}
+function addDemoBooking(){
+  const bookings = loadBookings();
+  bookings.push({
+    id:Date.now(),ref:'ARG-DEMO'+bookings.length,
+    name:'Ahmad Al-Hassan',company:'Demo Co.',
+    office:'Executive Suites',date:'2025-06-15',
+    phone:'+962 79 000 0000',status:'pending'
+  });
+  saveBookings(bookings);
+  renderBookings();
+  showToast('Demo booking added','success');
+}
+
+// ── BUSINESSES ────────────────────────────────────────────────────────────────
+function renderBiz(){
+  const biz = loadBiz();
+  document.getElementById('biz-tbody').innerHTML = biz.map(b=>`
+    <tr>
+      <td style="font-weight:600">${b.name}</td>
+      <td><a href="${b.url}" target="_blank" style="color:var(--gold);font-size:.7rem">${b.url}</a></td>
+      <td style="color:var(--muted);font-size:.75rem;max-width:280px">${b.desc}</td>
+      <td><span class="status-badge ${b.status==='active'?'available':'occupied'}">${b.status}</span></td>
+      <td>
+        <button class="btn-sm-ghost" onclick="toggleBizStatus(${b.id})">${b.status==='active'?'Disable':'Enable'}</button>
+      </td>
+    </tr>`).join('');
+}
+function toggleBizStatus(id){
+  const biz = loadBiz();
+  const b = biz.find(x=>x.id===id);
+  if(b){ b.status = b.status==='active'?'inactive':'active'; saveBiz(biz); renderBiz(); showToast('Business status updated','success'); }
+}
+
+// ── DELETE ────────────────────────────────────────────────────────────────────
+let _deleteType=null,_deleteId=null;
+function confirmDelete(type,id,msg){
+  _deleteType=type; _deleteId=id;
+  document.getElementById('confirm-msg').innerHTML = msg;
+  document.getElementById('confirm-modal').classList.add('open');
+}
+function closeConfirm(){ document.getElementById('confirm-modal').classList.remove('open'); }
+document.getElementById('confirm-yes-btn').addEventListener('click',()=>{
+  if(_deleteType==='office'){
+    const off=loadOffices().filter(o=>o.id!==_deleteId);saveOffices(off);renderOffices();renderDashboard();
+  } else if(_deleteType==='floor'){
+    const fl=loadFloors().filter(f=>f.id!==_deleteId);saveFloors(fl);renderFloors();
+  } else if(_deleteType==='booking'){
+    const bk=loadBookings().filter(b=>b.id!==_deleteId);saveBookings(bk);renderBookings();
+  } else if(_deleteType==='floorDetail'){
+    const fd=loadFloorDetails(); delete fd[_deleteId]; saveFloorDetailsData(fd); renderFloorDetails();
+  } else if(_deleteType==='land'){
+    const ln=loadLands().filter(l=>l.id!==_deleteId);saveLands(ln);renderLands();
+  } else if(_deleteType==='product'){
+    const pr=loadProducts().filter(p=>p.id!==_deleteId);saveProducts(pr);renderProducts();
+  }
+  closeConfirm();showToast('Deleted successfully','success');
+});
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function showToast(msg,type=''){
+  const t=document.getElementById('adm-toast');
+  t.textContent=msg;t.className='adm-toast show'+(type?' '+type:'');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ── FLOOR DETAILS ─────────────────────────────────────────────────────────────
+function loadFloorDetails(){
+  const def = {
+    'b1':        {key:'b1',        titleEn:'B1 Floor',            titleAr:'طابق B1',            size:'1,000 m²', overviewEn:'Expansive basement-level space ideal for storage, logistics, or large-scale operations. Exception floor with full 1,000 m² footprint.', overviewAr:'مساحة واسعة في الطابق السفلي مثالية للتخزين أو العمليات الكبرى. طابق استثنائي بمساحة 1000 م² بالكامل.', amenitiesEn:['Private entrance','Loading access','24/7 security','HVAC climate control','Dedicated parking'], amenitiesAr:['مدخل خاص','وصول للتحميل','أمن على مدار الساعة','تكييف متكامل','موقف مخصص'], price:'Custom', status:'available'},
+    '3':         {key:'3',         titleEn:'3rd Floor – 80 m² Unit',titleAr:'الطابق الثالث – وحدة 80 م²',size:'80 m²',    overviewEn:'Compact executive suite on the 3rd floor, the last available unit on this floor. Perfect for small teams and boutique firms.', overviewAr:'جناح تنفيذي مدمج في الطابق الثالث، الوحدة الوحيدة المتاحة. مثالي للفرق الصغيرة والشركات النخبة.', amenitiesEn:['High-speed fiber internet','Reception services','Meeting room access','Coffee & tea service','Cleaning included'], amenitiesAr:['إنترنت فائق السرعة','خدمات الاستقبال','الوصول لقاعات الاجتماعات','خدمة القهوة والشاي','التنظيف مشمول'], price:'JOD 4,000 / month', status:'low'},
+    '4':         {key:'4',         titleEn:'4th Floor – Full Floor',titleAr:'الطابق الرابع – طابق كامل',size:'400 m²',  overviewEn:'Entire 4th floor available as a 400 m² full-floor lease — ideal for mid-size enterprises wanting branded corporate headquarters.', overviewAr:'الطابق الرابع بالكامل متاح للإيجار كطابق كامل بمساحة 400 م² — مثالي للشركات المتوسطة التي ترغب بمقر مؤسسي.', amenitiesEn:['Full-floor customization','Private elevators access','Executive washrooms','Kitchenette & lounge','Dedicated reception'], amenitiesAr:['تخصيص كامل للطابق','وصول المصاعد الخاصة','دورات مياه تنفيذية','مطبخ صغير واستراحة','استقبال مخصص'], price:'Custom', status:'available'},
+    '5':         {key:'5',         titleEn:'5th Floor – 80 m² Unit',titleAr:'الطابق الخامس – وحدة 80 م²',size:'80 m²',   overviewEn:'Bright 80 m² executive unit on the 5th floor. Premium views and finishes.', overviewAr:'وحدة تنفيذية مضيئة بمساحة 80 م² في الطابق الخامس. إطلالات وتشطيبات راقية.', amenitiesEn:['Panoramic windows','High-speed internet','Meeting room access','Premium finishes','Cleaning included'], amenitiesAr:['نوافذ بانورامية','إنترنت فائق السرعة','الوصول لقاعات الاجتماعات','تشطيبات فاخرة','التنظيف مشمول'], price:'JOD 4,400 / month', status:'available'},
+    '6':         {key:'6',         titleEn:'6th Floor – Full Floor',titleAr:'الطابق السادس – طابق كامل',size:'400 m²', overviewEn:'Full 400 m² floor on level 6 — customisable corporate space with elevated views.', overviewAr:'طابق كامل 400 م² في المستوى السادس — مساحة مؤسسية قابلة للتخصيص بإطلالات مرتفعة.', amenitiesEn:['Full-floor customization','Executive washrooms','Kitchenette & lounge','Dedicated reception','Private meeting rooms'], amenitiesAr:['تخصيص كامل للطابق','دورات مياه تنفيذية','مطبخ صغير واستراحة','استقبال مخصص','قاعات اجتماعات خاصة'], price:'Custom', status:'available'},
+    '7':         {key:'7',         titleEn:'7th Floor – Full Floor',titleAr:'الطابق السابع – طابق كامل',size:'400 m²', overviewEn:'Premium 400 m² full floor on level 7 with commanding city views, ideal for executive headquarters.', overviewAr:'طابق كامل مميز بمساحة 400 م² في المستوى السابع مع إطلالة رائعة على المدينة، مثالي للمقرات التنفيذية.', amenitiesEn:['Panoramic city views','Full customization','Executive suite layout','Private washrooms','VIP reception'], amenitiesAr:['إطلالات بانورامية','تخصيص كامل','تصميم جناح تنفيذي','دورات مياه خاصة','استقبال VIP'], price:'Custom', status:'available'},
+    '9-outdoor': {key:'9-outdoor', titleEn:'9th Floor – Outdoor Space',titleAr:'الطابق التاسع – مساحة خارجية',size:'300 m²', overviewEn:'Unique 300 m² outdoor space on the 9th floor — perfect for rooftop events, dining venues, or open-air offices.', overviewAr:'مساحة خارجية فريدة بمساحة 300 م² في الطابق التاسع — مثالية لفعاليات السطح أو المطاعم أو المكاتب المفتوحة.', amenitiesEn:['Open rooftop terrace','Panoramic 360° views','Event-ready layout','Utility connections','Private access'], amenitiesAr:['تراس سطح مفتوح','إطلالات بانورامية 360°','تصميم جاهز للفعاليات','توصيلات مرافق','وصول خاص'], price:'Custom', status:'available'},
+    '9-indoor':  {key:'9-indoor',  titleEn:'9th Floor – Indoor Space',titleAr:'الطابق التاسع – مساحة داخلية',size:'100 m²',  overviewEn:'Intimate 100 m² indoor space on the 9th floor — ideal for executive lounges, private offices, or boutique studios.', overviewAr:'مساحة داخلية مميزة بمساحة 100 م² في الطابق التاسع — مثالية لصالات تنفيذية أو مكاتب خاصة أو استوديوهات فاخرة.', amenitiesEn:['Premium finishes','Panoramic windows','Private entrance','Climate control','High-speed internet'], amenitiesAr:['تشطيبات راقية','نوافذ بانورامية','مدخل خاص','تحكم بالمناخ','إنترنت فائق السرعة'], price:'Custom', status:'available'},
+  };
+  return JSON.parse(localStorage.getItem('ar_floor_details')||JSON.stringify(def));
+}
+function saveFloorDetailsData(data){ localStorage.setItem('ar_floor_details',JSON.stringify(data)); }
+
+function renderFloorDetails(){
+  const data = loadFloorDetails();
+  const rows = Object.values(data);
+  document.getElementById('floorDetails-tbody').innerHTML = rows.map(f=>`
+    <tr>
+      <td style="color:var(--gold);font-size:.7rem">${f.key}</td>
+      <td style="font-weight:600">${f.titleEn}</td>
+      <td dir="rtl" style="color:var(--muted)">${f.titleAr||'—'}</td>
+      <td style="color:var(--muted)">${f.size||'—'}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-sm-ghost" onclick="editFloorDetail('${f.key}')">Edit</button>
+          <button class="btn-sm-danger" onclick="confirmDelete('floorDetail','${f.key}','Delete floor detail &ldquo;${f.titleEn}&rdquo;?')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+let _editFdKey = null;
+function openAddFloorDetail(){
+  _editFdKey = null;
+  document.getElementById('fd-modal-title').textContent = 'Add Floor Detail';
+  ['fd-key','fd-size','fd-title-en','fd-title-ar','fd-overview-en','fd-overview-ar','fd-amenities-en','fd-amenities-ar','fd-price'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fd-status').value = 'available';
+  document.getElementById('fd-modal').classList.add('open');
+}
+function editFloorDetail(key){
+  const data = loadFloorDetails();
+  const f = data[key]; if(!f) return;
+  _editFdKey = key;
+  document.getElementById('fd-modal-title').textContent = 'Edit Floor Detail';
+  document.getElementById('fd-key').value = f.key;
+  document.getElementById('fd-size').value = f.size||'';
+  document.getElementById('fd-title-en').value = f.titleEn||'';
+  document.getElementById('fd-title-ar').value = f.titleAr||'';
+  document.getElementById('fd-overview-en').value = f.overviewEn||'';
+  document.getElementById('fd-overview-ar').value = f.overviewAr||'';
+  document.getElementById('fd-amenities-en').value = (f.amenitiesEn||[]).join('\n');
+  document.getElementById('fd-amenities-ar').value = (f.amenitiesAr||[]).join('\n');
+  document.getElementById('fd-price').value = f.price||'';
+  document.getElementById('fd-status').value = f.status||'available';
+  document.getElementById('fd-modal').classList.add('open');
+}
+function closeFdModal(){ document.getElementById('fd-modal').classList.remove('open'); }
+function saveFloorDetail(){
+  const key = document.getElementById('fd-key').value.trim();
+  if(!key){ showToast('Key is required','error'); return; }
+  const data = loadFloorDetails();
+  if(_editFdKey && _editFdKey!==key) delete data[_editFdKey];
+  data[key] = {
+    key,
+    titleEn: document.getElementById('fd-title-en').value.trim(),
+    titleAr: document.getElementById('fd-title-ar').value.trim(),
+    size: document.getElementById('fd-size').value.trim(),
+    overviewEn: document.getElementById('fd-overview-en').value.trim(),
+    overviewAr: document.getElementById('fd-overview-ar').value.trim(),
+    amenitiesEn: document.getElementById('fd-amenities-en').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    amenitiesAr: document.getElementById('fd-amenities-ar').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    price: document.getElementById('fd-price').value.trim(),
+    status: document.getElementById('fd-status').value,
+  };
+  saveFloorDetailsData(data);
+  closeFdModal();
+  renderFloorDetails();
+  showToast(_editFdKey?'Floor detail updated':'Floor detail added','success');
+}
+
+// ── LANDS ─────────────────────────────────────────────────────────────────────
+function loadLands(){
+  const def = [
+    {id:1,title:'Abdoun Corner Plot',location:'Abdoun, Amman',size:'1,200 m²',price:'JOD 4,800,000',desc:'Prime corner plot in Amman\'s most prestigious neighbourhood, zoned for mixed-use development.',image:'',status:'available'},
+    {id:2,title:'Dabouq Hillside Estate',location:'Dabouq, Amman',size:'2,500 m²',price:'JOD 6,200,000',desc:'Expansive hillside estate with sweeping views, ideal for luxury villa development.',image:'',status:'available'},
+    {id:3,title:'Sweifieh Commercial Plot',location:'Sweifieh, Amman',size:'850 m²',price:'JOD 3,100,000',desc:'High-visibility commercial plot on a main boulevard in Sweifieh.',image:'',status:'reserved'},
+  ];
+  return JSON.parse(localStorage.getItem('ar_lands')||JSON.stringify(def));
+}
+function saveLands(data){ localStorage.setItem('ar_lands',JSON.stringify(data)); }
+function renderLands(){
+  const lands = loadLands();
+  document.getElementById('lands-tbody').innerHTML = lands.map((l,i)=>`
+    <tr>
+      <td style="color:var(--muted)">${i+1}</td>
+      <td style="font-weight:600">${l.title}</td>
+      <td style="color:var(--muted)">${l.location}</td>
+      <td style="color:var(--muted)">${l.size}</td>
+      <td style="color:var(--gold-light);font-weight:600">${l.price}</td>
+      <td><span class="status-badge ${l.status==='available'?'available':l.status==='reserved'?'low':'occupied'}">${l.status}</span></td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-sm-ghost" onclick="editLand(${l.id})">Edit</button>
+          <button class="btn-sm-danger" onclick="confirmDelete('land',${l.id},'Delete plot &ldquo;${l.title}&rdquo;?')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+let _editLandId = null;
+function openAddLand(){
+  _editLandId = null;
+  document.getElementById('land-modal-title').textContent = 'Add Land Plot';
+  ['ld-title','ld-location','ld-size','ld-price','ld-desc','ld-image'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ld-status').value = 'available';
+  document.getElementById('land-modal').classList.add('open');
+}
+function editLand(id){
+  const l = loadLands().find(x=>x.id===id); if(!l) return;
+  _editLandId = id;
+  document.getElementById('land-modal-title').textContent = 'Edit Land Plot';
+  document.getElementById('ld-title').value = l.title;
+  document.getElementById('ld-location').value = l.location||'';
+  document.getElementById('ld-size').value = l.size||'';
+  document.getElementById('ld-price').value = l.price||'';
+  document.getElementById('ld-desc').value = l.desc||'';
+  document.getElementById('ld-image').value = l.image||'';
+  document.getElementById('ld-status').value = l.status||'available';
+  document.getElementById('land-modal').classList.add('open');
+}
+function closeLandModal(){ document.getElementById('land-modal').classList.remove('open'); }
+function saveLand(){
+  const title = document.getElementById('ld-title').value.trim();
+  if(!title){ showToast('Title is required','error'); return; }
+  const lands = loadLands();
+  const data = {
+    title,
+    location: document.getElementById('ld-location').value.trim(),
+    size: document.getElementById('ld-size').value.trim(),
+    price: document.getElementById('ld-price').value.trim(),
+    desc: document.getElementById('ld-desc').value.trim(),
+    image: document.getElementById('ld-image').value.trim(),
+    status: document.getElementById('ld-status').value,
+  };
+  if(_editLandId){
+    const idx = lands.findIndex(l=>l.id===_editLandId);
+    if(idx>-1) lands[idx]={...lands[idx],...data};
+  } else {
+    data.id = Date.now();
+    lands.push(data);
+  }
+  saveLands(lands);
+  closeLandModal();
+  renderLands();
+  showToast(_editLandId?'Land updated':'Land added','success');
+}
+
+// ── PRODUCTS ──────────────────────────────────────────────────────────────────
+function loadProducts(){
+  const def = [
+    {id:1,name:'Silk Evening Gown',category:'Dresses',price:'JOD 2,450',stock:8,desc:'Handcrafted silk evening gown with signature gold embroidery.',image:''},
+    {id:2,name:'Cashmere Wrap Coat',category:'Outerwear',price:'JOD 3,800',stock:5,desc:'Pure cashmere wrap coat, tailored in Italy.',image:''},
+    {id:3,name:'Leather Clutch',category:'Accessories',price:'JOD 980',stock:15,desc:'Genuine leather clutch with hand-stitched details.',image:''},
+    {id:4,name:'Pearl Drop Earrings',category:'Jewelry',price:'JOD 1,250',stock:20,desc:'South Sea pearl drop earrings set in 18K gold.',image:''},
+  ];
+  return JSON.parse(localStorage.getItem('ar_products')||JSON.stringify(def));
+}
+function saveProducts(data){ localStorage.setItem('ar_products',JSON.stringify(data)); }
+function renderProducts(){
+  const products = loadProducts();
+  document.getElementById('products-tbody').innerHTML = products.map((p,i)=>`
+    <tr>
+      <td style="color:var(--muted)">${i+1}</td>
+      <td style="font-weight:600">${p.name}</td>
+      <td style="color:var(--muted)">${p.category||'—'}</td>
+      <td style="color:var(--gold-light);font-weight:600">${p.price}</td>
+      <td style="color:var(--muted)">${p.stock}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-sm-ghost" onclick="editProduct(${p.id})">Edit</button>
+          <button class="btn-sm-danger" onclick="confirmDelete('product',${p.id},'Delete product &ldquo;${p.name}&rdquo;?')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+let _editProductId = null;
+function openAddProduct(){
+  _editProductId = null;
+  document.getElementById('product-modal-title').textContent = 'Add Product';
+  ['pr-name','pr-category','pr-price','pr-stock','pr-desc','pr-image'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('product-modal').classList.add('open');
+}
+function editProduct(id){
+  const p = loadProducts().find(x=>x.id===id); if(!p) return;
+  _editProductId = id;
+  document.getElementById('product-modal-title').textContent = 'Edit Product';
+  document.getElementById('pr-name').value = p.name;
+  document.getElementById('pr-category').value = p.category||'';
+  document.getElementById('pr-price').value = p.price||'';
+  document.getElementById('pr-stock').value = p.stock||0;
+  document.getElementById('pr-desc').value = p.desc||'';
+  document.getElementById('pr-image').value = p.image||'';
+  document.getElementById('product-modal').classList.add('open');
+}
+function closeProductModal(){ document.getElementById('product-modal').classList.remove('open'); }
+function saveProduct(){
+  const name = document.getElementById('pr-name').value.trim();
+  if(!name){ showToast('Name is required','error'); return; }
+  const products = loadProducts();
+  const data = {
+    name,
+    category: document.getElementById('pr-category').value.trim(),
+    price: document.getElementById('pr-price').value.trim(),
+    stock: parseInt(document.getElementById('pr-stock').value)||0,
+    desc: document.getElementById('pr-desc').value.trim(),
+    image: document.getElementById('pr-image').value.trim(),
+  };
+  if(_editProductId){
+    const idx = products.findIndex(p=>p.id===_editProductId);
+    if(idx>-1) products[idx]={...products[idx],...data};
+  } else {
+    data.id = Date.now();
+    products.push(data);
+  }
+  saveProducts(products);
+  closeProductModal();
+  renderProducts();
+  showToast(_editProductId?'Product updated':'Product added','success');
+}
+
+// ── SITE CONTENT ──────────────────────────────────────────────────────────────
+function loadSiteContent(){
+  const def = {
+    heroTitleEn:'ALRAYYAN GROUP',
+    heroTitleAr:'مجموعة الريان',
+    heroSubEn:'A legacy of excellence across real estate, fashion, arts and land.',
+    heroSubAr:'إرث من التميز عبر العقارات والأزياء والفنون والأراضي.',
+    aboutTitleEn:'About Alrayyan Group',
+    aboutTitleAr:'عن مجموعة الريان',
+    aboutBodyEn:'Alrayyan Group is a diversified holding company based in Amman, Jordan, operating across premium real estate, luxury fashion, arts, and land investments. Our flagship Alrayyan Tower represents the pinnacle of modern corporate architecture.',
+    aboutBodyAr:'مجموعة الريان هي شركة قابضة متنوعة مقرها عمان، الأردن، تعمل في العقارات الفاخرة والأزياء الراقية والفنون والاستثمار في الأراضي. برج الريان هو تجسيد للهندسة المعمارية المؤسسية الحديثة.',
+    phone:'+962 6 000 0000',
+    email:'info@alrayyan-group.com',
+    address:'Alrayyan Tower, Abdali, Amman, Jordan',
+  };
+  return JSON.parse(localStorage.getItem('ar_site_content')||JSON.stringify(def));
+}
+function renderSiteContent(){
+  const c = loadSiteContent();
+  document.getElementById('sc-hero-title-en').value = c.heroTitleEn||'';
+  document.getElementById('sc-hero-title-ar').value = c.heroTitleAr||'';
+  document.getElementById('sc-hero-sub-en').value = c.heroSubEn||'';
+  document.getElementById('sc-hero-sub-ar').value = c.heroSubAr||'';
+  document.getElementById('sc-about-title-en').value = c.aboutTitleEn||'';
+  document.getElementById('sc-about-title-ar').value = c.aboutTitleAr||'';
+  document.getElementById('sc-about-body-en').value = c.aboutBodyEn||'';
+  document.getElementById('sc-about-body-ar').value = c.aboutBodyAr||'';
+  document.getElementById('sc-phone').value = c.phone||'';
+  document.getElementById('sc-email').value = c.email||'';
+  document.getElementById('sc-address').value = c.address||'';
+}
+function saveSiteContent(){
+  const data = {
+    heroTitleEn: document.getElementById('sc-hero-title-en').value,
+    heroTitleAr: document.getElementById('sc-hero-title-ar').value,
+    heroSubEn: document.getElementById('sc-hero-sub-en').value,
+    heroSubAr: document.getElementById('sc-hero-sub-ar').value,
+    aboutTitleEn: document.getElementById('sc-about-title-en').value,
+    aboutTitleAr: document.getElementById('sc-about-title-ar').value,
+    aboutBodyEn: document.getElementById('sc-about-body-en').value,
+    aboutBodyAr: document.getElementById('sc-about-body-ar').value,
+    phone: document.getElementById('sc-phone').value,
+    email: document.getElementById('sc-email').value,
+    address: document.getElementById('sc-address').value,
+  };
+  localStorage.setItem('ar_site_content',JSON.stringify(data));
+  showToast('Site content saved','success');
+}
+
+// Close modals on overlay click
+['office-modal','floor-modal','confirm-modal','fd-modal','land-modal','product-modal'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',function(e){
+    if(e.target===this)this.classList.remove('open');
+  });
+});
+
+// Keyboard ESC
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    ['office-modal','floor-modal','confirm-modal','fd-modal','land-modal','product-modal'].forEach(id=>
+      document.getElementById(id).classList.remove('open'));
+  }
+});
+
+// Init if already logged in
+if(sessionStorage.getItem('arAdminAuth')==='1'){ initAdmin(); }
+</script>
+</body>
+</html>

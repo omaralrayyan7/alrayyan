@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alrayyan Calligraphy Arts – Gallery & Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      /* Alrayyan Arts — Black + Gold theme */
+      --primary:#0a0a0a;   /* dominant black */
+      --accent:#C9A84C;    /* gold highlight */
+      --ink:#0a0a0a;--deep:#141414;
+      --teal:#C9A84C;       /* legacy alias → gold */
+      --teal-light:#e6c971; /* legacy alias → light gold */
+      --teal-dim:#8a6f28;   /* legacy alias → dark gold */
+      --parchment:#f5efe0;--off-white:#efe7d4;
+      --muted:#8b8576;--t:0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--parchment);overflow-x:hidden;}
+    a{text-decoration:none;color:inherit;}
+    img{max-width:100%;display:block;}
+    ::-webkit-scrollbar{width:4px;}
+    ::-webkit-scrollbar-track{background:var(--ink);}
+    ::-webkit-scrollbar-thumb{background:var(--teal);border-radius:2px;}
+
+    /* NAV */
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:900;
+      padding:0 5%;height:72px;
+      display:flex;align-items:center;justify-content:space-between;
+      background:rgba(4,8,10,0.96);backdrop-filter:blur(20px);
+      border-bottom:1px solid rgba(63,168,154,0.1);transition:var(--t);
+    }
+    nav.scrolled{height:58px;}
+    .nav-left{display:flex;flex-direction:column;gap:2px;}
+    .nav-brand{font-family:'IM Fell English',serif;font-size:1.25rem;letter-spacing:2px;}
+    .nav-brand em{font-style:italic;color:var(--teal-light);}
+    .nav-sub{font-size:0.54rem;letter-spacing:4px;color:var(--muted);text-transform:uppercase;}
+    .nav-center{display:flex;gap:2rem;list-style:none;align-items:center;}
+    .nav-center a{font-size:0.7rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);transition:color var(--t);}
+    .nav-center a:hover{color:var(--teal-light);}
+    .nav-right{display:flex;align-items:center;gap:10px;}
+    .nav-icon-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:0.68rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;gap:5px;transition:color var(--t);padding:6px 10px;font-family:'DM Sans',sans-serif;}
+    .nav-icon-btn:hover{color:var(--teal-light);}
+    .cart-btn{position:relative;}
+    .cart-badge{position:absolute;top:-5px;right:-2px;background:var(--teal);color:var(--ink);font-size:0.52rem;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 4px;display:none;align-items:center;justify-content:center;}
+    .cart-badge.show{display:flex;}
+    .nav-sep{width:1px;height:18px;background:rgba(63,168,154,0.15);}
+    .nav-back{font-size:0.66rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);border:1px solid rgba(63,168,154,0.3);padding:6px 14px;border-radius:2px;transition:var(--t);}
+    .nav-back:hover{background:rgba(63,168,154,0.1);}
+
+    /* HERO */
+    #hero{
+      min-height:100vh;position:relative;overflow:hidden;
+      display:flex;align-items:flex-end;padding:0 5% 100px;background:var(--ink);
+    }
+    .hero-bg-mosaic{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;opacity:0.22;}
+    .hero-bg-mosaic div{overflow:hidden;}
+    .hero-bg-mosaic div img{width:100%;height:100%;object-fit:cover;filter:saturate(0.4);}
+    .hero-bg-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(4,8,10,0.97) 35%,rgba(4,8,10,0.55) 70%,rgba(4,8,10,0.28) 100%);}
+    .hero-content{position:relative;z-index:2;max-width:680px;animation:fadeUp 1.2s ease forwards;opacity:0;transform:translateY(30px);}
+    @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+    .hero-eyebrow{font-size:0.63rem;letter-spacing:5px;text-transform:uppercase;color:var(--teal);margin-bottom:18px;display:flex;align-items:center;gap:12px;}
+    .hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--teal);}
+    .hero-title{font-family:'IM Fell English',serif;font-size:clamp(3rem,5.5vw,5rem);line-height:1.0;color:var(--parchment);margin-bottom:18px;}
+    .hero-title em{font-style:italic;color:var(--teal-light);}
+    .hero-desc{font-size:0.9rem;color:var(--muted);line-height:1.9;max-width:460px;margin-bottom:38px;}
+    .btn-teal{background:linear-gradient(135deg,var(--teal-dim),var(--teal),var(--teal-light));color:var(--ink);font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px 32px;border:none;border-radius:1px;cursor:pointer;transition:transform var(--t),box-shadow var(--t);}
+    .btn-teal:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(63,168,154,0.35);}
+    .btn-outline-t{background:transparent;color:var(--teal);font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:12px 32px;border:1px solid rgba(63,168,154,0.4);border-radius:1px;cursor:pointer;transition:var(--t);}
+    .btn-outline-t:hover{background:rgba(63,168,154,0.08);}
+    .hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
+
+    /* SECTIONS */
+    section{padding:90px 5%;}
+    .sec-eyebrow{font-size:0.62rem;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}
+    .sec-title{font-family:'IM Fell English',serif;font-size:clamp(1.8rem,3.2vw,2.8rem);color:var(--parchment);line-height:1.2;margin-bottom:14px;}
+    .sec-title em{font-style:italic;color:var(--teal-light);}
+    .teal-line{width:40px;height:2px;background:linear-gradient(90deg,var(--teal),transparent);margin:14px 0 36px;}
+    .fade-in{opacity:0;transform:translateY(22px);transition:opacity 0.7s ease,transform 0.7s ease;}
+    .fade-in.visible{opacity:1;transform:translateY(0);}
+
+    /* SHOP */
+    #shop{background:var(--deep);}
+    .shop-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:20px;}
+    .shop-filters{display:flex;gap:6px;flex-wrap:wrap;}
+    .filter-btn{background:none;border:1px solid rgba(63,168,154,0.15);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.64rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:7px 15px;border-radius:1px;cursor:pointer;transition:var(--t);}
+    .filter-btn:hover,.filter-btn.active{border-color:var(--teal);color:var(--teal-light);background:rgba(63,168,154,0.05);}
+
+    /* ARTWORK PRODUCT GRID */
+    .product-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);
+      gap:0;background:rgba(63,168,154,0.05);
+      border:1px solid rgba(63,168,154,0.05);
+    }
+    .product-card{background:#060e10;position:relative;cursor:pointer;transition:background var(--t);border:1px solid rgba(63,168,154,0.04);}
+    .product-card:hover{background:#09141a;}
+    .product-img-wrap{position:relative;overflow:hidden;background:#0a1218;}
+    .product-img-wrap img{width:100%;height:380px;object-fit:cover;display:block;transition:transform 0.55s ease;filter:brightness(0.88);}
+    .product-card:hover .product-img-wrap img{transform:scale(1.04);filter:brightness(1);}
+
+    /* + button top right */
+    .prod-plus-btn{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.88);border:none;color:#111;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--t);opacity:0;box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+    .product-card:hover .prod-plus-btn{opacity:1;}
+    .prod-plus-btn:hover{background:var(--teal);color:var(--ink);}
+
+    /* Medium type label */
+    .prod-medium{position:absolute;top:14px;left:14px;font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--teal-light);background:rgba(4,8,10,0.72);padding:4px 10px;border-radius:1px;opacity:0;transition:opacity var(--t);}
+    .product-card:hover .prod-medium{opacity:1;}
+
+    .prod-quick-bar{position:absolute;bottom:0;left:0;right:0;background:rgba(4,8,10,0.9);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;opacity:0;transform:translateY(6px);transition:opacity var(--t),transform var(--t);}
+    .product-card:hover .prod-quick-bar{opacity:1;transform:translateY(0);}
+    .quick-add-btn{background:var(--teal);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border:none;border-radius:1px;cursor:pointer;transition:var(--t);}
+    .quick-add-btn:hover{background:var(--teal-light);}
+    .wishlist-icon{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;color:white;font-size:0.85rem;cursor:pointer;transition:var(--t);}
+    .wishlist-icon:hover{background:rgba(63,168,154,0.3);}
+
+    .product-info{padding:14px 14px 18px;background:#060e10;border-top:1px solid rgba(63,168,154,0.06);display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+    .product-meta{flex:1;}
+    .product-name{font-family:'IM Fell English',serif;font-size:0.95rem;color:var(--parchment);margin-bottom:4px;line-height:1.3;}
+    .product-artist{font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+    .product-price{font-size:0.8rem;font-weight:500;color:var(--muted);}
+    .prod-info-add{width:26px;height:26px;border-radius:50%;background:none;border:1px solid rgba(63,168,154,0.2);color:var(--teal);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--t);flex-shrink:0;margin-top:2px;}
+    .prod-info-add:hover{background:var(--teal);color:var(--ink);border-color:var(--teal);}
+
+    /* SERVICES */
+    #services{background:var(--ink);}
+    .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(63,168,154,0.06);}
+    .srv-card{background:var(--ink);padding:36px 30px;transition:var(--t);}
+    .srv-card:hover{background:#060e10;}
+    .srv-icon{font-size:1.8rem;margin-bottom:14px;}
+    .srv-title{font-family:'IM Fell English',serif;font-size:1.2rem;color:var(--parchment);margin-bottom:10px;}
+    .srv-desc{font-size:0.8rem;color:var(--muted);line-height:1.8;}
+    .srv-tag{display:inline-block;margin-top:14px;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--teal);border-bottom:1px solid rgba(63,168,154,0.3);padding-bottom:2px;}
+
+    /* CONTACT */
+    #contact-a{background:var(--deep);text-align:center;}
+    .c-cards-a{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:40px 0;}
+    .c-chip-a{background:rgba(255,255,255,0.02);border:1px solid rgba(63,168,154,0.14);border-radius:3px;padding:20px 22px;min-width:128px;transition:var(--t);}
+    .c-chip-a:hover{border-color:var(--teal);transform:translateY(-4px);}
+    .c-chip-a .ico{font-size:1.3rem;margin-bottom:8px;}
+    .c-chip-a h5{font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:5px;}
+    .c-chip-a p{font-size:0.8rem;color:var(--off-white);}
+
+    footer{background:#030608;border-top:1px solid rgba(63,168,154,0.07);padding:40px 5% 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+    .f-brand{font-family:'IM Fell English',serif;font-size:1.05rem;letter-spacing:2px;}
+    .f-brand em{font-style:italic;color:var(--teal-light);}
+    .f-parent{font-size:0.68rem;color:var(--muted);}
+    .f-parent a{color:var(--teal);}
+    .f-copy{font-size:0.68rem;color:rgba(255,255,255,0.18);}
+
+    /* CART DRAWER */
+    .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:2000;opacity:0;pointer-events:none;transition:opacity var(--t);}
+    .cart-overlay.open{opacity:1;pointer-events:all;}
+    .cart-drawer{position:fixed;top:0;right:-430px;width:420px;max-width:100vw;height:100vh;background:#07121a;border-left:1px solid rgba(63,168,154,0.15);z-index:2001;transition:right 0.4s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;}
+    .cart-drawer.open{right:0;}
+    .cart-head{padding:22px 22px 18px;border-bottom:1px solid rgba(63,168,154,0.1);display:flex;align-items:center;justify-content:space-between;}
+    .cart-head h3{font-family:'IM Fell English',serif;font-size:1.2rem;color:var(--parchment);}
+    .cart-close{background:none;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer;transition:color var(--t);}
+    .cart-close:hover{color:var(--teal-light);}
+    .cart-body{flex:1;overflow-y:auto;padding:18px 22px;}
+    .cart-empty{text-align:center;padding:56px 0;color:var(--muted);font-size:0.82rem;letter-spacing:1px;}
+    .cart-empty .ico{font-size:2.5rem;margin-bottom:14px;}
+    .cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid rgba(63,168,154,0.07);}
+    .cart-item-img{width:68px;height:68px;object-fit:cover;border-radius:1px;flex-shrink:0;}
+    .cart-item-info{flex:1;}
+    .cart-item-name{font-family:'IM Fell English',serif;font-size:0.92rem;color:var(--parchment);margin-bottom:3px;}
+    .cart-item-artist{font-size:0.62rem;color:var(--muted);letter-spacing:1px;margin-bottom:6px;}
+    .cart-item-price{font-size:0.8rem;color:var(--teal-light);font-weight:600;}
+    .cart-item-row{display:flex;align-items:center;gap:8px;margin-top:8px;}
+    .qty-btn{width:22px;height:22px;background:rgba(63,168,154,0.1);border:1px solid rgba(63,168,154,0.2);color:var(--parchment);border-radius:1px;cursor:pointer;font-size:0.88rem;display:flex;align-items:center;justify-content:center;transition:var(--t);}
+    .qty-btn:hover{background:var(--teal);border-color:var(--teal);color:var(--ink);}
+    .qty-num{font-size:0.78rem;color:var(--parchment);min-width:14px;text-align:center;}
+    .cart-item-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.68rem;margin-left:auto;align-self:flex-start;transition:color var(--t);}
+    .cart-item-remove:hover{color:var(--teal);}
+    .cart-foot{padding:18px 22px 26px;border-top:1px solid rgba(63,168,154,0.1);}
+    .cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+    .cart-total-row span{font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+    .cart-total-row strong{font-family:'IM Fell English',serif;font-size:1.25rem;color:var(--teal-light);}
+
+    /* AUTH MODAL */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:3000;opacity:0;pointer-events:none;transition:opacity var(--t);display:flex;align-items:center;justify-content:center;padding:20px;}
+    .modal-overlay.open{opacity:1;pointer-events:all;}
+    .modal{background:#071012;border:1px solid rgba(63,168,154,0.22);border-radius:4px;width:100%;max-width:400px;padding:38px 34px;position:relative;transform:translateY(20px);transition:transform 0.35s ease;}
+    .modal-overlay.open .modal{transform:translateY(0);}
+    .modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;transition:color var(--t);}
+    .modal-close:hover{color:var(--teal-light);}
+    .modal-logo{font-family:'IM Fell English',serif;font-size:1.15rem;letter-spacing:2px;margin-bottom:4px;}
+    .modal-logo em{font-style:italic;color:var(--teal-light);}
+    .modal-sub{font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:26px;}
+    .modal-tabs{display:flex;gap:0;margin-bottom:24px;border-bottom:1px solid rgba(63,168,154,0.1);}
+    .modal-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:9px 18px 9px 0;cursor:pointer;transition:var(--t);margin-bottom:-1px;}
+    .modal-tab.active{color:var(--teal-light);border-bottom-color:var(--teal);}
+    .form-group{margin-bottom:14px;}
+    .form-group label{display:block;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+    .form-group input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(63,168,154,0.16);color:var(--parchment);font-family:'DM Sans',sans-serif;font-size:0.84rem;padding:10px 13px;border-radius:2px;outline:none;transition:var(--t);}
+    .form-group input:focus{border-color:var(--teal);}
+    .form-group input::placeholder{color:rgba(122,144,152,0.45);}
+    .form-panel{display:none;}
+    .form-panel.active{display:block;}
+    .forgot{font-size:0.62rem;color:var(--teal);text-align:right;display:block;margin-top:5px;cursor:pointer;}
+    .forgot:hover{color:var(--teal-light);}
+
+    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:#071318;border:1px solid rgba(63,168,154,0.3);color:var(--parchment);font-size:0.72rem;padding:11px 22px;border-radius:2px;z-index:9999;opacity:0;transition:opacity 0.3s,transform 0.3s;pointer-events:none;white-space:nowrap;}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+    @media(max-width:900px){
+      .product-grid{grid-template-columns:repeat(2,1fr);}
+      .services-grid{grid-template-columns:1fr 1fr;}
+      .nav-center{display:none;}
+      #hero{padding:0 5% 80px;}
+    }
+    @media(max-width:560px){
+      .product-grid{grid-template-columns:1fr 1fr;}
+      .product-img-wrap img{height:220px;}
+      .services-grid{grid-template-columns:1fr;}
+      .cart-drawer{width:100vw;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-left">
+    <div class="nav-brand">Alrayyan <em>Arts</em></div>
+    <div class="nav-sub">by Alrayyan Group</div>
+  </div>
+  <ul class="nav-center">
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#tuhfeh">Tuhfeh Art</a></li>
+    <li><a href="#sales">Sales</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact-a">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-icon-btn" onclick="openAuth()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Account
+    </button>
+    <div class="nav-sep"></div>
+    <button class="nav-icon-btn cart-btn" onclick="openCart()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+      Cart
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <div class="nav-sep"></div>
+    <a href="index.html" class="nav-back">← Group</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-mosaic">
+    <div><img src="images/arts-hero-mosaic-1.jpg" alt=""/></div>
+    <div><img src="images/arts-hero-mosaic-2.jpg" alt=""/></div>
+    <div><img src="images/arts-hero-mosaic-3.jpg" alt=""/></div>
+  </div>
+  <div class="hero-bg-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Gallery & Marketplace</div>
+    <h1 class="hero-title">Art That<br/><em>Moves</em> the Soul.</h1>
+    <p class="hero-desc">Discover, collect and commission original works by Arab and international artists. Each piece is authenticated and curated by our team.</p>
+    <div class="hero-btns">
+      <button class="btn-teal" onclick="document.querySelector('#shop').scrollIntoView({behavior:'smooth'})">Browse Works</button>
+      <button class="btn-outline-t" onclick="openAuth()">Create Account</button>
+    </div>
+  </div>
+</section>
+
+<!-- SHOP -->
+<section id="shop">
+  <div class="shop-header fade-in">
+    <div>
+      <p class="sec-eyebrow">The Collection</p>
+      <h2 class="sec-title">Available <em>Works</em></h2>
+      <div class="teal-line"></div>
+    </div>
+    <div class="shop-filters">
+      <button class="filter-btn active" onclick="setFilter(this,'all')">All</button>
+      <button class="filter-btn" onclick="setFilter(this,'painting')">Painting</button>
+      <button class="filter-btn" onclick="setFilter(this,'photography')">Photography</button>
+      <button class="filter-btn" onclick="setFilter(this,'sculpture')">Sculpture</button>
+      <button class="filter-btn" onclick="setFilter(this,'print')">Prints</button>
+    </div>
+  </div>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- TUHFEH ART -->
+<section id="tuhfeh" style="background:var(--deep);">
+  <div class="fade-in" style="max-width:960px;margin:0 auto;text-align:center;">
+    <p class="sec-eyebrow">Signature Collection</p>
+    <h2 class="sec-title">Tuhfeh <em>Art</em></h2>
+    <div class="teal-line" style="margin:14px auto 28px;"></div>
+    <p style="font-size:.92rem;color:var(--muted);line-height:1.9;max-width:720px;margin:0 auto 28px;">
+      <em>Tuhfeh</em> — meaning "a rare masterpiece" in Arabic — is Alrayyan Arts' signature curated line of museum-grade original works.
+      Each Tuhfeh piece is hand-selected by our curatorial team, authenticated, and accompanied by a certificate of origin.
+      This collection celebrates extraordinary craftsmanship from Arab masters and rising international talents.
+    </p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="#shop" class="btn-teal">Browse Tuhfeh Pieces</a>
+      <a href="#contact-a" class="btn-outline-t">Enquire About Commissions</a>
+    </div>
+  </div>
+</section>
+
+<!-- SALES -->
+<section id="sales">
+  <div class="fade-in" style="text-align:center;margin-bottom:40px;">
+    <p class="sec-eyebrow">For Sale</p>
+    <h2 class="sec-title">Artworks <em>Available to Buy</em></h2>
+    <div class="teal-line" style="margin:14px auto;"></div>
+    <p style="font-size:.82rem;color:var(--muted);max-width:560px;margin:0 auto;">Every artwork listed below is authenticated, price-transparent in JOD, and ready for delivery or gallery pickup.</p>
+  </div>
+  <div class="product-grid fade-in" id="salesGrid"></div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="fade-in" style="text-align:center;margin-bottom:52px;">
+    <p class="sec-eyebrow">What We Offer</p>
+    <h2 class="sec-title">Art <em>Services</em></h2>
+    <div class="teal-line" style="margin:14px auto;"></div>
+  </div>
+  <div class="services-grid fade-in">
+    <div class="srv-card"><div class="srv-icon">🖼️</div><div class="srv-title">Gallery Exhibitions</div><p class="srv-desc">Rotating curated exhibitions showcasing Arab and international contemporary artists.</p><span class="srv-tag">Open to Public →</span></div>
+    <div class="srv-card"><div class="srv-icon">✏️</div><div class="srv-title">Commission Services</div><p class="srv-desc">Work directly with our artists to commission bespoke original pieces for any space.</p><span class="srv-tag">By Appointment →</span></div>
+    <div class="srv-card"><div class="srv-icon">💼</div><div class="srv-title">Art Consulting</div><p class="srv-desc">Expert advisory for corporate collectors — curating collections that tell your story.</p><span class="srv-tag">Get a Quote →</span></div>
+    <div class="srv-card"><div class="srv-icon">🎓</div><div class="srv-title">Workshops</div><p class="srv-desc">Immersive art workshops, artist talks, and cultural events for the creative community.</p><span class="srv-tag">See Schedule →</span></div>
+    <div class="srv-card"><div class="srv-icon">📦</div><div class="srv-title">Art Marketplace</div><p class="srv-desc">Browse and acquire authenticated original works from our curated online collection.</p><span class="srv-tag">Browse Works →</span></div>
+    <div class="srv-card"><div class="srv-icon">🏛️</div><div class="srv-title">Residencies</div><p class="srv-desc">Artist-in-residence programs providing studio space, mentorship and exhibition opportunities.</p><span class="srv-tag">Apply Now →</span></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact-a" style="text-align:center;">
+  <div class="fade-in" style="max-width:540px;margin:0 auto;">
+    <p class="sec-eyebrow">Visit the Gallery</p>
+    <h2 class="sec-title">Alrayyan <em>Arts</em></h2>
+    <div class="teal-line" style="margin:14px auto 0;"></div>
+    <div class="c-cards-a">
+      <div class="c-chip-a"><div class="ico">📍</div><h5>Location</h5><p>Amman, Jordan</p></div>
+      <div class="c-chip-a"><div class="ico">📞</div><h5>Phone</h5><p>+962 79 055 0787</p></div>
+      <div class="c-chip-a"><div class="ico">✉️</div><h5>Email</h5><p><a href="mailto:info@alrayyangroup.com">info@alrayyangroup.com</a></p></div>
+      <div class="c-chip-a"><div class="ico">🕐</div><h5>Hours</h5><p>Daily 11am–9pm</p></div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="https://wa.me/96279055 0787" class="btn-teal" target="_blank">WhatsApp</a>
+      <a href="mailto:info@alrayyangroup.com" class="btn-outline-t">Email Us</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div><div class="f-brand">Alrayyan <em>Arts</em></div><div class="f-parent">Part of <a href="index.html">Alrayyan Group</a></div></div>
+  <div class="f-copy">© 2025 Alrayyan Calligraphy Arts. All rights reserved.</div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-head">
+    <h3>Your Cart</h3>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty"><div class="ico">🖼️</div>Your cart is empty</div>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-total-row">
+      <span>Total</span>
+      <strong id="cartTotal">0.00 JOD</strong>
+    </div>
+    <button class="btn-teal" style="width:100%;" onclick="checkout()">Proceed to Checkout</button>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authOverlay" onclick="if(event.target===this)closeAuth()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAuth()">✕</button>
+    <div class="modal-logo">Alrayyan <em>Arts</em></div>
+    <div class="modal-sub">Your gallery account</div>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
+      <button class="modal-tab" id="tabReg" onclick="switchTab('register')">Create Account</button>
+    </div>
+    <div class="form-panel active" id="loginPanel">
+      <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="your@email.com"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••"/><span class="forgot">Forgot password?</span></div>
+      <button class="btn-teal" style="width:100%;margin-top:8px;" onclick="handleLogin()">Sign In</button>
+    </div>
+    <div class="form-panel" id="registerPanel">
+      <div class="form-group"><label>Full Name</label><input type="text" id="regName" placeholder="Your full name"/></div>
+      <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="your@email.com"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="regPass" placeholder="Min. 8 characters"/></div>
+      <div class="form-group"><label>Confirm Password</label><input type="password" id="regPass2" placeholder="Repeat password"/></div>
+      <button class="btn-teal" style="width:100%;margin-top:8px;" onclick="handleRegister()">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const products = [
+  {id:1,name:'Desert Horizons',      artist:'Layla Al-Rashidi',price:'380.00 JOD',category:'painting',   medium:'Oil on Canvas', size:'80cm × 120cm', description:'Sweeping dunes captured in layered oil strokes — a meditation on the vastness and stillness of the Arabian desert at dawn.', hasCert:true,  img:'images/arts-product-01-desert-horizons.jpg'},
+  {id:2,name:'Golden City',          artist:'Omar Nasser',     price:'520.00 JOD',category:'painting',   medium:'Acrylic',       size:'100cm × 100cm', description:'A stylised aerial view of old Amman at golden hour, rendered in gold leaf and deep ochre acrylics.', hasCert:true,  img:'images/arts-product-02-golden-city.jpg'},
+  {id:3,name:'Calligraphy in Motion',artist:'Hind Khalifa',    price:'290.00 JOD',category:'print',      medium:'Giclée Print',  size:'60cm × 80cm',  description:'A contemporary interpretation of classical Arabic calligraphy, printed in limited edition of 50.', hasCert:false, img:'images/arts-product-03-calligraphy-motion.jpg'},
+  {id:4,name:'Layers of Time',       artist:'Rami Barakat',    price:'640.00 JOD',category:'painting',   medium:'Mixed Media',   size:'90cm × 130cm', description:'Mixed-media on canvas exploring the strata of memory, identity, and place through textured geological forms.', hasCert:true,  img:'images/arts-product-04-layers-of-time.jpg'},
+  {id:5,name:'Light & Shadow',       artist:'Nour Zaki',       price:'220.00 JOD',category:'photography',medium:'Fine Art Print',size:'50cm × 70cm',  description:'A black-and-white study of morning light cutting through an old Amman alleyway, printed on archival fibre paper.', hasCert:false, img:'images/arts-product-05-light-shadow.jpg'},
+  {id:6,name:'Urban Fragments',      artist:'Tarek Mansour',   price:'480.00 JOD',category:'photography',medium:'C-Print',       size:'80cm × 100cm', description:'Large-format colour photograph documenting abstract compositions found in the textures of modern city walls.', hasCert:true,  img:'images/arts-product-06-urban-fragments.jpg'},
+  {id:7,name:'Form & Void',          artist:'Dina Al-Sayed',   price:'850.00 JOD',category:'sculpture',  medium:'Bronze',        size:'45cm × 30cm × 30cm', description:'A cast-bronze sculpture that plays with positive and negative space — a tactile meditation on presence and absence.', hasCert:true,  img:'images/arts-product-07-form-void.jpg'},
+  {id:8,name:'Wadi Reflections',     artist:'Samir Haddad',    price:'310.00 JOD',category:'print',      medium:'Lithograph',    size:'60cm × 75cm',  description:'A hand-pulled lithograph of mirrored canyon waters in Wadi Rum, produced in a numbered edition of 30.', hasCert:false, img:'images/arts-product-08-wadi-reflections.jpg'},
+  {id:9,name:'Colour Study No.7',    artist:'Lina Yousef',     price:'195.00 JOD',category:'painting',   medium:'Watercolour',   size:'40cm × 50cm',  description:'A small jewel of a watercolour — one of a series exploring the colour palettes of spring in the Jordan valley.', hasCert:true,  img:'images/arts-product-09-colour-study.jpg'},
+];
+
+let cart=JSON.parse(localStorage.getItem('aa_cart')||'[]');
+function saveCart(){localStorage.setItem('aa_cart',JSON.stringify(cart));}
+
+function productCardHTML(p){
+  return `
+    <div class="product-card" onclick="location.href='painting-detail.html?id=${p.id}'">
+      <div class="product-img-wrap">
+        <img src="${p.img}" alt="${p.name}" loading="lazy"/>
+        <span class="prod-medium">${p.medium}</span>
+        <button class="prod-plus-btn" onclick="addToCart(${p.id},event)">+</button>
+        <div class="prod-quick-bar">
+          <button class="quick-add-btn" onclick="addToCart(${p.id},event)">Add to Cart</button>
+          <div class="wishlist-icon">♡</div>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-meta">
+          <div class="product-name">${p.name}</div>
+          <div class="product-artist">${p.artist}</div>
+          <div class="product-price">${p.price}</div>
+          <div style="font-size:.6rem;margin-top:4px;color:${p.hasCert?'#8FD687':'#c97373'};letter-spacing:.5px">
+            ${p.hasCert ? '✅ Certificate Included' : '❌ No Certificate'}
+          </div>
+        </div>
+        <button class="prod-info-add" onclick="addToCart(${p.id},event)">+</button>
+      </div>
+    </div>`;
+}
+function renderProducts(filter){
+  const grid=document.getElementById('productGrid');
+  const list=filter==='all'?products:products.filter(p=>p.category===filter);
+  grid.innerHTML=list.map(productCardHTML).join('');
+}
+function renderSales(){
+  const grid=document.getElementById('salesGrid');
+  if(grid) grid.innerHTML = products.map(productCardHTML).join('');
+}
+
+function setFilter(btn,filter){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');renderProducts(filter);
+}
+
+function addToCart(id,e){
+  if(e)e.stopPropagation();
+  const p=products.find(x=>x.id===id);
+  const ex=cart.find(x=>x.id===id);
+  if(ex)ex.qty++;else cart.push({...p,qty:1});
+  saveCart();updateCartBadge();
+  showToast(`"${p.name}" added to cart`);
+  setTimeout(openCart,400);
+}
+
+function removeFromCart(id){cart=cart.filter(x=>x.id!==id);saveCart();updateCartBadge();renderCart();}
+
+function changeQty(id,d){
+  const item=cart.find(x=>x.id===id);if(!item)return;
+  item.qty+=d;
+  if(item.qty<=0)removeFromCart(id);else{saveCart();updateCartBadge();renderCart();}
+}
+
+function updateCartBadge(){
+  const n=cart.reduce((s,i)=>s+i.qty,0);
+  const b=document.getElementById('cartBadge');
+  b.textContent=n;b.classList.toggle('show',n>0);
+}
+
+function renderCart(){
+  const body=document.getElementById('cartBody');
+  if(!cart.length){body.innerHTML='<div class="cart-empty"><div class="ico">🖼️</div>Your cart is empty</div>';document.getElementById('cartTotal').textContent='0.00 JOD';return;}
+  body.innerHTML=cart.map(item=>`
+    <div class="cart-item">
+      <img class="cart-item-img" src="${item.img}" alt="${item.name}"/>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-artist">${item.artist}</div>
+        <div class="cart-item-price">${item.price}</div>
+        <div class="cart-item-row">
+          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+        </div>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart(${item.id})">✕</button>
+    </div>
+  `).join('');
+  const sub=cart.reduce((s,i)=>{const price=parseFloat(i.price.replace(/[^0-9.]/g,''));return s+price*i.qty;},0);
+  document.getElementById('cartTotal').textContent=sub.toFixed(2)+' JOD';
+}
+
+function openCart(){renderCart();document.getElementById('cartOverlay').classList.add('open');document.getElementById('cartDrawer').classList.add('open');document.body.style.overflow='hidden';}
+function closeCart(){document.getElementById('cartOverlay').classList.remove('open');document.getElementById('cartDrawer').classList.remove('open');document.body.style.overflow='';}
+function openAuth(){document.getElementById('authOverlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeAuth(){document.getElementById('authOverlay').classList.remove('open');document.body.style.overflow='';}
+function switchTab(tab){
+  document.getElementById('tabLogin').classList.toggle('active',tab==='login');
+  document.getElementById('tabReg').classList.toggle('active',tab==='register');
+  document.getElementById('loginPanel').classList.toggle('active',tab==='login');
+  document.getElementById('registerPanel').classList.toggle('active',tab==='register');
+}
+function handleLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  if(!email||!pass){showToast('Please fill in all fields');return;}
+  closeAuth();showToast(`Welcome back! Signed in as ${email}`);
+}
+function handleRegister(){
+  const name=document.getElementById('regName').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const pass=document.getElementById('regPass').value;
+  const pass2=document.getElementById('regPass2').value;
+  if(!name||!email||!pass||!pass2){showToast('Please fill in all fields');return;}
+  if(pass!==pass2){showToast('Passwords do not match');return;}
+  if(pass.length<8){showToast('Password must be at least 8 characters');return;}
+  closeAuth();showToast(`Account created! Welcome, ${name.split(' ')[0]} 🎉`);
+}
+function checkout(){if(!cart.length){showToast('Your cart is empty');return;}showToast('Redirecting to checkout…');}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+
+renderProducts('all');
+renderSales();
+updateCartBadge();
+window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);});
+const obs=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');obs.unobserve(entry.target);}});},{threshold:0.1});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+
+<!-- LANGUAGE SWITCHER -->
+<style>
+.lang-sw{display:flex;align-items:center;gap:0;margin-right:10px;}
+.lang-btn{background:none;border:1px solid rgba(63,168,154,0.25);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.58rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 8px;cursor:pointer;transition:var(--t);}
+.lang-btn:first-child{border-radius:2px 0 0 2px;border-right:none;}
+.lang-btn:last-child{border-radius:0 2px 2px 0;}
+.lang-btn.active{background:var(--teal);color:var(--ink);border-color:var(--teal);}
+.lang-btn:hover:not(.active){color:var(--teal-light);border-color:var(--teal);}
+html[dir="rtl"] body{direction:rtl;text-align:right;}
+html[dir="rtl"] .teal-line{background:linear-gradient(270deg,var(--teal),transparent);}
+html[dir="rtl"] .hero-eyebrow::before{display:none;}
+html[dir="rtl"] .c-chip-a p{direction:ltr;}
+</style>
+
+<script>
+(function(){
+  const navRight = document.querySelector('.nav-right');
+  if(navRight){
+    const sw = document.createElement('div');
+    sw.className = 'lang-sw';
+    sw.innerHTML = '<button class="lang-btn active" onclick="setLang(\'en\')">EN</button><button class="lang-btn" onclick="setLang(\'ar\')">AR</button>';
+    navRight.insertBefore(sw, navRight.firstChild);
+  }
+})();
+
+const ai18n = {
+  en: {
+    navSub:'by Alrayyan Group', navBack:'← Group',
+    heroEye:'Calligraphy · Fine Art · Sculpture',
+    heroTitle:'Where Art<br/>Finds <em>Home.</em>',
+    heroColl:'View Collection', heroComm:'Commission a Piece',
+    shopEye:'The Collection', shopTitle:'Available <em>Works</em>',
+    srvEye:'What We Offer', srvTitle:'Art <em>Services</em>',
+    conEye:'Visit the Gallery', conTitle:'Alrayyan <em>Arts</em>',
+    conLoc:'Location', conLocV:'Amman, Jordan', conPhone:'Phone', conEmail:'Email', conHours:'Hours', conHoursV:'Daily 11am–9pm',
+    conWA:'WhatsApp', conMail:'Email Us',
+    fCopy:'© 2025 Alrayyan Calligraphy Arts. All rights reserved.',
+    cartTitle:'Your Cart', cartCheckout:'Proceed to Checkout',
+  },
+  ar: {
+    navSub:'من مجموعة الريان', navBack:'المجموعة ←',
+    heroEye:'خط عربي · فن تشكيلي · نحت',
+    heroTitle:'حيث يجد الفن<br/><em>بيته.</em>',
+    heroColl:'عرض المجموعة', heroComm:'اطلب عملاً فنياً',
+    shopEye:'المجموعة', shopTitle:'الأعمال <em>المتاحة</em>',
+    srvEye:'ما نقدمه', srvTitle:'خدمات <em>فنية</em>',
+    conEye:'زوروا المعرض', conTitle:'فنون <em>الريان</em>',
+    conLoc:'الموقع', conLocV:'عمّان، الأردن', conPhone:'الهاتف', conEmail:'البريد', conHours:'ساعات العمل', conHoursV:'يومياً ١١ص–٩م',
+    conWA:'واتساب', conMail:'راسلنا',
+    fCopy:'© 2025 فنون الريان. جميع الحقوق محفوظة.',
+    cartTitle:'سلة التسوق', cartCheckout:'إتمام الشراء',
+  }
+};
+
+const aSelMap = [
+  ['.nav-sub', 'navSub'], ['.nav-back', 'navBack'],
+  ['.hero-eyebrow', 'heroEye'], ['.hero-title', 'heroTitle'],
+  ['#hero .btn-teal', 'heroColl'], ['#hero .btn-outline-t', 'heroComm'],
+  ['#shop .sec-eyebrow', 'shopEye'], ['#shop .sec-title', 'shopTitle'],
+  ['#services .sec-eyebrow', 'srvEye'], ['#services .sec-title', 'srvTitle'],
+  ['#contact-a .sec-eyebrow', 'conEye'], ['#contact-a .sec-title', 'conTitle'],
+  ['.c-chip-a:nth-child(1) h5', 'conLoc'], ['.c-chip-a:nth-child(1) p', 'conLocV'],
+  ['.c-chip-a:nth-child(2) h5', 'conPhone'],
+  ['.c-chip-a:nth-child(3) h5', 'conEmail'],
+  ['.c-chip-a:nth-child(4) h5', 'conHours'], ['.c-chip-a:nth-child(4) p', 'conHoursV'],
+  ['#contact-a .btn-teal', 'conWA'], ['#contact-a .btn-outline-t', 'conMail'],
+  ['.f-copy', 'fCopy'],
+  ['.cart-head h3', 'cartTitle'],
+];
+
+function setLang(lang){
+  localStorage.setItem('al_lang', lang);
+  document.documentElement.lang = lang==='ar'?'ar':'en';
+  document.documentElement.dir = lang==='ar'?'rtl':'ltr';
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.textContent.trim()===(lang==='ar'?'AR':'EN')));
+  const t = ai18n[lang]; if(!t) return;
+  aSelMap.forEach(([sel, key])=>{const el=document.querySelector(sel); if(el&&t[key]) el.innerHTML=t[key];});
+  const ckBtn = document.querySelector('.cart-foot .btn-teal');
+  if(ckBtn && t.cartCheckout) ckBtn.textContent = t.cartCheckout;
+}
+(function(){const s=localStorage.getItem('al_lang'); if(s==='ar') setLang('ar');})();
+</script>
+</body>
+</html>

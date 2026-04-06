@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Land Detail – Alrayyan Land</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Nunito+Sans:wght@300;400;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --earth:      #080a06;
+      --deep:       #0d0f0a;
+      --olive:      #8aaa4a;
+      --olive-light:#b4d46e;
+      --olive-dim:  #4a6420;
+      --sand:       #f5f0e4;
+      --off-sand:   #e8e0cc;
+      --muted:      #8a9070;
+      --t:          0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Nunito Sans', sans-serif; background: var(--earth); color: var(--sand); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--earth); }
+    ::-webkit-scrollbar-thumb { background: var(--olive); border-radius: 2px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 6%; height: 76px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(8,10,6,0.9); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(138,170,74,0.1); transition: var(--t);
+    }
+    nav.scrolled { height: 60px; background: rgba(8,10,6,0.98); }
+    .nav-brand { font-family: 'Libre Baskerville', serif; font-size: 1.2rem; letter-spacing: 2px; }
+    .nav-brand span { color: var(--olive-light); }
+    .nav-sub { font-size: 0.58rem; letter-spacing: 4px; color: var(--muted); text-transform: uppercase; }
+    .lang-btn{background:none;border:1px solid rgba(138,170,74,0.3);color:#888;font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 10px;cursor:pointer;transition:.3s;}
+    .lang-btn:first-child{border-radius:2px 0 0 2px;border-right:none;}
+    .lang-btn:last-child{border-radius:0 2px 2px 0;}
+    .lang-btn.active{background:#8aaa4a;color:#050505;border-color:#8aaa4a;}
+    .lang-btn:hover:not(.active){color:#8aaa4a;border-color:#8aaa4a;}
+    html[dir="rtl"] body{font-family:'Cairo','Montserrat',sans-serif;text-align:right;direction:rtl;}
+    .nav-back {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--olive); border: 1px solid rgba(138,170,74,0.35);
+      padding: 7px 16px; border-radius: 2px; transition: var(--t);
+    }
+    .nav-back:hover { background: rgba(138,170,74,0.1); }
+
+    /* HERO BANNER */
+    .detail-hero {
+      position: relative; height: 55vh; min-height: 340px;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
+    }
+    .detail-hero-img {
+      position: absolute; inset: 0;
+    }
+    .detail-hero-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(0.35) saturate(0.6);
+    }
+    .detail-hero-grad {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(8,10,6,0.95) 0%, rgba(8,10,6,0.3) 60%, transparent 100%);
+    }
+    .detail-hero-content {
+      position: relative; z-index: 2;
+      padding: 0 6% 52px; width: 100%;
+      animation: fade-up 0.9s ease forwards; opacity: 0; transform: translateY(20px);
+    }
+    @keyframes fade-up { to { opacity:1; transform:translateY(0); } }
+    .detail-eyebrow {
+      font-size: 0.63rem; letter-spacing: 5px; text-transform: uppercase;
+      color: var(--olive); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .detail-eyebrow::before { content:''; width: 28px; height: 1px; background: var(--olive); }
+    .detail-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(1.8rem, 4vw, 3.4rem);
+      color: var(--sand); line-height: 1.1; margin-bottom: 10px;
+    }
+    .detail-title em { font-style: italic; color: var(--olive-light); }
+    .detail-price-tag {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.5rem; color: var(--olive-light); font-weight: 700; margin-top: 12px;
+    }
+    .detail-price-tag span { font-size: 0.75rem; color: var(--muted); font-family: 'Nunito Sans', sans-serif; }
+
+    /* BREADCRUMB */
+    .breadcrumb {
+      padding: 18px 6%; font-size: 0.7rem; color: var(--muted);
+      border-bottom: 1px solid rgba(138,170,74,0.07);
+      display: flex; gap: 8px; align-items: center;
+    }
+    .breadcrumb a { color: var(--olive); }
+    .breadcrumb span { color: rgba(138,170,74,0.4); }
+
+    /* MAIN LAYOUT */
+    .detail-wrap {
+      display: grid; grid-template-columns: 1fr 380px; gap: 0;
+      padding: 0 6%; max-width: 1300px; margin: 0 auto;
+    }
+
+    /* INFO COLUMN */
+    .detail-info { padding: 56px 60px 80px 0; border-right: 1px solid rgba(138,170,74,0.08); }
+
+    .sec-eyebrow { font-size: 0.63rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--olive); margin-bottom: 10px; }
+    .sec-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem); color: var(--sand); line-height: 1.2; margin-bottom: 10px;
+    }
+    .sec-title em { font-style: italic; color: var(--olive-light); }
+    .olive-line { width: 44px; height: 2px; background: linear-gradient(90deg, var(--olive), transparent); margin: 12px 0 32px; }
+
+    /* SPECS TABLE */
+    .specs-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+      background: rgba(138,170,74,0.08); border: 1px solid rgba(138,170,74,0.08);
+      border-radius: 3px; overflow: hidden; margin-bottom: 44px;
+    }
+    .spec-item {
+      background: var(--deep); padding: 22px 18px;
+    }
+    .spec-label {
+      font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 8px;
+    }
+    .spec-value {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.1rem; color: var(--olive-light); font-weight: 700;
+    }
+    .spec-value.normal { font-size: 0.9rem; color: var(--sand); font-family: 'Nunito Sans', sans-serif; }
+
+    /* GALLERY */
+    .gallery-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 44px;
+    }
+    .gallery-grid img {
+      width: 100%; height: 200px; object-fit: cover; border-radius: 2px;
+      filter: brightness(0.75) saturate(0.8); transition: filter 0.4s, transform 0.4s;
+      cursor: pointer;
+    }
+    .gallery-grid img:hover { filter: brightness(0.95) saturate(1); transform: scale(1.02); }
+    .gallery-grid img:first-child { grid-column: 1 / -1; height: 280px; }
+
+    /* DESCRIPTION */
+    .detail-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.95; margin-bottom: 40px; }
+    .detail-desc p + p { margin-top: 16px; }
+
+    /* FEATURES LIST */
+    .features-list { list-style: none; margin-bottom: 44px; }
+    .features-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 0.84rem; color: var(--off-sand); padding: 12px 0;
+      border-bottom: 1px solid rgba(138,170,74,0.07);
+    }
+    .features-list li:last-child { border-bottom: none; }
+    .features-list li::before {
+      content: '✓'; color: var(--olive); font-weight: 700;
+      font-size: 0.8rem; flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* LOCATION */
+    .map-placeholder {
+      width: 100%; height: 240px; background: var(--deep);
+      border: 1px solid rgba(138,170,74,0.1); border-radius: 3px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 10px; margin-bottom: 44px; color: var(--muted);
+    }
+    .map-placeholder .map-icon { font-size: 2rem; }
+    .map-placeholder p { font-size: 0.78rem; letter-spacing: 1px; }
+
+    /* BOOK VISIT COLUMN */
+    .book-column { padding: 56px 0 80px 52px; }
+    .book-sticky { position: sticky; top: 90px; }
+
+    .book-card {
+      background: var(--deep); border: 1px solid rgba(138,170,74,0.15);
+      border-radius: 4px; overflow: hidden;
+    }
+    .book-card-head {
+      background: linear-gradient(135deg, var(--olive-dim), var(--olive));
+      padding: 24px 28px;
+    }
+    .book-card-head h3 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.15rem; color: var(--earth); margin-bottom: 4px;
+    }
+    .book-card-head p { font-size: 0.75rem; color: rgba(8,10,6,0.7); }
+
+    .book-form { padding: 28px; }
+    .form-group { margin-bottom: 18px; }
+    .form-label {
+      display: block; font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%; background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(138,170,74,0.15); border-radius: 2px;
+      padding: 12px 14px; font-family: 'Nunito Sans', sans-serif;
+      font-size: 0.83rem; color: var(--sand); transition: border-color var(--t);
+      outline: none;
+    }
+    .form-input::placeholder { color: rgba(138,144,112,0.5); }
+    .form-input:focus { border-color: rgba(138,170,74,0.5); }
+    .form-input option { background: #1a1e13; color: var(--sand); }
+    textarea.form-input { resize: vertical; min-height: 90px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .btn-book {
+      width: 100%; background: linear-gradient(135deg, var(--olive-dim), var(--olive), var(--olive-light));
+      color: var(--earth); font-family: 'Nunito Sans', sans-serif;
+      font-size: 0.73rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      padding: 14px; border: none; border-radius: 2px; cursor: pointer;
+      transition: transform var(--t), box-shadow var(--t); margin-top: 6px;
+    }
+    .btn-book:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(138,170,74,0.3); }
+
+    .book-note {
+      font-size: 0.72rem; color: var(--muted); text-align: center;
+      margin-top: 14px; line-height: 1.6;
+    }
+
+    /* SUCCESS STATE */
+    .book-success {
+      display: none; padding: 28px; text-align: center;
+    }
+    .book-success .success-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .book-success h4 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.1rem; color: var(--olive-light); margin-bottom: 10px;
+    }
+    .book-success p { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+
+    /* CONTACT CHIPS */
+    .quick-contact {
+      margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .q-chip {
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(138,170,74,0.1);
+      border-radius: 3px; padding: 14px 14px; text-align: center;
+      transition: var(--t); cursor: pointer;
+    }
+    .q-chip:hover { border-color: var(--olive); }
+    .q-chip .ico { font-size: 1.1rem; margin-bottom: 6px; }
+    .q-chip p { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.5px; }
+    .q-chip a { color: var(--olive-light); font-size: 0.75rem; font-weight: 600; }
+
+    /* RELATED */
+    .related-section { padding: 80px 6%; background: var(--deep); }
+    .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 40px; }
+    .land-card {
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(138,170,74,0.12);
+      border-radius: 3px; overflow: hidden; transition: var(--t);
+    }
+    .land-card:hover { border-color: rgba(138,170,74,0.4); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+    .land-card-img img {
+      width: 100%; height: 170px; object-fit: cover;
+      filter: brightness(0.7) saturate(0.7); transition: filter 0.5s, transform 0.5s;
+    }
+    .land-card:hover .land-card-img img { filter: brightness(0.9) saturate(0.9); transform: scale(1.05); }
+    .land-card-body { padding: 20px 18px 22px; }
+    .land-district {
+      font-size: 0.62rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--olive); margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+    }
+    .land-district::before { content:'📍'; font-size: 0.7rem; }
+    .land-name { font-family: 'Libre Baskerville', serif; font-size: 1.05rem; color: var(--sand); margin-bottom: 8px; }
+    .land-price { font-family: 'Libre Baskerville', serif; font-size: 1rem; color: var(--olive-light); font-weight: 700; }
+    .land-price span { font-size: 0.68rem; color: var(--muted); font-family: 'Nunito Sans', sans-serif; }
+    .land-cta {
+      display: inline-block; margin-top: 10px;
+      font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--olive); border-bottom: 1px solid rgba(138,170,74,0.3); padding-bottom: 2px;
+      transition: color var(--t);
+    }
+    .land-card:hover .land-cta { color: var(--olive-light); }
+
+    /* FOOTER */
+    footer {
+      background: #050704; border-top: 1px solid rgba(138,170,74,0.07);
+      padding: 40px 6% 24px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+    }
+    .f-brand-l { font-family: 'Libre Baskerville', serif; font-size: 1.1rem; letter-spacing: 2px; }
+    .f-brand-l em { font-style: italic; color: var(--olive-light); }
+    .f-parent-l { font-size: 0.72rem; color: var(--muted); }
+    .f-parent-l a { color: var(--olive); }
+    .f-copy-l { font-size: 0.72rem; color: rgba(255,255,255,0.18); }
+
+    /* LIGHTBOX */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 9000;
+      background: rgba(0,0,0,0.92); align-items: center; justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; border-radius: 2px; }
+    .lb-close {
+      position: absolute; top: 24px; right: 32px;
+      font-size: 2rem; color: var(--muted); cursor: pointer; transition: color var(--t);
+    }
+    .lb-close:hover { color: var(--sand); }
+
+    /* FADE IN */
+    .fade-in { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1024px) {
+      .detail-wrap { grid-template-columns: 1fr; }
+      .detail-info { padding: 44px 0 0; border-right: none; }
+      .book-column { padding: 40px 0 60px; }
+      .book-sticky { position: static; }
+      .related-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .specs-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-grid img:first-child { height: 220px; }
+      .form-row { grid-template-columns: 1fr; }
+      .related-grid { grid-template-columns: 1fr; }
+      .quick-contact { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div>
+      <div class="nav-brand">ALRAYYAN <span>LAND</span></div>
+      <div class="nav-sub">by Alrayyan Group</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <a href="land.html" class="nav-back">← All Listings</a>
+      <div class="lang-sw" style="display:flex;align-items:center">
+        <button class="lang-btn active" onclick="setPageLang('en')">EN</button>
+        <button class="lang-btn" onclick="setPageLang('ar')">AR</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO BANNER -->
+  <div class="detail-hero" style="padding-top:76px">
+    <div class="detail-hero-img">
+      <img id="hero-img" src="" alt="Land Plot"/>
+    </div>
+    <div class="detail-hero-grad"></div>
+    <div class="detail-hero-content">
+      <div class="detail-eyebrow" id="hero-district">District</div>
+      <h1 class="detail-title" id="hero-title">Plot Name</h1>
+      <div class="detail-price-tag" id="hero-price">JD — <span>/ plot</span></div>
+    </div>
+  </div>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="index.html">Alrayyan Group</a>
+    <span>/</span>
+    <a href="land.html">Land</a>
+    <span>/</span>
+    <span id="bc-name">Plot</span>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="detail-wrap">
+
+    <!-- INFO COLUMN -->
+    <div class="detail-info">
+
+      <!-- GALLERY -->
+      <div class="gallery-grid fade-in" id="gallery-grid">
+        <!-- filled by JS -->
+      </div>
+
+      <!-- SPECS -->
+      <div class="fade-in">
+        <p class="sec-eyebrow">Plot Specifications</p>
+        <h2 class="sec-title">Land <em>Details</em></h2>
+        <div class="olive-line"></div>
+        <div class="specs-grid" id="specs-grid">
+          <!-- filled by JS -->
+        </div>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="fade-in">
+        <p class="sec-eyebrow">About This Plot</p>
+        <h2 class="sec-title">Plot <em>Overview</em></h2>
+        <div class="olive-line"></div>
+        <div class="detail-desc" id="detail-desc"></div>
+      </div>
+
+      <!-- FEATURES -->
+      <div class="fade-in">
+        <p class="sec-eyebrow">Key Features</p>
+        <h2 class="sec-title">What's <em>Included</em></h2>
+        <div class="olive-line"></div>
+        <ul class="features-list" id="features-list"></ul>
+      </div>
+
+      <!-- LOCATION -->
+      <div class="fade-in">
+        <p class="sec-eyebrow">Location</p>
+        <h2 class="sec-title">Find the <em>Plot</em></h2>
+        <div class="olive-line"></div>
+        <div class="map-placeholder">
+          <div class="map-icon">📍</div>
+          <p id="map-address">Amman, Jordan</p>
+          <p style="font-size:0.7rem; margin-top:4px; color:rgba(138,144,112,0.6)">Contact us to arrange a guided site visit</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOOK VISIT COLUMN -->
+    <div class="book-column" id="book">
+      <div class="book-sticky">
+        <p class="sec-eyebrow" style="margin-bottom:10px">Schedule a Visit</p>
+        <h2 class="sec-title" style="font-size:1.4rem">Book a <em>Site Visit</em></h2>
+        <div class="olive-line"></div>
+
+        <div class="book-card">
+          <div class="book-card-head">
+            <h3>Request a Site Visit</h3>
+            <p>Our team will confirm within 24 hours</p>
+          </div>
+
+          <form class="book-form" id="book-form" onsubmit="submitBooking(event)">
+            <input type="hidden" id="form-land-id" name="land_id"/>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="f-first">First Name *</label>
+                <input class="form-input" type="text" id="f-first" name="first_name" placeholder="Ahmad" required/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="f-last">Last Name *</label>
+                <input class="form-input" type="text" id="f-last" name="last_name" placeholder="Al-Hassan" required/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="f-email">Email Address *</label>
+              <input class="form-input" type="email" id="f-email" name="email" placeholder="ahmad@example.com" required/>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="f-phone">Phone / WhatsApp *</label>
+              <input class="form-input" type="tel" id="f-phone" name="phone" placeholder="+962 7X XXX XXXX" required/>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="f-date">Preferred Date *</label>
+                <input class="form-input" type="date" id="f-date" name="visit_date" required/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="f-time">Preferred Time</label>
+                <select class="form-input" id="f-time" name="visit_time">
+                  <option value="">Any time</option>
+                  <option value="09:00">9:00 AM</option>
+                  <option value="10:00">10:00 AM</option>
+                  <option value="11:00">11:00 AM</option>
+                  <option value="12:00">12:00 PM</option>
+                  <option value="14:00">2:00 PM</option>
+                  <option value="15:00">3:00 PM</option>
+                  <option value="16:00">4:00 PM</option>
+                  <option value="17:00">5:00 PM</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="f-purpose">Purpose of Visit</label>
+              <select class="form-input" id="f-purpose" name="purpose">
+                <option value="">Select purpose</option>
+                <option value="residential">Residential Build</option>
+                <option value="villa">Villa / Private Residence</option>
+                <option value="commercial">Commercial Development</option>
+                <option value="investment">Investment / Resale</option>
+                <option value="mixed">Mixed-Use Project</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="f-msg">Message (Optional)</label>
+              <textarea class="form-input" id="f-msg" name="message" placeholder="Any questions or special requirements..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-book">Book Site Visit →</button>
+            <p class="book-note">Free of charge · No obligation · Weekdays 9am–6pm</p>
+          </form>
+
+          <div class="book-success" id="book-success">
+            <div class="success-icon">✅</div>
+            <h4>Visit Request Received!</h4>
+            <p>Thank you. Our land team will contact you within 24 hours to confirm your site visit appointment.</p>
+            <p style="margin-top:12px; font-size:0.75rem; color:var(--olive)">Ref: <span id="booking-ref"></span></p>
+          </div>
+        </div>
+
+        <!-- Quick contact -->
+        <div class="quick-contact">
+          <div class="q-chip">
+            <div class="ico">📞</div>
+            <p>Call Us</p>
+            <a href="tel:+96279055 0787">+962 79 055 0787</a>
+          </div>
+          <div class="q-chip">
+            <div class="ico">💬</div>
+            <p>WhatsApp</p>
+            <a href="https://wa.me/96279055 0787" target="_blank">Chat Now</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RELATED LISTINGS -->
+  <div class="related-section">
+    <div class="fade-in">
+      <p class="sec-eyebrow">More Plots</p>
+      <h2 class="sec-title" style="font-family:'Libre Baskerville',serif; font-size:clamp(1.4rem,2.5vw,2rem); color:var(--sand)">Other <em style="color:var(--olive-light); font-style:italic">Listings</em></h2>
+      <div class="olive-line"></div>
+    </div>
+    <div class="related-grid fade-in" id="related-grid">
+      <!-- filled by JS -->
+    </div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lb-close">✕</span>
+    <img id="lb-img" src="" alt=""/>
+  </div>
+
+  <footer>
+    <div>
+      <div class="f-brand-l">ALRAYYAN <em>LAND</em></div>
+      <div class="f-parent-l">Part of <a href="index.html">Alrayyan Group</a></div>
+    </div>
+    <div class="f-copy-l">© 2025 Alrayyan Land. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // ── Land Data ──────────────────────────────────────────────────────────────
+    const LANDS = {
+      abdoun: {
+        id: 'abdoun',
+        district: 'Abdoun',
+        name: 'Residential Plot — Abdoun Hill',
+        price: 'JD 480,000',
+        heroImg: 'images/land-listing-01-abdoun.jpg',
+        gallery: [
+          'images/land-listing-01-abdoun.jpg',
+          'images/land-district-abdoun.jpg',
+          'images/land-why-invest.jpg',
+        ],
+        specs: [
+          { label: 'Plot Area',    value: '750 m²' },
+          { label: 'Zone',         value: 'Residential' },
+          { label: 'Title Deed',   value: 'Titled — Clear' },
+          { label: 'District',     value: 'Abdoun, Amman' },
+          { label: 'Build Ratio',  value: '40% (A1 Zone)' },
+          { label: 'Floors',       value: 'Up to 4 Floors' },
+        ],
+        description: `
+          <p>A rare, fully-flat residential plot positioned on the prestigious Abdoun Hill — one of Amman's most sought-after addresses. The plot sits on a quiet, tree-lined street with direct unobstructed panoramic views over the western side of the city.</p>
+          <p>Abdoun is home to ambassadors, business leaders, and Amman's diplomatic community. The neighbourhood offers unmatched infrastructure: proximity to the Royal Court, 5-star hotels, premium retail, and top-tier schools. Land values in Abdoun have appreciated by an average of 9% annually over the past decade.</p>
+          <p>The plot carries an immediate residential building permit — ready to build from day one. All utilities (water, electricity, sewage, fibre) are already connected to the boundary.</p>
+        `,
+        features: [
+          'Clean title deed — no encumbrances or disputes',
+          'Flat topography — reduces foundation and construction costs',
+          'Panoramic city views from first floor upward',
+          'All utilities connected to plot boundary',
+          'Immediate residential building permit available',
+          'Close proximity to embassies, premium hotels, and schools',
+          'Quiet, low-traffic cul-de-sac setting',
+          'Foreign ownership permitted',
+        ],
+        address: 'Abdoun Hill, West Amman, Jordan',
+      },
+
+      dabouq: {
+        id: 'dabouq',
+        district: 'Dabouq',
+        name: 'Villa Plot — Dabouq Highlands',
+        price: 'JD 620,000',
+        heroImg: 'images/land-listing-02-dabouq.jpg',
+        gallery: [
+          'images/land-listing-02-dabouq.jpg',
+          'images/land-district-dabouq.jpg',
+          'images/land-why-invest.jpg',
+        ],
+        specs: [
+          { label: 'Plot Area',    value: '1,200 m²' },
+          { label: 'Zone',         value: 'Villa Zone' },
+          { label: 'Title Deed',   value: 'Titled — Clear' },
+          { label: 'District',     value: 'Dabouq, Amman' },
+          { label: 'Build Ratio',  value: '30% (B2 Villa)' },
+          { label: 'Floors',       value: 'Up to 3 Floors' },
+        ],
+        description: `
+          <p>An elevated, generously-sized villa plot set within Dabouq's exclusive residential highlands. Surrounded by pine and oak forest, the terrain offers complete privacy and sweeping views over West Amman's green corridor.</p>
+          <p>Dabouq is widely regarded as one of Amman's most elite villa neighbourhoods. Its low-density zoning, cool microclimate, and proximity to the Airport Road make it the preferred address for Amman's wealthiest families and international residents.</p>
+          <p>The plot's 1,200 m² size allows for a generous villa footprint, landscaped gardens, swimming pool and guesthouse all within a single compound.</p>
+        `,
+        features: [
+          'Large 1,200 m² fully-titled plot',
+          'Elevated position with forest and valley views',
+          'Villa-only zoning — ensures exclusive neighbourhood character',
+          'Sufficient size for villa + pool + guesthouse',
+          'Cool microclimate — 3–5°C cooler than Amman centre',
+          'Private, low-traffic road access',
+          'All utilities connected',
+          'Foreign ownership permitted',
+        ],
+        address: 'Dabouq Highlands, West Amman, Jordan',
+      },
+
+      khalda: {
+        id: 'khalda',
+        district: 'Khalda',
+        name: 'Commercial Plot — Khalda Strip',
+        price: 'JD 390,000',
+        heroImg: 'images/land-listing-03-khalda.jpg',
+        gallery: [
+          'images/land-listing-03-khalda.jpg',
+          'images/land-district-khalda.jpg',
+          'images/land-why-invest.jpg',
+        ],
+        specs: [
+          { label: 'Plot Area',    value: '500 m²' },
+          { label: 'Zone',         value: 'Commercial' },
+          { label: 'Title Deed',   value: 'Titled — Clear' },
+          { label: 'District',     value: 'Khalda, Amman' },
+          { label: 'Build Ratio',  value: '60% (C1 Zone)' },
+          { label: 'Floors',       value: 'Up to 6 Floors' },
+        ],
+        description: `
+          <p>A strategically positioned corner commercial plot fronting Khalda's main commercial artery. The corner configuration provides double street frontage — maximising visibility and access — making it ideal for a retail ground floor, medical clinic, or boutique office building.</p>
+          <p>Khalda is a high-density, high-demand district with a large captive population of professionals, families, and university students. Foot traffic along this strip is consistently high throughout the day and evening.</p>
+          <p>The C1 commercial zoning permits up to 6 storeys with a 60% build ratio — allowing approximately 3,000 m² of gross buildable area on this plot alone.</p>
+        `,
+        features: [
+          'Corner plot — double street frontage',
+          'C1 Commercial zoning — up to 6 storeys',
+          '~3,000 m² gross buildable area potential',
+          'High daily foot and vehicle traffic',
+          'Ideal for clinic, retail, offices, or restaurant',
+          'Close to University of Jordan — large student catchment',
+          'All commercial utilities connected',
+          'Foreign investment permitted',
+        ],
+        address: 'Khalda Main Strip, North-West Amman, Jordan',
+      },
+
+      sweifieh: {
+        id: 'sweifieh',
+        district: 'Sweifieh',
+        name: 'Mixed-Use Plot — Sweifieh Centre',
+        price: 'JD 550,000',
+        heroImg: 'images/land-listing-04-sweifieh.jpg',
+        gallery: [
+          'images/land-listing-04-sweifieh.jpg',
+          'images/land-district-sweifieh.jpg',
+          'images/land-why-invest.jpg',
+        ],
+        specs: [
+          { label: 'Plot Area',    value: '680 m²' },
+          { label: 'Zone',         value: 'Mixed-Use' },
+          { label: 'Title Deed',   value: 'Titled — Clear' },
+          { label: 'District',     value: 'Sweifieh, Amman' },
+          { label: 'Build Ratio',  value: '55% (MU Zone)' },
+          { label: 'Floors',       value: 'Up to 7 Floors' },
+        ],
+        description: `
+          <p>A premium mixed-use plot in the absolute heart of Sweifieh — one of Amman's most vibrant commercial and residential districts. The mixed-use zoning allows for residential apartments over a commercial or retail base — the most sought-after development typology in the market today.</p>
+          <p>Sweifieh is home to Amman's densest concentration of branded retail, restaurants, banks, and healthcare facilities. Demand for both commercial and residential space in this district far exceeds supply, resulting in consistent rental yields and capital appreciation.</p>
+          <p>With 7 permissible floors and a 55% build ratio, the development potential exceeds 4,000 m² of gross area — making this an exceptional investment-grade opportunity.</p>
+        `,
+        features: [
+          'Mixed-use zoning — residential + commercial in one building',
+          'Prime central Sweifieh location',
+          '4,000+ m² gross buildable area',
+          'Walking distance to major retail and amenities',
+          'High residential and commercial rental demand',
+          'Full utilities and infrastructure in place',
+          'Adjacent to major banking and commercial offices',
+          'Suitable for foreign institutional investment',
+        ],
+        address: 'Sweifieh Centre, West Amman, Jordan',
+      },
+
+      rabieh: {
+        id: 'rabieh',
+        district: 'Rabieh',
+        name: 'Residential Plot — Rabieh Gardens',
+        price: 'JD 420,000',
+        heroImg: 'images/land-listing-05-rabieh.jpg',
+        gallery: [
+          'images/land-listing-05-rabieh.jpg',
+          'images/land-district-rabieh.jpg',
+          'images/land-why-invest.jpg',
+        ],
+        specs: [
+          { label: 'Plot Area',    value: '900 m²' },
+          { label: 'Zone',         value: 'Residential' },
+          { label: 'Title Deed',   value: 'Titled — Clear' },
+          { label: 'District',     value: 'Rabieh, Amman' },
+          { label: 'Build Ratio',  value: '35% (A2 Zone)' },
+          { label: 'Floors',       value: 'Up to 3 Floors' },
+        ],
+        description: `
+          <p>An expansive residential plot nestled within Rabieh's leafy, prestigious residential belt. Bordered by mature trees and set on a quiet residential street, the plot enjoys natural seclusion rarely found this close to central Amman.</p>
+          <p>Rabieh's unique character is defined by its mature gardens, wide streets, embassy residences, and well-established private schools. It is one of the few Amman districts where large residential plots of this size remain available.</p>
+          <p>The 900 m² size is perfect for a generously-proportioned family villa with garden, providing a true retreat within the city.</p>
+        `,
+        features: [
+          '900 m² of prime residential land',
+          'Surrounded by embassy residences and premium villas',
+          'Tree-lined, low-traffic street',
+          'Close to Rabieh\'s best private schools',
+          'Quiet, established neighbourhood with mature landscaping',
+          'Cool, shaded plot — natural tree cover',
+          'Full utilities connected',
+          'Suitable for private family use or premium rental villa',
+        ],
+        address: 'Rabieh Gardens, North Amman, Jordan',
+      },
+
+      'um-uthaina': {
+        id: 'um-uthaina',
+        district: 'Um Uthaina',
+        name: 'Investment Plot — Um Uthaina Core',
+        price: 'JD 470,000',
+        heroImg: 'images/land-listing-06-um-uthaina.jpg',
+        gallery: [
+          'images/land-listing-06-um-uthaina.jpg',
+          'images/land-district-um-uthaina.jpg',
+          'images/land-why-invest.jpg',
+        ],
+        specs: [
+          { label: 'Plot Area',    value: '600 m²' },
+          { label: 'Zone',         value: 'Investment' },
+          { label: 'Title Deed',   value: 'Titled — Clear' },
+          { label: 'District',     value: 'Um Uthaina, Amman' },
+          { label: 'Build Ratio',  value: '65% (I1 Zone)' },
+          { label: 'Floors',       value: 'Up to 8 Floors' },
+        ],
+        description: `
+          <p>A high-density investment plot in Um Uthaina's thriving commercial and residential core. The I1 Investment zoning classification permits one of the highest build ratios available in West Amman — allowing approximately 5,000+ m² of gross buildable area.</p>
+          <p>Um Uthaina is one of Amman's most in-demand districts — its central location, excellent road network, and concentration of offices, clinics, and restaurants drive consistent demand for both commercial and residential rental space.</p>
+          <p>This plot is ideal for developers seeking maximum yield: an apartment tower with ground-floor retail could generate significant annual income from day one of occupancy.</p>
+        `,
+        features: [
+          'I1 Investment zoning — highest permissible density',
+          '5,000+ m² gross buildable area potential',
+          '8 storeys permissible',
+          'Central Um Uthaina — walking distance to everything',
+          'Excellent rental demand — consistently high occupancy in the area',
+          'Close to major office complexes and healthcare facilities',
+          'All utilities and infrastructure in place',
+          'Foreign ownership and investment permitted',
+        ],
+        address: 'Um Uthaina Core, West Amman, Jordan',
+      },
+    };
+
+    // ── Populate Page ──────────────────────────────────────────────────────────
+    const params = new URLSearchParams(window.location.search);
+    const landId = params.get('land') || 'abdoun';
+    const land   = LANDS[landId] || LANDS['abdoun'];
+
+    // Hero
+    document.getElementById('hero-img').src       = land.heroImg;
+    document.getElementById('hero-img').alt       = land.name;
+    document.getElementById('hero-district').textContent = land.district;
+    document.getElementById('hero-title').innerHTML = land.name.replace('—', '<br/><em>').replace(/^(.*<br\/>)(.*)$/, '$1$2') ;
+    document.getElementById('hero-price').innerHTML = land.price + ' <span>/ plot</span>';
+    document.getElementById('bc-name').textContent  = land.name;
+    document.getElementById('form-land-id').value   = land.id;
+    document.getElementById('map-address').textContent = land.address;
+    document.title = land.name + ' – Alrayyan Land';
+
+    // Hero title clean
+    document.getElementById('hero-title').innerHTML =
+      `<em>${land.district}</em> — ${land.name.split('—')[1] ? land.name.split('—')[1].trim() : land.name}`;
+
+    // Gallery
+    const galleryEl = document.getElementById('gallery-grid');
+    land.gallery.forEach((src, i) => {
+      const img = document.createElement('img');
+      img.src = src; img.alt = land.name + ' ' + (i+1);
+      img.onclick = () => openLightbox(src);
+      galleryEl.appendChild(img);
+    });
+
+    // Specs
+    const specsEl = document.getElementById('specs-grid');
+    land.specs.forEach(s => {
+      specsEl.innerHTML += `<div class="spec-item"><div class="spec-label">${s.label}</div><div class="spec-value normal">${s.value}</div></div>`;
+    });
+
+    // Description
+    document.getElementById('detail-desc').innerHTML = land.description;
+
+    // Features
+    const featEl = document.getElementById('features-list');
+    land.features.forEach(f => {
+      featEl.innerHTML += `<li>${f}</li>`;
+    });
+
+    // Related (other 3 lands)
+    const relatedEl = document.getElementById('related-grid');
+    const others = Object.values(LANDS).filter(l => l.id !== land.id).slice(0, 3);
+    others.forEach(l => {
+      relatedEl.innerHTML += `
+        <div class="land-card">
+          <div class="land-card-img">
+            <img src="${l.heroImg}" alt="${l.name}"/>
+          </div>
+          <div class="land-card-body">
+            <div class="land-district">${l.district}</div>
+            <div class="land-name">${l.name}</div>
+            <div class="land-price">${l.price} <span>/ plot</span></div>
+            <a href="land-detail.html?land=${l.id}" class="land-cta">View Details →</a>
+          </div>
+        </div>`;
+    });
+
+    // Set min date for booking to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('f-date').min = today;
+
+    // ── Booking Form ───────────────────────────────────────────────────────────
+    function submitBooking(e) {
+      e.preventDefault();
+      const ref = 'ALR-' + Date.now().toString(36).toUpperCase().slice(-6);
+      document.getElementById('booking-ref').textContent = ref;
+      document.getElementById('book-form').style.display = 'none';
+      document.getElementById('book-success').style.display = 'block';
+    }
+
+    // ── Lightbox ───────────────────────────────────────────────────────────────
+    function openLightbox(src) {
+      document.getElementById('lb-img').src = src;
+      document.getElementById('lightbox').classList.add('open');
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    // ── Scroll effects ─────────────────────────────────────────────────────────
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+    });
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+    // ── LANGUAGE SWITCHER ──────────────────────────────────────────────
+    const LAND_I18N = {
+      en: {
+        navBack:'← All Listings',
+        specs:'Specifications', overview:'Overview', features:'Key Features',
+        location:'Location', book:'Book a Visit', similar:'Similar Plots',
+        fname:'First Name', lname:'Last Name', email:'Email', phone:'Phone',
+        date:'Preferred Date', time:'Preferred Time', purpose:'Purpose', message:'Message',
+        submit:'Request a Visit', anyTime:'Any time',
+      },
+      ar: {
+        navBack:'← جميع القوائم',
+        specs:'المواصفات', overview:'نظرة عامة', features:'الميزات الرئيسية',
+        location:'الموقع', book:'احجز زيارة', similar:'قطع أراضٍ مشابهة',
+        fname:'الاسم الأول', lname:'اسم العائلة', email:'البريد', phone:'الهاتف',
+        date:'التاريخ المفضل', time:'الوقت المفضل', purpose:'الغرض', message:'الرسالة',
+        submit:'اطلب زيارة', anyTime:'أي وقت',
+      }
+    };
+    function setPageLang(lang) {
+      localStorage.setItem('al_lang', lang);
+      document.documentElement.lang = lang === 'ar' ? 'ar' : 'en';
+      document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+      document.querySelectorAll('.lang-btn').forEach(b => {
+        b.classList.toggle('active', b.textContent.trim() === (lang === 'ar' ? 'AR' : 'EN'));
+      });
+      const t = LAND_I18N[lang] || LAND_I18N.en;
+      // Translate known text by matching heading content
+      const map = [
+        ['.nav-back', 'navBack'],
+      ];
+      map.forEach(([sel, key]) => {
+        const el = document.querySelector(sel);
+        if (el && t[key]) el.textContent = t[key];
+      });
+      // Translate h2/h3 headings by English reference
+      const headingMap = {
+        'Specifications':'specs','Overview':'overview','Key Features':'features',
+        'Location':'location','Book a Visit':'book','Similar Plots':'similar',
+        'First Name':'fname','Last Name':'lname','Email':'email','Phone':'phone',
+        'Preferred Date':'date','Preferred Time':'time','Purpose of Visit':'purpose','Message':'message',
+      };
+      document.querySelectorAll('h2,h3,h4,label,button').forEach(el => {
+        const txt = el.textContent.trim();
+        if (headingMap[txt] && t[headingMap[txt]]) {
+          if (!el.dataset.origEn) el.dataset.origEn = txt;
+          el.textContent = t[headingMap[txt]];
+        } else if (el.dataset.origEn && headingMap[el.dataset.origEn] && t[headingMap[el.dataset.origEn]]) {
+          el.textContent = lang === 'en' ? el.dataset.origEn : t[headingMap[el.dataset.origEn]];
+        }
+      });
+    }
+    (function(){
+      const saved = localStorage.getItem('al_lang');
+      if (saved === 'ar') setPageLang('ar');
+    })();
+  </script>
+
+</body>
+</html>
