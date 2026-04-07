@@ -35,7 +35,7 @@
       overflow-x: hidden;
     }
     a { text-decoration: none; color: inherit; }
-    img { max-width: 100%; display: block; }
+    img { max-width: 100%; display: block; flex-shrink: 0; object-fit: cover; object-position: center; }
 
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: var(--black); }
@@ -65,7 +65,7 @@
     .avail-badge.full      { background: rgba(239,68,68,0.12);  color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
     .avail-badge::before   { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
-    .office-card-btns { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+    .office-card-btns { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
     .btn-detail {
       font-size: .62rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
       color: var(--gold); border-bottom: 1px solid rgba(184,115,51,0.35); padding-bottom: 2px;
@@ -170,12 +170,12 @@
     }
     .unit-chip.off::before { content: '✗'; text-decoration: none; display: inline-block; }
     .unit-chip.exception {
-      background: rgba(184,115,51,0.1);
-      border-color: rgba(184,115,51,0.3);
-      color: var(--gold-light);
+      background: rgba(34,197,94,0.1);
+      border-color: rgba(34,197,94,0.3);
+      color: #4ade80;
       font-weight: 700;
     }
-    .unit-chip.exception::before { content: '★'; }
+    .unit-chip.exception::before { content: '✓'; font-weight: 700; }
     .avail-row .fl-action {
       display: flex;
       justify-content: flex-end;
@@ -217,6 +217,12 @@
       font-size: .58rem; letter-spacing: 1.5px;
       text-transform: uppercase; color: var(--muted); margin-top: 4px;
     }
+    @media (max-width: 1100px) {
+      .avail-tb-head,
+      .avail-row {
+        grid-template-columns: 1.4fr 0.8fr 2.4fr 1fr;
+      }
+    }
     @media (max-width: 900px) {
       .avail-tb-head { display: none; }
       .avail-row {
@@ -225,6 +231,7 @@
         padding: 20px 20px;
       }
       .avail-row .fl-action { justify-content: flex-start; }
+      .avail-row .fl-units { flex-wrap: wrap; }
     }
 
     /* ===== BOOK VISIT MODAL ===== */
@@ -277,7 +284,7 @@
       filter: drop-shadow(0 0 8px rgba(184,115,51,0.4));
       transition: var(--t);
     }
-    nav.scrolled .nav-logo img { height: 38px; }
+    nav.scrolled .nav-logo img { height: 48px; }
     .nav-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
     .nav-logo-text .name {
       font-family: 'Cormorant Garamond', serif;
@@ -382,8 +389,8 @@
     }
 
     .hero-logo {
-      width: clamp(180px, 28vw, 300px);
-      height: auto;
+      width: 240px;
+      height: 240px;
       margin-bottom: 32px;
       filter:
         drop-shadow(0 0 30px rgba(184,115,51,0.5))
@@ -538,8 +545,8 @@
     }
     .about-img-wrap { position: relative; }
     .about-img-wrap img {
-      width: 100%; height: 680px; object-fit: cover;
-      border-radius: 4px; filter: brightness(0.85);
+      width: 100%; height: 480px; object-fit: cover;
+      border-radius: 4px; filter: brightness(0.85);  transform: scale(1);
     }
     .about-img-wrap::before {
       content: ''; position: absolute;
@@ -598,6 +605,22 @@
       font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
       color: var(--gold); border-bottom: 1px solid rgba(184,115,51,0.35); padding-bottom: 2px;
     }
+    body:not(.show-pricing) .office-tag { display: none; }
+
+    /* ===== SCROLL TO TOP BUTTON ===== */
+    .scroll-top-btn {
+      position: fixed; bottom: 32px; right: 32px; z-index: 900;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--gold); color: var(--black);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; font-weight: 700;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.25s ease;
+      box-shadow: 0 4px 16px rgba(184,115,51,0.35);
+    }
+    .scroll-top-btn.visible { opacity: 1; visibility: visible; }
+    .scroll-top-btn:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(184,115,51,0.5); }
 
     /* ===== FEATURES ===== */
     #features { background: var(--black); }
@@ -695,6 +718,10 @@
     .biz-front-icon {
       font-size: 1.8rem; margin-bottom: 10px;
     }
+    .biz-front-icon img, .biz-back-icon img {
+      height: 1em; width: auto; object-fit: contain; vertical-align: middle;
+    }
+    .biz-back-icon img { height: 1em; }
     .biz-front-name {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.6rem; font-weight: 700;
@@ -794,7 +821,7 @@
       transition: transform 0.5s ease, filter 0.5s ease;
       filter: brightness(0.75) saturate(0.8);
     }
-    .g-item:first-child img { height: 100%; min-height: 260px; }
+    .g-item:first-child img { height: 260px; }
     .g-item:hover img { transform: scale(1.06); filter: brightness(0.95) saturate(1); }
     .g-overlay {
       position: absolute; inset: 0;
@@ -832,7 +859,7 @@
     /* ===== CONTACT ===== */
     #contact { background: var(--black); text-align: center; }
     .contact-logo {
-      width: 110px; margin: 0 auto 28px;
+      width: 110px; height: 110px; margin: 0 auto 28px;
       filter: drop-shadow(0 0 20px rgba(184,115,51,0.3));
     }
     .contact-cards {
@@ -921,23 +948,88 @@
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
       .about-wrap, .features-wrap { grid-template-columns: 1fr; }
-      .about-img-wrap { display: none; }
       .features-img  { display: none; }
       .offices-grid  { grid-template-columns: repeat(2,1fr); }
       .stats-row     { grid-template-columns: repeat(2,1fr); }
       .footer-top    { grid-template-columns: 1fr 1fr; }
       .businesses-grid { grid-template-columns: repeat(2,1fr); }
+      section { padding: 80px 5%; }
     }
-    @media (max-width: 680px) {
+    @media (max-width: 768px) {
+      nav { padding: 0 4%; height: 68px; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
-      .offices-grid, .gallery-grid { grid-template-columns: 1fr; }
+      .nav-logo-text .name { font-size: 1.1rem; letter-spacing: 1px; }
+      .nav-logo-text .tagline { font-size: 0.55rem; letter-spacing: 2px; }
+      .nav-logo img { height: 38px; }
+      section { padding: 60px 4%; }
+      #hero { padding-top: 68px; }
+      .hero-logo { width: 160px; height: 160px; margin-bottom: 20px; }
+      .hero-brand { letter-spacing: 3px; }
+      .hero-subtitle { letter-spacing: 3px; margin-bottom: 32px; font-size: clamp(0.65rem, 1.2vw, 0.85rem); }
+      .hero-buttons { flex-direction: column; align-items: center; gap: 12px; width: 100%; padding: 0 20px; }
+      .btn-gold, .btn-ghost { width: 100%; text-align: center; padding: 14px 20px; font-size: 0.72rem; }
+      .scroll-hint { bottom: 20px; font-size: 0.6rem; }
+      .section-title { font-size: clamp(1.6rem, 3.5vw, 2.4rem); }
+      .section-eyebrow { font-size: 0.6rem; letter-spacing: 3px; }
+      .section-desc { font-size: 0.82rem; }
+      .about-wrap { grid-template-columns: 1fr; gap: 40px; }
+      .about-img-wrap { order: -1; }
+      .about-img-wrap img { height: 280px; }
+      .about-img-wrap::before { display: none; }
+      .about-img-badge { display: none; }
+      .offices-grid { grid-template-columns: 1fr; }
+      .office-card img { height: 180px; }
+      .office-num { font-size: 2rem; top: 170px; }
+      .gallery-grid { grid-template-columns: 1fr; }
       .gallery-grid .g-item:first-child { grid-column: span 1; }
+      .g-item img, .g-item:first-child img { height: 200px; }
       .stats-row { grid-template-columns: repeat(2,1fr); }
-      .footer-top { grid-template-columns: 1fr; }
-      .hero-brand { letter-spacing: 4px; }
+      .stat-num { font-size: 2rem; }
+      .stat-lbl { font-size: 0.62rem; letter-spacing: 1.5px; }
+      .stat-cell { padding: 28px 14px; }
+      .footer-top { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom { flex-direction: column; text-align: center; }
       .businesses-grid { grid-template-columns: 1fr; }
       .biz-card-wrap { height: 380px; }
+      .features-list { gap: 0; }
+      .contact-cards { flex-direction: column; align-items: center; }
+      .c-card { width: 100%; max-width: 320px; }
+      .contact-btns { flex-direction: column; align-items: center; }
+      .btn-wa, .btn-ring { width: 100%; max-width: 320px; text-align: center; justify-content: center; }
+      .avail-summary { gap: 12px; }
+      .avail-sum-item { min-width: 120px; padding: 12px 14px; }
+      .avail-sum-item .num { font-size: 1.3rem; }
+      .mobile-menu a { font-size: 1.4rem; }
+      .lang-sw { margin-left: 8px; }
+    }
+    @media (max-width: 480px) {
+      nav { padding: 0 3%; }
+      section { padding: 48px 3%; }
+      .hero-logo { width: 120px; height: 120px; }
+      .hero-brand { font-size: clamp(1.4rem, 5vw, 2rem); letter-spacing: 2px; }
+      .hero-divider { margin: 12px 0 14px; }
+      .section-title { font-size: clamp(1.3rem, 3vw, 1.8rem); }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .stat-num { font-size: 1.6rem; }
+      .stat-cell { padding: 22px 10px; }
+      .about-img-wrap img { height: 220px; }
+      .office-card-body { padding: 20px 16px 24px; }
+      .biz-card-wrap { height: 340px; }
+      .biz-front-body { padding: 20px 20px 18px; }
+      .biz-front-name { font-size: 1.3rem; }
+      .avail-row { padding: 16px 14px; }
+      .unit-chip { font-size: 0.58rem; padding: 5px 8px; }
+      .btn-book-row { padding: 8px 16px; font-size: 0.58rem; }
+      .avail-summary { flex-direction: column; align-items: center; }
+      .avail-sum-item { width: 100%; max-width: 280px; }
+      .scroll-top-btn { bottom: 20px; right: 20px; width: 38px; height: 38px; font-size: 1rem; }
+    }
+    /* RTL responsive */
+    @media (max-width: 768px) {
+      html[dir="rtl"] .about-wrap { gap: 40px; }
+      html[dir="rtl"] .lang-sw { margin-left: 0; margin-right: 8px; }
+      html[dir="rtl"] .hero-buttons { align-items: center; }
     }
     /* ===== LANGUAGE SWITCHER ===== */
     .lang-sw{display:flex;align-items:center;gap:0;margin-left:16px;}
@@ -962,7 +1054,7 @@
 
   <!-- ====== NAVBAR ====== -->
   <nav id="navbar">
-    <div class="nav-logo">
+    <div class="nav-logo" onclick="document.querySelector('#hero').scrollIntoView({behavior:'smooth'})" style="cursor:pointer;">
       <img src="logo.png" alt="Alrayyan Group Logo"/>
       <div class="nav-logo-text">
         <span class="name">ALRAYYAN GROUP</span>
@@ -1053,27 +1145,27 @@
       <div class="about-img-wrap fade-in">
         <img src="images/index-about-office-interior.webp" alt="About Alrayyan"/>
         <div class="about-img-badge">
-          <div class="num">10+</div>
-          <div class="lbl">Years of Trust</div>
+          <div class="num">20+</div>
+          <div class="lbl" data-i18n="aboutBadge">Years of Trust</div>
         </div>
       </div>
       <div class="fade-in">
-        <p class="section-eyebrow">Who We Are</p>
-        <h2 class="section-title">The Kingdom's Premier<br/>Office Rental Destination</h2>
+        <p class="section-eyebrow" data-i18n="aboutEye">Who We Are</p>
+        <h2 class="section-title" data-i18n="aboutTitle">The Kingdom's Premier<br/>Office Rental Destination</h2>
         <div class="gold-line"></div>
-        <p class="section-desc">
+        <p class="section-desc" data-i18n="aboutP1">
           Alrayyan Group is a leading Saudi real estate company specializing in premium office rental solutions.
           We provide fully equipped, flexible, and prestigious workspaces designed to elevate your business.
         </p>
-        <p class="section-desc" style="margin-top:16px">
-          From executive suites to collaborative co-working spaces, our portfolio spans prime locations
+        <p class="section-desc" data-i18n="aboutP2" style="margin-top:16px">
+          From executive offices to collaborative co-working spaces, our portfolio spans prime locations
           across the Kingdom — blending luxury with functionality.
         </p>
         <div style="margin-top:36px; display:flex; gap:16px; flex-wrap:wrap">
-          <button class="btn-gold" onclick="document.querySelector('#offices').scrollIntoView({behavior:'smooth'})">
+          <button class="btn-gold" data-i18n="aboutBtnView" onclick="document.querySelector('#offices').scrollIntoView({behavior:'smooth'})">
             View Offices
           </button>
-          <button class="btn-ghost" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">
+          <button class="btn-ghost" data-i18n="aboutBtnLearn" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">
             Learn More
           </button>
         </div>
@@ -1088,7 +1180,7 @@
       <h2 class="section-title" data-i18n="availTitle">Available Floors &amp; Units</h2>
       <div class="gold-line"></div>
       <p class="section-desc" style="margin:18px auto 0" data-i18n="availDesc">
-        Real-time inventory across Alrayyan Tower — 8 floors plus B1 and the 9th-floor terrace suites. Click any row to view the full space details.
+        Real-time inventory across Alrayyan Tower — including B1, G floor, and the 9th-floor spaces. Click any row to view details.
       </p>
     </div>
 
@@ -1109,6 +1201,20 @@
         </div>
         <div class="fl-action">
           <button class="btn-book-row" onclick="location.href='floor-detail.html?floor=b1'" data-i18n="bookVisit">Book a Visit</button>
+        </div>
+      </div>
+
+      <!-- G -->
+      <div class="avail-row">
+        <div class="fl-name"><span data-i18n="flG">G Floor</span><small data-i18n="flGSub">Ground · Shops</small></div>
+        <div class="fl-size">27 m²</div>
+        <div class="fl-units">
+          <span class="unit-chip on" data-i18n="unitGShop1">3×3 Shop</span>
+          <span class="unit-chip on" data-i18n="unitGShop2">3×3 Shop</span>
+          <span class="unit-chip on" data-i18n="unitGShop3">3×3 Shop</span>
+        </div>
+        <div class="fl-action">
+          <button class="btn-book-row" onclick="location.href='floor-detail.html?floor=g'" data-i18n="bookVisit">Book a Visit</button>
         </div>
       </div>
 
@@ -1238,7 +1344,7 @@
 
       <!-- 9th Indoor -->
       <div class="avail-row">
-        <div class="fl-name"><span data-i18n="fl9In">9th Floor</span><small data-i18n="fl9InSub">Indoor Suite · Exception</small></div>
+        <div class="fl-name"><span data-i18n="fl9In">9th Floor</span><small data-i18n="fl9InSub">Indoor Space · Exception</small></div>
         <div class="fl-size">100 m²</div>
         <div class="fl-units">
           <span class="unit-chip exception" data-i18n="unit9In">100 m² Indoor Available</span>
@@ -1250,10 +1356,10 @@
     </div>
 
     <div class="avail-summary fade-in">
-      <div class="avail-sum-item"><div class="num">8</div><div class="lbl" data-i18n="sumFloors">Spaces Available</div></div>
-      <div class="avail-sum-item"><div class="num">3,280</div><div class="lbl" data-i18n="sumTotalM">Total m² Available</div></div>
-      <div class="avail-sum-item"><div class="num">4</div><div class="lbl" data-i18n="sumFull">Full Floors</div></div>
-      <div class="avail-sum-item"><div class="num">2</div><div class="lbl" data-i18n="sumExcept">Special Spaces</div></div>
+      <div class="avail-sum-item"><div class="num">9</div><div class="lbl" data-i18n="sumFloors">Spaces Available</div></div>
+      <div class="avail-sum-item"><div class="num">3,307</div><div class="lbl" data-i18n="sumTotalM">Total m² Available</div></div>
+      <div class="avail-sum-item"><div class="num">3</div><div class="lbl" data-i18n="sumFull">Full Floors</div></div>
+      <div class="avail-sum-item"><div class="num">3</div><div class="lbl" data-i18n="sumExcept">Special Spaces</div></div>
     </div>
   </section>
 
@@ -1266,87 +1372,87 @@
     </div>
 
     <div class="offices-grid">
-      <div class="office-card fade-in">
-        <div><img src="images/index-office-executive-suites.jpg" alt="Executive Suites"/></div>
+      <!-- Card 1 — Full Floor -->
+      <div class="office-card fade-in" onclick="window.location.href='office-detail.html?id=1'" style="cursor:pointer">
+        <div><img src="images/index-office-full-floor.jpg" alt="Full Floor"/></div>
         <div class="office-num">01</div>
         <div class="office-card-body">
-          <div class="avail-badge available">8 Units Available</div>
-          <h3>Executive Suites</h3>
-          <p>Private, fully furnished executive offices with dedicated reception, high-speed internet, and premium finishes.</p>
-          <span class="office-tag">From JOD 3,500 / month</span>
-          <div class="office-card-btns">
-            <a href="office-detail.html?id=1" class="btn-detail">View Details →</a>
-            <button class="btn-book-visit" onclick="openBookVisit('Executive Suites')">Book a Visit</button>
-          </div>
-        </div>
-      </div>
-      <div class="office-card fade-in">
-        <div><img src="images/index-office-coworking.jpg" alt="Co-Working"/></div>
-        <div class="office-num">02</div>
-        <div class="office-card-body">
-          <div class="avail-badge available">24 Desks Available</div>
-          <h3>Co-Working Spaces</h3>
-          <p>Flexible shared workspaces designed for startups and freelancers — dynamic, inspiring environments.</p>
-          <span class="office-tag">From JOD 800 / month</span>
-          <div class="office-card-btns">
-            <a href="office-detail.html?id=2" class="btn-detail">View Details →</a>
-            <button class="btn-book-visit" onclick="openBookVisit('Co-Working Spaces')">Book a Visit</button>
-          </div>
-        </div>
-      </div>
-      <div class="office-card fade-in">
-        <div><img src="images/index-office-meeting-rooms.jpg" alt="Meeting Rooms"/></div>
-        <div class="office-num">03</div>
-        <div class="office-card-body">
-          <div class="avail-badge available">6 Rooms Available</div>
-          <h3>Meeting Rooms</h3>
-          <p>State-of-the-art conference facilities available hourly or daily, fully equipped with AV technology.</p>
-          <span class="office-tag">From JOD 250 / hour</span>
-          <div class="office-card-btns">
-            <a href="office-detail.html?id=3" class="btn-detail">View Details →</a>
-            <button class="btn-book-visit" onclick="openBookVisit('Meeting Rooms')">Book a Visit</button>
-          </div>
-        </div>
-      </div>
-      <div class="office-card fade-in">
-        <div><img src="images/index-office-virtual.jpg" alt="Virtual Offices"/></div>
-        <div class="office-num">04</div>
-        <div class="office-card-body">
-          <div class="avail-badge available">12 Packages Available</div>
-          <h3>Virtual Offices</h3>
-          <p>Prestigious business address with mail handling and call answering — your identity, without the overhead.</p>
-          <span class="office-tag">From JOD 400 / month</span>
-          <div class="office-card-btns">
-            <a href="office-detail.html?id=4" class="btn-detail">View Details →</a>
-            <button class="btn-book-visit" onclick="openBookVisit('Virtual Offices')">Book a Visit</button>
-          </div>
-        </div>
-      </div>
-      <div class="office-card fade-in">
-        <div><img src="images/index-office-full-floor.jpg" alt="Full Floors"/></div>
-        <div class="office-num">05</div>
-        <div class="office-card-body">
-          <div class="avail-badge low">2 Floors Available</div>
-          <h3>Full Floor Offices</h3>
-          <p>Entire floors available for enterprise clients requiring expansive, customisable corporate headquarters.</p>
+          <div class="avail-badge available">Available: Floor 4, Floor 6, Floor 7</div>
+          <h3>Full Floor</h3>
+          <p>Entire floor for one tenant. Open layout, maximum space, fully customisable. Ideal for corporate headquarters.</p>
           <span class="office-tag">Custom Pricing</span>
           <div class="office-card-btns">
-            <a href="office-detail.html?id=5" class="btn-detail">View Details →</a>
-            <button class="btn-book-visit" onclick="openBookVisit('Full Floor Offices')">Book a Visit</button>
+            <button class="btn-book-visit" onclick="event.stopPropagation(); openBookVisit('Full Floor')">Book a Visit</button>
           </div>
         </div>
       </div>
-      <div class="office-card fade-in">
-        <div><img src="images/index-office-smart.jpg" alt="Smart Offices"/></div>
+      <!-- Card 2 — Partitioned Units -->
+      <div class="office-card fade-in" onclick="window.location.href='office-detail.html?id=2'" style="cursor:pointer">
+        <div><img src="images/index-office-executive-suites.jpg" alt="Partitioned Units"/></div>
+        <div class="office-num">02</div>
+        <div class="office-card-body">
+          <div class="avail-badge available">Available units on: Floor 3, Floor 5</div>
+          <h3>Partitioned Units</h3>
+          <p>Pre-divided units within a shared floor. Choose 80 m² or 160 m² units, fitted with private entrances and shared corridor.</p>
+          <span class="office-tag">From JOD 800 / month</span>
+          <div class="office-card-btns">
+            <button class="btn-book-visit" onclick="event.stopPropagation(); openBookVisit('Partitioned Units')">Book a Visit</button>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3 — Open Space -->
+      <div class="office-card fade-in" onclick="window.location.href='office-detail.html?id=3'" style="cursor:pointer">
+        <div><img src="images/index-office-coworking.jpg" alt="Open Space"/></div>
+        <div class="office-num">03</div>
+        <div class="office-card-body">
+          <div class="avail-badge available">Special: B1 – 1,000 m²  |  9th Terrace – 300 m²  |  9th Indoor – 100 m²</div>
+          <h3>Open Space</h3>
+          <p>Large undivided open-plan space. Perfect for showrooms, event venues, or custom buildouts. Ground &amp; basement levels.</p>
+          <span class="office-tag">Custom Pricing</span>
+          <div class="office-card-btns">
+            <button class="btn-book-visit" onclick="event.stopPropagation(); openBookVisit('Open Space')">Book a Visit</button>
+          </div>
+        </div>
+      </div>
+      <!-- Card 4 — 9th Floor Outdoor -->
+      <div class="office-card fade-in" onclick="window.location.href='office-detail.html?id=4'" style="cursor:pointer">
+        <div><img src="images/index-gallery-lounge-area.jpg" alt="9th Floor Outdoor Terrace"/></div>
+        <div class="office-num">04</div>
+        <div class="office-card-body">
+          <div class="avail-badge available">Available: 300 m² Outdoor Terrace</div>
+          <h3>9th Floor – Outdoor Terrace</h3>
+          <p>Rooftop outdoor terrace with panoramic city views. Ideal for restaurants, lounges, event spaces, or open-air offices.</p>
+          <span class="office-tag">Custom Pricing</span>
+          <div class="office-card-btns">
+            <button class="btn-book-visit" onclick="event.stopPropagation(); openBookVisit('9th Floor Outdoor')">Book a Visit</button>
+          </div>
+        </div>
+      </div>
+      <!-- Card 5 — 9th Floor Indoor -->
+      <div class="office-card fade-in" onclick="window.location.href='office-detail.html?id=5'" style="cursor:pointer">
+        <div><img src="images/index-gallery-private-office.jpg" alt="9th Floor Indoor"/></div>
+        <div class="office-num">05</div>
+        <div class="office-card-body">
+          <div class="avail-badge available">Available: 100 m² Indoor Space</div>
+          <h3>9th Floor – Indoor Space</h3>
+          <p>Premium penthouse-level indoor space with exclusive access. Perfect for executive offices, private studios, or VIP lounges.</p>
+          <span class="office-tag">Custom Pricing</span>
+          <div class="office-card-btns">
+            <button class="btn-book-visit" onclick="event.stopPropagation(); openBookVisit('9th Floor Indoor')">Book a Visit</button>
+          </div>
+        </div>
+      </div>
+      <!-- Card 6 — Small Shops -->
+      <div class="office-card fade-in" onclick="window.location.href='office-detail.html?id=6'" style="cursor:pointer">
+        <div><img src="images/index-office-smart.jpg" alt="Small Shops"/></div>
         <div class="office-num">06</div>
         <div class="office-card-body">
-          <div class="avail-badge low">4 Units Available</div>
-          <h3>Smart Offices</h3>
-          <p>Tech-integrated spaces with IoT controls, automated lighting, climate management and smart security.</p>
-          <span class="office-tag">From JOD 5,000 / month</span>
+          <div class="avail-badge available">Available: 3 Shops on G Floor</div>
+          <h3>Small Shops</h3>
+          <p>Compact 3×3 m ground-floor retail units with street-level access. Ideal for cafés, boutiques, or service counters.</p>
+          <span class="office-tag">Custom Pricing</span>
           <div class="office-card-btns">
-            <a href="office-detail.html?id=6" class="btn-detail">View Details →</a>
-            <button class="btn-book-visit" onclick="openBookVisit('Smart Offices')">Book a Visit</button>
+            <button class="btn-book-visit" onclick="event.stopPropagation(); openBookVisit('Small Shops')">Book a Visit</button>
           </div>
         </div>
       </div>
@@ -1428,14 +1534,14 @@
               alt="Alrayyan Fashion"/>
             <div class="biz-front-body">
               <div>
-                <div class="biz-front-icon">👗</div>
+                <div class="biz-front-icon"><img src="images/logo-fashion.png" alt="Fashion Logo"/></div>
                 <div class="biz-front-name">Alrayyan <span>Fashion</span></div>
               </div>
               <div class="biz-hover-hint">Hover to explore</div>
             </div>
           </div>
           <div class="biz-back biz-back-fashion">
-            <div class="biz-back-icon">👗</div>
+            <div class="biz-back-icon"><img src="images/logo-fashion.png" alt="Fashion Logo"/></div>
             <div class="biz-back-title">Alrayyan Fashion</div>
             <p class="biz-back-desc">
               Curated luxury and contemporary fashion for the modern Arab individual.
@@ -1460,14 +1566,14 @@
               alt="Alrayyan Calligraphy Arts"/>
             <div class="biz-front-body">
               <div>
-                <div class="biz-front-icon">🎨</div>
+                <div class="biz-front-icon"><img src="images/logo-arts.png" alt="Arts Logo"/></div>
                 <div class="biz-front-name">Alrayyan <span>Arts</span></div>
               </div>
               <div class="biz-hover-hint">Hover to explore</div>
             </div>
           </div>
           <div class="biz-back biz-back-arts">
-            <div class="biz-back-icon">🎨</div>
+            <div class="biz-back-icon"><img src="images/logo-arts.png" alt="Arts Logo"/></div>
             <div class="biz-back-title">Alrayyan Arts</div>
             <p class="biz-back-desc">
               A gallery and creative studio celebrating Arab artists and global contemporary works.
@@ -1492,14 +1598,14 @@
               alt="Alrayyan Land"/>
             <div class="biz-front-body">
               <div>
-                <div class="biz-front-icon">🏔️</div>
+                <div class="biz-front-icon"><img src="images/logo-land.png" alt="Land Logo"/></div>
                 <div class="biz-front-name">Alrayyan <span>Land</span></div>
               </div>
               <div class="biz-hover-hint">Hover to explore</div>
             </div>
           </div>
           <div class="biz-back biz-back-land">
-            <div class="biz-back-icon">🏔️</div>
+            <div class="biz-back-icon"><img src="images/logo-land.png" alt="Land Logo"/></div>
             <div class="biz-back-title">Alrayyan Land</div>
             <p class="biz-back-desc">
               Premium land plots across Amman's most sought-after districts — Abdoun, Dabouq, Khalda and more.
@@ -1566,12 +1672,12 @@
           <div class="bv-group">
             <label class="bv-label">Office Type</label>
             <select class="bv-input" id="bv-office-select">
-              <option value="Executive Suites">Executive Suites</option>
-              <option value="Co-Working Spaces">Co-Working Spaces</option>
-              <option value="Meeting Rooms">Meeting Rooms</option>
-              <option value="Virtual Offices">Virtual Offices</option>
-              <option value="Full Floor Offices">Full Floor Offices</option>
-              <option value="Smart Offices">Smart Offices</option>
+              <option value="Full Floor">Full Floor</option>
+              <option value="Partitioned Units">Partitioned Units</option>
+              <option value="Open Space">Open Space</option>
+              <option value="9th Floor Outdoor">9th Floor – Outdoor Terrace</option>
+              <option value="9th Floor Indoor">9th Floor – Indoor Space</option>
+              <option value="Small Shops">Small Shops</option>
             </select>
           </div>
           <div class="bv-form-row">
@@ -1649,7 +1755,7 @@
       <div class="c-card" onclick="openGoogleMaps()" style="cursor:pointer;" title="Open in Google Maps">
         <div class="icon">📍</div>
         <h4>Location</h4>
-        <p>Amman, Jordan</p>
+        <p>Alrayyan Tower, Queen Rania Street, Amman</p>
         <p style="font-size:.62rem;color:var(--gold);margin-top:6px;letter-spacing:1px;">View on Maps →</p>
       </div>
       <div class="c-card">
@@ -1712,16 +1818,19 @@
         <ul>
           <li><a href="tel:+96279055 0787">+962 79 055 0787</a></li>
           <li><a href="mailto:info@alrayyangroup.com">info@alrayyangroup.com</a></li>
-          <li><a>Amman, Jordan</a></li>
+          <li><a>Alrayyan Tower, Queen Rania Street, Amman</a></li>
           <li><a>Sun–Thu: 9am–6pm</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2025 Alrayyan Group. All rights reserved.</span>
-      <span>Premium Office Rentals · Jordan</span>
+      <span>Premium Office Rentals · Amman, Jordan</span>
     </div>
   </footer>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-top-btn" id="scrollTopBtn" onclick="document.querySelector('#hero').scrollIntoView({behavior:'smooth'})" aria-label="Scroll to top">↑</button>
 
   <!-- ====== JAVASCRIPT ====== -->
   <!-- Bootstrap JS -->
@@ -1745,6 +1854,13 @@
 
     window.addEventListener('scroll', () => {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+      // Show scroll-to-top button after scrolling past #offices
+      const officesSection = document.getElementById('offices');
+      const scrollBtn = document.getElementById('scrollTopBtn');
+      if (officesSection && scrollBtn) {
+        const officesTop = officesSection.offsetTop + officesSection.offsetHeight / 2;
+        scrollBtn.classList.toggle('visible', window.scrollY > officesTop);
+      }
     });
 
     const hamburger  = document.getElementById('hamburger');
@@ -1784,7 +1900,7 @@
 
     /* ===== GOOGLE MAPS ===== */
     function openGoogleMaps() {
-      window.open('https://www.google.com/maps/search/Alrayyan+Group+Amman+Jordan/@31.9539,35.9106,14z', '_blank');
+      window.open('https://www.google.com/maps/search/Alrayyan+Tower+Queen+Rania+Street+Amman', '_blank');
     }
 
     /* ===== BOOK VISIT MODAL ===== */
@@ -1823,15 +1939,15 @@
         stat1:'Office Units', stat2:'Prime Locations', stat3:'Happy Tenants', stat4:'Years of Excellence',
         aboutEye:'Who We Are', aboutTitle:"The Kingdom's Premier<br/>Office Rental Destination",
         aboutP1:'Alrayyan Group is a leading real estate company specializing in premium office rental solutions. We provide fully equipped, flexible, and prestigious workspaces designed to elevate your business.',
-        aboutP2:'From executive suites to collaborative co-working spaces, our portfolio spans prime locations across the Kingdom — blending luxury with functionality.',
+        aboutP2:'From executive offices to collaborative co-working spaces, our portfolio spans prime locations across the Kingdom — blending luxury with functionality.',
         aboutBtnView:'View Offices', aboutBtnLearn:'Learn More', aboutBadge:'Years of Trust',
         offEye:'Our Portfolio', offTitle:'Office Rental Solutions',
-        off1T:'Executive Suites', off1D:'Private, fully furnished executive offices with dedicated reception, high-speed internet, and premium finishes.',
-        off2T:'Co-Working Spaces', off2D:'Flexible shared workspaces designed for startups and freelancers — dynamic, inspiring environments.',
-        off3T:'Meeting Rooms', off3D:'State-of-the-art conference facilities available hourly or daily, fully equipped with AV technology.',
-        off4T:'Virtual Offices', off4D:'Prestigious business address with mail handling and call answering — your identity, without the overhead.',
-        off5T:'Full Floor Offices', off5D:'Entire floors available for enterprise clients requiring expansive, customisable corporate headquarters.',
-        off6T:'Smart Offices', off6D:'Tech-integrated spaces with IoT controls, automated lighting, climate management and smart security.',
+        off1T:'Full Floor', off1D:'Entire floor for one tenant. Open layout, maximum space, fully customisable. Ideal for corporate headquarters.',
+        off2T:'Partitioned Units', off2D:'Pre-divided units within a shared floor. Choose 80 m² or 160 m² units, fitted with private entrances and shared corridor.',
+        off3T:'Open Space', off3D:'Large undivided open-plan space. Perfect for showrooms, event venues, or custom buildouts. Ground & basement levels.',
+        off4T:'9th Floor – Outdoor Terrace', off4D:'Rooftop outdoor terrace with panoramic city views. Ideal for restaurants, lounges, event spaces, or open-air offices.',
+        off5T:'9th Floor – Indoor Space', off5D:'Premium penthouse-level indoor space with exclusive access. Perfect for executive offices, private studios, or VIP lounges.',
+        off6T:'Small Shops', off6D:'Compact 3×3 m ground-floor retail units with street-level access. Ideal for cafés, boutiques, or service counters.',
         featEye:'Why Choose Us', featTitle:'A Standard Above<br/>The Rest',
         feat1T:'Prime Locations', feat1D:"Strategically positioned in the Kingdom's top business districts — Riyadh, Jeddah, Dammam and beyond.",
         feat2T:'All-Inclusive Packages', feat2D:'Utilities, maintenance, security and cleaning all bundled in — one invoice, zero surprises.',
@@ -1847,17 +1963,18 @@
         galEye:'Our Spaces', galTitle:'A Glimpse Inside',
         gal1:'Executive Hall', gal2:'Private Office', gal3:'Lounge Area', gal4:'Open Workspace', gal5:'Boardroom',
         conEye:'Get In Touch', conTitle:"Let's Find Your Perfect Office",
-        conLoc:'Location', conLocV:'Amman, Jordan', conPhone:'Phone', conEmail:'Email', conHours:'Hours', conHoursV:'Sun–Thu: 9am–6pm',
+        conLoc:'Location', conLocV:'Alrayyan Tower, Queen Rania Street, Amman', conPhone:'Phone', conEmail:'Email', conHours:'Hours', conHoursV:'Sun–Thu: 9am–6pm',
         conWA:'WhatsApp Us', conCall:'📞 Call Direct', conMail:'✉️ Email Us',
         footDesc:'Your first choice for premium office rentals and diversified business ventures — where ambition finds its address.',
         footQL:'Quick Links', footOB:'Our Businesses', footCon:'Contact',
-        footCopy:'© 2025 Alrayyan Group. All rights reserved.', footTag:'Premium Office Rentals · Jordan',
+        footCopy:'© 2025 Alrayyan Group. All rights reserved.', footTag:'Premium Office Rentals · Amman, Jordan',
         mHome:'Home', mAbout:'About', mOffices:'Offices', mBiz:'Our Businesses', mGallery:'Gallery', mContact:'Contact',
         navAvailable:'Available',
         availEye:'Current Availability', availTitle:'Available Floors & Units',
-        availDesc:'Real-time inventory across Alrayyan Tower — 8 floors plus B1 and the 9th-floor terrace suites. Click any row to view the full space details.',
+        availDesc:'Real-time inventory across Alrayyan Tower — including B1, G floor, and the 9th-floor spaces. Click any row to view details.',
         availColFloor:'Floor', availColSize:'Total Size', availColStatus:'Unit Availability', availColAction:'Action',
         flB1:'B1 Floor', flB1Sub:'Underground · Exception',
+        flG:'G Floor', flGSub:'Ground · Shops', unitGShop1:'3×3 Shop', unitGShop2:'3×3 Shop', unitGShop3:'3×3 Shop',
         fl1:'1st Floor', fl1Sub:'Fully Occupied',
         fl2:'2nd Floor', fl2Sub:'Fully Occupied',
         fl8:'8th Floor', fl8Sub:'Fully Occupied',
@@ -1868,7 +1985,7 @@
         fl6:'6th Floor', fl6Sub:'Full Floor Available',
         fl7:'7th Floor', fl7Sub:'Full Floor Available',
         fl9Out:'9th Floor', fl9OutSub:'Outdoor Terrace · Exception',
-        fl9In:'9th Floor', fl9InSub:'Indoor Suite · Exception',
+        fl9In:'9th Floor', fl9InSub:'Indoor Space · Exception',
         unitFullB1:'1,000 m² Full Available',
         unit9Out:'300 m² Outdoor Available',
         unit9In:'100 m² Indoor Available',
@@ -1881,15 +1998,15 @@
         stat1:'وحدة مكتبية', stat2:'موقع متميز', stat3:'مستأجر سعيد', stat4:'سنوات من التميز',
         aboutEye:'من نحن', aboutTitle:'الوجهة الأولى<br/>لتأجير المكاتب الفاخرة',
         aboutP1:'مجموعة الريان هي شركة عقارية رائدة متخصصة في حلول تأجير المكاتب الفاخرة. نقدم مساحات عمل مجهزة بالكامل ومرنة ومتميزة.',
-        aboutP2:'من الأجنحة التنفيذية إلى مساحات العمل المشتركة، تمتد محفظتنا عبر مواقع رئيسية تمزج بين الفخامة والوظيفية.',
+        aboutP2:'من المكاتب التنفيذية إلى مساحات العمل المشتركة، تمتد محفظتنا عبر مواقع رئيسية تمزج بين الفخامة والوظيفية.',
         aboutBtnView:'عرض المكاتب', aboutBtnLearn:'اعرف المزيد', aboutBadge:'سنوات من الثقة',
         offEye:'محفظتنا', offTitle:'حلول تأجير المكاتب',
-        off1T:'الأجنحة التنفيذية', off1D:'مكاتب تنفيذية خاصة ومفروشة بالكامل مع استقبال مخصص وإنترنت عالي السرعة.',
-        off2T:'مساحات العمل المشتركة', off2D:'مساحات عمل مشتركة مرنة مصممة للشركات الناشئة والمستقلين.',
-        off3T:'قاعات الاجتماعات', off3D:'مرافق مؤتمرات حديثة متاحة بالساعة أو اليوم ومجهزة بالكامل.',
-        off4T:'المكاتب الافتراضية', off4D:'عنوان تجاري مرموق مع خدمات البريد والرد على المكالمات.',
-        off5T:'مكاتب طابق كامل', off5D:'طوابق كاملة متاحة للشركات التي تحتاج مقرات واسعة وقابلة للتخصيص.',
-        off6T:'المكاتب الذكية', off6D:'مساحات متكاملة مع التقنية وعناصر تحكم إنترنت الأشياء والإضاءة الآلية.',
+        off1T:'طابق كامل', off1D:'طابق كامل لمستأجر واحد. تصميم مفتوح، مساحة قصوى، قابل للتخصيص بالكامل. مثالي للمقرات الرئيسية.',
+        off2T:'وحدات مقسمة', off2D:'وحدات مقسمة مسبقاً ضمن طابق مشترك. اختر وحدات 80 م² أو 160 م² مع مداخل خاصة وممر مشترك.',
+        off3T:'مساحة مفتوحة', off3D:'مساحة مفتوحة كبيرة غير مقسمة. مثالية لصالات العرض أو الفعاليات أو التجهيزات المخصصة.',
+        off4T:'الطابق التاسع – تراس خارجي', off4D:'تراس على السطح مع إطلالات بانورامية على المدينة. مثالي للمطاعم والصالات والفعاليات.',
+        off5T:'الطابق التاسع – مساحة داخلية', off5D:'مساحة داخلية فاخرة بمستوى البنتهاوس مع وصول حصري. مثالي للمكاتب التنفيذية والاستوديوهات.',
+        off6T:'محلات صغيرة', off6D:'وحدات تجزئة أرضية مدمجة 3×3 م مع وصول من مستوى الشارع. مثالية للمقاهي والمتاجر.',
         featEye:'لماذا نحن', featTitle:'معيار أعلى<br/>من البقية',
         feat1T:'مواقع رئيسية', feat1D:'موقع استراتيجي في أفضل المناطق التجارية — عمّان وأكثر.',
         feat2T:'باقات شاملة', feat2D:'المرافق والصيانة والأمن والتنظيف — فاتورة واحدة بدون مفاجآت.',
@@ -1905,7 +2022,7 @@
         galEye:'مساحاتنا', galTitle:'لمحة من الداخل',
         gal1:'القاعة التنفيذية', gal2:'مكتب خاص', gal3:'منطقة الاستراحة', gal4:'مساحة عمل مفتوحة', gal5:'غرفة الاجتماعات',
         conEye:'تواصل معنا', conTitle:'دعنا نجد مكتبك المثالي',
-        conLoc:'الموقع', conLocV:'عمّان، الأردن', conPhone:'الهاتف', conEmail:'البريد', conHours:'ساعات العمل', conHoursV:'أحد–خميس: 9ص–6م',
+        conLoc:'الموقع', conLocV:'برج الريان، شارع الملكة رانيا، عمّان', conPhone:'الهاتف', conEmail:'البريد', conHours:'ساعات العمل', conHoursV:'أحد–خميس: 9ص–6م',
         conWA:'واتساب', conCall:'📞 اتصل مباشرة', conMail:'✉️ راسلنا',
         footDesc:'خيارك الأول لتأجير المكاتب الفاخرة والمشاريع التجارية المتنوعة — حيث يجد الطموح عنوانه.',
         footQL:'روابط سريعة', footOB:'أعمالنا', footCon:'تواصل',
@@ -1913,9 +2030,10 @@
         mHome:'الرئيسية', mAbout:'من نحن', mOffices:'المكاتب', mBiz:'أعمالنا', mGallery:'المعرض', mContact:'تواصل',
         navAvailable:'المتاح',
         availEye:'التوافر الحالي', availTitle:'الطوابق والوحدات المتاحة',
-        availDesc:'المخزون المباشر في برج الريان — 8 طوابق بالإضافة إلى B1 وأجنحة الطابق التاسع. انقر على أي صف لعرض تفاصيل المساحة الكاملة.',
+        availDesc:'المخزون المباشر في برج الريان — بما في ذلك B1 والطابق الأرضي ومساحات الطابق التاسع. انقر على أي صف لعرض التفاصيل.',
         availColFloor:'الطابق', availColSize:'المساحة الإجمالية', availColStatus:'حالة الوحدات', availColAction:'الإجراء',
         flB1:'الطابق B1', flB1Sub:'تحت الأرض · استثناء',
+        flG:'الطابق الأرضي', flGSub:'أرضي · محلات', unitGShop1:'محل 3×3', unitGShop2:'محل 3×3', unitGShop3:'محل 3×3',
         fl1:'الطابق الأول', fl1Sub:'مشغول بالكامل',
         fl2:'الطابق الثاني', fl2Sub:'مشغول بالكامل',
         fl8:'الطابق الثامن', fl8Sub:'مشغول بالكامل',
@@ -1926,7 +2044,7 @@
         fl6:'الطابق السادس', fl6Sub:'طابق كامل متاح',
         fl7:'الطابق السابع', fl7Sub:'طابق كامل متاح',
         fl9Out:'الطابق التاسع', fl9OutSub:'تراس خارجي · استثناء',
-        fl9In:'الطابق التاسع', fl9InSub:'جناح داخلي · استثناء',
+        fl9In:'الطابق التاسع', fl9InSub:'مساحة داخلية · استثناء',
         unitFullB1:'1,000 م² كامل متاح',
         unit9Out:'300 م² تراس خارجي متاح',
         unit9In:'100 م² داخلي متاح',
@@ -1960,14 +2078,7 @@
       ['.stat-cell:nth-child(2) .stat-lbl', 'stat2'],
       ['.stat-cell:nth-child(3) .stat-lbl', 'stat3'],
       ['.stat-cell:nth-child(4) .stat-lbl', 'stat4'],
-      // About
-      ['#about .section-eyebrow', 'aboutEye'],
-      ['#about .section-title', 'aboutTitle'],
-      ['#about .section-desc:first-of-type', 'aboutP1'],
-      ['#about .section-desc:last-of-type', 'aboutP2'],
-      ['#about .btn-gold', 'aboutBtnView'],
-      ['#about .btn-ghost', 'aboutBtnLearn'],
-      ['.about-img-badge .lbl', 'aboutBadge'],
+      // About (handled via data-i18n attributes)
       // Offices
       ['#offices .section-eyebrow', 'offEye'],
       ['#offices .section-title', 'offTitle'],
@@ -2050,10 +2161,14 @@
         if (el && t[key]) el.innerHTML = t[key];
       });
 
-      // data-i18n attribute support
+      // data-i18n attribute support (use innerHTML so <br/> etc. render correctly)
+      const htmlKeys = new Set(['aboutTitle','featTitle']);
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (t[key]) el.textContent = t[key];
+        if (t[key]) {
+          if (htmlKeys.has(key)) { el.innerHTML = t[key]; }
+          else { el.textContent = t[key]; }
+        }
       });
 
       // Visit Website buttons
@@ -2099,6 +2214,11 @@
         }
       } catch(e) { console.warn('admin site content override skipped', e); }
     })();
+
+    // ── ADMIN PRICING VISIBILITY ──
+    if (localStorage.getItem('ar_show_pricing') === 'true') {
+      document.body.classList.add('show-pricing');
+    }
   </script>
 </body>
 </html>

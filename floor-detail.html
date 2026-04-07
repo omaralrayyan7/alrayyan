@@ -113,21 +113,43 @@
       border-bottom:1px solid rgba(184,115,51,0.07);font-size:.84rem;color:var(--off-white);}
     .amenity-item::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
 
-    /* FLOOR PLAN */
-    .plan-box{width:100%;height:320px;background:
-      repeating-linear-gradient(45deg, rgba(184,115,51,0.03) 0 12px, transparent 12px 24px),
-      rgba(184,115,51,0.04);
-      border:1px dashed rgba(184,115,51,0.3);border-radius:4px;
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      gap:10px;color:var(--muted);margin-bottom:56px;position:relative;}
-    .plan-box .fp-icon{font-size:2.6rem;}
-    .plan-box p{font-size:.78rem;letter-spacing:1px;}
-    .plan-box .fp-note{font-size:.62rem;color:rgba(136,136,136,0.5);}
-    .plan-badges{position:absolute;top:16px;right:16px;display:flex;gap:6px;}
-    .plan-badge{font-size:.55rem;font-weight:700;letter-spacing:1px;
-      padding:4px 10px;border-radius:2px;text-transform:uppercase;
-      background:rgba(184,115,51,0.15);color:var(--gold-light);
-      border:1px solid rgba(184,115,51,0.3);}
+
+    /* GLOBAL IMG RULE */
+    img { flex-shrink: 0; object-fit: cover; object-position: center; }
+
+    /* SECTION A — FLOOR IMAGES */
+    .floor-gallery { padding: 56px 0; margin-bottom: 56px; border-top: 1px solid rgba(184,115,51,0.08); border-bottom: 1px solid rgba(184,115,51,0.08); }
+    .fg-mains { display: grid; gap: 6px; margin-bottom: 16px; }
+    .fg-mains.cols-2 { grid-template-columns: 1fr 1fr; }
+    .fg-mains.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .fg-mains img { width: 100%; height: 480px; object-fit: cover; border-radius: 3px; cursor: pointer; transition: filter 0.3s; }
+    .fg-mains img:hover { filter: brightness(1.1); }
+    .fg-thumbs-wrap { position: relative; }
+    .fg-thumbs { display: flex; gap: 8px; overflow-x: auto; scroll-behavior: smooth; padding: 4px 0; }
+    .fg-thumbs::-webkit-scrollbar { height: 3px; }
+    .fg-thumbs::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+    .fg-thumbs img { width: 120px; height: 80px; object-fit: cover; border-radius: 2px; cursor: pointer; border: 1px solid transparent; transition: border-color 0.25s, opacity 0.25s; flex-shrink: 0; opacity: 0.7; }
+    .fg-thumbs img:hover { border-color: var(--gold); opacity: 1; }
+    .fg-thumbs img.active { border: 2px solid var(--gold); opacity: 1; }
+    .fg-simple { display: grid; gap: 6px; }
+    .fg-simple.cols-2 { grid-template-columns: 1fr 1fr; }
+    .fg-simple.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .fg-simple img { width: 100%; height: 480px; object-fit: cover; border-radius: 3px; }
+    .fg-arrow { background: rgba(184,115,51,0.1); border: 1px solid rgba(184,115,51,0.3); color: var(--gold); border-radius: 2px; padding: 8px 14px; cursor: pointer; transition: var(--t); font-size: 0.9rem; }
+    .fg-arrow:hover { background: var(--gold); color: var(--black); }
+    .fg-arrow:disabled { opacity: 0.3; pointer-events: none; }
+    .fg-arrows { display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; }
+
+    /* SECTION B — IMAGINARY CAROUSEL */
+    .floor-renders { padding: 56px 0; margin-bottom: 56px; border-bottom: 1px solid rgba(184,115,51,0.08); }
+    .fr-carousel { position: relative; overflow: hidden; border-radius: 3px; }
+    .fr-track { display: flex; transition: transform 0.5s ease; }
+    .fr-track img { width: 100%; height: 400px; object-fit: cover; flex-shrink: 0; }
+    .fr-arrows { position: absolute; top: 50%; transform: translateY(-50%); display: flex; justify-content: space-between; width: 100%; padding: 0 12px; pointer-events: none; z-index: 2; }
+    .fr-arrows button { pointer-events: all; }
+    .fr-dots { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+    .fr-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(184,115,51,0.3); border: none; cursor: pointer; transition: background 0.25s; }
+    .fr-dot.active { background: var(--gold); }
 
     /* FIND US */
     .find-us-box{width:100%;height:260px;background:
@@ -208,13 +230,45 @@
       .book-col,html[dir="rtl"] .book-col{padding:36px 0 60px;}
       .book-sticky{position:static;}
       .specs-grid{grid-template-columns:repeat(2,1fr);}
+      .fg-mains.cols-3{grid-template-columns:1fr 1fr;}
+      .fg-mains img,.fg-simple img{height:320px;}
+      .fr-track img{height:300px;}
     }
-    @media(max-width:600px){
+    @media(max-width:768px){
+      nav{padding:0 4%;height:62px;}
+      .nav-brand{font-size:1rem;letter-spacing:1.5px;}
+      .nav-back{font-size:.58rem;padding:5px 12px;}
+      .fl-hero{margin-top:62px;height:38vh;min-height:260px;}
+      .fl-hero-content{padding:0 4% 36px;}
+      .fl-title{font-size:clamp(1.5rem,4vw,2.4rem);}
+      .fl-subtitle{font-size:.78rem;letter-spacing:2px;}
+      .fl-size-tag{font-size:.65rem;padding:6px 14px;}
+      .fl-breadcrumb{font-size:.6rem;}
+      .detail-wrap{padding:0 4%;}
+      .sec-title{font-size:clamp(1.2rem,2.5vw,1.6rem);}
+      .overview-desc{font-size:.82rem;line-height:1.8;}
+      .fg-mains.cols-2,.fg-mains.cols-3{grid-template-columns:1fr;}
+      .fg-mains img,.fg-simple img{height:240px;}
+      .fg-simple.cols-2,.fg-simple.cols-3{grid-template-columns:1fr;}
+      .fr-track img{height:240px;}
+      .find-us-box{height:200px;}
+      .find-us-box .pin{font-size:2rem;}
+      .find-us-box .addr{font-size:.82rem;}
+      footer{padding:24px 4% 18px;flex-direction:column;text-align:center;gap:8px;}
+    }
+    @media(max-width:480px){
+      .fl-hero{height:32vh;min-height:220px;}
+      .fl-title{font-size:clamp(1.2rem,4vw,1.8rem);}
       .specs-grid{grid-template-columns:1fr;}
       .amenities-grid{grid-template-columns:1fr;}
       .bf-row{grid-template-columns:1fr;}
       .quick-contact{grid-template-columns:1fr;}
-      .detail-info{padding:36px 0 0;}
+      .detail-info{padding:28px 0 0;}
+      .fg-mains img,.fg-simple img{height:200px;}
+      .fr-track img{height:200px;}
+      .fg-thumbs img{width:90px;height:60px;}
+      .book-card-head{padding:18px 20px;}
+      .book-form{padding:18px;}
     }
   </style>
 </head>
@@ -262,6 +316,12 @@
       <div class="specs-grid" id="specs-grid"></div>
     </div>
 
+    <!-- SECTION A — FLOOR IMAGES -->
+    <div class="floor-gallery fade-in" id="floor-gallery"></div>
+
+    <!-- SECTION B — IMAGINARY RENDERS -->
+    <div class="floor-renders fade-in" id="floor-renders"></div>
+
     <!-- AMENITIES -->
     <div class="fade-in">
       <p class="sec-eye" data-i18n="secAmEye">What's Included</p>
@@ -270,20 +330,6 @@
       <div class="amenities-grid" id="amenities-grid"></div>
     </div>
 
-    <!-- FLOOR PLAN -->
-    <div class="fade-in">
-      <p class="sec-eye" data-i18n="secPlEye">Layout</p>
-      <h2 class="sec-title"><span data-i18n="secPlTitleA">Floor</span> <em data-i18n="secPlTitleB">Plan</em></h2>
-      <div class="gold-line"></div>
-      <div class="plan-box">
-        <div class="plan-badges">
-          <span class="plan-badge" id="plan-badge-size">—</span>
-        </div>
-        <div class="fp-icon">🗺️</div>
-        <p data-i18n="planAvail">Detailed floor plan available on request</p>
-        <p class="fp-note" data-i18n="planNote">Book a visit to view the full layout in person</p>
-      </div>
-    </div>
 
     <!-- FIND US -->
     <div class="fade-in">
@@ -292,7 +338,7 @@
       <div class="gold-line"></div>
       <div class="find-us-box" onclick="openMaps()">
         <span class="pin">📍</span>
-        <p class="addr" data-i18n="locAddr">Alrayyan Tower · Amman, Jordan</p>
+        <p class="addr" data-i18n="locAddr">Alrayyan Tower, Queen Rania Street, Amman</p>
         <p class="click" data-i18n="locClick">Click to Open in Google Maps →</p>
       </div>
     </div>
@@ -565,13 +611,13 @@ const FLOORS = {
   '9-indoor': {
     id:'9-indoor',
     name:{ en:'9th Floor Indoor', ar:'الطابق التاسع الداخلي' },
-    subtitle:{ en:'Premium Suite · 100 m² Available', ar:'جناح فاخر · 100 م² متاح' },
+    subtitle:{ en:'Premium Space · 100 m² Available', ar:'مساحة فاخرة · 100 م² متاح' },
     size:'100 m²',
-    sizeLbl:{ en:'100 m² Indoor Suite', ar:'100 م² جناح داخلي' },
+    sizeLbl:{ en:'100 m² Indoor Space', ar:'100 م² مساحة داخلية' },
     description:{
-      en:`<p>The 9th-floor indoor suite is a 100 m² enclosed premium space adjacent to the outdoor terrace. Fully glazed on two sides, it's perfectly suited as a lounge, private dining room, boardroom, gallery, or VIP office with direct terrace access.</p>
+      en:`<p>The 9th-floor indoor space is a 100 m² enclosed premium area adjacent to the outdoor terrace. Fully glazed on two sides, it's perfectly suited as a lounge, private dining room, boardroom, gallery, or VIP office with direct terrace access.</p>
           <p>Climate-controlled and delivered with a high-end fit-out baseline, it pairs naturally with the outdoor 300 m² terrace for a combined hospitality or event venue.</p>`,
-      ar:`<p>جناح الطابق التاسع الداخلي هو مساحة مغلقة فاخرة بمساحة 100 م² بجوار التراس الخارجي. مكسوة بالزجاج من جانبين، ومناسبة تماماً كصالة أو غرفة طعام خاصة أو قاعة اجتماعات.</p>
+      ar:`<p>المساحة الداخلية في الطابق التاسع هي مساحة مغلقة فاخرة بمساحة 100 م² بجوار التراس الخارجي. مكسوة بالزجاج من جانبين، ومناسبة تماماً كصالة أو غرفة طعام خاصة أو قاعة اجتماعات.</p>
           <p>مكيّفة بالكامل ومسلّمة بأساس تجهيز فاخر، تتكامل مع التراس الخارجي.</p>`
     },
     specs:[
@@ -585,6 +631,31 @@ const FLOORS = {
     amenities:{
       en:['Two-sided panoramic glazing','Direct terrace access','Premium finishes included','Full HVAC system','Integrated audio-visual','Concealed lighting','Executive washroom','Private entry lobby','High-end flooring','Wi-Fi infrastructure','Sound insulation','Combined with outdoor option'],
       ar:['زجاج بانورامي من جهتين','وصول مباشر للتراس','تشطيبات فاخرة','تكييف كامل','نظام صوتي ومرئي مدمج','إضاءة مخفية','حمام تنفيذي','ردهة دخول خاصة','أرضيات فاخرة','بنية Wi-Fi','عزل صوتي','قابل للدمج مع المساحة الخارجية']
+    }
+  },
+  'g': {
+    id:'g',
+    name:{ en:'G Floor', ar:'الطابق الأرضي' },
+    subtitle:{ en:'Ground Level · 3 Shops Available', ar:'طابق أرضي · 3 محلات متاحة' },
+    size:'27 m²',
+    sizeLbl:{ en:'3 × 9 m² Shops', ar:'3 × 9 م² محلات' },
+    description:{
+      en:`<p>The ground floor features three compact 3×3 m retail units with direct street-level access. Each shop is independently fitted with its own entrance, electrical panel, and signage slot — ideal for cafés, mini-markets, service counters, or boutique pop-ups.</p>
+          <p>High foot traffic location at the tower entrance, offering maximum visibility for retail tenants.</p>`,
+      ar:`<p>يضم الطابق الأرضي ثلاث وحدات تجزئة مدمجة بمساحة 3×3 م مع وصول مباشر من مستوى الشارع. كل محل مجهز بشكل مستقل بمدخله الخاص ولوحة كهربائية ومكان للافتة.</p>
+          <p>موقع ذو حركة مرور عالية عند مدخل البرج، مما يوفر أقصى رؤية للمستأجرين.</p>`
+    },
+    specs:[
+      {label:{en:'Unit Size',ar:'مساحة الوحدة'}, value:'3 × 3 m (9 m²)'},
+      {label:{en:'Units',ar:'عدد الوحدات'}, value:'3'},
+      {label:{en:'Access',ar:'الوصول'}, value:{en:'Street Level',ar:'مستوى الشارع'}},
+      {label:{en:'Type',ar:'النوع'}, value:{en:'Retail / Shop',ar:'تجزئة / محل'}},
+      {label:{en:'Total Area',ar:'المساحة الإجمالية'}, value:'27 m²'},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'All 3 Available',ar:'3 متاحة'}},
+    ],
+    amenities:{
+      en:['Individual shop entrances','Street-level access','Independent electrical panels','Signage slot per unit','Air conditioning','Security shutters','Shared restroom access','24/7 CCTV coverage','Water connection','High foot traffic','Fire safety systems','Flexible lease terms'],
+      ar:['مداخل مستقلة لكل محل','وصول من مستوى الشارع','لوحات كهربائية مستقلة','مكان لافتة لكل وحدة','تكييف هواء','أبواب أمان','وصول لدورات مياه مشتركة','كاميرات 24/7','توصيل مياه','حركة مرور عالية','أنظمة سلامة','شروط إيجار مرنة']
     }
   }
 };
@@ -627,7 +698,7 @@ function renderFloor() {
   document.getElementById('fl-title').textContent = fl.name[L];
   document.getElementById('fl-subtitle').textContent = fl.subtitle[L];
   document.getElementById('fl-size-tag').textContent = fl.sizeLbl[L];
-  document.getElementById('plan-badge-size').textContent = fl.size;
+  // plan-badge-size removed (floor plan section removed)
   document.getElementById('bf-floor').value = fl.name.en;
   document.getElementById('overview-desc').innerHTML = fl.description[L];
 
@@ -672,12 +743,11 @@ const I18N = {
     bcHome:'Home', bcAvail:'Available Floors',
     heroEye:'Floor Detail',
     secOvEye:'Space Overview', secOvTitleA:'About This', secOvTitleB:'Space',
+    secGalEye:'Photography', secGalTitleA:'Floor', secGalTitleB:'Images',
+    secRndEye:'Imaginary Views', secRndTitleA:'Floor', secRndTitleB:'Layout',
     secAmEye:"What's Included", secAmTitleA:'Amenities &', secAmTitleB:'Features',
-    secPlEye:'Layout', secPlTitleA:'Floor', secPlTitleB:'Plan',
-    planAvail:'Detailed floor plan available on request',
-    planNote:'Book a visit to view the full layout in person',
     secFuEye:'Location', secFuTitleA:'Find', secFuTitleB:'Us',
-    locAddr:'Alrayyan Tower · Amman, Jordan', locClick:'Click to Open in Google Maps →',
+    locAddr:'Alrayyan Tower, Queen Rania Street, Amman', locClick:'Click to Open in Google Maps →',
     secBkEye:'Schedule a Visit', secBkTitleA:'Book a', secBkTitleB:'Site Visit',
     bkHead:'Request a Visit', bkSub:'Our team confirms within 24 hours',
     lblFname:'First Name *', lblLname:'Last Name *', lblCompany:'Company',
@@ -693,10 +763,9 @@ const I18N = {
     bcHome:'الرئيسية', bcAvail:'الطوابق المتاحة',
     heroEye:'تفاصيل الطابق',
     secOvEye:'نظرة عامة', secOvTitleA:'عن هذه', secOvTitleB:'المساحة',
+    secGalEye:'التصوير', secGalTitleA:'صور', secGalTitleB:'الطابق',
+    secRndEye:'مشاهد تخيلية', secRndTitleA:'تصميم', secRndTitleB:'الطابق',
     secAmEye:'ما هو مُدرج', secAmTitleA:'المرافق', secAmTitleB:'والميزات',
-    secPlEye:'التخطيط', secPlTitleA:'مخطط', secPlTitleB:'الطابق',
-    planAvail:'مخطط الطابق المفصل متاح عند الطلب',
-    planNote:'احجز زيارة لعرض التخطيط الكامل شخصياً',
     secFuEye:'الموقع', secFuTitleA:'اعثر', secFuTitleB:'علينا',
     locAddr:'برج الريان · عمّان، الأردن', locClick:'انقر لفتح خرائط جوجل →',
     secBkEye:'جدولة زيارة', secBkTitleA:'احجز', secBkTitleB:'زيارة ميدانية',
@@ -746,10 +815,157 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
 }, { threshold: 0.1 });
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+// Re-observe dynamically injected sections
+setTimeout(() => { document.querySelectorAll('.fade-in:not(.visible)').forEach(el => observer.observe(el)); }, 100);
 
 function openMaps() {
-  window.open('https://www.google.com/maps/search/Alrayyan+Group+Amman+Jordan/@31.9539,35.9106,14z','_blank');
+  window.open('https://www.google.com/maps/search/Alrayyan+Tower+Queen+Rania+Street+Amman','_blank');
 }
+
+// ── SECTION A: FLOOR IMAGES GALLERY ────────────────────────────────────────
+const floorImageConfig = {
+  '4':         { real: 19, mains: 3, ext: 'jpg' },
+  '5':         { real: 2,  mains: 0, ext: 'jpg' },
+  '6':         { real: 12, mains: 3, ext: 'jpg' },
+  '7':         { real: 10, mains: 3, ext: 'jpg' },
+  '9-indoor':  { real: 4,  mains: 2, ext: 'jpg' },
+  '9-outdoor': { real: 12, mains: 3, ext: 'jpg' },
+  'b1':        { real: 3,  mains: 0, ext: 'jpg' },
+  'g':         { real: 2,  mains: 2, ext: 'svg' },
+};
+
+(function buildFloorGallery() {
+  const cfg = floorImageConfig[floorId];
+  const container = document.getElementById('floor-gallery');
+  if (!cfg || cfg.real === 0) { container.style.display = 'none'; return; }
+
+  const imgExt = cfg.ext || 'jpg';
+  const basePath = 'images/floors/floor-' + floorId + '/real/';
+  let html = `<p class="sec-eye">Photography</p>
+    <h2 class="sec-title">Floor <em>Images</em></h2>
+    <div class="gold-line"></div>`;
+
+  if (cfg.mains > 0) {
+    // Main + thumbnail layout
+    const mainCols = cfg.mains === 2 ? 'cols-2' : 'cols-3';
+    html += `<div class="fg-mains ${mainCols}" id="fg-mains">`;
+    for (let i = 1; i <= cfg.mains; i++) {
+      html += `<img src="${basePath}img-${i}.${imgExt}" alt="Floor ${floorId} image ${i}" id="fg-main-${i}"/>`;
+    }
+    html += `</div>`;
+
+    if (cfg.real > cfg.mains) {
+      html += `<div class="fg-thumbs-wrap"><div class="fg-thumbs" id="fg-thumbs">`;
+      for (let i = 1; i <= cfg.real; i++) {
+        const isMain = i <= cfg.mains;
+        html += `<img src="${basePath}img-${i}.${imgExt}" alt="Thumbnail ${i}" class="${isMain ? 'active' : ''}" onclick="swapMainImage(this, ${i})"/>`;
+      }
+      html += `</div>
+        <div class="fg-arrows">
+          <button class="fg-arrow" id="fg-left" onclick="scrollThumbs(-1)">←</button>
+          <button class="fg-arrow" id="fg-right" onclick="scrollThumbs(1)">→</button>
+        </div></div>`;
+    }
+  } else {
+    // Simple grid layout
+    const gridCols = cfg.real === 2 ? 'cols-2' : 'cols-3';
+    html += `<div class="fg-simple ${gridCols}">`;
+    for (let i = 1; i <= cfg.real; i++) {
+      html += `<img src="${basePath}img-${i}.${imgExt}" alt="Floor ${floorId} image ${i}"/>`;
+    }
+    html += `</div>`;
+  }
+
+  container.innerHTML = html;
+  updateThumbArrows();
+})();
+
+function swapMainImage(thumbEl, imgIndex) {
+  const cfg = floorImageConfig[floorId];
+  if (!cfg) return;
+  const imgExt = cfg.ext || 'jpg';
+  // swap clicked thumbnail into first main slot
+  const mainImg = document.getElementById('fg-main-1');
+  if (mainImg) {
+    const basePath = 'images/floors/floor-' + floorId + '/real/';
+    mainImg.src = basePath + 'img-' + imgIndex + '.' + imgExt;
+  }
+  // update active states
+  document.querySelectorAll('#fg-thumbs img').forEach(t => t.classList.remove('active'));
+  thumbEl.classList.add('active');
+}
+
+function scrollThumbs(dir) {
+  const strip = document.getElementById('fg-thumbs');
+  if (!strip) return;
+  strip.scrollLeft += dir * 130;
+  setTimeout(updateThumbArrows, 350);
+}
+
+function updateThumbArrows() {
+  const strip = document.getElementById('fg-thumbs');
+  const leftBtn = document.getElementById('fg-left');
+  const rightBtn = document.getElementById('fg-right');
+  if (!strip || !leftBtn || !rightBtn) return;
+  leftBtn.disabled = strip.scrollLeft <= 0;
+  rightBtn.disabled = strip.scrollLeft >= strip.scrollWidth - strip.clientWidth - 2;
+}
+
+// ── SECTION B: IMAGINARY RENDERS CAROUSEL ──────────────────────────────────
+(function buildRendersCarousel() {
+  const container = document.getElementById('floor-renders');
+  const totalRenders = 5;
+  let html = `<p class="sec-eye">Imaginary Views</p>
+    <h2 class="sec-title">Floor <em>Layout</em></h2>
+    <div class="gold-line"></div>
+    <div class="fr-carousel" id="fr-carousel">
+      <div class="fr-track" id="fr-track">`;
+  for (let i = 1; i <= totalRenders; i++) {
+    html += `<img src="images/floors/imaginary/render-${i}.svg" alt="Render ${i}" onerror="this.src='images/floors/imaginary/render-${i}.jpg'"/>`;
+  }
+  html += `</div>
+    <div class="fr-arrows">
+      <button class="fg-arrow" onclick="slideRender(-1)">←</button>
+      <button class="fg-arrow" onclick="slideRender(1)">→</button>
+    </div></div>
+    <div class="fr-dots" id="fr-dots">`;
+  for (let i = 0; i < totalRenders; i++) {
+    html += `<button class="fr-dot${i === 0 ? ' active' : ''}" onclick="goToRender(${i})"></button>`;
+  }
+  html += `</div>`;
+  container.innerHTML = html;
+})();
+
+let renderIndex = 0;
+const renderTotal = 5;
+let renderInterval = setInterval(autoSlideRender, 5000);
+
+function slideRender(dir) {
+  renderIndex = (renderIndex + dir + renderTotal) % renderTotal;
+  updateRenderPos();
+}
+function goToRender(i) {
+  renderIndex = i;
+  updateRenderPos();
+}
+function autoSlideRender() {
+  renderIndex = (renderIndex + 1) % renderTotal;
+  updateRenderPos();
+}
+function updateRenderPos() {
+  const track = document.getElementById('fr-track');
+  if (track) track.style.transform = 'translateX(-' + (renderIndex * 100) + '%)';
+  document.querySelectorAll('.fr-dot').forEach((d, i) => d.classList.toggle('active', i === renderIndex));
+}
+
+// Pause on hover
+document.addEventListener('DOMContentLoaded', () => {
+  const carousel = document.getElementById('fr-carousel');
+  if (carousel) {
+    carousel.addEventListener('mouseenter', () => clearInterval(renderInterval));
+    carousel.addEventListener('mouseleave', () => { renderInterval = setInterval(autoSlideRender, 5000); });
+  }
+});
 
 function submitVisit(e) {
   e.preventDefault();

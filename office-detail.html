@@ -104,10 +104,6 @@
     .detail-desc{font-size:.86rem;color:var(--muted);line-height:1.95;margin-bottom:40px;}
     .detail-desc p+p{margin-top:14px;}
 
-    /* FLOOR PLAN PLACEHOLDER */
-    .floor-plan-box{width:100%;height:220px;background:rgba(184,115,51,0.04);border:1px dashed rgba(184,115,51,0.2);border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);margin-bottom:44px;}
-    .floor-plan-box .fp-icon{font-size:2rem;}
-    .floor-plan-box p{font-size:.72rem;letter-spacing:1px;}
 
     /* BOOK VISIT CARD */
     .book-card{background:#0d0a06;border:1px solid rgba(184,115,51,0.18);border-radius:4px;overflow:hidden;}
@@ -163,9 +159,17 @@
     @media(max-width:1024px){
       .detail-wrap{grid-template-columns:1fr;}
       .detail-info{padding:40px 0 0;border-right:none;}
+      html[dir="rtl"] .detail-info{border-left:none;padding:40px 0 0;}
       .book-col{padding:36px 0 60px;}
+      html[dir="rtl"] .book-col{padding:36px 0 60px;}
       .book-sticky{position:static;}
       .related-grid{grid-template-columns:1fr 1fr;}
+    }
+    @media(max-width:768px){
+      nav{padding:0 4%;height:62px;}
+      .nav-brand{font-size:1rem;letter-spacing:1.5px;}
+      .nav-back{font-size:.58rem;padding:5px 12px;}
+      .detail-wrap{padding:0 4%;}
     }
     @media(max-width:576px){
       .specs-grid{grid-template-columns:1fr 1fr;}
@@ -173,6 +177,11 @@
       .related-grid{grid-template-columns:1fr;}
       .bf-row{grid-template-columns:1fr;}
       .quick-contact{grid-template-columns:1fr;}
+    }
+    @media(max-width:480px){
+      .specs-grid{grid-template-columns:1fr;}
+      nav{padding:0 3%;}
+      .detail-wrap{padding:0 3%;}
     }
   </style>
 </head>
@@ -242,26 +251,15 @@
       <div class="amenities-grid" id="amenities-grid"></div>
     </div>
 
-    <!-- FLOOR PLAN -->
-    <div class="fade-in">
-      <p class="sec-eye" data-i18n="ecLayout">Layout</p>
-      <h2 class="sec-title"><span data-i18n="ttPlA">Floor</span> <em style="font-style:italic;color:var(--gold-light);" data-i18n="ttPlB">Plan</em></h2>
-      <div class="gold-line"></div>
-      <div class="floor-plan-box">
-        <div class="fp-icon">🗺️</div>
-        <p data-i18n="planText">Detailed floor plans available on request</p>
-        <p style="font-size:.62rem;color:rgba(136,136,136,0.5)" data-i18n="planNote">Contact our team or book a visit to view the full layout</p>
-      </div>
-    </div>
 
     <!-- LOCATION -->
     <div class="fade-in">
       <p class="sec-eye" data-i18n="ecLoc">Location</p>
       <h2 class="sec-title"><span data-i18n="ttFuA">Find</span> <em style="font-style:italic;color:var(--gold-light);" data-i18n="ttFuB">Us</em></h2>
       <div class="gold-line"></div>
-      <div style="width:100%;height:220px;background:rgba(184,115,51,0.04);border:1px solid rgba(184,115,51,0.12);border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;" onclick="window.open('https://www.google.com/maps/search/Alrayyan+Group+Amman+Jordan/@31.9539,35.9106,14z','_blank')">
+      <div style="width:100%;height:220px;background:rgba(184,115,51,0.04);border:1px solid rgba(184,115,51,0.12);border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;" onclick="window.open('https://www.google.com/maps/search/Alrayyan+Tower+Queen+Rania+Street+Amman','_blank')">
         <span style="font-size:2rem">📍</span>
-        <p style="font-size:.78rem;color:var(--off-white);" data-i18n="locAddr">Amman, Jordan</p>
+        <p style="font-size:.78rem;color:var(--off-white);" data-i18n="locAddr">Alrayyan Tower, Queen Rania Street, Amman</p>
         <p style="font-size:.65rem;color:var(--gold);letter-spacing:1px;" data-i18n="locClick">Click to open in Google Maps →</p>
       </div>
     </div>
@@ -379,7 +377,7 @@ const STD_AMENITIES_EXTRA = {
 
 const offices = [
   {
-    id:1, typeEn:'Executive Suites', typeAr:'أجنحة تنفيذية', price:'From JOD 3,500 / month', priceAr:'من 3,500 دينار / شهر',
+    id:1, typeEn:'Executive Offices', typeAr:'مكاتب تنفيذية', price:'From JOD 3,500 / month', priceAr:'من 3,500 دينار / شهر',
     img:'images/index-office-executive-suites.jpg',
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'},    value:{en:'25 – 80 m²',ar:'25 – 80 م²'}},
@@ -391,10 +389,10 @@ const offices = [
     ],
     availText:{ en:'This space is available in: 3rd Floor 80m²', ar:'هذه المساحة متوفرة في: الطابق الثالث 80م²' },
     description:{
-      en:`<p>Alrayyan's Executive Suites are the ultimate expression of corporate prestige — fully furnished private offices designed for the modern executive. Each suite features bespoke furniture, premium lighting, and floor-to-ceiling glass panels that flood the space with natural light and commanding city views.</p>
-      <p>Suites range from compact single-occupancy spaces to expansive eight-person offices, all within a dedicated secure corridor. Your suite comes with a personalised plaque at reception, and your team has access to all shared premium amenities on the same floor.</p>`,
-      ar:`<p>أجنحة الريان التنفيذية هي التعبير الأسمى عن الهيبة المؤسسية — مكاتب خاصة مجهزة بالكامل مصممة للقيادات التنفيذية الحديثة. يضم كل جناح أثاثاً مصمماً خصيصاً وإضاءة فاخرة وواجهات زجاجية ممتدة من الأرض إلى السقف تغمر المساحة بالضوء الطبيعي وتطل على المدينة.</p>
-      <p>تتراوح الأجنحة من مساحات فردية مدمجة إلى مكاتب واسعة تتسع لثمانية أشخاص، جميعها ضمن ممر آمن مخصص. يأتي جناحك مع لوحة شخصية عند الاستقبال، ويتمتع فريقك بالوصول إلى جميع المرافق المشتركة الفاخرة في نفس الطابق.</p>`,
+      en:`<p>Alrayyan's Executive Offices are the ultimate expression of corporate prestige — fully furnished private offices designed for the modern executive. Each office features bespoke furniture, premium lighting, and floor-to-ceiling glass panels that flood the space with natural light and commanding city views.</p>
+      <p>Offices range from compact single-occupancy spaces to expansive eight-person offices, all within a dedicated secure corridor. Your office comes with a personalised plaque at reception, and your team has access to all shared premium amenities on the same floor.</p>`,
+      ar:`<p>مكاتب الريان التنفيذية هي التعبير الأسمى عن الهيبة المؤسسية — مكاتب خاصة مجهزة بالكامل مصممة للقيادات التنفيذية الحديثة. يضم كل مكتب أثاثاً مصمماً خصيصاً وإضاءة فاخرة وواجهات زجاجية ممتدة من الأرض إلى السقف تغمر المساحة بالضوء الطبيعي وتطل على المدينة.</p>
+      <p>تتراوح المكاتب من مساحات فردية مدمجة إلى مكاتب واسعة تتسع لثمانية أشخاص، جميعها ضمن ممر آمن مخصص. يأتي مكتبك مع لوحة شخصية عند الاستقبال، ويتمتع فريقك بالوصول إلى جميع المرافق المشتركة الفاخرة في نفس الطابق.</p>`,
     },
     amenities:{
       en:[
@@ -584,7 +582,7 @@ const offices = [
     img:'images/index-office-smart.jpg',
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'},     value:{en:'30 – 120 m²',ar:'30 – 120 م²'}},
-      {label:{en:'Smart Features',ar:'ميزات ذكية'},    value:{en:'Full IoT Suite',ar:'منظومة IoT كاملة'}},
+      {label:{en:'Smart Features',ar:'ميزات ذكية'},    value:{en:'Full IoT System',ar:'منظومة IoT كاملة'}},
       {label:{en:'Floors',ar:'الطوابق'},               value:{en:'6th – 9th',ar:'6 – 9'}},
       {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Monthly / Annual',ar:'شهري / سنوي'}},
       {label:{en:'Setup',ar:'التجهيز'},                value:{en:'3 Days',ar:'3 أيام'}},
@@ -592,7 +590,7 @@ const offices = [
     ],
     availText:{ en:'This space is available in: 9th Floor Outdoor 300m²', ar:'هذه المساحة متوفرة في: الطابق التاسع الخارجي 300م²' },
     description:{
-      en:`<p>Alrayyan's Smart Offices represent the future of work — fully integrated spaces where technology works for you. Each office is equipped with a complete IoT management suite: automated lighting that adjusts to occupancy and daylight, smart climate control, biometric access, and an AI-powered air quality system.</p>
+      en:`<p>Alrayyan's Smart Offices represent the future of work — fully integrated spaces where technology works for you. Each office is equipped with a complete IoT management system: automated lighting that adjusts to occupancy and daylight, smart climate control, biometric access, and an AI-powered air quality system.</p>
       <p>Control every aspect of your environment from a single dashboard — or let the system learn your preferences and manage itself. Energy consumption is monitored and optimised in real time, resulting in significantly lower running costs.</p>`,
       ar:`<p>المكاتب الذكية من الريان تمثل مستقبل العمل — مساحات متكاملة بالكامل حيث تعمل التكنولوجيا لصالحك. كل مكتب مجهز بمجموعة إدارة IoT كاملة: إضاءة آلية تتكيف مع الإشغال وضوء النهار، وتحكم ذكي بالمناخ، ووصول بيومتري، ونظام جودة هواء مدعوم بالذكاء الاصطناعي.</p>
       <p>تحكم بكل جانب من بيئتك من لوحة واحدة — أو دع النظام يتعلم تفضيلاتك ويدير نفسه. استهلاك الطاقة يُراقب ويُحسَّن في الوقت الفعلي، مما يؤدي إلى تكاليف تشغيل أقل بكثير.</p>`,
@@ -707,11 +705,8 @@ const PAGE_I18N = {
     thFloor:'Floor / Unit', thSize:'Size', thPrice:'Price', thStatus:'Status',
     ecAbout:'About This Space', ttOvA:'Space', ttOvB:'Overview',
     ecIncl:"What's Included", ttAmA:'Amenities &', ttAmB:'Features',
-    ecLayout:'Layout', ttPlA:'Floor', ttPlB:'Plan',
-    planText:'Detailed floor plans available on request',
-    planNote:'Contact our team or book a visit to view the full layout',
     ecLoc:'Location', ttFuA:'Find', ttFuB:'Us',
-    locAddr:'Amman, Jordan', locClick:'Click to open in Google Maps →',
+    locAddr:'Alrayyan Tower, Queen Rania Street, Amman', locClick:'Click to open in Google Maps →',
     ecSched:'Schedule a Visit', ttBkA:'Book a', ttBkB:'Site Visit',
     bkHead:'Request a Visit', bkSub:'Our team confirms within 24 hours',
     lblFname:'First Name *', lblLname:'Last Name *', lblCompany:'Company',
@@ -728,9 +723,6 @@ const PAGE_I18N = {
     thFloor:'الطابق / الوحدة', thSize:'المساحة', thPrice:'السعر', thStatus:'الحالة',
     ecAbout:'عن هذه المساحة', ttOvA:'نظرة', ttOvB:'عامة',
     ecIncl:'ما هو مُدرج', ttAmA:'المرافق', ttAmB:'والميزات',
-    ecLayout:'التخطيط', ttPlA:'مخطط', ttPlB:'الطابق',
-    planText:'مخططات الطوابق المفصلة متاحة عند الطلب',
-    planNote:'اتصل بفريقنا أو احجز زيارة لعرض التخطيط الكامل',
     ecLoc:'الموقع', ttFuA:'اعثر', ttFuB:'علينا',
     locAddr:'عمّان، الأردن', locClick:'انقر لفتح خرائط جوجل →',
     ecSched:'جدولة زيارة', ttBkA:'احجز', ttBkB:'زيارة ميدانية',

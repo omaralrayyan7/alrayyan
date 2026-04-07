@@ -316,7 +316,7 @@
             <h5>Floor & Unit Availability</h5>
             <select class="adm-form-control" id="floor-filter" style="width:auto;font-size:.68rem;padding:4px 10px;" onchange="renderFloors()">
               <option value="all">All Types</option>
-              <option value="Executive Suites">Executive Suites</option>
+              <option value="Executive Offices">Executive Offices</option>
               <option value="Co-Working Spaces">Co-Working Spaces</option>
               <option value="Meeting Rooms">Meeting Rooms</option>
               <option value="Virtual Offices">Virtual Offices</option>
@@ -459,6 +459,13 @@
               <label class="adm-form-label">Contact Address</label>
               <input class="adm-form-control" type="text" id="sc-address"/>
             </div>
+            <div class="adm-form-group" style="margin-top:18px;">
+              <label class="adm-form-label" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                <input type="checkbox" id="sc-show-pricing" onchange="togglePricingVisibility(this.checked)" style="width:18px;height:18px;accent-color:var(--gold);cursor:pointer;"/>
+                Show Pricing on Office Cards
+              </label>
+              <div style="font-size:.68rem;color:var(--muted);margin-top:4px;">When enabled, pricing labels (e.g. "From JOD 3,500 / month") will be visible on office cards.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -492,7 +499,7 @@
       <div class="adm-form-row">
         <div class="adm-form-group">
           <label class="adm-form-label">Office Type Name *</label>
-          <input class="adm-form-control" type="text" id="off-name" placeholder="e.g. Executive Suites"/>
+          <input class="adm-form-control" type="text" id="off-name" placeholder="e.g. Executive Offices"/>
         </div>
         <div class="adm-form-group">
           <label class="adm-form-label">Pricing *</label>
@@ -546,7 +553,7 @@
         <div class="adm-form-group">
           <label class="adm-form-label">Office Type *</label>
           <select class="adm-form-control" id="fl-type">
-            <option>Executive Suites</option>
+            <option>Executive Offices</option>
             <option>Co-Working Spaces</option>
             <option>Meeting Rooms</option>
             <option>Virtual Offices</option>
@@ -810,7 +817,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 // ── DATA (localStorage) ───────────────────────────────────────────────────────
 function loadOffices(){
   const def = [
-    {id:1,name:'Executive Suites',     price:'From JOD 3,500 / month',avail:8, status:'available',desc:'Private, fully furnished executive offices with dedicated reception, high-speed internet, and premium finishes.',size:'25–80 m²'},
+    {id:1,name:'Executive Offices',     price:'From JOD 3,500 / month',avail:8, status:'available',desc:'Private, fully furnished executive offices with dedicated reception, high-speed internet, and premium finishes.',size:'25–80 m²'},
     {id:2,name:'Co-Working Spaces',    price:'From JOD 800 / month',  avail:24,status:'available',desc:'Flexible shared workspaces designed for startups and freelancers — dynamic, inspiring environments.',size:'Open plan'},
     {id:3,name:'Meeting Rooms',        price:'From JOD 250 / hour',   avail:6, status:'available',desc:'State-of-the-art conference facilities available hourly or daily, fully equipped with AV technology.',size:'4–40 persons'},
     {id:4,name:'Virtual Offices',      price:'From JOD 400 / month',  avail:12,status:'available',desc:'Prestigious business address with mail handling and call answering — your identity, without the overhead.',size:'N/A'},
@@ -884,6 +891,14 @@ function showPanel(name, el){
 function toggleMobileSidebar(){
   document.getElementById('adm-sidebar').classList.toggle('mobile-open');
 }
+// Close sidebar on outside click
+document.addEventListener('click', function(e) {
+  const sidebar = document.getElementById('adm-sidebar');
+  if (!sidebar || !sidebar.classList.contains('mobile-open')) return;
+  // Don't close if clicking inside the sidebar or on the toggle button
+  if (sidebar.contains(e.target) || e.target.closest('[onclick*="toggleMobileSidebar"]')) return;
+  sidebar.classList.remove('mobile-open');
+});
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────
 function renderDashboard(){
@@ -1074,7 +1089,7 @@ function addDemoBooking(){
   bookings.push({
     id:Date.now(),ref:'ARG-DEMO'+bookings.length,
     name:'Ahmad Al-Hassan',company:'Demo Co.',
-    office:'Executive Suites',date:'2025-06-15',
+    office:'Executive Offices',date:'2025-06-15',
     phone:'+962 79 000 0000',status:'pending'
   });
   saveBookings(bookings);
@@ -1138,11 +1153,11 @@ function showToast(msg,type=''){
 function loadFloorDetails(){
   const def = {
     'b1':        {key:'b1',        titleEn:'B1 Floor',            titleAr:'طابق B1',            size:'1,000 m²', overviewEn:'Expansive basement-level space ideal for storage, logistics, or large-scale operations. Exception floor with full 1,000 m² footprint.', overviewAr:'مساحة واسعة في الطابق السفلي مثالية للتخزين أو العمليات الكبرى. طابق استثنائي بمساحة 1000 م² بالكامل.', amenitiesEn:['Private entrance','Loading access','24/7 security','HVAC climate control','Dedicated parking'], amenitiesAr:['مدخل خاص','وصول للتحميل','أمن على مدار الساعة','تكييف متكامل','موقف مخصص'], price:'Custom', status:'available'},
-    '3':         {key:'3',         titleEn:'3rd Floor – 80 m² Unit',titleAr:'الطابق الثالث – وحدة 80 م²',size:'80 m²',    overviewEn:'Compact executive suite on the 3rd floor, the last available unit on this floor. Perfect for small teams and boutique firms.', overviewAr:'جناح تنفيذي مدمج في الطابق الثالث، الوحدة الوحيدة المتاحة. مثالي للفرق الصغيرة والشركات النخبة.', amenitiesEn:['High-speed fiber internet','Reception services','Meeting room access','Coffee & tea service','Cleaning included'], amenitiesAr:['إنترنت فائق السرعة','خدمات الاستقبال','الوصول لقاعات الاجتماعات','خدمة القهوة والشاي','التنظيف مشمول'], price:'JOD 4,000 / month', status:'low'},
+    '3':         {key:'3',         titleEn:'3rd Floor – 80 m² Unit',titleAr:'الطابق الثالث – وحدة 80 م²',size:'80 m²',    overviewEn:'Compact executive office on the 3rd floor, the last available unit on this floor. Perfect for small teams and boutique firms.', overviewAr:'مكتب تنفيذي مدمج في الطابق الثالث، الوحدة الوحيدة المتاحة. مثالي للفرق الصغيرة والشركات النخبة.', amenitiesEn:['High-speed fiber internet','Reception services','Meeting room access','Coffee & tea service','Cleaning included'], amenitiesAr:['إنترنت فائق السرعة','خدمات الاستقبال','الوصول لقاعات الاجتماعات','خدمة القهوة والشاي','التنظيف مشمول'], price:'JOD 4,000 / month', status:'low'},
     '4':         {key:'4',         titleEn:'4th Floor – Full Floor',titleAr:'الطابق الرابع – طابق كامل',size:'400 m²',  overviewEn:'Entire 4th floor available as a 400 m² full-floor lease — ideal for mid-size enterprises wanting branded corporate headquarters.', overviewAr:'الطابق الرابع بالكامل متاح للإيجار كطابق كامل بمساحة 400 م² — مثالي للشركات المتوسطة التي ترغب بمقر مؤسسي.', amenitiesEn:['Full-floor customization','Private elevators access','Executive washrooms','Kitchenette & lounge','Dedicated reception'], amenitiesAr:['تخصيص كامل للطابق','وصول المصاعد الخاصة','دورات مياه تنفيذية','مطبخ صغير واستراحة','استقبال مخصص'], price:'Custom', status:'available'},
     '5':         {key:'5',         titleEn:'5th Floor – 80 m² Unit',titleAr:'الطابق الخامس – وحدة 80 م²',size:'80 m²',   overviewEn:'Bright 80 m² executive unit on the 5th floor. Premium views and finishes.', overviewAr:'وحدة تنفيذية مضيئة بمساحة 80 م² في الطابق الخامس. إطلالات وتشطيبات راقية.', amenitiesEn:['Panoramic windows','High-speed internet','Meeting room access','Premium finishes','Cleaning included'], amenitiesAr:['نوافذ بانورامية','إنترنت فائق السرعة','الوصول لقاعات الاجتماعات','تشطيبات فاخرة','التنظيف مشمول'], price:'JOD 4,400 / month', status:'available'},
     '6':         {key:'6',         titleEn:'6th Floor – Full Floor',titleAr:'الطابق السادس – طابق كامل',size:'400 m²', overviewEn:'Full 400 m² floor on level 6 — customisable corporate space with elevated views.', overviewAr:'طابق كامل 400 م² في المستوى السادس — مساحة مؤسسية قابلة للتخصيص بإطلالات مرتفعة.', amenitiesEn:['Full-floor customization','Executive washrooms','Kitchenette & lounge','Dedicated reception','Private meeting rooms'], amenitiesAr:['تخصيص كامل للطابق','دورات مياه تنفيذية','مطبخ صغير واستراحة','استقبال مخصص','قاعات اجتماعات خاصة'], price:'Custom', status:'available'},
-    '7':         {key:'7',         titleEn:'7th Floor – Full Floor',titleAr:'الطابق السابع – طابق كامل',size:'400 m²', overviewEn:'Premium 400 m² full floor on level 7 with commanding city views, ideal for executive headquarters.', overviewAr:'طابق كامل مميز بمساحة 400 م² في المستوى السابع مع إطلالة رائعة على المدينة، مثالي للمقرات التنفيذية.', amenitiesEn:['Panoramic city views','Full customization','Executive suite layout','Private washrooms','VIP reception'], amenitiesAr:['إطلالات بانورامية','تخصيص كامل','تصميم جناح تنفيذي','دورات مياه خاصة','استقبال VIP'], price:'Custom', status:'available'},
+    '7':         {key:'7',         titleEn:'7th Floor – Full Floor',titleAr:'الطابق السابع – طابق كامل',size:'400 m²', overviewEn:'Premium 400 m² full floor on level 7 with commanding city views, ideal for executive headquarters.', overviewAr:'طابق كامل مميز بمساحة 400 م² في المستوى السابع مع إطلالة رائعة على المدينة، مثالي للمقرات التنفيذية.', amenitiesEn:['Panoramic city views','Full customization','Executive office layout','Private washrooms','VIP reception'], amenitiesAr:['إطلالات بانورامية','تخصيص كامل','تصميم مكتب تنفيذي','دورات مياه خاصة','استقبال VIP'], price:'Custom', status:'available'},
     '9-outdoor': {key:'9-outdoor', titleEn:'9th Floor – Outdoor Space',titleAr:'الطابق التاسع – مساحة خارجية',size:'300 m²', overviewEn:'Unique 300 m² outdoor space on the 9th floor — perfect for rooftop events, dining venues, or open-air offices.', overviewAr:'مساحة خارجية فريدة بمساحة 300 م² في الطابق التاسع — مثالية لفعاليات السطح أو المطاعم أو المكاتب المفتوحة.', amenitiesEn:['Open rooftop terrace','Panoramic 360° views','Event-ready layout','Utility connections','Private access'], amenitiesAr:['تراس سطح مفتوح','إطلالات بانورامية 360°','تصميم جاهز للفعاليات','توصيلات مرافق','وصول خاص'], price:'Custom', status:'available'},
     '9-indoor':  {key:'9-indoor',  titleEn:'9th Floor – Indoor Space',titleAr:'الطابق التاسع – مساحة داخلية',size:'100 m²',  overviewEn:'Intimate 100 m² indoor space on the 9th floor — ideal for executive lounges, private offices, or boutique studios.', overviewAr:'مساحة داخلية مميزة بمساحة 100 م² في الطابق التاسع — مثالية لصالات تنفيذية أو مكاتب خاصة أو استوديوهات فاخرة.', amenitiesEn:['Premium finishes','Panoramic windows','Private entrance','Climate control','High-speed internet'], amenitiesAr:['تشطيبات راقية','نوافذ بانورامية','مدخل خاص','تحكم بالمناخ','إنترنت فائق السرعة'], price:'Custom', status:'available'},
   };
@@ -1378,7 +1393,7 @@ function loadSiteContent(){
     aboutBodyAr:'مجموعة الريان هي شركة قابضة متنوعة مقرها عمان، الأردن، تعمل في العقارات الفاخرة والأزياء الراقية والفنون والاستثمار في الأراضي. برج الريان هو تجسيد للهندسة المعمارية المؤسسية الحديثة.',
     phone:'+962 6 000 0000',
     email:'info@alrayyan-group.com',
-    address:'Alrayyan Tower, Abdali, Amman, Jordan',
+    address:'Alrayyan Tower, Queen Rania Street, Amman',
   };
   return JSON.parse(localStorage.getItem('ar_site_content')||JSON.stringify(def));
 }
@@ -1395,6 +1410,11 @@ function renderSiteContent(){
   document.getElementById('sc-phone').value = c.phone||'';
   document.getElementById('sc-email').value = c.email||'';
   document.getElementById('sc-address').value = c.address||'';
+  document.getElementById('sc-show-pricing').checked = localStorage.getItem('ar_show_pricing') === 'true';
+}
+function togglePricingVisibility(show){
+  localStorage.setItem('ar_show_pricing', show ? 'true' : 'false');
+  showToast(show ? 'Pricing is now visible on office cards' : 'Pricing is now hidden from office cards', 'success');
 }
 function saveSiteContent(){
   const data = {
