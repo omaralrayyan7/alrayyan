@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l *.html)",
+      "Bash(node _extract_css.js)",
+      "Bash(node _append_responsive.js)",
+      "Bash(rm _append_responsive.js)",
+      "Bash(touch placeholder.jpg b1-floor.jpg g-floor.jpg 3rd-floor.jpg 4th-floor.jpg 5th-floor.jpg 6th-floor.jpg 7th-floor.jpg 9th-floor-outdoor-terrace.jpg 9th-floor-indoor.jpg)",
+      "Bash(ls *.jpg)",
+      "Bash(cp images/main/office-executive-suites.jpg images/main/card-small-spaces.jpg)",
+      "Bash(cp images/main/index-office-coworking.jpg images/main/card-open-space.jpg)",
+      "Bash(touch images/main/gallery-executive-hall-unique.jpg)"
+    ]
+  }
+}

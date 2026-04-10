@@ -1,0 +1,103 @@
+
+    :root{
+      --primary:#0a0a0a;
+      --accent:#C9A84C;
+      --accent-light:#e6c971;
+      --accent-dim:#8a6f28;
+      --deep:#141414;
+      --parchment:#f5efe0;
+      --off-white:#efe7d4;
+      --muted:#8b8576;
+      --t:0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;background:var(--primary);color:var(--parchment);overflow-x:hidden;}
+    html[dir="rtl"] body{font-family:'Cairo','DM Sans',sans-serif;}
+    a{text-decoration:none;color:inherit;}
+    img{max-width:100%;display:block;}
+    ::-webkit-scrollbar{width:4px;}
+    ::-webkit-scrollbar-track{background:var(--primary);}
+    ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px;}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:900;padding:0 5%;height:72px;
+      display:flex;align-items:center;justify-content:space-between;
+      background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);
+      border-bottom:1px solid rgba(201,168,76,0.15);transition:var(--t);}
+    .nav-brand{font-family:'IM Fell English',serif;font-size:1.25rem;letter-spacing:2px;}
+    .nav-brand em{font-style:italic;color:var(--accent-light);}
+    .nav-right{display:flex;align-items:center;gap:12px;}
+    .nav-back{font-size:.66rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+      color:var(--accent);border:1px solid rgba(201,168,76,0.35);padding:7px 14px;border-radius:2px;transition:var(--t);}
+    .nav-back:hover{background:rgba(201,168,76,0.1);}
+    .lang-sw{display:flex;}
+    .lang-btn{background:none;border:1px solid rgba(201,168,76,0.3);color:var(--muted);
+      font-family:'DM Sans',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:1.5px;
+      text-transform:uppercase;padding:5px 10px;cursor:pointer;transition:.3s;}
+    .lang-btn:first-child{border-radius:2px 0 0 2px;border-right:none;}
+    .lang-btn:last-child{border-radius:0 2px 2px 0;}
+    .lang-btn.active{background:var(--accent);color:var(--primary);border-color:var(--accent);}
+
+    .breadcrumb{padding:92px 5% 14px;font-size:.68rem;color:var(--muted);display:flex;gap:8px;}
+    .breadcrumb a{color:var(--accent);}
+    .breadcrumb span.sep{color:rgba(201,168,76,0.3);}
+
+    .wrap{max-width:1200px;margin:0 auto;padding:24px 5% 80px;display:grid;grid-template-columns:1.1fr 1fr;gap:56px;}
+    .art-img-box{background:var(--deep);border:1px solid rgba(201,168,76,0.12);padding:18px;}
+    .art-img-box img{width:100%;height:auto;max-height:720px;object-fit:contain;background:#000;}
+    .art-meta{padding-top:8px;}
+    .eye{font-size:.62rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+    .title{font-family:'IM Fell English',serif;font-size:clamp(1.8rem,3.2vw,2.8rem);color:var(--parchment);line-height:1.15;margin-bottom:8px;}
+    .artist{font-size:.85rem;color:var(--accent-light);letter-spacing:1px;margin-bottom:22px;text-transform:uppercase;}
+    .gold-line{width:46px;height:2px;background:linear-gradient(90deg,var(--accent),transparent);margin:0 0 26px;}
+    .specs{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:26px;border:1px solid rgba(201,168,76,0.12);}
+    .spec{padding:14px 18px;border-right:1px solid rgba(201,168,76,0.08);border-bottom:1px solid rgba(201,168,76,0.08);}
+    .spec:nth-child(2n){border-right:none;}
+    .spec:nth-last-child(-n+2){border-bottom:none;}
+    .spec-l{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+    .spec-v{font-size:.85rem;color:var(--parchment);font-weight:500;}
+    .desc{font-size:.9rem;line-height:1.9;color:var(--off-white);margin-bottom:26px;}
+    .price-row{display:flex;align-items:baseline;gap:14px;margin-bottom:18px;}
+    .price{font-family:'IM Fell English',serif;font-size:1.9rem;color:var(--accent-light);}
+    .cert{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:3px;font-size:.74rem;font-weight:600;letter-spacing:.5px;margin-bottom:24px;}
+    .cert.ok{background:rgba(143,214,135,0.1);border:1px solid rgba(143,214,135,0.4);color:#8FD687;}
+    .cert.no{background:rgba(201,115,115,0.1);border:1px solid rgba(201,115,115,0.4);color:#c97373;}
+    .buy-row{display:flex;gap:10px;flex-wrap:wrap;}
+    .btn-gold{background:linear-gradient(135deg,var(--accent-dim),var(--accent),var(--accent-light));color:var(--primary);
+      font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+      padding:13px 28px;border:none;border-radius:2px;cursor:pointer;transition:var(--t);}
+    .btn-gold:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(201,168,76,0.3);}
+    .btn-ghost{background:transparent;color:var(--accent);
+      font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+      padding:12px 26px;border:1px solid rgba(201,168,76,0.4);border-radius:2px;cursor:pointer;transition:var(--t);}
+    .btn-ghost:hover{background:rgba(201,168,76,0.08);}
+
+    footer{background:#050505;border-top:1px solid rgba(201,168,76,0.1);padding:28px 5% 20px;
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+    .f-brand{font-family:'IM Fell English',serif;font-size:1.05rem;letter-spacing:2px;}
+    .f-brand em{color:var(--accent-light);font-style:italic;}
+    .f-copy{font-size:.68rem;color:rgba(255,255,255,0.22);}
+
+    .not-found{max-width:640px;margin:140px auto;padding:0 5%;text-align:center;}
+    .not-found h2{font-family:'IM Fell English',serif;font-size:2rem;margin-bottom:10px;}
+    .not-found p{color:var(--muted);margin-bottom:22px;}
+
+    @media(max-width:900px){
+      .wrap{grid-template-columns:1fr;gap:32px;}
+      .specs{grid-template-columns:1fr;}
+      .spec{border-right:none;}
+      .spec:not(:last-child){border-bottom:1px solid rgba(201,168,76,0.08);}
+    }
+  
+
+/* --- responsive image fixes (appended) --- */
+img { max-width: 100%; height: auto; }
+@media (max-width: 1024px) { /* tablet fixes */
+  .hero img, .banner img, [class*="hero"] img, [class*="banner"] img {
+    width: 100%; height: auto; object-fit: cover;
+  }
+}
+@media (max-width: 640px) {
+  .hero, .banner, [class*="hero"], [class*="banner"] { min-height: auto; }
+  img { display: block !important; }
+}

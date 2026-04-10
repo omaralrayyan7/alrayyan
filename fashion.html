@@ -7,356 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    :root{
-      --ink:#0a0608;--deep:#140b10;--rose:#c8738a;--rose-light:#e8a0b4;
-      --rose-dim:#8a3d52;--cream:#faf5f0;--off-cream:#f0e8df;
-      --muted:#9a8a90;--t:0.3s cubic-bezier(0.4,0,0.2,1);
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{scroll-behavior:smooth;}
-    body{font-family:'Raleway',sans-serif;background:var(--ink);color:var(--cream);overflow-x:hidden;}
-    a{text-decoration:none;color:inherit;}
-    img{max-width:100%;display:block;}
-    ::-webkit-scrollbar{width:4px;}
-    ::-webkit-scrollbar-track{background:var(--ink);}
-    ::-webkit-scrollbar-thumb{background:var(--rose);border-radius:2px;}
-
-    /* SALES BAR */
-    #sales-bar{
-      position:fixed;top:0;left:0;right:0;z-index:950;
-      height:36px;background:linear-gradient(90deg,var(--rose-dim),var(--rose),#d4688a,var(--rose-dim));
-      background-size:200% 100%;animation:salesSlide 6s linear infinite;
-      display:flex;align-items:center;justify-content:center;overflow:hidden;
-      cursor:pointer;transition:height 0.3s,opacity 0.3s;
-    }
-    #sales-bar.hidden{height:0;opacity:0;pointer-events:none;}
-    @keyframes salesSlide{0%{background-position:0% 50%;}100%{background-position:200% 50%;}}
-    .sales-bar-inner{
-      display:flex;align-items:center;gap:0;
-      animation:salesMarquee 22s linear infinite;
-      white-space:nowrap;
-    }
-    @keyframes salesMarquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-    .sales-bar-text{
-      font-size:0.65rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
-      color:white;padding:0 40px;
-    }
-    .sales-bar-text em{font-style:normal;background:rgba(255,255,255,0.25);padding:2px 8px;border-radius:1px;margin:0 6px;}
-    .sales-bar-close{
-      position:absolute;right:14px;top:50%;transform:translateY(-50%);
-      background:none;border:none;color:rgba(255,255,255,0.7);
-      font-size:0.9rem;cursor:pointer;padding:4px;transition:color 0.2s;z-index:1;
-    }
-    .sales-bar-close:hover{color:white;}
-
-    /* NAV */
-    nav{
-      position:fixed;top:36px;left:0;right:0;z-index:900;
-      padding:0 5%;height:72px;
-      display:flex;align-items:center;justify-content:space-between;
-      background:rgba(10,6,8,0.96);backdrop-filter:blur(20px);
-      border-bottom:1px solid rgba(200,115,138,0.12);transition:top 0.3s,height var(--t);
-    }
-    nav.scrolled{height:58px;top:0;}
-    nav.bar-hidden{top:0;}
-    .nav-left{display:flex;flex-direction:column;gap:2px;}
-    .nav-brand{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;letter-spacing:3px;}
-    .nav-brand span{background:linear-gradient(135deg,var(--rose-dim),var(--rose),var(--rose-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-    .nav-sub{font-size:0.54rem;letter-spacing:4px;color:var(--muted);text-transform:uppercase;}
-    .nav-center{display:flex;gap:2rem;list-style:none;align-items:center;}
-    .nav-center a{font-size:0.7rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);transition:color var(--t);}
-    .nav-center a:hover{color:var(--rose-light);}
-    .nav-right{display:flex;align-items:center;gap:10px;}
-    .nav-icon-btn{
-      background:none;border:none;cursor:pointer;color:var(--muted);
-      font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
-      display:flex;align-items:center;gap:5px;transition:color var(--t);padding:6px 10px;
-      font-family:'Raleway',sans-serif;
-    }
-    .nav-icon-btn:hover{color:var(--rose-light);}
-    .cart-btn{position:relative;}
-    .cart-badge{
-      position:absolute;top:-5px;right:-2px;
-      background:var(--rose);color:white;font-size:0.52rem;font-weight:700;
-      min-width:16px;height:16px;border-radius:8px;padding:0 4px;
-      display:none;align-items:center;justify-content:center;
-    }
-    .cart-badge.show{display:flex;}
-    .nav-sep{width:1px;height:18px;background:rgba(200,115,138,0.15);}
-    .nav-back{font-size:0.66rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--rose);border:1px solid rgba(200,115,138,0.3);padding:6px 14px;border-radius:2px;transition:var(--t);}
-    .nav-back:hover{background:rgba(200,115,138,0.1);}
-
-    /* HERO */
-    #hero{
-      min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
-      align-items:center;padding:148px 5% 80px;
-      background:radial-gradient(ellipse at 70% 50%,#1a0a12 0%,#0a0608 60%);
-      position:relative;overflow:hidden;
-    }
-    #hero::before{content:'';position:absolute;top:0;right:0;width:55%;height:100%;background:linear-gradient(135deg,rgba(200,115,138,0.04) 0%,transparent 60%);pointer-events:none;}
-    .hero-text{position:relative;z-index:2;animation:fadeUp 1.2s ease forwards;opacity:0;transform:translateY(30px);}
-    @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
-    .hero-eyebrow{font-size:0.62rem;letter-spacing:5px;text-transform:uppercase;color:var(--rose);margin-bottom:16px;display:flex;align-items:center;gap:12px;}
-    .hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--rose);}
-    .hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,4.5vw,4.5rem);font-weight:900;line-height:1.05;color:var(--cream);margin-bottom:22px;}
-    .hero-title em{font-style:italic;background:linear-gradient(135deg,var(--rose-dim),var(--rose),var(--rose-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-    .hero-desc{font-size:0.88rem;color:var(--muted);line-height:1.9;max-width:420px;margin-bottom:38px;}
-    .hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
-    .btn-rose{background:linear-gradient(135deg,var(--rose-dim),var(--rose),var(--rose-light));color:white;font-family:'Raleway',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:13px 32px;border:none;border-radius:1px;cursor:pointer;transition:transform var(--t),box-shadow var(--t);}
-    .btn-rose:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(200,115,138,0.35);}
-    .btn-outline{background:transparent;color:var(--rose);font-family:'Raleway',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:12px 32px;border:1px solid rgba(200,115,138,0.4);border-radius:1px;cursor:pointer;transition:var(--t);}
-    .btn-outline:hover{background:rgba(200,115,138,0.08);}
-    .hero-img-side{position:relative;display:flex;justify-content:center;align-items:center;animation:fadeUp 1.4s 0.1s ease forwards;opacity:0;transform:translateY(30px);}
-    .hero-img-frame{position:relative;width:85%;max-width:420px;}
-    .hero-img-frame img{width:100%;height:580px;object-fit:cover;object-position:top;border-radius:2px;filter:brightness(0.85);}
-    .hero-img-frame::before{content:'';position:absolute;top:-12px;left:-12px;right:12px;bottom:12px;border:1px solid rgba(200,115,138,0.2);border-radius:2px;pointer-events:none;}
-    .hero-img-tag{position:absolute;bottom:-16px;left:-16px;background:var(--rose);color:white;font-size:0.63rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:13px 18px;}
-
-    /* SECTIONS */
-    section{padding:90px 5%;}
-    .sec-eyebrow{font-size:0.62rem;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--rose);margin-bottom:12px;}
-    .sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.2vw,2.8rem);font-weight:700;color:var(--cream);line-height:1.2;margin-bottom:14px;}
-    .sec-title em{font-style:italic;color:var(--rose-light);}
-    .rose-line{width:44px;height:2px;background:linear-gradient(90deg,var(--rose),transparent);margin:14px 0 36px;border-radius:2px;}
-    .fade-in{opacity:0;transform:translateY(22px);transition:opacity 0.7s ease,transform 0.7s ease;}
-    .fade-in.visible{opacity:1;transform:translateY(0);}
-
-    /* SHOP */
-    #shop{background:var(--deep);}
-    .shop-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:20px;}
-    .shop-filters{display:flex;gap:6px;flex-wrap:wrap;}
-    .filter-btn{background:none;border:1px solid rgba(200,115,138,0.15);color:var(--muted);font-family:'Raleway',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:7px 15px;border-radius:1px;cursor:pointer;transition:var(--t);}
-    .filter-btn:hover,.filter-btn.active{border-color:var(--rose);color:var(--rose-light);background:rgba(200,115,138,0.05);}
-
-    /* SALE BADGE */
-    .sale-badge{
-      position:absolute;top:12px;left:12px;z-index:2;
-      background:linear-gradient(135deg,#c0392b,#e74c3c);
-      color:white;font-size:0.58rem;font-weight:700;letter-spacing:1.5px;
-      text-transform:uppercase;padding:4px 8px;border-radius:1px;
-    }
-    .product-name-wrap{display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap;}
-    .sale-tag-small{
-      font-size:0.55rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
-      background:#c0392b;color:white;padding:2px 5px;border-radius:1px;flex-shrink:0;margin-top:1px;
-    }
-    .price-original{font-size:0.7rem;color:var(--muted);text-decoration:line-through;margin-right:4px;}
-    .price-sale{color:#e07090;font-weight:700;}
-    .prod-detail-link{
-      display:block;font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;
-      color:var(--rose);border-bottom:1px solid rgba(200,115,138,0.25);padding-bottom:1px;
-      margin-top:5px;transition:color var(--t);width:fit-content;
-    }
-    .prod-detail-link:hover{color:var(--rose-light);}
-
-    /* PRODUCT GRID — screenshot style */
-    .product-grid{
-      display:grid;grid-template-columns:repeat(3,1fr);
-      gap:0;background:rgba(200,115,138,0.06);
-      border:1px solid rgba(200,115,138,0.06);
-    }
-    .product-card{
-      background:#100810;position:relative;cursor:pointer;
-      transition:background var(--t);
-      border:1px solid rgba(200,115,138,0.04);
-    }
-    .product-card:hover{background:#160c12;}
-
-    .product-img-wrap{position:relative;overflow:hidden;background:#ebe8e2;}
-    .product-img-wrap img{
-      width:100%;height:400px;
-      object-fit:cover;object-position:top center;
-      display:block;transition:transform 0.55s ease;
-      filter:brightness(0.96);
-    }
-    .product-card:hover .product-img-wrap img{transform:scale(1.04);}
-
-    /* + button top right exactly like screenshot */
-    .prod-plus-btn{
-      position:absolute;top:14px;right:14px;
-      width:32px;height:32px;border-radius:50%;
-      background:rgba(255,255,255,0.9);border:none;
-      color:#222;font-size:1.2rem;line-height:1;
-      cursor:pointer;display:flex;align-items:center;justify-content:center;
-      transition:var(--t);opacity:0;
-      box-shadow:0 2px 8px rgba(0,0,0,0.15);
-    }
-    .product-card:hover .prod-plus-btn{opacity:1;}
-    .prod-plus-btn:hover{background:var(--rose);color:white;}
-
-    /* Quick add bar on hover */
-    .prod-quick-bar{
-      position:absolute;bottom:0;left:0;right:0;
-      background:rgba(10,6,8,0.88);
-      padding:12px 14px;
-      display:flex;align-items:center;justify-content:space-between;
-      opacity:0;transform:translateY(6px);transition:opacity var(--t),transform var(--t);
-    }
-    .product-card:hover .prod-quick-bar{opacity:1;transform:translateY(0);}
-    .quick-add-btn{
-      background:var(--rose);color:white;
-      font-family:'Raleway',sans-serif;font-size:0.62rem;font-weight:700;
-      letter-spacing:2px;text-transform:uppercase;
-      padding:8px 16px;border:none;border-radius:1px;cursor:pointer;transition:var(--t);
-    }
-    .quick-add-btn:hover{background:var(--rose-light);color:var(--ink);}
-    .wishlist-icon{
-      width:30px;height:30px;border-radius:50%;
-      background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);
-      display:flex;align-items:center;justify-content:center;
-      color:white;font-size:0.85rem;cursor:pointer;transition:var(--t);
-    }
-    .wishlist-icon:hover{background:rgba(200,115,138,0.3);}
-
-    /* Info row — exactly like screenshot: name left, price left, + right */
-    .product-info{
-      padding:14px 14px 18px;
-      background:#100810;
-      border-top:1px solid rgba(200,115,138,0.06);
-      display:flex;align-items:flex-start;justify-content:space-between;gap:8px;
-    }
-    .product-meta{flex:1;}
-    .product-name{
-      font-size:0.68rem;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;
-      color:var(--cream);margin-bottom:5px;line-height:1.4;
-    }
-    .product-price{font-size:0.78rem;font-weight:500;color:var(--muted);}
-    .prod-info-add{
-      width:26px;height:26px;border-radius:50%;
-      background:none;border:1px solid rgba(200,115,138,0.2);
-      color:var(--rose);font-size:1rem;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;
-      transition:var(--t);flex-shrink:0;margin-top:2px;
-    }
-    .prod-info-add:hover{background:var(--rose);color:white;border-color:var(--rose);}
-
-    /* SALE SECTION */
-    #sale{background:var(--ink);position:relative;overflow:hidden;}
-    #sale::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(200,115,138,0.06) 0%,transparent 65%);pointer-events:none;}
-    .sale-hdr{text-align:center;margin-bottom:52px;position:relative;}
-    .sale-hdr .rose-line{margin:14px auto;}
-    .sale-countdown{display:flex;gap:16px;justify-content:center;margin-top:20px;flex-wrap:wrap;}
-    .countdown-unit{text-align:center;background:rgba(200,115,138,0.06);border:1px solid rgba(200,115,138,0.15);padding:12px 18px;border-radius:3px;min-width:68px;}
-    .countdown-num{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--rose-light);line-height:1;}
-    .countdown-lbl{font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
-    .sale-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:rgba(200,115,138,0.06);border:1px solid rgba(200,115,138,0.06);}
-    .sale-card{background:#100810;position:relative;cursor:pointer;border:1px solid rgba(200,115,138,0.04);transition:background var(--t);}
-    .sale-card:hover{background:#160c12;}
-    .sale-card-img{position:relative;overflow:hidden;background:#ebe8e2;}
-    .sale-card-img img{width:100%;height:380px;object-fit:cover;object-position:top center;filter:brightness(0.96);transition:transform 0.55s ease;}
-    .sale-card:hover .sale-card-img img{transform:scale(1.04);}
-    .sale-badge-lg{position:absolute;top:12px;left:12px;z-index:2;background:linear-gradient(135deg,#9b1c2e,#c0392b);color:white;font-size:0.66rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border-radius:2px;}
-    .sale-card-body{padding:16px 14px 20px;border-top:1px solid rgba(200,115,138,0.06);}
-    .sale-card-name{font-size:0.68rem;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--cream);margin-bottom:6px;}
-    .sale-prices{display:flex;align-items:center;gap:8px;}
-    .sale-price-was{font-size:0.78rem;color:var(--muted);text-decoration:line-through;}
-    .sale-price-now{font-size:0.88rem;font-weight:700;color:#e07090;}
-    .sale-saving{font-size:0.6rem;letter-spacing:1px;background:rgba(192,57,43,0.15);color:#e07090;border:1px solid rgba(192,57,43,0.25);padding:2px 7px;border-radius:1px;text-transform:uppercase;}
-    .sale-card-links{display:flex;gap:10px;align-items:center;margin-top:10px;}
-    .sale-add-btn{background:var(--rose);color:white;font-family:'Raleway',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:7px 14px;border:none;border-radius:1px;cursor:pointer;transition:var(--t);}
-    .sale-add-btn:hover{background:var(--rose-light);color:var(--ink);}
-    .sale-detail-link{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--rose);border-bottom:1px solid rgba(200,115,138,0.3);padding-bottom:1px;transition:color var(--t);}
-    .sale-detail-link:hover{color:var(--rose-light);}
-
-    /* COLLECTIONS */
-    #collections{background:var(--ink);}
-    .col-header{text-align:center;margin-bottom:52px;}
-    .col-header .rose-line{margin:14px auto;}
-    .col-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
-    .col-card{position:relative;overflow:hidden;cursor:pointer;}
-    .col-card img{width:100%;height:350px;object-fit:cover;filter:brightness(0.6);transition:filter 0.5s,transform 0.5s;}
-    .col-card:hover img{filter:brightness(0.85);transform:scale(1.05);}
-    .col-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,6,8,0.9) 0%,transparent 50%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px;}
-    .col-tag{font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--rose);margin-bottom:5px;}
-    .col-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--cream);}
-
-    /* CONTACT */
-    #contact-f{background:var(--deep);text-align:center;}
-    .c-cards{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:40px 0;}
-    .c-chip{background:rgba(255,255,255,0.02);border:1px solid rgba(200,115,138,0.14);border-radius:3px;padding:20px 22px;min-width:128px;transition:var(--t);}
-    .c-chip:hover{border-color:var(--rose);transform:translateY(-4px);}
-    .c-chip .ico{font-size:1.3rem;margin-bottom:8px;}
-    .c-chip h5{font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:5px;}
-    .c-chip p{font-size:0.8rem;color:var(--off-cream);}
-
-    footer{background:#060305;border-top:1px solid rgba(200,115,138,0.07);padding:40px 5% 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
-    .f-brand{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;letter-spacing:3px;}
-    .f-brand span{background:linear-gradient(135deg,var(--rose-dim),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-    .f-parent{font-size:0.68rem;color:var(--muted);}
-    .f-parent a{color:var(--rose);}
-    .f-copy{font-size:0.68rem;color:rgba(255,255,255,0.18);}
-
-    /* CART DRAWER */
-    .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:2000;opacity:0;pointer-events:none;transition:opacity var(--t);}
-    .cart-overlay.open{opacity:1;pointer-events:all;}
-    .cart-drawer{position:fixed;top:0;right:-430px;width:420px;max-width:100vw;height:100vh;background:#110810;border-left:1px solid rgba(200,115,138,0.15);z-index:2001;transition:right 0.4s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;}
-    .cart-drawer.open{right:0;}
-    .cart-head{padding:22px 22px 18px;border-bottom:1px solid rgba(200,115,138,0.1);display:flex;align-items:center;justify-content:space-between;}
-    .cart-head h3{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--cream);}
-    .cart-close{background:none;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer;transition:color var(--t);}
-    .cart-close:hover{color:var(--rose-light);}
-    .cart-body{flex:1;overflow-y:auto;padding:18px 22px;}
-    .cart-empty{text-align:center;padding:56px 0;color:var(--muted);font-size:0.82rem;letter-spacing:1px;}
-    .cart-empty .ico{font-size:2.5rem;margin-bottom:14px;}
-    .cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid rgba(200,115,138,0.07);}
-    .cart-item-img{width:68px;height:82px;object-fit:cover;object-position:top;border-radius:1px;flex-shrink:0;}
-    .cart-item-info{flex:1;}
-    .cart-item-name{font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--cream);margin-bottom:4px;}
-    .cart-item-size{font-size:0.62rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
-    .cart-item-price{font-size:0.8rem;color:var(--rose-light);font-weight:600;}
-    .cart-item-row{display:flex;align-items:center;gap:8px;margin-top:8px;}
-    .qty-btn{width:22px;height:22px;background:rgba(200,115,138,0.1);border:1px solid rgba(200,115,138,0.2);color:var(--cream);border-radius:1px;cursor:pointer;font-size:0.88rem;display:flex;align-items:center;justify-content:center;transition:var(--t);}
-    .qty-btn:hover{background:var(--rose);border-color:var(--rose);}
-    .qty-num{font-size:0.78rem;color:var(--cream);min-width:14px;text-align:center;}
-    .cart-item-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.68rem;margin-left:auto;align-self:flex-start;padding:2px;transition:color var(--t);}
-    .cart-item-remove:hover{color:var(--rose);}
-    .cart-foot{padding:18px 22px 26px;border-top:1px solid rgba(200,115,138,0.1);}
-    .cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
-    .cart-total-row span{font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
-    .cart-total-row strong{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--rose-light);}
-
-    /* AUTH MODAL */
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:3000;opacity:0;pointer-events:none;transition:opacity var(--t);display:flex;align-items:center;justify-content:center;padding:20px;}
-    .modal-overlay.open{opacity:1;pointer-events:all;}
-    .modal{background:#140b10;border:1px solid rgba(200,115,138,0.22);border-radius:4px;width:100%;max-width:400px;padding:38px 34px;position:relative;transform:translateY(20px);transition:transform 0.35s ease;}
-    .modal-overlay.open .modal{transform:translateY(0);}
-    .modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;transition:color var(--t);}
-    .modal-close:hover{color:var(--rose-light);}
-    .modal-logo{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;letter-spacing:3px;margin-bottom:4px;}
-    .modal-logo span{background:linear-gradient(135deg,var(--rose-dim),var(--rose),var(--rose-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-    .modal-sub{font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:26px;}
-    .modal-tabs{display:flex;gap:0;margin-bottom:24px;border-bottom:1px solid rgba(200,115,138,0.1);}
-    .modal-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'Raleway',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:9px 18px 9px 0;cursor:pointer;transition:var(--t);margin-bottom:-1px;}
-    .modal-tab.active{color:var(--rose-light);border-bottom-color:var(--rose);}
-    .form-group{margin-bottom:14px;}
-    .form-group label{display:block;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-    .form-group input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(200,115,138,0.16);color:var(--cream);font-family:'Raleway',sans-serif;font-size:0.84rem;padding:10px 13px;border-radius:2px;outline:none;transition:var(--t);}
-    .form-group input:focus{border-color:var(--rose);}
-    .form-group input::placeholder{color:rgba(154,138,144,0.45);}
-    .form-panel{display:none;}
-    .form-panel.active{display:block;}
-    .forgot{font-size:0.62rem;color:var(--rose);text-align:right;display:block;margin-top:5px;cursor:pointer;}
-    .forgot:hover{color:var(--rose-light);}
-
-    /* TOAST */
-    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:#1a0d14;border:1px solid rgba(200,115,138,0.3);color:var(--cream);font-size:0.72rem;letter-spacing:0.5px;padding:11px 22px;border-radius:2px;z-index:9999;opacity:0;transition:opacity 0.3s,transform 0.3s;pointer-events:none;white-space:nowrap;}
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-    @media(max-width:900px){
-      #hero{grid-template-columns:1fr;}
-      .hero-img-side{display:none;}
-      .product-grid{grid-template-columns:repeat(2,1fr);}
-      .col-grid{grid-template-columns:1fr 1fr;}
-      .nav-center{display:none;}
-    }
-    @media(max-width:560px){
-      .product-grid{grid-template-columns:1fr 1fr;}
-      .product-img-wrap img{height:240px;}
-      .col-grid{grid-template-columns:1fr;}
-      .cart-drawer{width:100vw;}
-    }
-  </style>
+  <link rel="stylesheet" href="css/fashion.css">
 </head>
 <body>
 
@@ -410,7 +61,7 @@
   </div>
   <div class="hero-img-side">
     <div class="hero-img-frame">
-      <img src="images/fashion-hero.jpg" alt="Fashion"/>
+      <div class="resizable-img"><img src="images/fashion/hero.jpg" alt="Fashion"/></div>
       <div class="hero-img-tag">New In</div>
     </div>
   </div>
@@ -460,9 +111,9 @@
     <div class="rose-line"></div>
   </div>
   <div class="col-grid fade-in">
-    <div class="col-card"><img src="images/fashion-collection-evening-wear.jpg" alt=""/><div class="col-overlay"><div class="col-tag">SS 2025</div><div class="col-name">Evening Wear</div></div></div>
-    <div class="col-card"><img src="images/fashion-collection-everyday-luxury.jpg" alt=""/><div class="col-overlay"><div class="col-tag">Essentials</div><div class="col-name">Everyday Luxury</div></div></div>
-    <div class="col-card"><img src="images/fashion-collection-bespoke-tailoring.jpg" alt=""/><div class="col-overlay"><div class="col-tag">Made-to-Measure</div><div class="col-name">Bespoke Tailoring</div></div></div>
+    <div class="col-card"><img src="images/fashion/collection-evening-wear.jpg" alt=""/><div class="col-overlay"><div class="col-tag">SS 2025</div><div class="col-name">Evening Wear</div></div></div>
+    <div class="col-card"><img src="images/fashion/collection-everyday-luxury.jpg" alt=""/><div class="col-overlay"><div class="col-tag">Essentials</div><div class="col-name">Everyday Luxury</div></div></div>
+    <div class="col-card"><img src="images/fashion/collection-bespoke-tailoring.jpg" alt=""/><div class="col-overlay"><div class="col-tag">Made-to-Measure</div><div class="col-name">Bespoke Tailoring</div></div></div>
   </div>
 </section>
 
@@ -542,7 +193,7 @@
 const products = [
   {
     id:1, name:'CHECK SHIRT WITH POCKETS', price:'45.00', category:'men',
-    img:'images/fashion-product-01-check-shirt.jpg',
+    img:'images/fashion/product-01-check-shirt.jpg',
     sale:false,
     description:'A versatile cotton check shirt featuring two chest pockets and a relaxed straight fit. Crafted from a soft brushed cotton blend, it transitions effortlessly from casual days to smart-casual evenings. The subtle plaid pattern is woven — not printed — ensuring lasting colour and texture.',
     material:'100% Brushed Cotton', care:'Machine wash 30°C · Do not tumble dry · Iron medium',
@@ -560,7 +211,7 @@ const products = [
   },
   {
     id:2, name:'WASHED RELAXED FIT SHIRT', price:'45.00', category:'men',
-    img:'images/fashion-product-02-relaxed-shirt.jpg',
+    img:'images/fashion/product-02-relaxed-shirt.jpg',
     sale:true, salePrice:'29.00', salePercent:36,
     description:'Stone-washed for an effortlessly worn-in feel, this relaxed-fit shirt is cut slightly wider through the chest and shoulders for a laid-back silhouette. The washed finish softens the fabric and gives it a naturally faded, lived-in aesthetic that only improves with wear.',
     material:'100% Cotton (stone-washed)', care:'Machine wash 30°C · Tumble dry low · Warm iron',
@@ -578,7 +229,7 @@ const products = [
   },
   {
     id:3, name:'OVERSIZED LINEN BLAZER', price:'120.00', category:'women',
-    img:'images/fashion-product-03-linen-blazer.jpg',
+    img:'images/fashion/product-03-linen-blazer.jpg',
     sale:false,
     description:'A structured yet breathable linen blazer with an intentionally oversized silhouette. Unlined for warm weather comfort, it features notch lapels, two patch pockets, and a single button front. Styled over a slip dress or tailored trousers, it elevates any outfit instantly.',
     material:'100% European Linen', care:'Dry clean recommended · Or hand wash cold · Hang to dry',
@@ -596,7 +247,7 @@ const products = [
   },
   {
     id:4, name:'EMBROIDERED ABAYA', price:'180.00', category:'women',
-    img:'images/fashion-product-04-abaya.jpg',
+    img:'images/fashion/product-04-abaya.jpg',
     sale:true, salePrice:'126.00', salePercent:30,
     description:'An heirloom-quality embroidered abaya featuring hand-detailed geometric embroidery along the cuffs and front placket. Crafted from a luxurious crepe fabric with a fluid drape, it offers full coverage with an elegant silhouette. Each piece is made in limited quantities.',
     material:'95% Polyester Crepe · 5% Elastane', care:'Dry clean only · Store hanging',
@@ -614,7 +265,7 @@ const products = [
   },
   {
     id:5, name:'SLIM FIT TROUSERS', price:'65.00', category:'men',
-    img:'images/fashion-product-05-trousers.jpg',
+    img:'images/fashion/product-05-trousers.jpg',
     sale:false,
     description:'Tailored in a clean slim fit with a mid-rise waist and tapered leg. A refined wool-blend fabric gives these trousers a sharp drape suited to both office and evening wear. Features a flat front, side pockets, and a two-button waistband for a sleek profile.',
     material:'60% Wool · 38% Polyester · 2% Elastane', care:'Dry clean only · Steam press',
@@ -632,7 +283,7 @@ const products = [
   },
   {
     id:6, name:'LEATHER CROSSBODY BAG', price:'95.00', category:'accessories',
-    img:'images/fashion-product-06-crossbody-bag.jpg',
+    img:'images/fashion/product-06-crossbody-bag.jpg',
     sale:true, salePrice:'66.50', salePercent:30,
     description:'A compact structured crossbody bag in full-grain vegetable-tanned leather. Features a main zip compartment, interior card slots, and an adjustable shoulder strap. The clean architectural silhouette is designed to work from morning to evening without compromise.',
     material:'Full-grain vegetable-tanned leather · Brass hardware', care:'Wipe with dry cloth · Condition leather every 6 months · Avoid prolonged moisture',
@@ -647,7 +298,7 @@ const products = [
   },
   {
     id:7, name:'SILK SCARF — GEOMETRIC', price:'55.00', category:'accessories',
-    img:'images/fashion-product-07-silk-scarf.jpg',
+    img:'images/fashion/product-07-silk-scarf.jpg',
     sale:false,
     description:'A hand-rolled silk scarf printed with an original geometric print inspired by Andalusian tilework. Woven from pure 14mm silk twill, it can be styled as a necktie, headscarf, bag accessory, or belt. Each scarf is individually inspected before packing.',
     material:'100% Pure Silk Twill (14mm)', care:'Dry clean only · Store flat or rolled · Avoid direct sunlight',
@@ -662,7 +313,7 @@ const products = [
   },
   {
     id:8, name:'TAILORED JUMPSUIT', price:'140.00', category:'women',
-    img:'images/fashion-product-08-jumpsuit.jpg',
+    img:'images/fashion/product-08-jumpsuit.jpg',
     sale:true, salePrice:'98.00', salePercent:30,
     description:'A sharp, wide-leg tailored jumpsuit with a fitted bodice and a statement V-neckline. Crafted in a lustrous matte crepe fabric with a subtle sheen, it moves beautifully and holds its structure throughout the day. Complete with side pockets and a tie-back waist.',
     material:'97% Polyester · 3% Elastane Crepe', care:'Hand wash cold · Do not wring · Hang dry · Iron on reverse',
@@ -680,7 +331,7 @@ const products = [
   },
   {
     id:9, name:'DESERT LINEN SHIRT', price:'55.00', category:'men',
-    img:'images/fashion-product-09-linen-shirt.jpg',
+    img:'images/fashion/product-09-linen-shirt.jpg',
     sale:false,
     description:'A summer essential crafted in 100% washed linen. The relaxed, long-line cut with a split hem and extended back provides natural airflow in warm weather. Tonal buttons, a minimal collar, and clean stitching keep the aesthetic refined and understated.',
     material:'100% Washed Linen', care:'Machine wash 40°C · Reshape while damp · Line dry · Iron damp on reverse',
@@ -894,19 +545,6 @@ document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
 </script>
 
 <!-- LANGUAGE SWITCHER -->
-<style>
-.lang-sw{display:flex;align-items:center;gap:0;margin-right:10px;}
-.lang-btn{background:none;border:1px solid rgba(200,115,138,0.25);color:var(--muted);font-family:'Raleway',sans-serif;font-size:0.58rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 8px;cursor:pointer;transition:var(--t);}
-.lang-btn:first-child{border-radius:2px 0 0 2px;border-right:none;}
-.lang-btn:last-child{border-radius:0 2px 2px 0;}
-.lang-btn.active{background:var(--rose);color:white;border-color:var(--rose);}
-.lang-btn:hover:not(.active){color:var(--rose-light);border-color:var(--rose);}
-html[dir="rtl"] body{direction:rtl;text-align:right;}
-html[dir="rtl"] .rose-line{background:linear-gradient(270deg,var(--rose),transparent);}
-html[dir="rtl"] .hero-eyebrow::before{display:none;}
-html[dir="rtl"] .c-chip p{direction:ltr;}
-</style>
-
 <script>
 // Inject lang switcher into nav
 (function(){

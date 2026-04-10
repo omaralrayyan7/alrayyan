@@ -8,187 +8,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
-  <style>
-    :root{
-      --black:#050505;--dark:#0a0a0a;--dark2:#111111;
-      --gold:#b87333;--gold-light:#d4976a;--gold-dim:#8b5e34;
-      --white:#ffffff;--off-white:#f5f0e8;--muted:#888888;
-      --t:0.35s cubic-bezier(0.4,0,0.2,1);
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{scroll-behavior:smooth;}
-    body{font-family:'Montserrat',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;}
-    html[dir="rtl"] body{font-family:'Cairo','Montserrat',sans-serif;}
-    html[dir="rtl"] .detail-info{border-right:none;border-left:1px solid rgba(184,115,51,0.08);padding:52px 0 80px 56px;}
-    html[dir="rtl"] .book-col{padding:52px 48px 80px 0;}
-    html[dir="rtl"] .gold-line{background:linear-gradient(270deg,var(--gold),transparent);}
-    .lang-sw{display:flex;align-items:center;margin-left:10px;}
-    .lang-btn{background:none;border:1px solid rgba(184,115,51,0.3);color:var(--muted);
-      font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:1.5px;
-      text-transform:uppercase;padding:5px 10px;cursor:pointer;transition:.3s;}
-    .lang-btn:first-child{border-radius:2px 0 0 2px;border-right:none;}
-    .lang-btn:last-child{border-radius:0 2px 2px 0;}
-    .lang-btn.active{background:var(--gold);color:var(--black);border-color:var(--gold);}
-    .lang-btn:hover:not(.active){color:var(--gold);border-color:var(--gold);}
-    a{text-decoration:none;color:inherit;}
-    img{max-width:100%;display:block;}
-    ::-webkit-scrollbar{width:4px;}
-    ::-webkit-scrollbar-track{background:var(--black);}
-    ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
-
-    /* NAV */
-    nav{position:fixed;top:0;left:0;right:0;z-index:900;padding:0 5%;height:68px;
-      display:flex;align-items:center;justify-content:space-between;
-      background:rgba(5,5,5,0.97);backdrop-filter:blur(20px);
-      border-bottom:1px solid rgba(184,115,51,0.1);transition:var(--t);}
-    nav.scrolled{height:56px;}
-    .nav-brand{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;letter-spacing:2px;color:var(--gold-light);}
-    .nav-right{display:flex;align-items:center;gap:12px;}
-    .nav-back{font-size:.66rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
-      color:var(--gold);border:1px solid rgba(184,115,51,0.35);padding:6px 14px;border-radius:2px;transition:var(--t);}
-    .nav-back:hover{background:rgba(184,115,51,0.1);}
-
-    /* BREADCRUMB */
-    .breadcrumb-bar{padding:80px 5% 0;font-size:.68rem;color:var(--muted);
-      display:flex;gap:8px;align-items:center;border-bottom:1px solid rgba(184,115,51,0.07);padding-bottom:14px;}
-    .breadcrumb-bar a{color:var(--gold);}
-    .breadcrumb-bar span{color:rgba(184,115,51,0.3);}
-
-    /* HERO BANNER */
-    .detail-hero{position:relative;height:52vh;min-height:320px;display:flex;align-items:flex-end;overflow:hidden;}
-    .detail-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.3) saturate(0.6);}
-    .detail-hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,5,0.97) 0%,rgba(5,5,5,0.2) 60%,transparent 100%);}
-    .detail-hero-content{position:relative;z-index:2;padding:0 5% 48px;width:100%;animation:fadeUp .9s ease forwards;opacity:0;transform:translateY(20px);}
-    @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
-    .detail-eyebrow{font-size:.62rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:12px;}
-    .detail-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold);}
-    .detail-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;color:var(--off-white);line-height:1.1;margin-bottom:10px;}
-    .detail-price-tag{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--gold-light);}
-
-    /* LAYOUT */
-    .detail-wrap{display:grid;grid-template-columns:1fr 380px;gap:0;padding:0 5%;max-width:1300px;margin:0 auto;}
-    .detail-info{padding:52px 56px 80px 0;border-right:1px solid rgba(184,115,51,0.08);}
-    .book-col{padding:52px 0 80px 48px;}
-    .book-sticky{position:sticky;top:80px;}
-
-    /* SECTION LABELS */
-    .sec-eye{font-size:.62rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
-    .sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.5vw,1.9rem);font-weight:700;color:var(--off-white);line-height:1.2;margin-bottom:10px;}
-    .gold-line{width:44px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);margin:12px 0 28px;}
-
-    /* AVAILABILITY TABLE */
-    .avail-table{width:100%;border-collapse:collapse;margin-bottom:44px;font-size:.8rem;}
-    .avail-table thead tr{border-bottom:1px solid rgba(184,115,51,0.2);}
-    .avail-table th{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;padding:8px 14px;text-align:left;}
-    .avail-table td{padding:12px 14px;border-bottom:1px solid rgba(184,115,51,0.07);color:var(--off-white);}
-    .avail-table tbody tr:hover td{background:rgba(184,115,51,0.04);}
-    .avail-dot{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:600;}
-    .avail-dot::before{content:'';width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0;}
-    .avail-dot.available{color:#4ade80;}
-    .avail-dot.low{color:#facc15;}
-    .avail-dot.full{color:#f87171;}
-
-    /* SPECS GRID */
-    .specs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(184,115,51,0.08);border:1px solid rgba(184,115,51,0.08);border-radius:3px;overflow:hidden;margin-bottom:44px;}
-    .spec-item{background:#0d0d0d;padding:20px 16px;}
-    .spec-label{font-size:.58rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-    .spec-value{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold-light);font-weight:700;}
-    .spec-value.sm{font-size:.88rem;font-family:'Montserrat',sans-serif;color:var(--off-white);}
-
-    /* AMENITIES */
-    .amenities-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:44px;}
-    .amenity-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(184,115,51,0.07);font-size:.8rem;color:var(--off-white);}
-    .amenity-item::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
-
-    /* DESCRIPTION */
-    .detail-desc{font-size:.86rem;color:var(--muted);line-height:1.95;margin-bottom:40px;}
-    .detail-desc p+p{margin-top:14px;}
-
-
-    /* BOOK VISIT CARD */
-    .book-card{background:#0d0a06;border:1px solid rgba(184,115,51,0.18);border-radius:4px;overflow:hidden;}
-    .book-card-head{background:linear-gradient(135deg,var(--gold-dim),var(--gold));padding:22px 26px;}
-    .book-card-head h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:var(--black);margin-bottom:3px;}
-    .book-card-head p{font-size:.7rem;color:rgba(5,5,5,.65);}
-    .book-form{padding:24px;}
-    .bf-group{margin-bottom:14px;}
-    .bf-label{display:block;font-size:.58rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-    .bf-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(184,115,51,0.18);color:var(--off-white);font-family:'Montserrat',sans-serif;font-size:.8rem;padding:10px 12px;border-radius:2px;outline:none;transition:border-color var(--t);}
-    .bf-input:focus{border-color:rgba(184,115,51,0.55);}
-    .bf-input::placeholder{color:rgba(136,136,136,0.4);}
-    .bf-input option{background:#1a1200;}
-    textarea.bf-input{resize:vertical;min-height:80px;}
-    .bf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-    .btn-gold-full{width:100%;background:linear-gradient(135deg,var(--gold-dim),var(--gold),var(--gold-light));color:var(--black);font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;border:none;border-radius:2px;cursor:pointer;transition:transform var(--t),box-shadow var(--t);margin-top:4px;}
-    .btn-gold-full:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(184,115,51,0.35);}
-    .book-note{font-size:.62rem;color:var(--muted);text-align:center;margin-top:12px;line-height:1.6;}
-    .book-success{display:none;padding:28px;text-align:center;}
-    .book-success .s-icon{font-size:2.5rem;margin-bottom:14px;}
-    .book-success h4{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--gold-light);margin-bottom:8px;}
-    .book-success p{font-size:.8rem;color:var(--muted);line-height:1.7;}
-
-    /* QUICK CONTACT */
-    .quick-contact{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-    .q-chip{background:rgba(255,255,255,0.02);border:1px solid rgba(184,115,51,0.12);border-radius:3px;padding:14px;text-align:center;transition:var(--t);cursor:pointer;}
-    .q-chip:hover{border-color:var(--gold);}
-    .q-chip .ico{font-size:1.1rem;margin-bottom:5px;}
-    .q-chip p{font-size:.62rem;color:var(--muted);}
-    .q-chip a{color:var(--gold-light);font-size:.72rem;font-weight:600;}
-
-    /* RELATED */
-    .related-section{padding:70px 5%;background:#070707;}
-    .related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(184,115,51,0.08);margin-top:36px;}
-    .rel-card{background:var(--dark);overflow:hidden;cursor:pointer;transition:var(--t);border:1px solid rgba(184,115,51,0.04);}
-    .rel-card:hover{background:#0c0b06;}
-    .rel-card img{width:100%;height:180px;object-fit:cover;filter:brightness(0.7);transition:filter .5s,transform .5s;}
-    .rel-card:hover img{filter:brightness(0.9);transform:scale(1.04);}
-    .rel-card-body{padding:16px 18px 20px;border-top:1px solid rgba(184,115,51,0.07);}
-    .rel-name{font-size:.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--off-white);margin-bottom:4px;}
-    .rel-price{font-size:.7rem;color:var(--muted);}
-    .rel-avail{font-size:.6rem;letter-spacing:1px;color:#4ade80;margin-top:4px;}
-
-    /* FOOTER */
-    footer{background:#030303;border-top:1px solid rgba(184,115,51,0.07);padding:32px 5% 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
-    .f-brand{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;letter-spacing:2px;color:var(--gold-light);}
-    .f-copy{font-size:.68rem;color:rgba(255,255,255,0.18);}
-
-    /* FADE */
-    .fade-in{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
-    .fade-in.visible{opacity:1;transform:translateY(0);}
-
-    @media(max-width:1024px){
-      .detail-wrap{grid-template-columns:1fr;}
-      .detail-info{padding:40px 0 0;border-right:none;}
-      html[dir="rtl"] .detail-info{border-left:none;padding:40px 0 0;}
-      .book-col{padding:36px 0 60px;}
-      html[dir="rtl"] .book-col{padding:36px 0 60px;}
-      .book-sticky{position:static;}
-      .related-grid{grid-template-columns:1fr 1fr;}
-    }
-    @media(max-width:768px){
-      nav{padding:0 4%;height:62px;}
-      .nav-brand{font-size:1rem;letter-spacing:1.5px;}
-      .nav-back{font-size:.58rem;padding:5px 12px;}
-      .detail-wrap{padding:0 4%;}
-    }
-    @media(max-width:576px){
-      .specs-grid{grid-template-columns:1fr 1fr;}
-      .amenities-grid{grid-template-columns:1fr;}
-      .related-grid{grid-template-columns:1fr;}
-      .bf-row{grid-template-columns:1fr;}
-      .quick-contact{grid-template-columns:1fr;}
-    }
-    @media(max-width:480px){
-      .specs-grid{grid-template-columns:1fr;}
-      nav{padding:0 3%;}
-      .detail-wrap{padding:0 3%;}
-    }
-  </style>
+  <link rel="stylesheet" href="css/office-detail.css">
 </head>
 <body>
 
 <nav id="navbar">
-  <a href="index.html"><div class="nav-brand">ALRAYYAN GROUP</div></a>
+  <a href="index.html"><div class="nav-brand"><img src="images/logo/logo.png" alt="Alrayyan" style="height:32px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:drop-shadow(0 0 6px rgba(184,115,51,0.3));"/>ALRAYYAN GROUP</div></a>
   <div class="nav-right">
     <a href="index.html#offices" class="nav-back" data-i18n="navBack">← All Offices</a>
     <div class="lang-sw">
@@ -213,7 +38,7 @@
   <div class="detail-hero-content">
     <div class="detail-eyebrow" id="hero-eyebrow">Office Type</div>
     <h1 class="detail-title" id="hero-title">Office Name</h1>
-    <div class="detail-price-tag" id="hero-price">JOD —</div>
+    <div class="detail-price-tag" id="hero-price" style="font-family:'Montserrat',sans-serif;font-size:.82rem;color:var(--gold-light);font-weight:600;letter-spacing:.5px;"></div>
   </div>
 </div>
 
@@ -228,11 +53,6 @@
       <h2 class="sec-title"><span data-i18n="ttSpaceA">Space</span> <em style="font-style:italic;color:var(--gold-light);" data-i18n="ttSpaceB">Details</em></h2>
       <div class="gold-line"></div>
       <div class="specs-grid" id="specs-grid"></div>
-    </div>
-
-    <!-- AVAILABILITY -->
-    <div class="fade-in" style="margin-bottom:44px">
-      <p class="avail-text" id="avail-text" style="font-size:.95rem;color:var(--off-white);letter-spacing:.3px;padding:18px 22px;background:rgba(184,115,51,0.04);border-left:3px solid var(--gold);border-radius:3px;"></p>
     </div>
 
     <!-- DESCRIPTION -->
@@ -348,15 +168,15 @@
 <!-- RELATED -->
 <div class="related-section">
   <div class="fade-in">
-    <p class="sec-eye">Other Spaces</p>
-    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:700;color:var(--off-white);">More <em style="font-style:italic;color:var(--gold-light);">Options</em></h2>
+    <p class="sec-eye" data-i18n="relEye">Other Spaces</p>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:700;color:var(--off-white);"><span data-i18n="relTitleA">More</span> <em style="font-style:italic;color:var(--gold-light);" data-i18n="relTitleB">Options</em></h2>
     <div class="gold-line"></div>
   </div>
   <div class="related-grid fade-in" id="related-grid"></div>
 </div>
 
 <footer>
-  <div class="f-brand">ALRAYYAN GROUP</div>
+  <div class="f-brand"><img src="images/logo/logo.png" alt="Alrayyan" style="height:28px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:drop-shadow(0 0 6px rgba(184,115,51,0.2));"/>ALRAYYAN GROUP</div>
   <div class="f-copy">© 2025 Alrayyan Group. All rights reserved.</div>
 </footer>
 
@@ -377,8 +197,8 @@ const STD_AMENITIES_EXTRA = {
 
 const offices = [
   {
-    id:1, typeEn:'Executive Offices', typeAr:'مكاتب تنفيذية', price:'From JOD 3,500 / month', priceAr:'من 3,500 دينار / شهر',
-    img:'images/index-office-executive-suites.jpg',
+    id:1, typeEn:'Full Floor', typeAr:'طابق كامل',
+    img:'images/main/office-executive-suites.jpg',
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'},    value:{en:'25 – 80 m²',ar:'25 – 80 م²'}},
       {label:{en:'Capacity',ar:'السعة'},               value:{en:'1 – 8 persons',ar:'1 – 8 أشخاص'}},
@@ -387,7 +207,7 @@ const offices = [
       {label:{en:'Setup Time',ar:'وقت التجهيز'},       value:{en:'Same Day',ar:'نفس اليوم'}},
       {label:{en:'Availability',ar:'التوفر'},          value:{en:'8 Units Now',ar:'8 وحدات الآن'}},
     ],
-    availText:{ en:'This space is available in: 3rd Floor 80m²', ar:'هذه المساحة متوفرة في: الطابق الثالث 80م²' },
+    availText:{ en:'This space is available in: 4th Floor (400m²), 6th Floor (400m²), 7th Floor (400m²)', ar:'هذه المساحة متوفرة في: الطابق الرابع (400م²)، الطابق السادس (400م²)، الطابق السابع (400م²)' },
     description:{
       en:`<p>Alrayyan's Executive Offices are the ultimate expression of corporate prestige — fully furnished private offices designed for the modern executive. Each office features bespoke furniture, premium lighting, and floor-to-ceiling glass panels that flood the space with natural light and commanding city views.</p>
       <p>Offices range from compact single-occupancy spaces to expansive eight-person offices, all within a dedicated secure corridor. Your office comes with a personalised plaque at reception, and your team has access to all shared premium amenities on the same floor.</p>`,
@@ -410,8 +230,8 @@ const offices = [
     },
   },
   {
-    id:2, typeEn:'Co-Working Spaces', typeAr:'مساحات العمل المشترك', price:'From JOD 800 / month', priceAr:'من 800 دينار / شهر',
-    img:'images/index-office-coworking.jpg',
+    id:2, typeEn:'Small Spaces', typeAr:'مساحات صغيرة',
+    img:'images/main/office-coworking.jpg',
     specs:[
       {label:{en:'Desk Options',ar:'خيارات المكاتب'},  value:{en:'Hot / Dedicated',ar:'مرن / مخصص'}},
       {label:{en:'Capacity',ar:'السعة'},               value:{en:'1 – 300 persons',ar:'1 – 300 شخص'}},
@@ -420,7 +240,7 @@ const offices = [
       {label:{en:'Open Hours',ar:'ساعات العمل'},       value:{en:'7am – 11pm',ar:'7ص – 11م'}},
       {label:{en:'Availability',ar:'التوفر'},          value:{en:'24 Desks Now',ar:'24 مكتب الآن'}},
     ],
-    availText:{ en:'This space is available in: 5th Floor 80m²', ar:'هذه المساحة متوفرة في: الطابق الخامس 80م²' },
+    availText:{ en:'This space is available in: 3rd Floor (80m²), 5th Floor (80m²)', ar:'هذه المساحة متوفرة في: الطابق الثالث (80م²)، الطابق الخامس (80م²)' },
     description:{
       en:`<p>The Alrayyan Co-Working floor is a dynamic, inspiring environment where ambition is the common language. Spread across an open, beautifully designed 1,200 m² floor, it offers hot desks, dedicated desks, and quiet focus pods — all within a vibrant professional community.</p>
       <p>Members gain access to one of Amman's most connected workspaces, a fully-stocked kitchen, barista coffee service, and a rooftop terrace for breaks and informal meetings.</p>`,
@@ -449,8 +269,8 @@ const offices = [
     },
   },
   {
-    id:3, typeEn:'Meeting Rooms', typeAr:'قاعات الاجتماعات', price:'From JOD 250 / hour', priceAr:'من 250 دينار / ساعة',
-    img:'images/index-office-meeting-rooms.jpg',
+    id:3, typeEn:'Open Space', typeAr:'مساحة مفتوحة',
+    img:'images/main/office-meeting-rooms.jpg',
     specs:[
       {label:{en:'Room Sizes',ar:'أحجام القاعات'},     value:{en:'4 – 40 persons',ar:'4 – 40 شخص'}},
       {label:{en:'Total Rooms',ar:'إجمالي القاعات'},   value:{en:'12 Rooms',ar:'12 قاعة'}},
@@ -459,7 +279,7 @@ const offices = [
       {label:{en:'Setup',ar:'التجهيز'},                value:{en:'Theatre / Board',ar:'مسرحي / اجتماعات'}},
       {label:{en:'Availability',ar:'التوفر'},          value:{en:'6 Rooms Today',ar:'6 قاعات اليوم'}},
     ],
-    availText:{ en:'This space is available in: 6th Floor 400m²', ar:'هذه المساحة متوفرة في: الطابق السادس 400م²' },
+    availText:{ en:'This space is available in: B1 Floor (1,000m²), 9th Floor Outdoor (300m²), 9th Floor Indoor (100m²)', ar:'هذه المساحة متوفرة في: الطابق B1 (1,000م²)، الطابق التاسع الخارجي (300م²)، الطابق التاسع الداخلي (100م²)' },
     description:{
       en:`<p>Alrayyan's meeting rooms are designed to impress — whether hosting a client pitch, an all-hands, or a high-stakes negotiation. Each room is equipped with enterprise-grade AV, motorised blinds, and acoustic-treated walls for privacy and focus.</p>
       <p>Rooms seat 4 to 40 guests and can be configured for boardroom, theatre, U-shape, or classroom layouts. Same-day booking is available through our online portal or reception.</p>`,
@@ -490,8 +310,8 @@ const offices = [
     },
   },
   {
-    id:4, typeEn:'Virtual Offices', typeAr:'المكاتب الافتراضية', price:'From JOD 400 / month', priceAr:'من 400 دينار / شهر',
-    img:'images/index-office-virtual.jpg',
+    id:4, typeEn:'9th Floor – Outdoor Terrace', typeAr:'الطابق التاسع – تراس خارجي',
+    img:'images/main/office-virtual.jpg',
     specs:[
       {label:{en:'Packages',ar:'الباقات'},             value:{en:'3 Tiers',ar:'3 مستويات'}},
       {label:{en:'Address',ar:'العنوان'},              value:{en:'Prime Business District',ar:'منطقة أعمال مميزة'}},
@@ -500,7 +320,7 @@ const offices = [
       {label:{en:'Mail Handling',ar:'البريد'},         value:{en:'Included',ar:'مشمول'}},
       {label:{en:'Availability',ar:'التوفر'},          value:{en:'12 Packages',ar:'12 باقة'}},
     ],
-    availText:{ en:'This space is available in: 9th Floor Indoor 100m²', ar:'هذه المساحة متوفرة في: الطابق التاسع الداخلي 100م²' },
+    availText:{ en:'This space is available in: 9th Floor Outdoor (300m²)', ar:'هذه المساحة متوفرة في: الطابق التاسع الخارجي (300م²)' },
     description:{
       en:`<p>Establish a premium Amman business presence without the overhead of a physical office. The Alrayyan Virtual Office gives your company a prestigious address in one of the Kingdom's most recognised business towers — the perfect foundation for any growing company.</p>
       <p>From mail collection and forwarding to dedicated phone answering in your company name, our packages flex to meet your exact needs.</p>`,
@@ -533,8 +353,8 @@ const offices = [
     },
   },
   {
-    id:5, typeEn:'Full Floor Offices', typeAr:'مكاتب طابق كامل', price:'Custom Pricing', priceAr:'تسعير مخصص',
-    img:'images/index-office-full-floor.jpg',
+    id:5, typeEn:'9th Floor – Indoor Space', typeAr:'الطابق التاسع – مساحة داخلية',
+    img:'images/main/office-full-floor.jpg',
     specs:[
       {label:{en:'Floor Size',ar:'مساحة الطابق'},      value:{en:'400 m² – 1,000 m²',ar:'400 م² – 1000 م²'}},
       {label:{en:'Capacity',ar:'السعة'},               value:{en:'40 – 200 persons',ar:'40 – 200 شخص'}},
@@ -543,7 +363,7 @@ const offices = [
       {label:{en:'Fit-Out',ar:'التشطيب'},              value:{en:'Turnkey or Shell',ar:'جاهز أو هيكلي'}},
       {label:{en:'Handover',ar:'التسليم'},             value:{en:'60 days',ar:'60 يوماً'}},
     ],
-    availText:{ en:'This space is available in: 4th Floor 400m², 6th Floor 400m², 7th Floor 400m²', ar:'هذه المساحة متوفرة في: الطابق الرابع 400م²، الطابق السادس 400م²، الطابق السابع 400م²' },
+    availText:{ en:'This space is available in: 9th Floor Indoor (100m²)', ar:'هذه المساحة متوفرة في: الطابق التاسع الداخلي (100م²)' },
     description:{
       en:`<p>For enterprises that demand space, privacy, and identity — a full floor at Alrayyan Tower is the definitive statement. Three entire floors are currently available (4th, 6th, 7th), each 400 m², offered as shell-and-core or in a range of turnkey fit-out packages designed to your brand identity.</p>
       <p>Full floors feature a dedicated lobby with your company branding, exclusive elevator access, and complete freedom to configure the layout. Our in-house design team manages the full process from concept to move-in.</p>`,
@@ -578,8 +398,8 @@ const offices = [
     },
   },
   {
-    id:6, typeEn:'Smart Offices', typeAr:'المكاتب الذكية', price:'From JOD 5,000 / month', priceAr:'من 5,000 دينار / شهر',
-    img:'images/index-office-smart.jpg',
+    id:6, typeEn:'Small Shops', typeAr:'محلات صغيرة',
+    img:'images/main/office-smart.jpg',
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'},     value:{en:'30 – 120 m²',ar:'30 – 120 م²'}},
       {label:{en:'Smart Features',ar:'ميزات ذكية'},    value:{en:'Full IoT System',ar:'منظومة IoT كاملة'}},
@@ -588,7 +408,7 @@ const offices = [
       {label:{en:'Setup',ar:'التجهيز'},                value:{en:'3 Days',ar:'3 أيام'}},
       {label:{en:'Availability',ar:'التوفر'},          value:{en:'4 Units Now',ar:'4 وحدات الآن'}},
     ],
-    availText:{ en:'This space is available in: 9th Floor Outdoor 300m²', ar:'هذه المساحة متوفرة في: الطابق التاسع الخارجي 300م²' },
+    availText:{ en:'This space is available in: G Floor (3 × 9m² shops)', ar:'هذه المساحة متوفرة في: الطابق الأرضي (3 × 9م² محلات)' },
     description:{
       en:`<p>Alrayyan's Smart Offices represent the future of work — fully integrated spaces where technology works for you. Each office is equipped with a complete IoT management system: automated lighting that adjusts to occupancy and daylight, smart climate control, biometric access, and an AI-powered air quality system.</p>
       <p>Control every aspect of your environment from a single dashboard — or let the system learn your preferences and manage itself. Energy consumption is monitored and optimised in real time, resulting in significantly lower running costs.</p>`,
@@ -641,7 +461,7 @@ function renderOffice(L){
   document.getElementById('bc-name').textContent  = o['type'+(L==='ar'?'Ar':'En')];
   document.getElementById('hero-eyebrow').textContent = (L==='ar'?'نوع المكتب':'Office Type');
   document.getElementById('hero-title').textContent   = o['type'+(L==='ar'?'Ar':'En')];
-  document.getElementById('hero-price').textContent   = (L==='ar'? o.priceAr : o.price);
+  document.getElementById('hero-price').textContent   = o.availText[L];
 
   // Specs
   const specsEl = document.getElementById('specs-grid');
@@ -651,9 +471,6 @@ function renderOffice(L){
     const val = typeof s.value === 'object' ? s.value[L] : s.value;
     specsEl.innerHTML += `<div class="spec-item"><div class="spec-label">${lbl}</div><div class="spec-value sm">${val}</div></div>`;
   });
-
-  // Availability (plain text)
-  document.getElementById('avail-text').textContent = o.availText[L];
 
   // Description (Space Overview)
   document.getElementById('detail-desc').innerHTML = o.description[L];
@@ -673,7 +490,7 @@ offices.filter(x => x.id !== o.id).slice(0, 3).forEach(r => {
       <img src="${r.img}" alt="${r.typeEn}" loading="lazy"/>
       <div class="rel-card-body">
         <div class="rel-name">${r.typeEn}</div>
-        <div class="rel-price">${r.price}</div>
+        <div class="rel-avail" style="font-size:.65rem;color:var(--gold-light);margin-top:4px;">${r.availText.en}</div>
       </div>
     </div>`;
 });
@@ -715,6 +532,7 @@ const PAGE_I18N = {
     btnConfirm:'Confirm Visit →', bkNote:'Free of charge · No obligation · Sun–Thu 9am–6pm',
     sxTitle:'Visit Requested!', sxBody:'Our team will contact you within 24 hours to confirm your appointment.', sxRef:'Ref',
     qcCall:'Call Us', qcWA:'WhatsApp', qcChat:'Chat Now',
+    relEye:'Other Spaces', relTitleA:'More', relTitleB:'Options',
   },
   ar: {
     navBack:'← كل المكاتب',
@@ -733,6 +551,7 @@ const PAGE_I18N = {
     btnConfirm:'تأكيد الزيارة →', bkNote:'مجاناً · بدون التزام · أحد–خميس 9ص–6م',
     sxTitle:'تم طلب الزيارة!', sxBody:'سيتصل فريقنا بك خلال 24 ساعة لتأكيد موعدك.', sxRef:'المرجع',
     qcCall:'اتصل بنا', qcWA:'واتساب', qcChat:'محادثة',
+    relEye:'مساحات أخرى', relTitleA:'المزيد من', relTitleB:'الخيارات',
   }
 };
 function setPageLang(lang) {
