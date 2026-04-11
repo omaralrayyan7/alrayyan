@@ -14,6 +14,62 @@
       --card-border:rgba(184,115,51,0.18);
       --radius:     16px;
       --t:          0.35s cubic-bezier(0.4,0,0.2,1);
+
+      /* ===== RESIZABLE BUSINESS LOGOS =====
+         Adjust these values to resize each business logo individually.
+         File: css/index.css  (this :root block)
+         See the .biz-logo-* rules below for how they are applied. */
+      --biz-logo-fashion-size: 72px;
+      --biz-logo-arts-size:    72px;
+      --biz-logo-land-size:    72px;
+    }
+
+    /* ===== FORCE INTENDED COLORS ON STATS / SUMMARY (OVERRIDE AUTO DARK MODE) =====
+       These elements were reported as washed-out on some browsers / OS dark-mode
+       settings. We pin explicit colors and opt out of forced-color adjustments
+       so the numbers and labels stay clearly visible regardless of any
+       prefers-color-scheme or browser auto-darkening. */
+    #stats,
+    #stats .stats-row,
+    #stats .stat-cell,
+    #stats .stat-num,
+    #stats .stat-lbl,
+    #available .avail-summary,
+    #available .avail-sum-item,
+    #available .avail-sum-item .num,
+    #available .avail-sum-item .lbl {
+      forced-color-adjust: none !important;
+      color-scheme: dark !important;
+    }
+    #stats .stat-lbl {
+      color: #d4d4d4 !important;
+      -webkit-text-fill-color: #d4d4d4 !important;
+      opacity: 1 !important;
+    }
+    #available .avail-sum-item .lbl {
+      color: #d4d4d4 !important;
+      -webkit-text-fill-color: #d4d4d4 !important;
+      opacity: 1 !important;
+    }
+    #stats .stat-num,
+    #available .avail-sum-item .num {
+      background: linear-gradient(135deg, #b87333, #d4976a) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      color: #d4976a;
+      opacity: 1 !important;
+    }
+    @media (prefers-color-scheme: light) {
+      #stats,
+      #stats .stat-cell { background-color: #070707 !important; }
+      #available,
+      #available .avail-table-wrap { background-color: #070707 !important; }
+      #stats .stat-lbl,
+      #available .avail-sum-item .lbl {
+        color: #d4d4d4 !important;
+        -webkit-text-fill-color: #d4d4d4 !important;
+      }
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -709,6 +765,24 @@
       height: 1em; width: auto; object-fit: contain; vertical-align: middle;
     }
     .biz-back-icon img { height: 1em; }
+
+    /* ===== RESIZABLE PER-BUSINESS LOGOS =====
+       To change the size of a specific business logo, edit the corresponding
+       CSS variable in the :root block at the top of this file:
+         --biz-logo-fashion-size
+         --biz-logo-arts-size
+         --biz-logo-land-size
+       Or override width here directly for finer control. */
+    .biz-logo {
+      display: block;
+      height: auto;
+      object-fit: contain;
+      margin: 0 auto 14px;
+      filter: drop-shadow(0 0 10px rgba(184,115,51,0.35));
+    }
+    .biz-logo-fashion { width: var(--biz-logo-fashion-size); }
+    .biz-logo-arts    { width: var(--biz-logo-arts-size); }
+    .biz-logo-land    { width: var(--biz-logo-land-size); }
     .biz-front-name {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.6rem; font-weight: 700;
@@ -746,11 +820,13 @@
       background: linear-gradient(145deg, #08080d, #0f0a15, #08050d);
     }
 
-    .biz-back-icon { font-size: 3rem; margin-bottom: 20px; }
+    /* .biz-back-icon was removed from markup (Fix #4 — no more logo watermark on
+       the back of each flip card). Title now sits higher on the back face. */
     .biz-back-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.7rem; font-weight: 700;
-      color: var(--gold-light); letter-spacing: 2px; margin-bottom: 16px;
+      font-size: 1.9rem; font-weight: 700;
+      color: var(--gold-light); letter-spacing: 2px; margin-bottom: 18px;
+      margin-top: 0;
     }
     .biz-back-desc {
       font-size: 0.82rem; color: rgba(245,240,232,0.75); line-height: 1.8;
@@ -798,7 +874,7 @@
     .gallery-grid .g-item:first-child { grid-column: span 2; }
 
     .g-item {
-      overflow: hidden; position: relative; cursor: pointer;
+      overflow: hidden; position: relative; cursor: default;
       border: 1px solid transparent; transition: border-color var(--t);
     }
     .g-item:hover { border-color: rgba(184,115,51,0.3); }

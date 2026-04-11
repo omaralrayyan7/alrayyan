@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="color-scheme" content="dark"/>
+  <meta name="theme-color" content="#050505"/>
   <title>Office Detail – Alrayyan Group</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -198,7 +200,9 @@ const STD_AMENITIES_EXTRA = {
 const offices = [
   {
     id:1, typeEn:'Full Floor', typeAr:'طابق كامل',
-    img:'images/main/office-executive-suites.jpg',
+    // TODO: add image files: full-floor-outside.jpg & full-floor-inside-banner.jpg
+    imgOutside:'images/main/full-floor-outside.jpg',
+    imgInside: 'images/main/full-floor-inside-banner.jpg',
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'},    value:{en:'25 – 80 m²',ar:'25 – 80 م²'}},
       {label:{en:'Capacity',ar:'السعة'},               value:{en:'1 – 8 persons',ar:'1 – 8 أشخاص'}},
@@ -231,7 +235,9 @@ const offices = [
   },
   {
     id:2, typeEn:'Small Spaces', typeAr:'مساحات صغيرة',
-    img:'images/main/office-coworking.jpg',
+    // TODO: add image files: small-spaces-outside.jpg & small-spaces-inside-banner.jpg
+    imgOutside:'images/main/small-spaces-outside.jpg',
+    imgInside: 'images/main/small-spaces-inside-banner.jpg',
     specs:[
       {label:{en:'Desk Options',ar:'خيارات المكاتب'},  value:{en:'Hot / Dedicated',ar:'مرن / مخصص'}},
       {label:{en:'Capacity',ar:'السعة'},               value:{en:'1 – 300 persons',ar:'1 – 300 شخص'}},
@@ -270,7 +276,9 @@ const offices = [
   },
   {
     id:3, typeEn:'Open Space', typeAr:'مساحة مفتوحة',
-    img:'images/main/office-meeting-rooms.jpg',
+    // TODO: add image files: open-space-outside.jpg & open-space-inside-banner.jpg
+    imgOutside:'images/main/open-space-outside.jpg',
+    imgInside: 'images/main/open-space-inside-banner.jpg',
     specs:[
       {label:{en:'Room Sizes',ar:'أحجام القاعات'},     value:{en:'4 – 40 persons',ar:'4 – 40 شخص'}},
       {label:{en:'Total Rooms',ar:'إجمالي القاعات'},   value:{en:'12 Rooms',ar:'12 قاعة'}},
@@ -311,7 +319,9 @@ const offices = [
   },
   {
     id:4, typeEn:'9th Floor – Outdoor Terrace', typeAr:'الطابق التاسع – تراس خارجي',
-    img:'images/main/office-virtual.jpg',
+    // TODO: add image files: 9th-floor-outdoor-outside.jpg & 9th-floor-outdoor-inside-banner.jpg
+    imgOutside:'images/main/9th-floor-outdoor-outside.jpg',
+    imgInside: 'images/main/9th-floor-outdoor-inside-banner.jpg',
     specs:[
       {label:{en:'Packages',ar:'الباقات'},             value:{en:'3 Tiers',ar:'3 مستويات'}},
       {label:{en:'Address',ar:'العنوان'},              value:{en:'Prime Business District',ar:'منطقة أعمال مميزة'}},
@@ -354,7 +364,9 @@ const offices = [
   },
   {
     id:5, typeEn:'9th Floor – Indoor Space', typeAr:'الطابق التاسع – مساحة داخلية',
-    img:'images/main/office-full-floor.jpg',
+    // TODO: add image files: 9th-floor-indoor-outside.jpg & 9th-floor-indoor-inside-banner.jpg
+    imgOutside:'images/main/9th-floor-indoor-outside.jpg',
+    imgInside: 'images/main/9th-floor-indoor-inside-banner.jpg',
     specs:[
       {label:{en:'Floor Size',ar:'مساحة الطابق'},      value:{en:'400 m² – 1,000 m²',ar:'400 م² – 1000 م²'}},
       {label:{en:'Capacity',ar:'السعة'},               value:{en:'40 – 200 persons',ar:'40 – 200 شخص'}},
@@ -399,7 +411,9 @@ const offices = [
   },
   {
     id:6, typeEn:'Small Shops', typeAr:'محلات صغيرة',
-    img:'images/main/office-smart.jpg',
+    // TODO: add image files: small-shops-outside.jpg & small-shops-inside-banner.jpg
+    imgOutside:'images/main/small-shops-outside.jpg',
+    imgInside: 'images/main/small-shops-inside-banner.jpg',
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'},     value:{en:'30 – 120 m²',ar:'30 – 120 م²'}},
       {label:{en:'Smart Features',ar:'ميزات ذكية'},    value:{en:'Full IoT System',ar:'منظومة IoT كاملة'}},
@@ -451,7 +465,7 @@ const params = new URLSearchParams(window.location.search);
 const offId  = parseInt(params.get('id')) || 1;
 const o      = offices.find(x => x.id === offId) || offices[0];
 
-document.getElementById('hero-img').src = o.img;
+document.getElementById('hero-img').src = o.imgInside;
 document.getElementById('hero-img').alt = o.typeEn;
 document.getElementById('bf-office').value = o.typeEn;
 document.getElementById('bf-date').min = new Date().toISOString().split('T')[0];
@@ -487,7 +501,7 @@ const relEl = document.getElementById('related-grid');
 offices.filter(x => x.id !== o.id).slice(0, 3).forEach(r => {
   relEl.innerHTML += `
     <div class="rel-card" onclick="location.href='office-detail.html?id=${r.id}'">
-      <img src="${r.img}" alt="${r.typeEn}" loading="lazy"/>
+      <img src="${r.imgOutside}" alt="${r.typeEn}" loading="lazy"/>
       <div class="rel-card-body">
         <div class="rel-name">${r.typeEn}</div>
         <div class="rel-avail" style="font-size:.65rem;color:var(--gold-light);margin-top:4px;">${r.availText.en}</div>
