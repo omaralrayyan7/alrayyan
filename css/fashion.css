@@ -377,3 +377,5 @@ img { max-width: 100%; height: auto; }
 /* --- resizable hero/banner images (appended) --- */
 .resizable-img { resize: vertical; overflow: hidden; min-height: 200px; max-height: 900px; width: 100%; }
 .resizable-img img { width:100%; height:100%; object-fit:cover; }
+
+.brand-logo-img, img[src*="logo/logo.png"] { filter: none !important; -webkit-filter: none !important; mix-blend-mode: normal !important; }

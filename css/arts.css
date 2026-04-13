@@ -238,3 +238,5 @@ img { max-width: 100%; height: auto; }
   .hero, .banner, [class*="hero"], [class*="banner"] { min-height: auto; }
   img { display: block !important; }
 }
+
+.brand-logo-img, img[src*="logo/logo.png"] { filter: none !important; -webkit-filter: none !important; mix-blend-mode: normal !important; }

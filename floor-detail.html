@@ -15,7 +15,7 @@
 <body>
 
 <nav id="navbar">
-  <a href="index.html"><div class="nav-brand"><img src="images/logo/logo.png" alt="Alrayyan" style="height:32px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:drop-shadow(0 0 6px rgba(184,115,51,0.3));"/>ALRAYYAN GROUP</div></a>
+  <a href="index.html"><div class="nav-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" class="brand-logo-img" style="height:32px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:drop-shadow(0 0 6px rgba(184,115,51,0.3));"/>ALRAYYAN GROUP</div></a>
   <div class="nav-right">
     <a href="index.html#available" class="nav-back" data-i18n="backToAvail">← Back to Floors</a>
     <div class="lang-sw">
@@ -26,7 +26,7 @@
 </nav>
 
 <!-- HERO -->
-<div class="fl-hero">
+<div class="fl-hero" id="fl-hero">
   <div class="fl-hero-content">
     <div class="fl-breadcrumb">
       <a href="index.html" data-i18n="bcHome">Home</a>
@@ -49,7 +49,7 @@
 
     <!-- SPACE OVERVIEW -->
     <div class="fade-in">
-      <img src="images/floors/placeholder.jpg" alt="Space" class="avail-img"
+      <img src="" alt="Space" id="avail-img" class="avail-img"
            onerror="this.style.background='#1a1a1a';this.style.minHeight='180px'">
       <p class="sec-eye" data-i18n="secOvEye">Space Overview</p>
       <h2 class="sec-title"><span data-i18n="secOvTitleA">About This</span> <em data-i18n="secOvTitleB">Space</em></h2>
@@ -167,7 +167,7 @@
 </div>
 
 <footer>
-  <div class="f-brand"><img src="images/logo/logo.png" alt="Alrayyan" style="height:28px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:drop-shadow(0 0 6px rgba(184,115,51,0.2));"/>ALRAYYAN GROUP</div>
+  <div class="f-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" class="brand-logo-img" style="height:28px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:drop-shadow(0 0 6px rgba(184,115,51,0.2));"/>ALRAYYAN GROUP</div>
   <div class="f-copy" data-i18n="footCopy">© 2025 Alrayyan Group. All rights reserved.</div>
 </footer>
 
@@ -188,12 +188,12 @@ const FLOORS = {
           <p>الطابق مجهز بالكامل بتكييف مناخي مع مناطق تهوية مخصصة، وأسقف معززة، ووصول شحن مستقل. يتيح التخطيط لمستأجر واحد تخصيصاً كاملاً.</p>`
     },
     specs:[
-      {label:{en:'Total Area',ar:'المساحة الإجمالية'}, value:'1,000 m²'},
-      {label:{en:'Configuration',ar:'التكوين'}, value:{en:'Single Tenant',ar:'مستأجر واحد'}},
-      {label:{en:'Ceiling Height',ar:'ارتفاع السقف'}, value:'4.2 m'},
-      {label:{en:'Freight Access',ar:'وصول الشحن'}, value:{en:'Dedicated',ar:'مخصص'}},
-      {label:{en:'Parking',ar:'المواقف'}, value:{en:'12 Spaces',ar:'12 موقفاً'}},
-      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available Now',ar:'متاح الآن'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'1,000 m²'},
+      {label:{en:'Capacity',ar:'السعة'}, value:{en:'80 – 120 persons',ar:'80 – 120 شخصاً'}},
+      {label:{en:'Floors',ar:'الطوابق'}, value:{en:'Basement (B1)',ar:'القبو (B1)'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'}, value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'}, value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: B1 Floor (1,000m²)',ar:'متاح في: الطابق B1 (1,000م²)'}},
     ],
     amenities:{
       en:['Climate control (HVAC zones)','Reinforced flooring & high ceilings','Dedicated freight elevator','Ground-level loading bay','3-phase power supply','Security cameras & access control','24/7 access','Fire suppression system','Drainage & plumbing','Independent utility metering','Soundproofing','Backup generator'],
@@ -213,12 +213,12 @@ const FLOORS = {
           <p>الوحدة جاهزة للإشغال الفوري مع الكابلات والإضاءة الكاملة. تتوفر مرافق استقبال واجتماعات مشتركة.</p>`
     },
     specs:[
-      {label:{en:'Unit Size',ar:'مساحة الوحدة'}, value:'80 m²'},
-      {label:{en:'Capacity',ar:'السعة'}, value:{en:'Up to 10 persons',ar:'حتى 10 أشخاص'}},
-      {label:{en:'Floor Total',ar:'إجمالي الطابق'}, value:'400 m²'},
-      {label:{en:'View',ar:'الإطلالة'}, value:{en:'Boulevard',ar:'إطلالة الشارع'}},
-      {label:{en:'Ready',ar:'الجاهزية'}, value:{en:'Immediate',ar:'فوري'}},
-      {label:{en:'Availability',ar:'التوفر'}, value:{en:'1 Unit Available',ar:'وحدة واحدة متاحة'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'80 m²'},
+      {label:{en:'Capacity',ar:'السعة'}, value:{en:'8 – 10 persons',ar:'8 – 10 أشخاص'}},
+      {label:{en:'Floors',ar:'الطوابق'}, value:{en:'Floors 1 – 8',ar:'الطوابق 1 – 8'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'}, value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'}, value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: 3rd Floor (80m²), 5th Floor (80m²)',ar:'متاح في: الطابق الثالث (80م²), الطابق الخامس (80م²)'}},
     ],
     amenities:{
       en:['Floor-to-ceiling windows','Fully fitted with flooring & lighting','Structured cabling ready','Air conditioning','Shared reception on floor','Meeting room access','High-speed internet ready','24/7 building access','Underground parking','Shared kitchen facility','Cleaning service included','Security & CCTV'],
@@ -238,12 +238,12 @@ const FLOORS = {
           <p>مثالي للمقرات الرئيسية أو الشركات المهنية. يمكن تسليمه كهيكل أساسي أو مع تجهيز كامل مخصص.</p>`
     },
     specs:[
-      {label:{en:'Total Area',ar:'المساحة الإجمالية'}, value:'400 m²'},
+      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'400 m²'},
       {label:{en:'Capacity',ar:'السعة'}, value:{en:'40 – 60 persons',ar:'40 – 60 شخصاً'}},
-      {label:{en:'Configuration',ar:'التكوين'}, value:{en:'Full Floor',ar:'طابق كامل'}},
-      {label:{en:'Fit-out',ar:'التجهيز'}, value:{en:'Shell or Turnkey',ar:'أساسي أو جاهز'}},
-      {label:{en:'Elevator',ar:'المصعد'}, value:{en:'Dedicated lobby',ar:'ردهة مخصصة'}},
-      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available Now',ar:'متاح الآن'}},
+      {label:{en:'Floors',ar:'الطوابق'}, value:{en:'Floors 1 – 8',ar:'الطوابق 1 – 8'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'}, value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'}, value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: 4th Floor (400m²), 6th Floor (400m²), 7th Floor (400m²)',ar:'متاح في: الطابق الرابع (400م²), الطابق السادس (400م²), الطابق السابع (400م²)'}},
     ],
     amenities:{
       en:['Dedicated floor lobby','Exclusive elevator access','Custom branding & signage','Floor-to-ceiling glazing','Panoramic city views','Full M&E infrastructure','Flexible open-plan layout','Server / IT closet included','24/7 access & security','Up to 8 parking spaces','Turnkey design service','Backup generator'],
@@ -263,12 +263,12 @@ const FLOORS = {
           <p>مسلّمة جاهزة للإشغال مع تشطيبات عالية المواصفات وإضاءة مدمجة.</p>`
     },
     specs:[
-      {label:{en:'Unit Size',ar:'مساحة الوحدة'}, value:'80 m²'},
-      {label:{en:'Capacity',ar:'السعة'}, value:{en:'Up to 10 persons',ar:'حتى 10 أشخاص'}},
-      {label:{en:'Floor Total',ar:'إجمالي الطابق'}, value:'400 m²'},
-      {label:{en:'View',ar:'الإطلالة'}, value:{en:'Elevated City View',ar:'إطلالة مرتفعة على المدينة'}},
-      {label:{en:'Ready',ar:'الجاهزية'}, value:{en:'Immediate',ar:'فوري'}},
-      {label:{en:'Availability',ar:'التوفر'}, value:{en:'1 Unit Available',ar:'وحدة واحدة متاحة'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'80 m²'},
+      {label:{en:'Capacity',ar:'السعة'}, value:{en:'8 – 10 persons',ar:'8 – 10 أشخاص'}},
+      {label:{en:'Floors',ar:'الطوابق'}, value:{en:'Floors 1 – 8',ar:'الطوابق 1 – 8'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'}, value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'}, value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: 3rd Floor (80m²), 5th Floor (80m²)',ar:'متاح في: الطابق الثالث (80م²), الطابق الخامس (80م²)'}},
     ],
     amenities:{
       en:['Premium finishes','Elevated city views','Integrated LED lighting','Modern HVAC','Shared boardroom access','Reception desk on floor','Ultra-fast fibre ready','Keycard access','2 parking spaces','Shared kitchenette','Daily cleaning','Security & CCTV'],
@@ -288,12 +288,12 @@ const FLOORS = {
           <p>يُعرض كهيكل أساسي أو مع تجهيز جاهز مخصص. يقدم فريق التصميم طابقاً جاهزاً للدخول خلال 60 يوماً.</p>`
     },
     specs:[
-      {label:{en:'Total Area',ar:'المساحة الإجمالية'}, value:'400 m²'},
+      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'400 m²'},
       {label:{en:'Capacity',ar:'السعة'}, value:{en:'40 – 60 persons',ar:'40 – 60 شخصاً'}},
-      {label:{en:'Configuration',ar:'التكوين'}, value:{en:'Full Floor',ar:'طابق كامل'}},
-      {label:{en:'View',ar:'الإطلالة'}, value:{en:'Panoramic',ar:'بانورامية'}},
-      {label:{en:'Fit-out',ar:'التجهيز'}, value:{en:'60-day turnkey',ar:'جاهز خلال 60 يوماً'}},
-      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available Now',ar:'متاح الآن'}},
+      {label:{en:'Floors',ar:'الطوابق'}, value:{en:'Floors 1 – 8',ar:'الطوابق 1 – 8'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'}, value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'}, value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: 4th Floor (400m²), 6th Floor (400m²), 7th Floor (400m²)',ar:'متاح في: الطابق الرابع (400م²), الطابق السادس (400م²), الطابق السابع (400م²)'}},
     ],
     amenities:{
       en:['Dedicated floor lobby','Exclusive elevator access','Panoramic glass façade','Custom branding','Full M&E systems','Server room','Flexible layout','Executive kitchen','24/7 security','8 parking spaces','In-house fit-out','Backup generator'],
@@ -313,12 +313,12 @@ const FLOORS = {
           <p>خيارات التسليم تشمل الهيكل أو التجهيز الجزئي أو المخصص بالكامل.</p>`
     },
     specs:[
-      {label:{en:'Total Area',ar:'المساحة الإجمالية'}, value:'400 m²'},
+      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'400 m²'},
       {label:{en:'Capacity',ar:'السعة'}, value:{en:'40 – 60 persons',ar:'40 – 60 شخصاً'}},
-      {label:{en:'Configuration',ar:'التكوين'}, value:{en:'Full Floor',ar:'طابق كامل'}},
-      {label:{en:'View',ar:'الإطلالة'}, value:{en:'High · Commanding',ar:'عالية · آسرة'}},
-      {label:{en:'Fit-out',ar:'التجهيز'}, value:{en:'Shell / Turnkey',ar:'أساسي أو جاهز'}},
-      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available Now',ar:'متاح الآن'}},
+      {label:{en:'Floors',ar:'الطوابق'}, value:{en:'Floors 1 – 8',ar:'الطوابق 1 – 8'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'}, value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'}, value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: 4th Floor (400m²), 6th Floor (400m²), 7th Floor (400m²)',ar:'متاح في: الطابق الرابع (400م²), الطابق السادس (400م²), الطابق السابع (400م²)'}},
     ],
     amenities:{
       en:['Private floor lobby','Dedicated elevators','Floor-to-ceiling glass','Custom signage','Executive washrooms','Built-in storage','Meeting rooms included','Server closet','Premium parking','24/7 security','Backup power','Reception desk'],
@@ -338,12 +338,12 @@ const FLOORS = {
           <p>تشمل المساحة عُرُشاً مظلَّلة وتوصيلات كهرباء وماء، ووصولاً مباشراً بالمصعد. قماشة مثالية لمفهوم ضيافة مميز.</p>`
     },
     specs:[
-      {label:{en:'Total Area',ar:'المساحة الإجمالية'}, value:'300 m²'},
-      {label:{en:'Type',ar:'النوع'}, value:{en:'Open-air Terrace',ar:'تراس مفتوح'}},
-      {label:{en:'View',ar:'الإطلالة'}, value:{en:'360° Skyline',ar:'360° أفق المدينة'}},
-      {label:{en:'Use',ar:'الاستخدام'}, value:{en:'F&B / Events',ar:'مطاعم / فعاليات'}},
-      {label:{en:'Utilities',ar:'المرافق'}, value:{en:'Power & Water',ar:'كهرباء وماء'}},
-      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available Now',ar:'متاح الآن'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'300 m²'},
+      {label:{en:'Capacity',ar:'السعة'}, value:{en:'Up to 200 guests',ar:'حتى 200 ضيف'}},
+      {label:{en:'Floors',ar:'الطوابق'}, value:{en:'9th Floor (Outdoor)',ar:'الطابق التاسع (الخارجي)'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'}, value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'}, value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: 9th Floor Outdoor Terrace (300m²)',ar:'متاح في: الطابق التاسع التراس الخارجي (300م²)'}},
     ],
     amenities:{
       en:['Panoramic skyline views','Shaded pergola zones','Power & water connections','Direct elevator access','Landscaped planters','Ambient lighting infrastructure','Weather-protected zones','Separate service entrance','Fire safety systems','Event-grade flooring','Outdoor speaker wiring','Licensing support available'],
@@ -363,12 +363,12 @@ const FLOORS = {
           <p>مكيّفة بالكامل ومسلّمة بأساس تجهيز فاخر، تتكامل مع التراس الخارجي.</p>`
     },
     specs:[
-      {label:{en:'Total Area',ar:'المساحة الإجمالية'}, value:'100 m²'},
-      {label:{en:'Type',ar:'النوع'}, value:{en:'Indoor Enclosed',ar:'داخلي مغلق'}},
-      {label:{en:'Glazing',ar:'الزجاج'}, value:{en:'Two-sided',ar:'من جهتين'}},
-      {label:{en:'Terrace Link',ar:'اتصال بالتراس'}, value:{en:'Yes — Direct',ar:'نعم — مباشر'}},
-      {label:{en:'Climate',ar:'التكييف'}, value:{en:'Full HVAC',ar:'تكييف كامل'}},
-      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available Now',ar:'متاح الآن'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'100 m²'},
+      {label:{en:'Capacity',ar:'السعة'}, value:{en:'Up to 40 guests',ar:'حتى 40 ضيفاً'}},
+      {label:{en:'Floors',ar:'الطوابق'}, value:{en:'9th Floor (Indoor)',ar:'الطابق التاسع (الداخلي)'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'}, value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'}, value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: 9th Floor Indoor (100m²)',ar:'متاح في: الطابق التاسع الداخلي (100م²)'}},
     ],
     amenities:{
       en:['Two-sided panoramic glazing','Direct terrace access','Premium finishes included','Full HVAC system','Integrated audio-visual','Concealed lighting','Executive washroom','Private entry lobby','High-end flooring','Wi-Fi infrastructure','Sound insulation','Combined with outdoor option'],
@@ -388,12 +388,12 @@ const FLOORS = {
           <p>موقع ذو حركة مرور عالية عند مدخل البرج، مما يوفر أقصى رؤية للمستأجرين.</p>`
     },
     specs:[
-      {label:{en:'Unit Size',ar:'مساحة الوحدة'}, value:'3 × 3 m (9 m²)'},
-      {label:{en:'Units',ar:'عدد الوحدات'}, value:'3'},
-      {label:{en:'Access',ar:'الوصول'}, value:{en:'Street Level',ar:'مستوى الشارع'}},
-      {label:{en:'Type',ar:'النوع'}, value:{en:'Retail / Shop',ar:'تجزئة / محل'}},
-      {label:{en:'Total Area',ar:'المساحة الإجمالية'}, value:'27 m²'},
-      {label:{en:'Availability',ar:'التوفر'}, value:{en:'All 3 Available',ar:'3 متاحة'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:{en:'9 m² per shop (27 m² total)',ar:'9 م² لكل محل (27 م² إجمالي)'}},
+      {label:{en:'Capacity',ar:'السعة'}, value:{en:'2 – 3 staff per shop',ar:'2 – 3 موظفين لكل محل'}},
+      {label:{en:'Floors',ar:'الطوابق'}, value:{en:'Ground Floor',ar:'الطابق الأرضي'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'}, value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'}, value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: G Floor (3 × 9m² shops)',ar:'متاح في: الطابق الأرضي (3 × 9م² محلات)'}},
     ],
     amenities:{
       en:['Individual shop entrances','Street-level access','Independent electrical panels','Signage slot per unit','Air conditioning','Security shutters','Shared restroom access','24/7 CCTV coverage','Water connection','High foot traffic','Fire safety systems','Flexible lease terms'],
@@ -444,6 +444,43 @@ function renderFloor() {
   document.getElementById('bf-floor').value = fl.name.en;
   document.getElementById('overview-desc').innerHTML = fl.description[L];
 
+  // hero background image — per-floor, matches files in images/floors/
+  const HERO_IMG = {
+    'b1': 'images/floors/b1-floor.jpg',
+    'g':  'images/floors/g-floor.jpg',
+    '3':  'images/floors/3rd-floor.jpg',
+    '4':  'images/floors/4th-floor.jpg',
+    '5':  'images/floors/5th-floor.jpg',
+    '6':  'images/floors/6th-floor.jpg',
+    '7':  'images/floors/7th-floor.jpg',
+    '9-indoor':  'images/floors/9th-floor-indoor.jpg',
+    '9-outdoor': 'images/floors/9th-floor-outdoor-terrace.jpg',
+  };
+  const heroEl = document.getElementById('fl-hero');
+  const heroImg = HERO_IMG[fl.id];
+  if (heroEl && heroImg) {
+    heroEl.style.backgroundImage =
+      "linear-gradient(135deg, rgba(5,5,5,0.5), rgba(10,8,4,0.9)), url('" + heroImg + "')";
+    heroEl.style.backgroundSize = 'cover';
+    heroEl.style.backgroundPosition = 'center';
+  }
+  const AVAIL_IMG = {
+    'b1': 'images/floors/avail/b1-avail.jpg',
+    'g':  'images/floors/avail/g-avail.jpg',
+    '3':  'images/floors/avail/3-avail.jpg',
+    '4':  'images/floors/avail/4-avail.jpg',
+    '5':  'images/floors/avail/5-avail.jpg',
+    '6':  'images/floors/avail/6-avail.jpg',
+    '7':  'images/floors/avail/7-avail.jpg',
+    '9-indoor':  'images/floors/avail/9-indoor-avail.jpg',
+    '9-outdoor': 'images/floors/avail/9-outdoor-avail.jpg',
+  };
+  const availEl = document.getElementById('avail-img');
+  if (availEl) {
+    availEl.src = AVAIL_IMG[fl.id] || 'images/floors/placeholder.jpg';
+    availEl.className = 'avail-img avail-' + fl.id;
+  }
+
   // specs
   const specsEl = document.getElementById('specs-grid');
   specsEl.innerHTML = '';
@@ -453,29 +490,32 @@ function renderFloor() {
     specsEl.innerHTML += `<div class="spec-item"><div class="spec-label">${label}</div><div class="spec-value sm">${value}</div></div>`;
   });
 
-  // amenities — filter removed items + append standard additions
-  const REMOVED_EN = new Set([
-    'Fully furnished — premium ergonomic furniture',
-    'Dedicated receptionist & call answering',
-    'Mail handling & courier services',
-    'High-speed fibre internet (1 Gbps dedicated)',
-    '24/7 keycard access & CCTV security',
-    'Daily professional cleaning service',
-    'Printing, scanning & stationery included',
-    'Backup generator — 100% uptime guaranteed',
-  ]);
-  const EXTRA = {
-    en:['24/7 security for the building','10% extra on rent price for electricity, water, and tower cleaning'],
-    ar:['أمن على مدار الساعة للمبنى','إضافة 10% على سعر الإيجار للكهرباء والماء وتنظيف البرج'],
+  // amenities — standardized list applied to every floor / card
+  const STANDARD_AMENITIES = {
+    en: [
+      'Electricity & water connections',
+      'Fire safety systems',
+      '24/7 building security',
+      'Direct elevator access',
+      '+10% on rent as service charge',
+      'Personal listing in building directory',
+      'Underground parking — 1 spot per 100 m²',
+      'Emergency exit',
+    ],
+    ar: [
+      'توصيلات كهرباء وماء',
+      'أنظمة سلامة من الحرائق',
+      'أمن على مدار الساعة للمبنى',
+      'وصول مباشر بالمصعد',
+      'إضافة 10% على سعر الإيجار بدل خدمات',
+      'إدراج شخصي في دليل المبنى',
+      'مواقف تحت الأرض — موقف لكل 100 متر مربع',
+      'مخرج طوارئ',
+    ],
   };
   const amEl = document.getElementById('amenities-grid');
   amEl.innerHTML = '';
-  const base = (fl.amenities[L] || []).filter((a,i) => {
-    const enItem = (fl.amenities.en || [])[i];
-    return !REMOVED_EN.has(enItem);
-  });
-  const list = [...base, ...EXTRA[L]];
-  list.forEach(a => { amEl.innerHTML += `<div class="amenity-item">${a}</div>`; });
+  STANDARD_AMENITIES[L].forEach(a => { amEl.innerHTML += `<div class="amenity-item">${a}</div>`; });
 }
 
 // ── I18N ────────────────────────────────────────────────────────────────────
@@ -592,7 +632,7 @@ const floorImageConfig = {
     const mainCols = cfg.mains === 2 ? 'cols-2' : 'cols-3';
     html += `<div class="fg-mains ${mainCols}" id="fg-mains">`;
     for (let i = 1; i <= cfg.mains; i++) {
-      html += `<img src="${basePath}img-${i}.${imgExt}" alt="Floor ${floorId} image ${i}" id="fg-main-${i}"/>`;
+      html += `<img src="${basePath}img-${i}.${imgExt}" alt="Floor ${floorId} image ${i}" id="fg-main-${i}" class="fg-${floorId}-${i}"/>`;
     }
     html += `</div>`;
 
@@ -600,7 +640,7 @@ const floorImageConfig = {
       html += `<div class="fg-thumbs-wrap"><div class="fg-thumbs" id="fg-thumbs">`;
       for (let i = 1; i <= cfg.real; i++) {
         const isMain = i <= cfg.mains;
-        html += `<img src="${basePath}img-${i}.${imgExt}" alt="Thumbnail ${i}" class="${isMain ? 'active' : ''}" onclick="swapMainImage(this, ${i})"/>`;
+        html += `<img src="${basePath}img-${i}.${imgExt}" alt="Thumbnail ${i}" class="fg-${floorId}-${i}-thumb ${isMain ? 'active' : ''}" onclick="swapMainImage(this, ${i})"/>`;
       }
       html += `</div>
         <div class="fg-arrows">
@@ -613,7 +653,7 @@ const floorImageConfig = {
     const gridCols = cfg.real === 2 ? 'cols-2' : 'cols-3';
     html += `<div class="fg-simple ${gridCols}">`;
     for (let i = 1; i <= cfg.real; i++) {
-      html += `<img src="${basePath}img-${i}.${imgExt}" alt="Floor ${floorId} image ${i}"/>`;
+      html += `<img src="${basePath}img-${i}.${imgExt}" alt="Floor ${floorId} image ${i}" class="fg-${floorId}-${i}"/>`;
     }
     html += `</div>`;
   }

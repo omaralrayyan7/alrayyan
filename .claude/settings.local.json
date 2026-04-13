@@ -9,7 +9,12 @@
       "Bash(ls *.jpg)",
       "Bash(cp images/main/office-executive-suites.jpg images/main/card-small-spaces.jpg)",
       "Bash(cp images/main/index-office-coworking.jpg images/main/card-open-space.jpg)",
-      "Bash(touch images/main/gallery-executive-hall-unique.jpg)"
+      "Bash(touch images/main/gallery-executive-hall-unique.jpg)",
+      "Bash(wc -l \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower/\"*.html \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower/css/\"*.css)",
+      "Bash(mkdir -p \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower/images/floors/avail\")",
+      "Bash(cp placeholder.jpg avail/__TRACKED_VAR__)",
+      "Bash(python3 -c ':*)",
+      "Bash(node -e ':*)"
     ]
   }
 }

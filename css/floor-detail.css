@@ -21,7 +21,13 @@
     nav.scrolled{height:58px;background:rgba(5,5,5,0.98);}
     .nav-brand{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;letter-spacing:2.5px;
       background:linear-gradient(135deg,var(--gold-dim),var(--gold),var(--gold-light));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      forced-color-adjust:none;color-scheme:dark;}
+    .nav-brand,.nav-brand *,.f-brand,.f-brand *{forced-color-adjust:none !important;color-scheme:dark !important;}
+    .nav-brand img,.f-brand img,.brand-logo-img{mix-blend-mode:normal !important;opacity:1 !important;isolation:isolate;}
+    .brand-logo-img{forced-color-adjust:none !important;color-scheme:dark !important;}
+    html.dark .nav-brand img,html[data-theme="dark"] .nav-brand img,body.dark .nav-brand img,
+    html.dark .f-brand img,html[data-theme="dark"] .f-brand img,body.dark .f-brand img{filter:drop-shadow(0 0 6px rgba(184,115,51,0.3)) !important;opacity:1 !important;}
     .nav-right{display:flex;align-items:center;gap:14px;}
     .nav-back{font-size:.65rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
       color:var(--gold);border:1px solid rgba(184,115,51,0.35);padding:7px 16px;border-radius:2px;transition:var(--t);}
@@ -40,10 +46,9 @@
     /* HERO */
     .fl-hero{position:relative;margin-top:72px;height:46vh;min-height:320px;
       display:flex;align-items:flex-end;overflow:hidden;
-      background:
-        linear-gradient(135deg, rgba(5,5,5,0.5), rgba(10,8,4,0.9)),
-        radial-gradient(circle at 70% 30%, rgba(184,115,51,0.18), transparent 60%),
-        #0a0a0a;
+      background-color:#0a0a0a;
+      background-image:linear-gradient(135deg, rgba(5,5,5,0.5), rgba(10,8,4,0.9));
+      background-size:cover;background-position:center;
     }
     .fl-hero::before{content:'';position:absolute;inset:0;
       background-image:
@@ -275,5 +280,95 @@ img { max-width: 100%; height: auto; }
 }
 
 /* --- availability image slot (appended) --- */
-.avail-img { width:100%; height:200px; object-fit:cover; background:#1a1a1a;
-             border:1px solid rgba(201,168,76,0.15); margin-bottom:12px; }
+.avail-img { width:100%; object-fit:cover; background:#1a1a1a;
+             border:1px solid rgba(201,168,76,0.15); margin-bottom:12px;
+             display:block; margin-left:auto; margin-right:auto; }
+
+/* per-floor sizing */
+.avail-b1        { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
+.avail-g         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
+.avail-3         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
+.avail-4         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
+.avail-5         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
+.avail-6         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
+.avail-7         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
+.avail-9-indoor  { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
+.avail-9-outdoor { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
+
+/* =========================================================
+   RTL (Arabic) minimal text-alignment fixes — do not affect EN
+   ========================================================= */
+html[dir="rtl"] .bf-label,
+html[dir="rtl"] .bf-input { text-align: right; }
+html[dir="rtl"] .spec-label,
+html[dir="rtl"] .spec-value,
+html[dir="rtl"] .amenity-item,
+html[dir="rtl"] .overview-desc { text-align: right; }
+
+/* ── Per-image gallery size rules ─────────────────────────────────────── */
+.fg-4-1 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-2 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-3 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-4 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-5 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-6 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-7 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-8 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-9 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-10 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-11 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-12 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-13 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-14 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-15 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-16 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-17 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-18 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-4-19 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-5-1 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-5-2 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-6-1 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-6-2 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-6-3 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-6-4 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-6-5 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-6-6 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-6-7 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-6-8 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-6-9 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-6-10 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-6-11 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-6-12 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-7-1 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-7-2 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-7-3 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-7-4 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-7-5 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-7-6 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-7-7 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-7-8 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-7-9 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-7-10 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-b1-1 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-b1-2 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-b1-3 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-indoor-1 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-indoor-2 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-indoor-3 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-indoor-4 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-outdoor-1 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-outdoor-2 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-outdoor-3 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-outdoor-4 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-outdoor-5 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-outdoor-6 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-outdoor-7 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-outdoor-8 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-outdoor-9 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-outdoor-10 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-outdoor-11 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-9-outdoor-12 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-g-1 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+.fg-g-2 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
+
+.brand-logo-img, img[src*="logo/logo.png"] { filter: none !important; -webkit-filter: none !important; mix-blend-mode: normal !important; }

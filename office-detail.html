@@ -15,7 +15,7 @@
 <body>
 
 <nav id="navbar">
-  <a href="index.html"><div class="nav-brand"><img src="images/logo/logo.png" alt="Alrayyan" style="height:32px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:drop-shadow(0 0 6px rgba(184,115,51,0.3));"/>ALRAYYAN GROUP</div></a>
+  <a href="index.html"><div class="nav-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" class="brand-logo-img" style="height:32px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:drop-shadow(0 0 6px rgba(184,115,51,0.3));"/>ALRAYYAN GROUP</div></a>
   <div class="nav-right">
     <a href="index.html#offices" class="nav-back" data-i18n="navBack">← All Offices</a>
     <div class="lang-sw">
@@ -178,22 +178,34 @@
 </div>
 
 <footer>
-  <div class="f-brand"><img src="images/logo/logo.png" alt="Alrayyan" style="height:28px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:drop-shadow(0 0 6px rgba(184,115,51,0.2));"/>ALRAYYAN GROUP</div>
+  <div class="f-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" class="brand-logo-img" style="height:28px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:drop-shadow(0 0 6px rgba(184,115,51,0.2));"/>ALRAYYAN GROUP</div>
   <div class="f-copy">© 2025 Alrayyan Group. All rights reserved.</div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // ── OFFICE DATA ──────────────────────────────────────────────────────────────
-// Standard amenity additions required on every office sub-page
-const STD_AMENITIES_EXTRA = {
+// Standardized amenities list used on every Office Rental Solutions card
+const STANDARD_AMENITIES = {
   en:[
-    '24/7 security for the building',
-    '10% extra on rent price for electricity, water, and tower cleaning',
+    'Electricity & water connections',
+    'Fire safety systems',
+    '24/7 building security',
+    'Direct elevator access',
+    '+10% on rent as service charge',
+    'Personal listing in building directory',
+    'Underground parking — 1 spot per 100 m²',
+    'Emergency exit',
   ],
   ar:[
+    'توصيلات كهرباء وماء',
+    'أنظمة سلامة من الحرائق',
     'أمن على مدار الساعة للمبنى',
-    'إضافة 10% على سعر الإيجار للكهرباء والماء وتنظيف البرج',
+    'وصول مباشر بالمصعد',
+    'إضافة 10% على سعر الإيجار بدل خدمات',
+    'إدراج شخصي في دليل المبنى',
+    'مواقف تحت الأرض — موقف لكل 100 متر مربع',
+    'مخرج طوارئ',
   ],
 };
 
@@ -204,14 +216,14 @@ const offices = [
     imgOutside:'images/main/full-floor-outside.jpg',
     imgInside: 'images/main/full-floor-inside-banner.jpg',
     specs:[
-      {label:{en:'Office Size',ar:'مساحة المكتب'},    value:{en:'25 – 80 m²',ar:'25 – 80 م²'}},
-      {label:{en:'Capacity',ar:'السعة'},               value:{en:'1 – 8 persons',ar:'1 – 8 أشخاص'}},
-      {label:{en:'Floors',ar:'الطوابق'},               value:{en:'3rd – 15th',ar:'3 – 15'}},
-      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Monthly / Annual',ar:'شهري / سنوي'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'},    value:'400 m²'},
+      {label:{en:'Capacity',ar:'السعة'},               value:{en:'40 – 60 persons',ar:'40 – 60 شخصاً'}},
+      {label:{en:'Floors',ar:'الطوابق'},               value:{en:'Floors 1 – 8',ar:'الطوابق 1 – 8'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Annual',ar:'سنوي'}},
       {label:{en:'Setup Time',ar:'وقت التجهيز'},       value:{en:'Same Day',ar:'نفس اليوم'}},
-      {label:{en:'Availability',ar:'التوفر'},          value:{en:'8 Units Now',ar:'8 وحدات الآن'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'Available in: 4th Floor (400m²), 6th Floor (400m²), 7th Floor (400m²)',ar:'متاح في: الطابق الرابع (400م²), الطابق السادس (400م²), الطابق السابع (400م²)'}},
     ],
-    availText:{ en:'This space is available in: 4th Floor (400m²), 6th Floor (400m²), 7th Floor (400m²)', ar:'هذه المساحة متوفرة في: الطابق الرابع (400م²)، الطابق السادس (400م²)، الطابق السابع (400م²)' },
+    availText:{ en:'Available in: 4th Floor (400m²), 6th Floor (400m²), 7th Floor (400m²)', ar:'متاح في: الطابق الرابع (400م²), الطابق السادس (400م²), الطابق السابع (400م²)' },
     description:{
       en:`<p>Alrayyan's Executive Offices are the ultimate expression of corporate prestige — fully furnished private offices designed for the modern executive. Each office features bespoke furniture, premium lighting, and floor-to-ceiling glass panels that flood the space with natural light and commanding city views.</p>
       <p>Offices range from compact single-occupancy spaces to expansive eight-person offices, all within a dedicated secure corridor. Your office comes with a personalised plaque at reception, and your team has access to all shared premium amenities on the same floor.</p>`,
@@ -239,14 +251,14 @@ const offices = [
     imgOutside:'images/main/small-spaces-outside.jpg',
     imgInside: 'images/main/small-spaces-inside-banner.jpg',
     specs:[
-      {label:{en:'Desk Options',ar:'خيارات المكاتب'},  value:{en:'Hot / Dedicated',ar:'مرن / مخصص'}},
-      {label:{en:'Capacity',ar:'السعة'},               value:{en:'1 – 300 persons',ar:'1 – 300 شخص'}},
-      {label:{en:'Floors',ar:'الطوابق'},               value:{en:'2nd Floor',ar:'الطابق الثاني'}},
-      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Daily / Monthly',ar:'يومي / شهري'}},
-      {label:{en:'Open Hours',ar:'ساعات العمل'},       value:{en:'7am – 11pm',ar:'7ص – 11م'}},
-      {label:{en:'Availability',ar:'التوفر'},          value:{en:'24 Desks Now',ar:'24 مكتب الآن'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'},     value:'80 m²'},
+      {label:{en:'Capacity',ar:'السعة'},               value:{en:'8 – 10 persons',ar:'8 – 10 أشخاص'}},
+      {label:{en:'Floors',ar:'الطوابق'},               value:{en:'Floors 1 – 8',ar:'الطوابق 1 – 8'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'},       value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'Available in: 3rd Floor (80m²), 5th Floor (80m²)',ar:'متاح في: الطابق الثالث (80م²), الطابق الخامس (80م²)'}},
     ],
-    availText:{ en:'This space is available in: 3rd Floor (80m²), 5th Floor (80m²)', ar:'هذه المساحة متوفرة في: الطابق الثالث (80م²)، الطابق الخامس (80م²)' },
+    availText:{ en:'Available in: 3rd Floor (80m²), 5th Floor (80m²)', ar:'متاح في: الطابق الثالث (80م²), الطابق الخامس (80م²)' },
     description:{
       en:`<p>The Alrayyan Co-Working floor is a dynamic, inspiring environment where ambition is the common language. Spread across an open, beautifully designed 1,200 m² floor, it offers hot desks, dedicated desks, and quiet focus pods — all within a vibrant professional community.</p>
       <p>Members gain access to one of Amman's most connected workspaces, a fully-stocked kitchen, barista coffee service, and a rooftop terrace for breaks and informal meetings.</p>`,
@@ -280,14 +292,14 @@ const offices = [
     imgOutside:'images/main/open-space-outside.jpg',
     imgInside: 'images/main/open-space-inside-banner.jpg',
     specs:[
-      {label:{en:'Room Sizes',ar:'أحجام القاعات'},     value:{en:'4 – 40 persons',ar:'4 – 40 شخص'}},
-      {label:{en:'Total Rooms',ar:'إجمالي القاعات'},   value:{en:'12 Rooms',ar:'12 قاعة'}},
-      {label:{en:'Booking',ar:'الحجز'},                value:{en:'Hourly / Daily',ar:'ساعي / يومي'}},
-      {label:{en:'AV Equipment',ar:'المعدات'},         value:{en:'Full HD / 4K',ar:'Full HD / 4K'}},
-      {label:{en:'Setup',ar:'التجهيز'},                value:{en:'Theatre / Board',ar:'مسرحي / اجتماعات'}},
-      {label:{en:'Availability',ar:'التوفر'},          value:{en:'6 Rooms Today',ar:'6 قاعات اليوم'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'},     value:'1,000 m²'},
+      {label:{en:'Capacity',ar:'السعة'},               value:{en:'80 – 120 persons',ar:'80 – 120 شخصاً'}},
+      {label:{en:'Floors',ar:'الطوابق'},               value:{en:'Basement (B1)',ar:'القبو (B1)'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'},       value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'Available in: B1 Floor (1,000m²)',ar:'متاح في: الطابق B1 (1,000م²)'}},
     ],
-    availText:{ en:'This space is available in: B1 Floor (1,000m²), 9th Floor Outdoor (300m²), 9th Floor Indoor (100m²)', ar:'هذه المساحة متوفرة في: الطابق B1 (1,000م²)، الطابق التاسع الخارجي (300م²)، الطابق التاسع الداخلي (100م²)' },
+    availText:{ en:'Available in: B1 Floor (1,000m²)', ar:'متاح في: الطابق B1 (1,000م²)' },
     description:{
       en:`<p>Alrayyan's meeting rooms are designed to impress — whether hosting a client pitch, an all-hands, or a high-stakes negotiation. Each room is equipped with enterprise-grade AV, motorised blinds, and acoustic-treated walls for privacy and focus.</p>
       <p>Rooms seat 4 to 40 guests and can be configured for boardroom, theatre, U-shape, or classroom layouts. Same-day booking is available through our online portal or reception.</p>`,
@@ -323,14 +335,14 @@ const offices = [
     imgOutside:'images/main/9th-floor-outdoor-outside.jpg',
     imgInside: 'images/main/9th-floor-outdoor-inside-banner.jpg',
     specs:[
-      {label:{en:'Packages',ar:'الباقات'},             value:{en:'3 Tiers',ar:'3 مستويات'}},
-      {label:{en:'Address',ar:'العنوان'},              value:{en:'Prime Business District',ar:'منطقة أعمال مميزة'}},
-      {label:{en:'Contract',ar:'العقد'},               value:{en:'Monthly / Annual',ar:'شهري / سنوي'}},
-      {label:{en:'Phone Line',ar:'خط هاتف'},           value:{en:'Dedicated Number',ar:'رقم مخصص'}},
-      {label:{en:'Mail Handling',ar:'البريد'},         value:{en:'Included',ar:'مشمول'}},
-      {label:{en:'Availability',ar:'التوفر'},          value:{en:'12 Packages',ar:'12 باقة'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'},     value:'300 m²'},
+      {label:{en:'Capacity',ar:'السعة'},               value:{en:'Up to 200 guests',ar:'حتى 200 ضيف'}},
+      {label:{en:'Floors',ar:'الطوابق'},               value:{en:'9th Floor (Outdoor)',ar:'الطابق التاسع (الخارجي)'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'},       value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'Available in: 9th Floor Outdoor Terrace (300m²)',ar:'متاح في: الطابق التاسع التراس الخارجي (300م²)'}},
     ],
-    availText:{ en:'This space is available in: 9th Floor Outdoor (300m²)', ar:'هذه المساحة متوفرة في: الطابق التاسع الخارجي (300م²)' },
+    availText:{ en:'Available in: 9th Floor Outdoor Terrace (300m²)', ar:'متاح في: الطابق التاسع التراس الخارجي (300م²)' },
     description:{
       en:`<p>Establish a premium Amman business presence without the overhead of a physical office. The Alrayyan Virtual Office gives your company a prestigious address in one of the Kingdom's most recognised business towers — the perfect foundation for any growing company.</p>
       <p>From mail collection and forwarding to dedicated phone answering in your company name, our packages flex to meet your exact needs.</p>`,
@@ -368,14 +380,14 @@ const offices = [
     imgOutside:'images/main/9th-floor-indoor-outside.jpg',
     imgInside: 'images/main/9th-floor-indoor-inside-banner.jpg',
     specs:[
-      {label:{en:'Floor Size',ar:'مساحة الطابق'},      value:{en:'400 m² – 1,000 m²',ar:'400 م² – 1000 م²'}},
-      {label:{en:'Capacity',ar:'السعة'},               value:{en:'40 – 200 persons',ar:'40 – 200 شخص'}},
-      {label:{en:'Available',ar:'المتاح'},             value:{en:'3 Floors',ar:'3 طوابق'}},
-      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Annual / 3-Year',ar:'سنوي / 3 سنوات'}},
-      {label:{en:'Fit-Out',ar:'التشطيب'},              value:{en:'Turnkey or Shell',ar:'جاهز أو هيكلي'}},
-      {label:{en:'Handover',ar:'التسليم'},             value:{en:'60 days',ar:'60 يوماً'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'},     value:'100 m²'},
+      {label:{en:'Capacity',ar:'السعة'},               value:{en:'Up to 40 guests',ar:'حتى 40 ضيفاً'}},
+      {label:{en:'Floors',ar:'الطوابق'},               value:{en:'9th Floor (Indoor)',ar:'الطابق التاسع (الداخلي)'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'},       value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'Available in: 9th Floor Indoor (100m²)',ar:'متاح في: الطابق التاسع الداخلي (100م²)'}},
     ],
-    availText:{ en:'This space is available in: 9th Floor Indoor (100m²)', ar:'هذه المساحة متوفرة في: الطابق التاسع الداخلي (100م²)' },
+    availText:{ en:'Available in: 9th Floor Indoor (100m²)', ar:'متاح في: الطابق التاسع الداخلي (100م²)' },
     description:{
       en:`<p>For enterprises that demand space, privacy, and identity — a full floor at Alrayyan Tower is the definitive statement. Three entire floors are currently available (4th, 6th, 7th), each 400 m², offered as shell-and-core or in a range of turnkey fit-out packages designed to your brand identity.</p>
       <p>Full floors feature a dedicated lobby with your company branding, exclusive elevator access, and complete freedom to configure the layout. Our in-house design team manages the full process from concept to move-in.</p>`,
@@ -415,14 +427,14 @@ const offices = [
     imgOutside:'images/main/small-shops-outside.jpg',
     imgInside: 'images/main/small-shops-inside-banner.jpg',
     specs:[
-      {label:{en:'Office Size',ar:'مساحة المكتب'},     value:{en:'30 – 120 m²',ar:'30 – 120 م²'}},
-      {label:{en:'Smart Features',ar:'ميزات ذكية'},    value:{en:'Full IoT System',ar:'منظومة IoT كاملة'}},
-      {label:{en:'Floors',ar:'الطوابق'},               value:{en:'6th – 9th',ar:'6 – 9'}},
-      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Monthly / Annual',ar:'شهري / سنوي'}},
-      {label:{en:'Setup',ar:'التجهيز'},                value:{en:'3 Days',ar:'3 أيام'}},
-      {label:{en:'Availability',ar:'التوفر'},          value:{en:'4 Units Now',ar:'4 وحدات الآن'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'},     value:{en:'9 m² per shop (27 m² total)',ar:'9 م² لكل محل (27 م² إجمالي)'}},
+      {label:{en:'Capacity',ar:'السعة'},               value:{en:'2 – 3 staff per shop',ar:'2 – 3 موظفين لكل محل'}},
+      {label:{en:'Floors',ar:'الطوابق'},               value:{en:'Ground Floor',ar:'الطابق الأرضي'}},
+      {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Annual',ar:'سنوي'}},
+      {label:{en:'Setup Time',ar:'وقت التجهيز'},       value:{en:'Same Day',ar:'نفس اليوم'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'Available in: G Floor (3 × 9m² shops)',ar:'متاح في: الطابق الأرضي (3 × 9م² محلات)'}},
     ],
-    availText:{ en:'This space is available in: G Floor (3 × 9m² shops)', ar:'هذه المساحة متوفرة في: الطابق الأرضي (3 × 9م² محلات)' },
+    availText:{ en:'Available in: G Floor (3 × 9m² shops)', ar:'متاح في: الطابق الأرضي (3 × 9م² محلات)' },
     description:{
       en:`<p>Alrayyan's Smart Offices represent the future of work — fully integrated spaces where technology works for you. Each office is equipped with a complete IoT management system: automated lighting that adjusts to occupancy and daylight, smart climate control, biometric access, and an AI-powered air quality system.</p>
       <p>Control every aspect of your environment from a single dashboard — or let the system learn your preferences and manage itself. Energy consumption is monitored and optimised in real time, resulting in significantly lower running costs.</p>`,
@@ -489,11 +501,10 @@ function renderOffice(L){
   // Description (Space Overview)
   document.getElementById('detail-desc').innerHTML = o.description[L];
 
-  // Amenities (filtered + STD additions)
+  // Amenities — standardized list applied to every Office Rental Solutions card
   const amEl = document.getElementById('amenities-grid');
   amEl.innerHTML = '';
-  const list = [...(o.amenities[L]||[]), ...STD_AMENITIES_EXTRA[L]];
-  list.forEach(a => { amEl.innerHTML += `<div class="amenity-item">${a}</div>`; });
+  STANDARD_AMENITIES[L].forEach(a => { amEl.innerHTML += `<div class="amenity-item">${a}</div>`; });
 }
 
 // Related (other 3 offices)
