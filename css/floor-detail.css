@@ -426,3 +426,25 @@ html.dark footer img[src*="logo"], html[data-theme="dark"] footer img[src*="logo
   mix-blend-mode: normal !important;
   opacity: 1 !important;
 }
+
+/* ── Mobile navbar: keep logo icon + ALRAYYAN GROUP on one horizontal row ── */
+#navbar { background: rgba(5,5,5,0.98) !important; }
+#navbar > a { display: inline-flex; align-items: center; min-width: 0; }
+.nav-brand { display: inline-flex; align-items: center; white-space: nowrap; min-width: 0; }
+.nav-brand img { flex-shrink: 0; }
+@media (max-width: 768px) {
+  nav { height: 60px; padding: 0 4%; }
+  .nav-brand { font-size: 0.95rem; letter-spacing: 1.2px; }
+  .nav-brand img { height: 28px !important; margin-right: 6px !important; }
+  .nav-back { font-size: .55rem; padding: 5px 10px; }
+  .fl-hero { margin-top: 60px; }
+}
+@media (max-width: 480px) {
+  nav { height: 54px; padding: 0 3%; }
+  .nav-brand { font-size: 0.82rem; letter-spacing: 1px; }
+  .nav-brand img { height: 24px !important; margin-right: 5px !important; }
+  .fl-hero { margin-top: 54px; }
+}
+@media (max-width: 360px) {
+  .nav-brand { font-size: 0.72rem; }
+}

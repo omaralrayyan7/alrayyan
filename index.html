@@ -1256,9 +1256,32 @@
         if (sumFirst) sumFirst.textContent = count;
       }
       applyAvailability();
+
+      // ── Pricing sync (admin Pricing sub-tab → public office cards) ──
+      function applyPricing(){
+        let data = null;
+        try { data = JSON.parse(localStorage.getItem('ar_pricing') || 'null'); } catch(e){ data = null; }
+        if (!data) return;
+        document.querySelectorAll('#offices .office-card').forEach(card => {
+          const h3 = card.querySelector('h3');
+          const tag = card.querySelector('.office-tag');
+          if (!h3 || !tag) return;
+          const key = h3.textContent.trim();
+          const entry = data[key];
+          if (!entry) return;
+          if (entry.show === false){
+            tag.style.display = 'none';
+          } else {
+            tag.style.display = '';
+            if (entry.price) tag.textContent = entry.price;
+          }
+        });
+      }
+      applyPricing();
       // Re-apply when admin updates availability in another tab/window.
       window.addEventListener('storage', (e)=>{
         if (e.key === 'ar_availability' || e.key === 'ar_availability_bump') applyAvailability();
+        if (e.key === 'ar_pricing'      || e.key === 'ar_pricing_bump')      applyPricing();
       });
       // i18n wipes text content of [data-i18n] elements — re-apply after each
       // language switch so the ✓ / ✗ markers and book/unavailable buttons stay correct.

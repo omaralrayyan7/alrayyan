@@ -1172,3 +1172,74 @@ html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo
     opacity: 1 !important;
   }
 }
+
+/* ── Mobile navbar layout: keep logo + brand text on one horizontal row ── */
+#navbar { background: rgba(5,5,5,0.98) !important; }
+.nav-logo { flex-wrap: nowrap !important; min-width: 0; }
+.nav-logo-text { flex-direction: column; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 768px) {
+  #navbar { height: 64px; padding: 0 4%; }
+  .nav-logo { gap: 8px; }
+  .nav-logo img { height: 34px !important; flex-shrink: 0; }
+  .nav-logo-text .name { font-size: 0.95rem; letter-spacing: 1px; }
+  .nav-logo-text .tagline { font-size: 0.48rem; letter-spacing: 1.5px; }
+  #hero { padding-top: 64px; }
+}
+@media (max-width: 480px) {
+  #navbar { height: 58px; padding: 0 3%; }
+  .nav-logo img { height: 30px !important; }
+  .nav-logo-text .name { font-size: 0.82rem; letter-spacing: 0.5px; }
+  .nav-logo-text .tagline { display: none; }
+  #hero { padding-top: 58px; }
+}
+@media (max-width: 360px) {
+  .nav-logo-text .name { font-size: 0.72rem; }
+}
+
+/* ── Arabic (RTL) typography: prevent descender/ascender clipping ── */
+html[dir="rtl"] body,
+body.ar {
+  font-family: 'Cairo','Montserrat',sans-serif;
+}
+html[dir="rtl"] .section-title,
+body.ar .section-title {
+  line-height: 1.7 !important;
+  padding: 0.15em 0;
+  overflow: visible;
+}
+html[dir="rtl"] .section-eyebrow,
+body.ar .section-eyebrow {
+  line-height: 1.8 !important;
+  padding: 0.2em 0;
+  overflow: visible;
+  letter-spacing: 2px;
+  white-space: normal;
+}
+html[dir="rtl"] .section-desc,
+html[dir="rtl"] .hero-subtitle,
+html[dir="rtl"] .hero-brand,
+html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] h3, html[dir="rtl"] h4, html[dir="rtl"] h5, html[dir="rtl"] h6,
+body.ar h1, body.ar h2, body.ar h3, body.ar h4, body.ar h5, body.ar h6 {
+  line-height: 1.7 !important;
+  overflow: visible;
+}
+html[dir="rtl"] .hero-brand {
+  padding: 0.1em 0;
+}
+html[dir="rtl"] .avail-sum-item .lbl,
+html[dir="rtl"] .avail-sum-item .num,
+html[dir="rtl"] .avail-badge,
+html[dir="rtl"] .office-tag,
+html[dir="rtl"] .stat-lbl,
+html[dir="rtl"] .stat-num {
+  line-height: 1.8 !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+}
+html[dir="rtl"] [class*="title"],
+html[dir="rtl"] [class*="eyebrow"],
+html[dir="rtl"] [class*="heading"] {
+  overflow: visible !important;
+  text-overflow: clip !important;
+}

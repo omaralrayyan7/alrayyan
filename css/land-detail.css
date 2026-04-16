@@ -360,3 +360,11 @@ html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo
     opacity: 1 !important;
   }
 }
+
+/* ── Mobile navbar row-safe ── */
+#navbar { background: rgba(5,5,5,0.98) !important; }
+.nav-brand { display: inline-flex; align-items: center; white-space: nowrap; min-width: 0; }
+@media (max-width: 480px) {
+  nav { padding: 0 3%; }
+  .nav-brand { font-size: 0.95rem; letter-spacing: 1px; }
+}

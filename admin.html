@@ -44,9 +44,6 @@
       <div class="adm-nav-item" onclick="showPanel('businesses',this)"><span class="ico">🎨</span> Alrayyan Arts</div>
       <div class="adm-nav-item" onclick="showPanel('lands',this)"><span class="ico">🗺️</span> Alrayyan Lands</div>
       <div class="adm-nav-item" onclick="showPanel('bookings',this)"><span class="ico">📅</span> Contact & Bookings</div>
-      <div class="adm-nav-section" style="font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(212,175,55,.45);padding:14px 22px 6px;">Management</div>
-      <div class="adm-nav-item" onclick="showPanel('floors',this)"><span class="ico">🏗️</span> Floor Inventory</div>
-      <div class="adm-nav-item" onclick="showPanel('floorDetails',this)"><span class="ico">🏙️</span> Floor Details</div>
       <div class="adm-nav-item" onclick="window.open('index.html','_blank')"><span class="ico">🔗</span> View Site</div>
     </nav>
     <div class="adm-sidebar-foot">
@@ -110,44 +107,94 @@
         </div>
       </div>
 
-      <!-- ── AVAILABLE OFFICES (per-floor, per-size toggles) ── -->
+      <!-- ── AVAILABLE OFFICES (per-floor toggles + settings sub-tabs) ── -->
       <div class="adm-panel" id="panel-availability">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
-          <div style="font-size:.72rem;color:var(--muted);max-width:620px;line-height:1.6;">
-            Toggle each office space on or off. Changes save instantly and update the public website — a green checkmark (✓) means <b style="color:#4ade80">available</b>, a red cross (✗) means <b style="color:#ef4444">not available</b>.
+        <!-- Header with gear + default action buttons -->
+        <div class="avail-header-row" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button class="gear-btn" id="avail-gear-btn" onclick="toggleAvailSubnav()" title="Settings" style="background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.35);color:var(--gold,#d4af37);width:36px;height:36px;border-radius:4px;font-size:1.1rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .2s;">⚙</button>
+            <div style="font-size:.72rem;color:var(--muted);max-width:480px;line-height:1.6;" id="avail-blurb">
+              Toggle each office space on or off. Changes save instantly and update the public website.
+            </div>
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <div style="display:flex;gap:8px;flex-wrap:wrap" id="avail-grid-actions">
             <button class="btn-sm-ghost" onclick="availReset()">Reset to Defaults</button>
             <button class="btn-sm-gold" onclick="availSave()">💾 Save & Publish</button>
           </div>
         </div>
-        <div id="availability-grid" class="avail-admin-grid"></div>
-      </div>
 
-      <!-- ── FLOORS ── -->
-      <div class="adm-panel" id="panel-floors">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
-          <div style="font-size:.72rem;color:var(--muted);">Update floor-by-floor availability across the building.</div>
-          <button class="btn-sm-gold" onclick="openAddFloor()">+ Add Floor / Unit</button>
+        <!-- Sub-nav: hidden until gear clicked -->
+        <div class="avail-subnav" id="avail-subnav" style="display:none;gap:8px;flex-wrap:wrap;margin-bottom:16px;padding:10px;border:1px solid rgba(212,175,55,.2);border-radius:4px;background:rgba(212,175,55,.04);">
+          <button class="avail-subtab active" data-sub="grid" onclick="showAvailSub('grid',this)" style="background:var(--gold,#d4af37);color:#111;border:none;padding:7px 14px;font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:2px;cursor:pointer;">Availability Toggles</button>
+          <button class="avail-subtab" data-sub="inventory" onclick="showAvailSub('inventory',this)" style="background:transparent;color:var(--gold,#d4af37);border:1px solid rgba(212,175,55,.35);padding:7px 14px;font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:2px;cursor:pointer;">🏗️ Floor Inventory</button>
+          <button class="avail-subtab" data-sub="details" onclick="showAvailSub('details',this)" style="background:transparent;color:var(--gold,#d4af37);border:1px solid rgba(212,175,55,.35);padding:7px 14px;font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:2px;cursor:pointer;">🏙️ Floor Details</button>
+          <button class="avail-subtab" data-sub="pricing" onclick="showAvailSub('pricing',this)" style="background:transparent;color:var(--gold,#d4af37);border:1px solid rgba(212,175,55,.35);padding:7px 14px;font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:2px;cursor:pointer;">💰 Pricing</button>
         </div>
-        <div class="adm-card">
-          <div class="adm-card-head">
-            <h5>Floor & Unit Availability</h5>
-            <select class="adm-form-control" id="floor-filter" style="width:auto;font-size:.68rem;padding:4px 10px;" onchange="renderFloors()">
-              <option value="all">All Types</option>
-              <option value="Executive Offices">Executive Offices</option>
-              <option value="Co-Working Spaces">Co-Working Spaces</option>
-              <option value="Meeting Rooms">Meeting Rooms</option>
-              <option value="Virtual Offices">Virtual Offices</option>
-              <option value="Full Floor Offices">Full Floor Offices</option>
-              <option value="Smart Offices">Smart Offices</option>
-            </select>
+
+        <!-- Sub: Availability Toggles -->
+        <div class="avail-sub active" id="avail-sub-grid">
+          <div id="availability-grid" class="avail-admin-grid"></div>
+        </div>
+
+        <!-- Sub: Floor Inventory -->
+        <div class="avail-sub" id="avail-sub-inventory" style="display:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+            <div style="font-size:.72rem;color:var(--muted);">Update floor-by-floor availability across the building.</div>
+            <button class="btn-sm-gold" onclick="openAddFloor()">+ Add Floor / Unit</button>
           </div>
-          <div style="overflow-x:auto">
-            <table class="adm-table">
-              <thead><tr><th>Floor / Unit</th><th>Type</th><th>Size</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="floors-tbody"></tbody>
-            </table>
+          <div class="adm-card">
+            <div class="adm-card-head">
+              <h5>Floor & Unit Availability</h5>
+              <select class="adm-form-control" id="floor-filter" style="width:auto;font-size:.68rem;padding:4px 10px;" onchange="renderFloors()">
+                <option value="all">All Types</option>
+                <option value="Full Floor">Full Floor</option>
+                <option value="Small Spaces">Small Spaces</option>
+                <option value="Open Space">Open Space</option>
+                <option value="9th Floor – Outdoor Terrace">9th Floor – Outdoor Terrace</option>
+                <option value="9th Floor – Indoor Space">9th Floor – Indoor Space</option>
+                <option value="Small Shops">Small Shops</option>
+              </select>
+            </div>
+            <div style="overflow-x:auto">
+              <table class="adm-table">
+                <thead><tr><th>Floor / Unit</th><th>Type</th><th>Size</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="floors-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub: Floor Details -->
+        <div class="avail-sub" id="avail-sub-details" style="display:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+            <div style="font-size:.72rem;color:var(--muted);">Edit the content shown on each floor's detail sub-page (floor-detail.html).</div>
+            <button class="btn-sm-gold" onclick="openAddFloorDetail()">+ Add Floor Detail</button>
+          </div>
+          <div class="adm-card">
+            <div style="overflow-x:auto">
+              <table class="adm-table">
+                <thead><tr><th>Key</th><th>Title (EN)</th><th>Title (AR)</th><th>Size</th><th>Actions</th></tr></thead>
+                <tbody id="floorDetails-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub: Pricing -->
+        <div class="avail-sub" id="avail-sub-pricing" style="display:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+            <div style="font-size:.72rem;color:var(--muted);max-width:620px;line-height:1.6;">
+              Edit pricing for each office type. Use the checkbox to show or hide each price on the public website.
+            </div>
+            <button class="btn-sm-gold" onclick="savePricing()">💾 Save Pricing</button>
+          </div>
+          <div class="adm-card">
+            <div style="overflow-x:auto">
+              <table class="adm-table">
+                <thead><tr><th>Office Type</th><th>Price</th><th>Show on Site</th></tr></thead>
+                <tbody id="pricing-tbody"></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -163,22 +210,6 @@
             <table class="adm-table">
               <thead><tr><th>Ref</th><th>Name</th><th>Company</th><th>Office</th><th>Date</th><th>Phone</th><th>Status</th><th>Actions</th></tr></thead>
               <tbody id="bookings-tbody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── FLOOR DETAILS (overview/amenities/specs per floor) ── -->
-      <div class="adm-panel" id="panel-floorDetails">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
-          <div style="font-size:.72rem;color:var(--muted);">Edit the content shown on each floor's detail sub-page (floor-detail.html).</div>
-          <button class="btn-sm-gold" onclick="openAddFloorDetail()">+ Add Floor Detail</button>
-        </div>
-        <div class="adm-card">
-          <div style="overflow-x:auto">
-            <table class="adm-table">
-              <thead><tr><th>Key</th><th>Title (EN)</th><th>Title (AR)</th><th>Size</th><th>Actions</th></tr></thead>
-              <tbody id="floorDetails-tbody"></tbody>
             </table>
           </div>
         </div>
@@ -372,12 +403,12 @@
         <div class="adm-form-group">
           <label class="adm-form-label">Office Type *</label>
           <select class="adm-form-control" id="fl-type">
-            <option>Executive Offices</option>
-            <option>Co-Working Spaces</option>
-            <option>Meeting Rooms</option>
-            <option>Virtual Offices</option>
-            <option>Full Floor Offices</option>
-            <option>Smart Offices</option>
+            <option>Full Floor</option>
+            <option>Small Spaces</option>
+            <option>Open Space</option>
+            <option>9th Floor – Outdoor Terrace</option>
+            <option>9th Floor – Indoor Space</option>
+            <option>Small Shops</option>
           </select>
         </div>
       </div>
@@ -782,6 +813,8 @@ function availFlip(key, el){
     if (state[key]){ lbl.className='avail-toggle-state on'; lbl.textContent='✓ Available'; sw.classList.add('on'); }
     else           { lbl.className='avail-toggle-state off'; lbl.textContent='✗ Not available'; sw.classList.remove('on'); }
   }
+  // Keep dashboard overview counts in sync with live toggles
+  try { renderDashboard(); } catch(e){}
 }
 function availSave(){
   // Saving is instant on flip; this button just forces a publish event.
@@ -792,14 +825,15 @@ function availReset(){
   if (!confirm('Reset all availability toggles to defaults?')) return;
   saveAvailRaw({...AVAIL_DEFAULTS});
   renderAvailability();
+  try { renderDashboard(); } catch(e){}
   showToast('Availability reset to defaults.');
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 function initAdmin(){
+  renderAvailability();   // must run before renderDashboard so counts use live state
   renderDashboard();
   renderOffices();
-  renderAvailability();
   renderFloors();
   renderBookings();
   renderBiz();
@@ -807,10 +841,11 @@ function initAdmin(){
   renderLands();
   renderProducts();
   renderSiteContent();
+  renderPricing();
 }
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
-const panelTitles = {dashboard:'Home',availability:'Available Offices',offices:'Offices',floors:'Floor Inventory',bookings:'Contact & Bookings',businesses:'Alrayyan Arts',floorDetails:'Floor Details',lands:'Alrayyan Lands',products:'Alrayyan Fashion',siteContent:'About'};
+const panelTitles = {dashboard:'Home',availability:'Available Offices',offices:'Offices',bookings:'Contact & Bookings',businesses:'Alrayyan Arts',lands:'Alrayyan Lands',products:'Alrayyan Fashion',siteContent:'About'};
 function showPanel(name, el){
   document.querySelectorAll('.adm-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.adm-nav-item').forEach(n=>n.classList.remove('active'));
@@ -830,21 +865,140 @@ document.addEventListener('click', function(e) {
   sidebar.classList.remove('mobile-open');
 });
 
+// ── OFFICE RENTAL SOLUTIONS (canonical types shown on public site) ────────────
+const OFFICE_SOLUTION_TYPES = [
+  { key:'Full Floor',                 defaultPrice:'Custom Pricing' },
+  { key:'Small Spaces',               defaultPrice:'From JOD 4,000 / mo' },
+  { key:'Open Space',                 defaultPrice:'From JOD 7,500 / mo' },
+  { key:'9th Floor – Outdoor Terrace',defaultPrice:'Custom Pricing' },
+  { key:'9th Floor – Indoor Space',   defaultPrice:'Custom Pricing' },
+  { key:'Small Shops',                defaultPrice:'Contact for pricing' },
+];
+
+function loadPricing(){
+  const def = {};
+  OFFICE_SOLUTION_TYPES.forEach(t => def[t.key] = { price: t.defaultPrice, show: true });
+  try {
+    const raw = localStorage.getItem('ar_pricing');
+    if (!raw) return def;
+    return { ...def, ...JSON.parse(raw) };
+  } catch(e){ return def; }
+}
+function savePricingState(obj){ localStorage.setItem('ar_pricing', JSON.stringify(obj)); }
+
+// Count available units by solution type from live toggle state
+function countAvailByType(){
+  const state = (typeof loadAvail === 'function') ? loadAvail() : {};
+  const counts = {
+    'Full Floor': 0, 'Small Spaces': 0, 'Open Space': 0,
+    '9th Floor – Outdoor Terrace': 0, '9th Floor – Indoor Space': 0, 'Small Shops': 0
+  };
+  Object.keys(state).forEach(key => {
+    if (!state[key]) return;
+    if (key === 'b1_1000')            counts['Full Floor']++;
+    else if (key === '9-outdoor_300') counts['9th Floor – Outdoor Terrace']++;
+    else if (key === '9-indoor_100')  counts['9th Floor – Indoor Space']++;
+    else if (/^g_shop/.test(key))     counts['Small Shops']++;
+    else if (/_80$/.test(key))        counts['Small Spaces']++;
+    else if (/_160$/.test(key))       counts['Open Space']++;
+    else if (/_400$/.test(key))       counts['Full Floor']++;
+  });
+  return counts;
+}
+
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────
 function renderDashboard(){
-  const offices = loadOffices();
   const bookings = loadBookings();
-  const totalAvail = offices.reduce((s,o)=>s+o.avail,0);
+  const counts = countAvailByType();
+  const totalAvail = Object.values(counts).reduce((s,n)=>s+n,0);
   document.getElementById('st-avail').textContent = totalAvail;
   document.getElementById('st-bookings').textContent = bookings.filter(b=>b.status==='pending').length;
   const tbl = document.getElementById('dash-overview-table');
-  tbl.innerHTML = `<thead><tr><th>#</th><th>Office Type</th><th>Available Units</th><th>Price</th><th>Status</th></tr></thead>
-    <tbody>${offices.map((o,i)=>`
-      <tr><td style="color:var(--muted)">${i+1}</td>
-      <td style="font-weight:600">${o.name}</td>
-      <td><span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold-light)">${o.avail}</span></td>
-      <td style="color:var(--muted)">${o.price}</td>
-      <td><span class="status-badge ${o.status}">${o.status}</span></td></tr>`).join('')}</tbody>`;
+  tbl.innerHTML = `<thead><tr><th>#</th><th>Office Type</th><th>Available Units</th><th>Status</th></tr></thead>
+    <tbody>${OFFICE_SOLUTION_TYPES.map((t,i)=>{
+      const n = counts[t.key] || 0;
+      const status = n === 0 ? 'occupied' : (n <= 2 ? 'low' : 'available');
+      const statusLabel = n === 0 ? 'occupied' : (n <= 2 ? 'low' : 'available');
+      return `<tr>
+        <td style="color:var(--muted)">${i+1}</td>
+        <td style="font-weight:600">${t.key}</td>
+        <td><span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold-light)">${n}</span></td>
+        <td><span class="status-badge ${status}">${statusLabel}</span></td>
+      </tr>`;
+    }).join('')}</tbody>`;
+}
+
+// ── PRICING (sub-tab inside Available Offices) ───────────────────────────────
+function renderPricing(){
+  const tbody = document.getElementById('pricing-tbody');
+  if (!tbody) return;
+  const data = loadPricing();
+  tbody.innerHTML = OFFICE_SOLUTION_TYPES.map(t => {
+    const p = data[t.key] || { price: t.defaultPrice, show: true };
+    return `<tr>
+      <td style="font-weight:600">${t.key}</td>
+      <td><input class="adm-form-control pricing-input" data-key="${t.key}" type="text" value="${(p.price||'').replace(/"/g,'&quot;')}" style="min-width:220px;"/></td>
+      <td><label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" class="pricing-show" data-key="${t.key}" ${p.show?'checked':''} style="width:18px;height:18px;accent-color:var(--gold,#d4af37);cursor:pointer;"/> <span style="font-size:.7rem;color:var(--muted)">Visible on site</span></label></td>
+    </tr>`;
+  }).join('');
+}
+function savePricing(){
+  const data = loadPricing();
+  document.querySelectorAll('.pricing-input').forEach(inp => {
+    const key = inp.dataset.key;
+    if (!data[key]) data[key] = {};
+    data[key].price = inp.value.trim();
+  });
+  document.querySelectorAll('.pricing-show').forEach(cb => {
+    const key = cb.dataset.key;
+    if (!data[key]) data[key] = {};
+    data[key].show = cb.checked;
+  });
+  savePricingState(data);
+  try { localStorage.setItem('ar_pricing_bump', String(Date.now())); } catch(e){}
+  showToast('Pricing saved. Public site will reflect visible prices.','success');
+}
+
+// ── Sub-nav (gear) inside Available Offices ──────────────────────────────────
+function toggleAvailSubnav(){
+  const bar = document.getElementById('avail-subnav');
+  if (!bar) return;
+  bar.style.display = (bar.style.display === 'none' || !bar.style.display) ? 'flex' : 'none';
+}
+function showAvailSub(which, btn){
+  // Sub-panel visibility
+  document.querySelectorAll('.avail-sub').forEach(el => { el.style.display = 'none'; el.classList.remove('active'); });
+  const target = document.getElementById('avail-sub-' + which);
+  if (target){ target.style.display = 'block'; target.classList.add('active'); }
+  // Sub-tab button states
+  document.querySelectorAll('.avail-subtab').forEach(b => {
+    b.classList.remove('active');
+    b.style.background = 'transparent';
+    b.style.color = 'var(--gold,#d4af37)';
+    b.style.border = '1px solid rgba(212,175,55,.35)';
+  });
+  if (btn){
+    btn.classList.add('active');
+    btn.style.background = 'var(--gold,#d4af37)';
+    btn.style.color = '#111';
+    btn.style.border = 'none';
+  }
+  // Grid action buttons only relevant for the toggles view
+  const actions = document.getElementById('avail-grid-actions');
+  const blurb = document.getElementById('avail-blurb');
+  if (actions) actions.style.display = (which === 'grid') ? 'flex' : 'none';
+  if (blurb){
+    blurb.textContent = {
+      grid:      'Toggle each office space on or off. Changes save instantly and update the public website.',
+      inventory: 'Manage the full list of floors and units (type, size, price, status).',
+      details:   'Edit the overview / amenities / specs shown on each floor detail page.',
+      pricing:   'Edit the price shown on each Office Rental Solution card, and toggle visibility per-type.'
+    }[which] || '';
+  }
+  // Refresh data when switching to a data-backed sub
+  if (which === 'inventory')   renderFloors();
+  if (which === 'details')     renderFloorDetails();
+  if (which === 'pricing')     renderPricing();
 }
 
 // ── OFFICES ───────────────────────────────────────────────────────────────────
