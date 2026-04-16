@@ -15,7 +15,7 @@
 <body>
 
 <nav id="navbar">
-  <a href="index.html"><div class="nav-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" class="brand-logo-img" style="height:32px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:drop-shadow(0 0 6px rgba(184,115,51,0.3));"/>ALRAYYAN GROUP</div></a>
+  <a href="index.html"><div class="nav-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" class="brand-logo-img" style="height:32px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:none;"/>ALRAYYAN GROUP</div></a>
   <div class="nav-right">
     <a href="index.html#available" class="nav-back" data-i18n="backToAvail">← Back to Floors</a>
     <div class="lang-sw">
@@ -50,7 +50,7 @@
     <!-- SPACE OVERVIEW -->
     <div class="fade-in">
       <img src="" alt="Space" id="avail-img" class="avail-img"
-           onerror="this.style.background='#1a1a1a';this.style.minHeight='180px'">
+           onerror="this.style.display='none'">
       <p class="sec-eye" data-i18n="secOvEye">Space Overview</p>
       <h2 class="sec-title"><span data-i18n="secOvTitleA">About This</span> <em data-i18n="secOvTitleB">Space</em></h2>
       <div class="gold-line"></div>
@@ -174,7 +174,7 @@
 </div>
 
 <footer>
-  <div class="f-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" class="brand-logo-img" style="height:28px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:drop-shadow(0 0 6px rgba(184,115,51,0.2));"/>ALRAYYAN GROUP</div>
+  <div class="f-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" class="brand-logo-img" style="height:28px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:none;"/>ALRAYYAN GROUP</div>
   <div class="f-copy" data-i18n="footCopy">© 2025 Alrayyan Group. All rights reserved.</div>
 </footer>
 
@@ -635,13 +635,14 @@ const floorImageConfig = {
     <div class="gold-line"></div>`;
 
   const fileName = (i) => `img-${i}-floor-${floorId}.${imgExt}`;
+  // onerror handler collapses broken images so missing uploads don't reserve empty space.
+  const errH = `onerror="this.style.display='none';this.dataset.broken='1'"`;
 
   if (cfg.mains > 0) {
-    // Main + thumbnail layout
     const mainCols = cfg.mains === 2 ? 'cols-2' : 'cols-3';
     html += `<div class="fg-mains ${mainCols}" id="fg-mains">`;
     for (let i = 1; i <= cfg.mains; i++) {
-      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" id="fg-main-${i}" class="fg-${floorId}-${i}"/>`;
+      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" id="fg-main-${i}" class="fg-${floorId}-${i}" ${errH}/>`;
     }
     html += `</div>`;
 
@@ -649,7 +650,7 @@ const floorImageConfig = {
       html += `<div class="fg-thumbs-wrap"><div class="fg-thumbs" id="fg-thumbs">`;
       for (let i = 1; i <= cfg.real; i++) {
         const isMain = i <= cfg.mains;
-        html += `<img src="${basePath}${fileName(i)}" alt="Thumbnail ${i}" class="fg-${floorId}-${i}-thumb ${isMain ? 'active' : ''}" onclick="swapMainImage(this, ${i})"/>`;
+        html += `<img src="${basePath}${fileName(i)}" alt="Thumbnail ${i}" class="fg-${floorId}-${i}-thumb ${isMain ? 'active' : ''}" onclick="swapMainImage(this, ${i})" ${errH}/>`;
       }
       html += `</div>
         <div class="fg-arrows">
@@ -658,17 +659,39 @@ const floorImageConfig = {
         </div></div>`;
     }
   } else {
-    // Simple grid layout
     const gridCols = cfg.real === 2 ? 'cols-2' : 'cols-3';
     html += `<div class="fg-simple ${gridCols}">`;
     for (let i = 1; i <= cfg.real; i++) {
-      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" class="fg-${floorId}-${i}"/>`;
+      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" class="fg-${floorId}-${i}" ${errH}/>`;
     }
     html += `</div>`;
   }
 
   container.innerHTML = html;
   updateThumbArrows();
+
+  // After all gallery images settle, hide the whole section if none loaded —
+  // this prevents the huge empty gap on floors whose /real folder is empty.
+  (function collapseIfAllBroken(){
+    const imgs = container.querySelectorAll('img');
+    if (!imgs.length){ container.style.display='none'; return; }
+    let pending = imgs.length;
+    let anyOk = false;
+    const done = ()=>{
+      pending--;
+      if (pending <= 0 && !anyOk) container.style.display = 'none';
+    };
+    imgs.forEach(img => {
+      if (img.complete){
+        if (img.naturalWidth > 0) anyOk = true;
+        else img.style.display = 'none';
+        done();
+      } else {
+        img.addEventListener('load',  ()=>{ anyOk = true; done(); }, {once:true});
+        img.addEventListener('error', ()=>{ img.style.display='none'; done(); }, {once:true});
+      }
+    });
+  })();
 })();
 
 function swapMainImage(thumbEl, imgIndex) {

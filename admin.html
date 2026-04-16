@@ -39,13 +39,14 @@
       <div class="adm-nav-item" onclick="showPanel('siteContent',this)"><span class="ico">ℹ️</span> About</div>
       <div class="adm-nav-item" onclick="showPanel('offices',this)"><span class="ico">🏢</span> Offices</div>
       <div class="adm-nav-item" onclick="showPanel('availability',this)"><span class="ico">✅</span> Available Offices</div>
+      <div class="adm-nav-section" style="font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(212,175,55,.45);padding:14px 22px 6px;">Our Businesses</div>
       <div class="adm-nav-item" onclick="showPanel('products',this)"><span class="ico">👗</span> Alrayyan Fashion</div>
       <div class="adm-nav-item" onclick="showPanel('businesses',this)"><span class="ico">🎨</span> Alrayyan Arts</div>
       <div class="adm-nav-item" onclick="showPanel('lands',this)"><span class="ico">🗺️</span> Alrayyan Lands</div>
-      <div class="adm-nav-divider" style="height:1px;background:rgba(212,175,55,.15);margin:12px 14px;"></div>
+      <div class="adm-nav-item" onclick="showPanel('bookings',this)"><span class="ico">📅</span> Contact & Bookings</div>
+      <div class="adm-nav-section" style="font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(212,175,55,.45);padding:14px 22px 6px;">Management</div>
       <div class="adm-nav-item" onclick="showPanel('floors',this)"><span class="ico">🏗️</span> Floor Inventory</div>
       <div class="adm-nav-item" onclick="showPanel('floorDetails',this)"><span class="ico">🏙️</span> Floor Details</div>
-      <div class="adm-nav-item" onclick="showPanel('bookings',this)"><span class="ico">📅</span> Visit Bookings</div>
       <div class="adm-nav-item" onclick="window.open('index.html','_blank')"><span class="ico">🔗</span> View Site</div>
     </nav>
     <div class="adm-sidebar-foot">
@@ -809,7 +810,7 @@ function initAdmin(){
 }
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
-const panelTitles = {dashboard:'Home',availability:'Available Offices',offices:'Offices',floors:'Floor Inventory',bookings:'Visit Bookings',businesses:'Alrayyan Arts',floorDetails:'Floor Details',lands:'Alrayyan Lands',products:'Alrayyan Fashion',siteContent:'About'};
+const panelTitles = {dashboard:'Home',availability:'Available Offices',offices:'Offices',floors:'Floor Inventory',bookings:'Contact & Bookings',businesses:'Alrayyan Arts',floorDetails:'Floor Details',lands:'Alrayyan Lands',products:'Alrayyan Fashion',siteContent:'About'};
 function showPanel(name, el){
   document.querySelectorAll('.adm-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.adm-nav-item').forEach(n=>n.classList.remove('active'));

@@ -391,6 +391,8 @@ html[dir="rtl"] .overview-desc { text-align: right; }
 .fg-g-2 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
 
 /* ── Logo: always render in original colors, defeat any dark-mode / auto-darken / extension filters ── */
+#navbar .nav-brand img, #navbar img, .nav-brand img, .f-brand img,
+nav img[src*="logo"], header img[src*="logo"], footer img[src*="logo"],
 html img.brand-logo-img, body img.brand-logo-img,
 html img[src*="logo/logo.png"], body img[src*="logo/logo.png"],
 html.dark img.brand-logo-img, html[data-theme="dark"] img.brand-logo-img, body.dark img.brand-logo-img,
@@ -405,10 +407,22 @@ html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo
   isolation: isolate;
 }
 @media (prefers-color-scheme: light), (prefers-color-scheme: dark) {
+  #navbar img, .nav-brand img, .f-brand img,
+  nav img[src*="logo"], footer img[src*="logo"],
   .brand-logo-img, img[src*="logo/logo.png"] {
     filter: none !important;
     -webkit-filter: none !important;
     mix-blend-mode: normal !important;
     opacity: 1 !important;
   }
+}
+/* Belt-and-braces: any dark-mode class, any ancestor — logo stays original. */
+html.dark #navbar img, html[data-theme="dark"] #navbar img, body.dark #navbar img,
+html.dark .nav-brand img, html[data-theme="dark"] .nav-brand img, body.dark .nav-brand img,
+html.dark .f-brand img, html[data-theme="dark"] .f-brand img, body.dark .f-brand img,
+html.dark footer img[src*="logo"], html[data-theme="dark"] footer img[src*="logo"], body.dark footer img[src*="logo"]{
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
 }
