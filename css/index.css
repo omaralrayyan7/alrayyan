@@ -958,6 +958,15 @@
       padding: 14px 28px; border-radius: 2px; transition: var(--t);
     }
     .btn-wa:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(37,211,102,0.3); }
+    .btn-ig {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: 14px 28px; border-radius: 2px; transition: var(--t);
+    }
+    .btn-ig:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(220,39,67,0.35); }
     .btn-ring {
       display: inline-flex; align-items: center; gap: 10px;
       background: transparent; border: 1px solid rgba(184,115,51,0.4); color: var(--gold);
@@ -1035,7 +1044,7 @@
       .nav-logo img { height: 38px; }
       section { padding: 60px 4%; }
       #hero { padding-top: 68px; }
-      .hero-logo { width: 160px; height: 160px; margin-bottom: 20px; }
+      .hero-logo { width: min(45vw, 180px); height: auto; aspect-ratio: 1 / 1; margin-bottom: 20px; object-fit: contain; }
       .hero-brand { letter-spacing: 3px; }
       .hero-subtitle { letter-spacing: 3px; margin-bottom: 32px; font-size: clamp(0.65rem, 1.2vw, 0.85rem); }
       .hero-buttons { flex-direction: column; align-items: center; gap: 12px; width: 100%; padding: 0 20px; }
@@ -1067,7 +1076,7 @@
       .contact-cards { flex-direction: column; align-items: center; }
       .c-card { width: 100%; max-width: 320px; }
       .contact-btns { flex-direction: column; align-items: center; }
-      .btn-wa, .btn-ring { width: 100%; max-width: 320px; text-align: center; justify-content: center; }
+      .btn-wa, .btn-ig, .btn-ring { width: 100%; max-width: 320px; text-align: center; justify-content: center; }
       .avail-summary { gap: 12px; }
       .avail-sum-item { min-width: 120px; padding: 12px 14px; }
       .avail-sum-item .num { font-size: 1.3rem; }
@@ -1077,7 +1086,7 @@
     @media (max-width: 480px) {
       nav { padding: 0 3%; }
       section { padding: 48px 3%; }
-      .hero-logo { width: 120px; height: 120px; }
+      .hero-logo { width: min(65vw, 200px); height: auto; aspect-ratio: 1 / 1; object-fit: contain; }
       .hero-brand { font-size: clamp(1.4rem, 5vw, 2rem); letter-spacing: 2px; }
       .hero-divider { margin: 12px 0 14px; }
       .section-title { font-size: clamp(1.3rem, 3vw, 1.8rem); }
@@ -1141,4 +1150,25 @@ img { max-width: 100%; height: auto; }
 .resizable-img { resize: vertical; overflow: hidden; min-height: 200px; max-height: 900px; width: 100%; }
 .resizable-img img { width:100%; height:100%; object-fit:cover; }
 
-.brand-logo-img, img[src*="logo/logo.png"] { filter: none !important; -webkit-filter: none !important; mix-blend-mode: normal !important; }
+/* ── Logo: always render in original colors, defeat any dark-mode / auto-darken / extension filters ── */
+html img.brand-logo-img, body img.brand-logo-img,
+html img[src*="logo/logo.png"], body img[src*="logo/logo.png"],
+html.dark img.brand-logo-img, html[data-theme="dark"] img.brand-logo-img, body.dark img.brand-logo-img,
+html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo.png"], body.dark img[src*="logo/logo.png"] {
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  forced-color-adjust: none !important;
+  color-scheme: dark !important;
+  background: transparent !important;
+  isolation: isolate;
+}
+@media (prefers-color-scheme: light), (prefers-color-scheme: dark) {
+  .brand-logo-img, img[src*="logo/logo.png"] {
+    filter: none !important;
+    -webkit-filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+}

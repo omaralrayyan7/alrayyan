@@ -237,8 +237,9 @@
 
     /* CONTACT CHIPS */
     .quick-contact {
-      margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      margin-top: 20px; display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
     }
+    @media (max-width: 520px){ .quick-contact { grid-template-columns: 1fr 1fr; } }
     .q-chip {
       background: rgba(255,255,255,0.02); border: 1px solid rgba(138,170,74,0.1);
       border-radius: 3px; padding: 14px 14px; text-align: center;
@@ -337,4 +338,25 @@ img { max-width: 100%; height: auto; }
   img { display: block !important; }
 }
 
-.brand-logo-img, img[src*="logo/logo.png"] { filter: none !important; -webkit-filter: none !important; mix-blend-mode: normal !important; }
+/* ── Logo: always render in original colors, defeat any dark-mode / auto-darken / extension filters ── */
+html img.brand-logo-img, body img.brand-logo-img,
+html img[src*="logo/logo.png"], body img[src*="logo/logo.png"],
+html.dark img.brand-logo-img, html[data-theme="dark"] img.brand-logo-img, body.dark img.brand-logo-img,
+html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo.png"], body.dark img[src*="logo/logo.png"] {
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  forced-color-adjust: none !important;
+  color-scheme: dark !important;
+  background: transparent !important;
+  isolation: isolate;
+}
+@media (prefers-color-scheme: light), (prefers-color-scheme: dark) {
+  .brand-logo-img, img[src*="logo/logo.png"] {
+    filter: none !important;
+    -webkit-filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+}

@@ -14,7 +14,12 @@
       "Bash(mkdir -p \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower/images/floors/avail\")",
       "Bash(cp placeholder.jpg avail/__TRACKED_VAR__)",
       "Bash(python3 -c ':*)",
-      "Bash(node -e ':*)"
+      "Bash(node -e ':*)",
+      "Bash(mv img-1.jpg img-1-floor-b1.jpg)",
+      "Bash(mv img-2.jpg img-2-floor-b1.jpg)",
+      "Bash(mv img-3.jpg img-3-floor-b1.jpg)",
+      "Bash(node -e \"const fs=require\\('fs'\\); const html=fs.readFileSync\\('admin.html','utf8'\\); const panels=[...html.matchAll\\(/id=\\\\\"panel-\\(\\\\w+\\)\\\\\"/g\\)].map\\(m=>m[1]\\); const navs=[...html.matchAll\\(/showPanel\\\\\\('\\(\\\\w+\\)'/g\\)].map\\(m=>m[1]\\); console.log\\('panels:', panels.sort\\(\\).join\\(','\\)\\); console.log\\('nav refs:', [...new Set\\(navs\\)].sort\\(\\).join\\(','\\)\\); const missing=navs.filter\\(n=>!panels.includes\\(n\\)\\); console.log\\('missing panels for nav refs:', missing\\);\")",
+      "Bash(node -e \"const fs=require\\('fs'\\); const html=fs.readFileSync\\('index.html','utf8'\\); console.log\\('chips with data-avail-key:', \\(html.match\\(/data-avail-key=/g\\)||[]\\).length\\); console.log\\('avail-row with data-avail-row:', \\(html.match\\(/data-avail-row=/g\\)||[]\\).length\\); console.log\\('buttons with data-avail-btn:', \\(html.match\\(/data-avail-btn=/g\\)||[]\\).length\\); console.log\\('applyAvailability def:', html.includes\\('function applyAvailability'\\)\\); console.log\\('setLang patch:', html.includes\\('window.setLang = function'\\)\\);\")"
     ]
   }
 }

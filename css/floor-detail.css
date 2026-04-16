@@ -26,8 +26,7 @@
     .nav-brand,.nav-brand *,.f-brand,.f-brand *{forced-color-adjust:none !important;color-scheme:dark !important;}
     .nav-brand img,.f-brand img,.brand-logo-img{mix-blend-mode:normal !important;opacity:1 !important;isolation:isolate;}
     .brand-logo-img{forced-color-adjust:none !important;color-scheme:dark !important;}
-    html.dark .nav-brand img,html[data-theme="dark"] .nav-brand img,body.dark .nav-brand img,
-    html.dark .f-brand img,html[data-theme="dark"] .f-brand img,body.dark .f-brand img{filter:drop-shadow(0 0 6px rgba(184,115,51,0.3)) !important;opacity:1 !important;}
+    /* dark-mode filter override for logo removed — see bulletproof rule at end of file */
     .nav-right{display:flex;align-items:center;gap:14px;}
     .nav-back{font-size:.65rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
       color:var(--gold);border:1px solid rgba(184,115,51,0.35);padding:7px 16px;border-radius:2px;transition:var(--t);}
@@ -199,7 +198,8 @@
     .book-success h4{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--gold-light);margin-bottom:8px;}
     .book-success p{font-size:.8rem;color:var(--muted);line-height:1.7;}
 
-    .quick-contact{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .quick-contact{margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+    @media(max-width:520px){ .quick-contact{grid-template-columns:1fr 1fr;} }
     .q-chip{background:rgba(255,255,255,0.02);border:1px solid rgba(184,115,51,0.12);
       border-radius:3px;padding:14px;text-align:center;transition:var(--t);cursor:pointer;}
     .q-chip:hover{border-color:var(--gold);}
@@ -288,12 +288,31 @@ img { max-width: 100%; height: auto; }
 .avail-b1        { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
 .avail-g         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
 .avail-3         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
-.avail-4         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
 .avail-5         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
-.avail-6         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
-.avail-7         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
 .avail-9-indoor  { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
-.avail-9-outdoor { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
+
+/* Floors whose availability graphics have a different aspect ratio:
+   switch to contain + auto height so the 80/160/400 m² cards never get cropped. */
+.avail-4,
+.avail-6,
+.avail-7,
+.avail-9-outdoor {
+  height: auto;
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  object-position: center center;
+  background: #0d0d0d;
+}
+@media (max-width: 1024px){
+  .avail-4, .avail-6, .avail-7, .avail-9-outdoor { max-height: 420px; }
+}
+@media (max-width: 768px){
+  .avail-4, .avail-6, .avail-7, .avail-9-outdoor { max-height: 320px; }
+}
+@media (max-width: 480px){
+  .avail-4, .avail-6, .avail-7, .avail-9-outdoor { max-height: 240px; }
+}
 
 /* =========================================================
    RTL (Arabic) minimal text-alignment fixes — do not affect EN
@@ -371,4 +390,25 @@ html[dir="rtl"] .overview-desc { text-align: right; }
 .fg-g-1 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
 .fg-g-2 { height: 220px; max-width: 100%; object-fit: cover; object-position: center 60%; }
 
-.brand-logo-img, img[src*="logo/logo.png"] { filter: none !important; -webkit-filter: none !important; mix-blend-mode: normal !important; }
+/* ── Logo: always render in original colors, defeat any dark-mode / auto-darken / extension filters ── */
+html img.brand-logo-img, body img.brand-logo-img,
+html img[src*="logo/logo.png"], body img[src*="logo/logo.png"],
+html.dark img.brand-logo-img, html[data-theme="dark"] img.brand-logo-img, body.dark img.brand-logo-img,
+html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo.png"], body.dark img[src*="logo/logo.png"] {
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  forced-color-adjust: none !important;
+  color-scheme: dark !important;
+  background: transparent !important;
+  isolation: isolate;
+}
+@media (prefers-color-scheme: light), (prefers-color-scheme: dark) {
+  .brand-logo-img, img[src*="logo/logo.png"] {
+    filter: none !important;
+    -webkit-filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+}

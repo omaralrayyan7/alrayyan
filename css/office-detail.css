@@ -121,7 +121,8 @@
     .book-success p{font-size:.8rem;color:var(--muted);line-height:1.7;}
 
     /* QUICK CONTACT */
-    .quick-contact{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .quick-contact{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+    @media(max-width:520px){ .quick-contact{grid-template-columns:1fr 1fr;} }
     .q-chip{background:rgba(255,255,255,0.02);border:1px solid rgba(184,115,51,0.12);border-radius:3px;padding:14px;text-align:center;transition:var(--t);cursor:pointer;}
     .q-chip:hover{border-color:var(--gold);}
     .q-chip .ico{font-size:1.1rem;margin-bottom:5px;}
@@ -190,4 +191,25 @@ img { max-width: 100%; height: auto; }
   img { display: block !important; }
 }
 
-.brand-logo-img, img[src*="logo/logo.png"] { filter: none !important; -webkit-filter: none !important; mix-blend-mode: normal !important; }
+/* ── Logo: always render in original colors, defeat any dark-mode / auto-darken / extension filters ── */
+html img.brand-logo-img, body img.brand-logo-img,
+html img[src*="logo/logo.png"], body img[src*="logo/logo.png"],
+html.dark img.brand-logo-img, html[data-theme="dark"] img.brand-logo-img, body.dark img.brand-logo-img,
+html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo.png"], body.dark img[src*="logo/logo.png"] {
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  forced-color-adjust: none !important;
+  color-scheme: dark !important;
+  background: transparent !important;
+  isolation: isolate;
+}
+@media (prefers-color-scheme: light), (prefers-color-scheme: dark) {
+  .brand-logo-img, img[src*="logo/logo.png"] {
+    filter: none !important;
+    -webkit-filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+}

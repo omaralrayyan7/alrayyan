@@ -101,6 +101,15 @@
       cursor: pointer; transition: var(--t);
     }
     .btn-outline-o:hover { background: rgba(138,170,74,0.08); }
+    .btn-ig-l {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+      color: #fff; font-family: 'Nunito Sans', sans-serif;
+      font-size: 0.73rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      padding: 14px 36px; border: none; border-radius: 2px; cursor: pointer;
+      transition: transform var(--t), box-shadow var(--t);
+    }
+    .btn-ig-l:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(220,39,67,0.35); }
     .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
 
     /* SECTION COMMONS */
@@ -279,4 +288,25 @@ img { max-width: 100%; height: auto; }
 .resizable-img { resize: vertical; overflow: hidden; min-height: 200px; max-height: 900px; width: 100%; }
 .resizable-img img { width:100%; height:100%; object-fit:cover; }
 
-.brand-logo-img, img[src*="logo/logo.png"] { filter: none !important; -webkit-filter: none !important; mix-blend-mode: normal !important; }
+/* ── Logo: always render in original colors, defeat any dark-mode / auto-darken / extension filters ── */
+html img.brand-logo-img, body img.brand-logo-img,
+html img[src*="logo/logo.png"], body img[src*="logo/logo.png"],
+html.dark img.brand-logo-img, html[data-theme="dark"] img.brand-logo-img, body.dark img.brand-logo-img,
+html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo.png"], body.dark img[src*="logo/logo.png"] {
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  forced-color-adjust: none !important;
+  color-scheme: dark !important;
+  background: transparent !important;
+  isolation: isolate;
+}
+@media (prefers-color-scheme: light), (prefers-color-scheme: dark) {
+  .brand-logo-img, img[src*="logo/logo.png"] {
+    filter: none !important;
+    -webkit-filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+}

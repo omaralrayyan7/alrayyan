@@ -65,6 +65,8 @@
     .btn-teal:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(63,168,154,0.35);}
     .btn-outline-t{background:transparent;color:var(--teal);font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:12px 32px;border:1px solid rgba(63,168,154,0.4);border-radius:1px;cursor:pointer;transition:var(--t);}
     .btn-outline-t:hover{background:rgba(63,168,154,0.08);}
+    .btn-ig-a{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px 32px;border:none;border-radius:1px;cursor:pointer;transition:transform var(--t),box-shadow var(--t);}
+    .btn-ig-a:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(220,39,67,0.35);}
     .hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
 
     /* SECTIONS */
@@ -239,4 +241,25 @@ img { max-width: 100%; height: auto; }
   img { display: block !important; }
 }
 
-.brand-logo-img, img[src*="logo/logo.png"] { filter: none !important; -webkit-filter: none !important; mix-blend-mode: normal !important; }
+/* ── Logo: always render in original colors, defeat any dark-mode / auto-darken / extension filters ── */
+html img.brand-logo-img, body img.brand-logo-img,
+html img[src*="logo/logo.png"], body img[src*="logo/logo.png"],
+html.dark img.brand-logo-img, html[data-theme="dark"] img.brand-logo-img, body.dark img.brand-logo-img,
+html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo.png"], body.dark img[src*="logo/logo.png"] {
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  forced-color-adjust: none !important;
+  color-scheme: dark !important;
+  background: transparent !important;
+  isolation: isolate;
+}
+@media (prefers-color-scheme: light), (prefers-color-scheme: dark) {
+  .brand-logo-img, img[src*="logo/logo.png"] {
+    filter: none !important;
+    -webkit-filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+}

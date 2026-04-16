@@ -156,6 +156,13 @@
           <a href="tel:+962790550787">+962 79 055 0787</a>
         </div>
         <div class="q-chip">
+          <div class="ico">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="url(#igGrad1)" aria-hidden="true"><defs><linearGradient id="igGrad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f09433"/><stop offset="50%" stop-color="#dc2743"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs><path d="M12 2.2c3.2 0 3.584.012 4.85.07 1.17.054 1.805.248 2.227.413.56.217.96.477 1.38.896.42.42.68.82.896 1.38.165.422.36 1.057.413 2.227.058 1.266.07 1.65.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.248 1.805-.413 2.227a3.71 3.71 0 01-.896 1.38 3.71 3.71 0 01-1.38.896c-.422.165-1.057.36-2.227.413-1.266.058-1.65.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.248-2.227-.413a3.71 3.71 0 01-1.38-.896 3.71 3.71 0 01-.896-1.38c-.165-.422-.36-1.057-.413-2.227C2.212 15.584 2.2 15.2 2.2 12s.012-3.584.07-4.85c.054-1.17.248-1.805.413-2.227.217-.56.477-.96.896-1.38.42-.42.82-.68 1.38-.896.422-.165 1.057-.36 2.227-.413C8.416 2.212 8.8 2.2 12 2.2zm0-2.2C8.736 0 8.332.014 7.053.072 5.775.13 4.902.333 4.14.63a5.92 5.92 0 00-2.14 1.393A5.92 5.92 0 00.63 4.14c-.297.763-.5 1.635-.558 2.913C.014 8.332 0 8.736 0 12s.014 3.668.072 4.947c.058 1.278.261 2.15.558 2.913a5.92 5.92 0 001.393 2.14 5.92 5.92 0 002.14 1.393c.763.297 1.635.5 2.913.558C8.332 23.986 8.736 24 12 24s3.668-.014 4.947-.072c1.278-.058 2.15-.261 2.913-.558a5.92 5.92 0 002.14-1.393 5.92 5.92 0 001.393-2.14c.297-.763.5-1.635.558-2.913C23.986 15.668 24 15.264 24 12s-.014-3.668-.072-4.947c-.058-1.278-.261-2.15-.558-2.913a5.92 5.92 0 00-1.393-2.14A5.92 5.92 0 0019.86.63c-.763-.297-1.635-.5-2.913-.558C15.668.014 15.264 0 12 0zm0 5.838A6.162 6.162 0 105.838 12 6.162 6.162 0 0012 5.838zM12 16a4 4 0 114-4 4 4 0 01-4 4zm6.406-11.845a1.44 1.44 0 101.44 1.44 1.44 1.44 0 00-1.44-1.44z"/></svg>
+          </div>
+          <p data-i18n="qcIG">Instagram</p>
+          <a href="https://www.instagram.com/alrayyan.tower/" target="_blank" rel="noopener" data-i18n="qcFollow">Follow</a>
+        </div>
+        <div class="q-chip">
           <div class="ico">💬</div>
           <p data-i18n="qcWA">WhatsApp</p>
           <a href="https://wa.me/962790550787" target="_blank" data-i18n="qcChat">Chat Now</a>
@@ -627,12 +634,14 @@ const floorImageConfig = {
     <h2 class="sec-title"><span data-i18n="secGalTitleA">Floor</span> <em data-i18n="secGalTitleB">Images</em></h2>
     <div class="gold-line"></div>`;
 
+  const fileName = (i) => `img-${i}-floor-${floorId}.${imgExt}`;
+
   if (cfg.mains > 0) {
     // Main + thumbnail layout
     const mainCols = cfg.mains === 2 ? 'cols-2' : 'cols-3';
     html += `<div class="fg-mains ${mainCols}" id="fg-mains">`;
     for (let i = 1; i <= cfg.mains; i++) {
-      html += `<img src="${basePath}img-${i}.${imgExt}" alt="Floor ${floorId} image ${i}" id="fg-main-${i}" class="fg-${floorId}-${i}"/>`;
+      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" id="fg-main-${i}" class="fg-${floorId}-${i}"/>`;
     }
     html += `</div>`;
 
@@ -640,7 +649,7 @@ const floorImageConfig = {
       html += `<div class="fg-thumbs-wrap"><div class="fg-thumbs" id="fg-thumbs">`;
       for (let i = 1; i <= cfg.real; i++) {
         const isMain = i <= cfg.mains;
-        html += `<img src="${basePath}img-${i}.${imgExt}" alt="Thumbnail ${i}" class="fg-${floorId}-${i}-thumb ${isMain ? 'active' : ''}" onclick="swapMainImage(this, ${i})"/>`;
+        html += `<img src="${basePath}${fileName(i)}" alt="Thumbnail ${i}" class="fg-${floorId}-${i}-thumb ${isMain ? 'active' : ''}" onclick="swapMainImage(this, ${i})"/>`;
       }
       html += `</div>
         <div class="fg-arrows">
@@ -653,7 +662,7 @@ const floorImageConfig = {
     const gridCols = cfg.real === 2 ? 'cols-2' : 'cols-3';
     html += `<div class="fg-simple ${gridCols}">`;
     for (let i = 1; i <= cfg.real; i++) {
-      html += `<img src="${basePath}img-${i}.${imgExt}" alt="Floor ${floorId} image ${i}" class="fg-${floorId}-${i}"/>`;
+      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" class="fg-${floorId}-${i}"/>`;
     }
     html += `</div>`;
   }
@@ -670,7 +679,7 @@ function swapMainImage(thumbEl, imgIndex) {
   const mainImg = document.getElementById('fg-main-1');
   if (mainImg) {
     const basePath = 'images/floors/floor-' + floorId + '/real/';
-    mainImg.src = basePath + 'img-' + imgIndex + '.' + imgExt;
+    mainImg.src = basePath + 'img-' + imgIndex + '-floor-' + floorId + '.' + imgExt;
   }
   // update active states
   document.querySelectorAll('#fg-thumbs img').forEach(t => t.classList.remove('active'));

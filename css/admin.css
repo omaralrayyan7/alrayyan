@@ -210,4 +210,120 @@ img { max-width: 100%; height: auto; }
   img { display: block !important; }
 }
 
-.brand-logo-img, img[src*="logo/logo.png"] { filter: none !important; -webkit-filter: none !important; mix-blend-mode: normal !important; }
+/* ── Logo: always render in original colors, defeat any dark-mode / auto-darken / extension filters ── */
+html img.brand-logo-img, body img.brand-logo-img,
+html img[src*="logo/logo.png"], body img[src*="logo/logo.png"],
+html.dark img.brand-logo-img, html[data-theme="dark"] img.brand-logo-img, body.dark img.brand-logo-img,
+html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo.png"], body.dark img[src*="logo/logo.png"] {
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  forced-color-adjust: none !important;
+  color-scheme: dark !important;
+  background: transparent !important;
+  isolation: isolate;
+}
+@media (prefers-color-scheme: light), (prefers-color-scheme: dark) {
+  .brand-logo-img, img[src*="logo/logo.png"] {
+    filter: none !important;
+    -webkit-filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ── Available Offices panel (admin) ─────────────────────────────────────── */
+.avail-admin-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+  gap:16px;
+}
+.avail-admin-card{
+  background:#181818;
+  border:1px solid rgba(212,175,55,.18);
+  border-radius:10px;
+  overflow:hidden;
+  transition:border-color .2s ease, transform .2s ease;
+}
+.avail-admin-card:hover{ border-color:rgba(212,175,55,.4); }
+.avail-admin-head{
+  padding:14px 16px;
+  background:linear-gradient(180deg, rgba(212,175,55,.08), rgba(212,175,55,.02));
+  border-bottom:1px solid rgba(212,175,55,.12);
+}
+.avail-admin-name{
+  font-family:'Cormorant Garamond', serif;
+  font-size:1.25rem;
+  font-weight:600;
+  color:#d4af37;
+  letter-spacing:.5px;
+}
+.avail-admin-sub{
+  font-size:.68rem;
+  color:var(--muted,#888);
+  margin-top:2px;
+  letter-spacing:.3px;
+}
+.avail-admin-body{ padding:10px 12px 14px; }
+.avail-toggle-row{
+  display:grid;
+  grid-template-columns: 1fr auto auto;
+  align-items:center;
+  gap:10px;
+  padding:9px 4px;
+  border-bottom:1px dashed rgba(212,175,55,.08);
+  cursor:default;
+}
+.avail-toggle-row:last-child{ border-bottom:none; }
+.avail-toggle-lbl{
+  font-size:.78rem;
+  color:#e6e6e6;
+  font-weight:500;
+}
+.avail-toggle-state{
+  font-size:.62rem;
+  font-weight:700;
+  letter-spacing:.4px;
+  padding:3px 8px;
+  border-radius:20px;
+  white-space:nowrap;
+}
+.avail-toggle-state.on {
+  color:#4ade80;
+  background:rgba(74,222,128,.1);
+  border:1px solid rgba(74,222,128,.3);
+}
+.avail-toggle-state.off{
+  color:#ef4444;
+  background:rgba(239,68,68,.1);
+  border:1px solid rgba(239,68,68,.3);
+}
+.avail-switch{
+  position:relative;
+  display:inline-block;
+  width:40px;
+  height:22px;
+  background:#444;
+  border-radius:22px;
+  cursor:pointer;
+  transition:background .25s ease;
+  flex-shrink:0;
+}
+.avail-switch.on{ background:#4ade80; }
+.avail-switch-knob{
+  position:absolute;
+  top:2px; left:2px;
+  width:18px; height:18px;
+  background:#fff;
+  border-radius:50%;
+  transition:left .25s ease;
+  box-shadow:0 1px 3px rgba(0,0,0,.4);
+}
+.avail-switch.on .avail-switch-knob{ left:20px; }
+
+@media (max-width: 520px){
+  .avail-admin-grid{ grid-template-columns:1fr; }
+  .avail-toggle-row{ grid-template-columns: 1fr auto; }
+  .avail-toggle-state{ grid-column: 1 / -1; justify-self:start; }
+}
