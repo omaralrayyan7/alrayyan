@@ -549,12 +549,38 @@
     document.getElementById('f-date').min = today;
 
     // ── Booking Form ───────────────────────────────────────────────────────────
-    function submitBooking(e) {
+    async function submitBooking(e) {
       e.preventDefault();
       const ref = 'ALR-' + Date.now().toString(36).toUpperCase().slice(-6);
+      const fname = (document.getElementById('f-first').value||'').trim();
+      const lname = (document.getElementById('f-last').value||'').trim();
+      const email = (document.getElementById('f-email').value||'').trim();
+      const phone = (document.getElementById('f-phone').value||'').trim();
+      const date  = document.getElementById('f-date').value;
+      const time  = document.getElementById('f-time').value;
+      const purpose = document.getElementById('f-purpose').value;
+      const message = (document.getElementById('f-msg').value||'').trim();
+      const landId = (document.getElementById('form-land-id').value||'').trim();
+      const booking = {
+        ref,
+        visitor_name: (fname + ' ' + lname).trim(),
+        first_name: fname, last_name: lname,
+        email, phone,
+        preferred_date: date, preferred_time: time,
+        purpose, notes: message,
+        land_id: landId, kind: 'land',
+        source: 'land-detail', status: 'pending'
+      };
       document.getElementById('booking-ref').textContent = ref;
       document.getElementById('book-form').style.display = 'none';
       document.getElementById('book-success').style.display = 'block';
+      try {
+        if (window.ArData){
+          await ArData.addVisitor({ name: booking.visitor_name, phone, email, source: 'land_detail_booking' });
+          await ArData.addBooking(booking);
+          ArData.notifyWhatsApp(booking);
+        }
+      } catch(err){ console.error('[booking]', err); }
     }
 
     // ── Lightbox ───────────────────────────────────────────────────────────────
@@ -636,5 +662,11 @@
     })();
   </script>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/ar-data.js"></script>
+<script>if(window.ArData)ArData.init();</script>
 </body>
 </html>

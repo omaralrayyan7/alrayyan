@@ -901,12 +901,34 @@
       document.getElementById('bvOverlay').classList.remove('open');
       document.body.style.overflow = '';
     }
-    function submitBookVisit(e) {
+    async function submitBookVisit(e) {
       e.preventDefault();
+      const fname = (document.getElementById('bv-fname').value||'').trim();
+      const lname = (document.getElementById('bv-lname').value||'').trim();
+      const company = (document.getElementById('bv-company').value||'').trim();
+      const phone = (document.getElementById('bv-phone').value||'').trim();
+      const email = (document.getElementById('bv-email').value||'').trim();
+      const date  = document.getElementById('bv-date').value;
+      const time  = document.getElementById('bv-time').value;
+      const notes = (document.getElementById('bv-notes') ? document.getElementById('bv-notes').value : '').trim();
+      const office = document.getElementById('bv-office-select').value;
       const ref = 'ARG-' + Date.now().toString(36).toUpperCase().slice(-6);
+      const booking = {
+        ref, visitor_name: (fname + ' ' + lname).trim(),
+        first_name: fname, last_name: lname, company, phone, email,
+        preferred_date: date, preferred_time: time, notes,
+        office, floor_preference: office, source: 'index', status: 'pending'
+      };
       document.getElementById('bv-ref').textContent = ref;
       document.getElementById('bv-form-wrap').style.display = 'none';
       document.getElementById('bv-success').style.display = 'block';
+      try {
+        if (window.ArData){
+          await ArData.addVisitor({ name: booking.visitor_name, phone, email, company, source: 'index_book_visit' });
+          await ArData.addBooking(booking);
+          ArData.notifyWhatsApp(booking);
+        }
+      } catch(err){ console.error('[booking]', err); }
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeBookVisit(); } });
 
@@ -1167,11 +1189,10 @@
       if (saved === 'ar') setLang('ar');
     })();
 
-    // ── ADMIN SITE CONTENT OVERRIDE (from admin.html → localStorage ar_site_content) ──
-    (function applyAdminSiteContent(){
+    // ── ADMIN SITE CONTENT OVERRIDE (from Firestore site_content/main) ──
+    function applyAdminSiteContent(c){
+      if (!c) return;
       try {
-        const c = JSON.parse(localStorage.getItem('ar_site_content') || 'null');
-        if (!c) return;
         const lang = localStorage.getItem('al_lang') || 'en';
         const pick = (en, ar) => (lang === 'ar' ? (ar || en) : (en || ar));
 
@@ -1194,18 +1215,18 @@
           const addr = document.querySelector('.c-card:nth-child(1) p');
           if (addr) addr.textContent = c.address;
         }
+        document.body.classList.toggle('show-pricing', c.show_pricing === true);
       } catch(e) { console.warn('admin site content override skipped', e); }
+    }
+    (function hookSiteContent(){
+      const wire = () => ArData.subscribe('site_content', applyAdminSiteContent);
+      if (window.ArData){ ArData.init(); wire(); }
+      else document.addEventListener('DOMContentLoaded', () => { if (window.ArData){ ArData.init(); wire(); } });
     })();
 
-    // ── ADMIN PRICING VISIBILITY ──
-    if (localStorage.getItem('ar_show_pricing') === 'true') {
-      document.body.classList.add('show-pricing');
-    }
-
-    // ── ADMIN AVAILABILITY SYNC ───────────────────────────────────────────
-    // Reads `ar_availability` from localStorage (set by the admin panel) and
-    // updates every unit-chip + book button to reflect current availability.
-    // Green ✓ = available, red ✗ = not available.
+    // ── AVAILABILITY SYNC (Firestore settings/availability) ────────────────
+    // Reads live availability from ArData cache and updates every unit-chip +
+    // book button. Green ✓ = available, red ✗ = not available.
     (function(){
       const AVAIL_DEFAULTS = {
         'b1_1000':true,
@@ -1222,10 +1243,11 @@
         '9-indoor_100':true
       };
       function loadAvail(){
-        try {
-          const raw = localStorage.getItem('ar_availability');
-          return raw ? {...AVAIL_DEFAULTS, ...JSON.parse(raw)} : {...AVAIL_DEFAULTS};
-        } catch(e){ return {...AVAIL_DEFAULTS}; }
+        if (window.ArData){
+          const live = ArData.get.availability() || {};
+          if (Object.keys(live).length) return {...AVAIL_DEFAULTS, ...live};
+        }
+        return {...AVAIL_DEFAULTS};
       }
       function setChipMark(chip, on){
         // Cache base label (minus any stray ✓/✗ from a previous render) once,
@@ -1278,7 +1300,10 @@
       // ── Pricing sync (admin Pricing sub-tab → public office cards) ──
       function applyPricing(){
         let data = null;
-        try { data = JSON.parse(localStorage.getItem('ar_pricing') || 'null'); } catch(e){ data = null; }
+        if (window.ArData){
+          const live = ArData.get.pricing() || {};
+          if (Object.keys(live).length) data = live;
+        }
         if (!data) return;
         document.querySelectorAll('#offices .office-card').forEach(card => {
           const h3 = card.querySelector('h3');
@@ -1296,11 +1321,25 @@
         });
       }
       applyPricing();
-      // Re-apply when admin updates availability in another tab/window.
-      window.addEventListener('storage', (e)=>{
-        if (e.key === 'ar_availability' || e.key === 'ar_availability_bump') applyAvailability();
-        if (e.key === 'ar_pricing'      || e.key === 'ar_pricing_bump')      applyPricing();
-      });
+      // Live Firestore subscriptions (update immediately when admin toggles).
+      if (window.ArData){
+        const hook = () => {
+          if (window.ArData){
+            ArData.subscribe('availability', () => applyAvailability());
+            ArData.subscribe('pricing',      () => applyPricing());
+          }
+        };
+        if (ArData.init) ArData.init();
+        hook();
+      } else {
+        document.addEventListener('DOMContentLoaded', () => {
+          if (window.ArData){
+            ArData.init();
+            ArData.subscribe('availability', () => applyAvailability());
+            ArData.subscribe('pricing',      () => applyPricing());
+          }
+        });
+      }
       // i18n wipes text content of [data-i18n] elements — re-apply after each
       // language switch so the ✓ / ✗ markers and book/unavailable buttons stay correct.
       if (typeof window.setLang === 'function'){
@@ -1315,5 +1354,11 @@
       }
     })();
   </script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/ar-data.js"></script>
+<script>if(window.ArData)ArData.init();</script>
 </body>
 </html>

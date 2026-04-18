@@ -689,7 +689,32 @@ document.addEventListener('DOMContentLoaded', ()=>{
   }
 });
 
-// ── DATA (localStorage) ───────────────────────────────────────────────────────
+// ── DATA (Firestore via admin_state/{key} docs) ──────────────────────────────
+// Admin-side blobs live at admin_state/{offices|floors|bookings|biz|
+// availability|pricing|floor_details|lands|products|site_content|show_pricing}.
+// Each doc is { value: <blob>, updated_at }. Cached into ADMIN_FS on init so
+// subsequent renders can read synchronously.
+const ADMIN_FS = {};
+async function adminFsLoadAll(){
+  if (!window.db) return;
+  const keys = ['offices','floors','bookings','biz','availability','pricing','floor_details','lands','products','site_content','show_pricing'];
+  await Promise.all(keys.map(async k => {
+    try {
+      const snap = await window.db.doc('admin_state/' + k).get();
+      if (snap.exists){
+        const d = snap.data();
+        ADMIN_FS[k] = (d && 'value' in d) ? d.value : d;
+      }
+    } catch(e){ console.error('[admin load]', k, e); }
+  }));
+}
+function adminFsSave(key, value){
+  ADMIN_FS[key] = value;
+  if (!window.db) return Promise.resolve();
+  return window.db.doc('admin_state/' + key)
+    .set({ value, updated_at: firebase.firestore.FieldValue.serverTimestamp() });
+}
+
 function loadOffices(){
   const def = [
     {id:1,name:'Executive Offices',     price:'From JOD 3,500 / month',avail:8, status:'available',desc:'Private, fully furnished executive offices with dedicated reception, high-speed internet, and premium finishes.',size:'25–80 m²'},
@@ -699,9 +724,9 @@ function loadOffices(){
     {id:5,name:'Full Floor Offices',   price:'Custom Pricing',        avail:2, status:'low',      desc:'Entire floors available for enterprise clients requiring expansive, customisable corporate headquarters.',size:'800–1,400 m²'},
     {id:6,name:'Smart Offices',        price:'From JOD 5,000 / month',avail:4, status:'low',      desc:'Tech-integrated spaces with IoT controls, automated lighting, climate management and smart security.',size:'30–120 m²'},
   ];
-  return JSON.parse(localStorage.getItem('ar_offices')||JSON.stringify(def));
+  return ADMIN_FS.offices || def;
 }
-function saveOffices(data){ localStorage.setItem('ar_offices',JSON.stringify(data)); }
+function saveOffices(data){ adminFsSave('offices', data); }
 
 function loadFloors(){
   const def = [
@@ -724,12 +749,12 @@ function loadFloors(){
     {id:17,name:'9th Floor Outdoor',  type:'Exception',   size:'300 m²',   price:'Custom',       status:'available'},
     {id:18,name:'9th Floor Indoor',   type:'Exception',   size:'100 m²',   price:'Custom',       status:'available'},
   ];
-  return JSON.parse(localStorage.getItem('ar_floors')||JSON.stringify(def));
+  return ADMIN_FS.floors || def;
 }
-function saveFloors(data){ localStorage.setItem('ar_floors',JSON.stringify(data)); }
+function saveFloors(data){ adminFsSave('floors', data); }
 
-function loadBookings(){ return JSON.parse(localStorage.getItem('ar_bookings')||'[]'); }
-function saveBookings(data){ localStorage.setItem('ar_bookings',JSON.stringify(data)); }
+function loadBookings(){ return ADMIN_FS.bookings || []; }
+function saveBookings(data){ adminFsSave('bookings', data); }
 
 function loadBiz(){
   const def=[
@@ -737,13 +762,13 @@ function loadBiz(){
     {id:2,name:'Alrayyan Arts',   url:'arts.html',   desc:'Gallery and creative studio celebrating Arab and global contemporary art.',status:'active'},
     {id:3,name:'Alrayyan Lands',  url:'land.html',   desc:'Premium land plots across Amman\'s most sought-after districts.',status:'active'},
   ];
-  return JSON.parse(localStorage.getItem('ar_biz')||JSON.stringify(def));
+  return ADMIN_FS.biz || def;
 }
-function saveBiz(data){ localStorage.setItem('ar_biz',JSON.stringify(data)); }
+function saveBiz(data){ adminFsSave('biz', data); }
 
 // ── AVAILABILITY (per-floor / per-size toggles) ─────────────────────────────
-// Canonical list of floor slots. Keys are used in localStorage (`ar_availability`)
-// and by the public site to resolve each unit-chip / book button.
+// Canonical list of floor slots. Keys are used in Firestore (admin_state/availability
+// and settings/availability) and by the public site to resolve each unit-chip.
 const AVAIL_FLOORS = [
   { id:'b1',        label:'B1 Floor',   sub:'Underground · Exception', sizes:[{k:'1000', label:'1,000 m² Full'}] },
   { id:'g',         label:'G Floor',    sub:'Ground · Shops',           sizes:[{k:'shop1', label:'3×3 Shop'},{k:'shop2', label:'3×3 Shop'},{k:'shop3', label:'3×3 Shop'}] },
@@ -773,13 +798,15 @@ const AVAIL_DEFAULTS = {
   '9-indoor_100':true
 };
 function loadAvail(){
-  try {
-    const raw = localStorage.getItem('ar_availability');
-    if (!raw) return {...AVAIL_DEFAULTS};
-    return {...AVAIL_DEFAULTS, ...JSON.parse(raw)};
-  } catch(e){ return {...AVAIL_DEFAULTS}; }
+  const raw = ADMIN_FS.availability;
+  return raw ? { ...AVAIL_DEFAULTS, ...raw } : { ...AVAIL_DEFAULTS };
 }
-function saveAvailRaw(state){ localStorage.setItem('ar_availability', JSON.stringify(state)); }
+function saveAvailRaw(state){
+  ADMIN_FS.availability = state;
+  adminFsSave('availability', state);
+  // Also publish to settings/availability so public site reacts in real time.
+  if (window.ArData) ArData.setAvailability(state);
+}
 
 function renderAvailability(){
   const grid = document.getElementById('availability-grid');
@@ -822,8 +849,8 @@ function availFlip(key, el){
   try { renderDashboard(); } catch(e){}
 }
 function availSave(){
-  // Saving is instant on flip; this button just forces a publish event.
-  try { localStorage.setItem('ar_availability_bump', String(Date.now())); } catch(e){}
+  // Saving is instant on flip; republish to be explicit.
+  if (window.ArData) ArData.setAvailability(loadAvail());
   showToast('Availability saved. Public site updated.');
 }
 function availReset(){
@@ -835,7 +862,8 @@ function availReset(){
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-function initAdmin(){
+async function initAdmin(){
+  await adminFsLoadAll();
   renderAvailability();   // must run before renderDashboard so counts use live state
   renderDashboard();
   renderOffices();
@@ -883,13 +911,14 @@ const OFFICE_SOLUTION_TYPES = [
 function loadPricing(){
   const def = {};
   OFFICE_SOLUTION_TYPES.forEach(t => def[t.key] = { price: t.defaultPrice, show: true });
-  try {
-    const raw = localStorage.getItem('ar_pricing');
-    if (!raw) return def;
-    return { ...def, ...JSON.parse(raw) };
-  } catch(e){ return def; }
+  const raw = ADMIN_FS.pricing;
+  return raw ? { ...def, ...raw } : def;
 }
-function savePricingState(obj){ localStorage.setItem('ar_pricing', JSON.stringify(obj)); }
+function savePricingState(obj){
+  ADMIN_FS.pricing = obj;
+  adminFsSave('pricing', obj);
+  if (window.ArData) ArData.setPricing(obj);
+}
 
 // Count available units by solution type from live toggle state
 function countAvailByType(){
@@ -960,7 +989,6 @@ function savePricing(){
     data[key].show = cb.checked;
   });
   savePricingState(data);
-  try { localStorage.setItem('ar_pricing_bump', String(Date.now())); } catch(e){}
   showToast('Pricing saved. Public site will reflect visible prices.','success');
 }
 
@@ -1250,9 +1278,9 @@ function loadFloorDetails(){
     '9-outdoor': {key:'9-outdoor', titleEn:'9th Floor – Outdoor Space',titleAr:'الطابق التاسع – مساحة خارجية',size:'300 m²', overviewEn:'Unique 300 m² outdoor space on the 9th floor — perfect for rooftop events, dining venues, or open-air offices.', overviewAr:'مساحة خارجية فريدة بمساحة 300 م² في الطابق التاسع — مثالية لفعاليات السطح أو المطاعم أو المكاتب المفتوحة.', amenitiesEn:['Open rooftop terrace','Panoramic 360° views','Event-ready layout','Utility connections','Private access'], amenitiesAr:['تراس سطح مفتوح','إطلالات بانورامية 360°','تصميم جاهز للفعاليات','توصيلات مرافق','وصول خاص'], price:'Custom', status:'available'},
     '9-indoor':  {key:'9-indoor',  titleEn:'9th Floor – Indoor Space',titleAr:'الطابق التاسع – مساحة داخلية',size:'100 m²',  overviewEn:'Intimate 100 m² indoor space on the 9th floor — ideal for executive lounges, private offices, or boutique studios.', overviewAr:'مساحة داخلية مميزة بمساحة 100 م² في الطابق التاسع — مثالية لصالات تنفيذية أو مكاتب خاصة أو استوديوهات فاخرة.', amenitiesEn:['Premium finishes','Panoramic windows','Private entrance','Climate control','High-speed internet'], amenitiesAr:['تشطيبات راقية','نوافذ بانورامية','مدخل خاص','تحكم بالمناخ','إنترنت فائق السرعة'], price:'Custom', status:'available'},
   };
-  return JSON.parse(localStorage.getItem('ar_floor_details')||JSON.stringify(def));
+  return ADMIN_FS.floor_details || def;
 }
-function saveFloorDetailsData(data){ localStorage.setItem('ar_floor_details',JSON.stringify(data)); }
+function saveFloorDetailsData(data){ adminFsSave('floor_details', data); }
 
 function renderFloorDetails(){
   const data = loadFloorDetails();
@@ -1327,9 +1355,9 @@ function loadLands(){
     {id:2,title:'Dabouq Hillside Estate',location:'Dabouq, Amman',size:'2,500 m²',price:'JOD 6,200,000',desc:'Expansive hillside estate with sweeping views, ideal for luxury villa development.',image:'',status:'available'},
     {id:3,title:'Sweifieh Commercial Plot',location:'Sweifieh, Amman',size:'850 m²',price:'JOD 3,100,000',desc:'High-visibility commercial plot on a main boulevard in Sweifieh.',image:'',status:'reserved'},
   ];
-  return JSON.parse(localStorage.getItem('ar_lands')||JSON.stringify(def));
+  return ADMIN_FS.lands || def;
 }
-function saveLands(data){ localStorage.setItem('ar_lands',JSON.stringify(data)); }
+function saveLands(data){ adminFsSave('lands', data); }
 function renderLands(){
   const lands = loadLands();
   document.getElementById('lands-tbody').innerHTML = lands.map((l,i)=>`
@@ -1404,9 +1432,9 @@ function loadProducts(){
     {id:3,name:'Leather Clutch',category:'Accessories',price:'JOD 980',stock:15,desc:'Genuine leather clutch with hand-stitched details.',image:''},
     {id:4,name:'Pearl Drop Earrings',category:'Jewelry',price:'JOD 1,250',stock:20,desc:'South Sea pearl drop earrings set in 18K gold.',image:''},
   ];
-  return JSON.parse(localStorage.getItem('ar_products')||JSON.stringify(def));
+  return ADMIN_FS.products || def;
 }
-function saveProducts(data){ localStorage.setItem('ar_products',JSON.stringify(data)); }
+function saveProducts(data){ adminFsSave('products', data); }
 function renderProducts(){
   const products = loadProducts();
   document.getElementById('products-tbody').innerHTML = products.map((p,i)=>`
@@ -1484,7 +1512,7 @@ function loadSiteContent(){
     email:'info@alrayyan-group.com',
     address:'Alrayyan Tower, Queen Rania Street, Amman',
   };
-  return JSON.parse(localStorage.getItem('ar_site_content')||JSON.stringify(def));
+  return ADMIN_FS.site_content || def;
 }
 function renderSiteContent(){
   const c = loadSiteContent();
@@ -1499,10 +1527,10 @@ function renderSiteContent(){
   document.getElementById('sc-phone').value = c.phone||'';
   document.getElementById('sc-email').value = c.email||'';
   document.getElementById('sc-address').value = c.address||'';
-  document.getElementById('sc-show-pricing').checked = localStorage.getItem('ar_show_pricing') === 'true';
+  document.getElementById('sc-show-pricing').checked = !!ADMIN_FS.show_pricing;
 }
 function togglePricingVisibility(show){
-  localStorage.setItem('ar_show_pricing', show ? 'true' : 'false');
+  adminFsSave('show_pricing', !!show);
   showToast(show ? 'Pricing is now visible on office cards' : 'Pricing is now hidden from office cards', 'success');
 }
 function saveSiteContent(){
@@ -1519,7 +1547,9 @@ function saveSiteContent(){
     email: document.getElementById('sc-email').value,
     address: document.getElementById('sc-address').value,
   };
-  localStorage.setItem('ar_site_content',JSON.stringify(data));
+  adminFsSave('site_content', data);
+  // Also publish to shared site_content/main so public pages read it live.
+  if (window.ArData) ArData.setSiteContent(data);
   showToast('Site content saved','success');
 }
 
@@ -1538,8 +1568,14 @@ document.addEventListener('keydown',e=>{
   }
 });
 
-// Init if already logged in
-if(sessionStorage.getItem('arAdminAuth')==='1'){ initAdmin(); }
+// Init-if-authed happens inside the DOMContentLoaded handler above, after
+// Firebase has finished loading — don't double-init here.
 </script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/ar-data.js"></script>
+<script>if(window.ArData)ArData.init();</script>
 </body>
 </html>

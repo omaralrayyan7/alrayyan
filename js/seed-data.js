@@ -162,6 +162,12 @@
     {id:'pearl-earrings', name:'Pearl Drop Earrings', category:'Jewelry',    price:'JOD 1,250', stock:20, desc:'South Sea pearl drop earrings set in 18K gold.',                 image:''}
   ];
 
+  // ── Admins (client-side auth reference — real auth should be server-side) ──
+  const ADMINS = [
+    { id:'omar', email:'omaralrayyan7@gmail.com', name:'Omar Alrayyan', role:'owner',
+      passHash:'8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414' }
+  ];
+
   async function run(log){
     const say = log || console.log;
     const batch = [];
@@ -206,8 +212,11 @@
     say('Seeding products…');
     for (const p of PRODUCTS){ await db.collection('products').doc(p.id).set(p); }
 
+    say('Seeding admins…');
+    for (const a of ADMINS){ await db.collection('admins').doc(a.id).set(a); }
+
     say('✓ Seed complete.');
   }
 
-  window.ArSeed = { run, AVAILABILITY, PRICING, SITE_CONTENT, FLOORS, FLOOR_UNITS, FLOOR_DETAILS, OFFICES, BUSINESSES, LANDS, PRODUCTS };
+  window.ArSeed = { run, AVAILABILITY, PRICING, SITE_CONTENT, FLOORS, FLOOR_UNITS, FLOOR_DETAILS, OFFICES, BUSINESSES, LANDS, PRODUCTS, ADMINS };
 })();

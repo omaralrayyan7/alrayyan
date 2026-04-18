@@ -119,20 +119,24 @@
           <div class="bf-row">
             <div class="bf-group">
               <label class="bf-label" data-i18n="lblFname">First Name *</label>
-              <input class="bf-input" type="text" placeholder="Ahmad" required/>
+              <input class="bf-input" type="text" id="bf-fname" placeholder="Ahmad" required/>
             </div>
             <div class="bf-group">
               <label class="bf-label" data-i18n="lblLname">Last Name *</label>
-              <input class="bf-input" type="text" placeholder="Al-Hassan" required/>
+              <input class="bf-input" type="text" id="bf-lname" placeholder="Al-Hassan" required/>
             </div>
           </div>
           <div class="bf-group">
             <label class="bf-label" data-i18n="lblCompany">Company</label>
-            <input class="bf-input" type="text" placeholder="Your company"/>
+            <input class="bf-input" type="text" id="bf-company" placeholder="Your company"/>
           </div>
           <div class="bf-group">
             <label class="bf-label" data-i18n="lblPhone">Phone / WhatsApp *</label>
-            <input class="bf-input" type="tel" placeholder="+962 7X XXX XXXX" required/>
+            <input class="bf-input" type="tel" id="bf-phone" placeholder="+962 7X XXX XXXX" required/>
+          </div>
+          <div class="bf-group">
+            <label class="bf-label" data-i18n="lblEmail">Email</label>
+            <input class="bf-input" type="email" id="bf-email" placeholder="your@email.com"/>
           </div>
           <div class="bf-row">
             <div class="bf-group">
@@ -447,30 +451,33 @@ const FLOORS = {
   }
 };
 
-// ── ADMIN OVERRIDE: merge edits from admin panel (localStorage ar_floor_details) ──
-try {
-  const adminFd = JSON.parse(localStorage.getItem('ar_floor_details') || 'null');
-  if (adminFd && typeof adminFd === 'object') {
-    Object.keys(adminFd).forEach(k => {
-      const a = adminFd[k];
-      const base = FLOORS[k] || {
-        name:{en:'',ar:''}, subtitle:{en:'',ar:''}, size:'', sizeLbl:{en:'',ar:''},
-        description:{en:'',ar:''}, specs:[], amenities:{en:[],ar:[]}
-      };
-      FLOORS[k] = {
-        ...base,
-        name: { en: a.titleEn || base.name.en, ar: a.titleAr || base.name.ar },
-        size: a.size || base.size,
-        sizeLbl: { en: a.size || base.sizeLbl.en, ar: a.size || base.sizeLbl.ar },
-        description: { en: a.overviewEn || base.description.en, ar: a.overviewAr || base.description.ar },
-        amenities: {
-          en: (a.amenitiesEn && a.amenitiesEn.length) ? a.amenitiesEn : base.amenities.en,
-          ar: (a.amenitiesAr && a.amenitiesAr.length) ? a.amenitiesAr : base.amenities.ar,
-        },
-      };
-    });
-  }
-} catch(e) { console.warn('admin floor details override skipped', e); }
+// ── ADMIN OVERRIDE: merge edits from Firestore (floor_details collection) ──
+function applyAdminFloorOverrides(adminFd){
+  if (!adminFd || typeof adminFd !== 'object') return;
+  Object.keys(adminFd).forEach(k => {
+    const a = adminFd[k];
+    const base = FLOORS[k] || {
+      name:{en:'',ar:''}, subtitle:{en:'',ar:''}, size:'', sizeLbl:{en:'',ar:''},
+      description:{en:'',ar:''}, specs:[], amenities:{en:[],ar:[]}
+    };
+    FLOORS[k] = {
+      ...base,
+      name: { en: a.titleEn || base.name.en, ar: a.titleAr || base.name.ar },
+      size: a.size || base.size,
+      sizeLbl: { en: a.size || base.sizeLbl.en, ar: a.size || base.sizeLbl.ar },
+      description: { en: a.overviewEn || base.description.en, ar: a.overviewAr || base.description.ar },
+      amenities: {
+        en: (a.amenitiesEn && a.amenitiesEn.length) ? a.amenitiesEn : base.amenities.en,
+        ar: (a.amenitiesAr && a.amenitiesAr.length) ? a.amenitiesAr : base.amenities.ar,
+      },
+    };
+  });
+}
+(function hookFloorDetails(){
+  const wire = () => ArData.subscribe('floor_details', applyAdminFloorOverrides);
+  if (window.ArData){ ArData.init(); wire(); }
+  else document.addEventListener('DOMContentLoaded', () => { if (window.ArData){ ArData.init(); wire(); } });
+})();
 
 // ── LOAD PAGE ───────────────────────────────────────────────────────────────
 const params  = new URLSearchParams(window.location.search);
@@ -825,19 +832,45 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-function submitVisit(e) {
+async function submitVisit(e) {
   e.preventDefault();
   const ref = 'ALR-' + Date.now().toString(36).toUpperCase().slice(-6);
+  const fname = (document.getElementById('bf-fname').value||'').trim();
+  const lname = (document.getElementById('bf-lname').value||'').trim();
+  const company = (document.getElementById('bf-company').value||'').trim();
+  const phone = (document.getElementById('bf-phone').value||'').trim();
+  const email = (document.getElementById('bf-email') ? document.getElementById('bf-email').value : '').trim();
+  const date = document.getElementById('bf-date').value;
+  const time = document.getElementById('bf-time').value;
+  const notes = document.querySelector('.bf-input[placeholder*="questions"]');
+  const notesVal = notes ? notes.value.trim() : '';
+  const booking = {
+    ref,
+    visitor_name: (fname + ' ' + lname).trim(),
+    first_name: fname, last_name: lname,
+    company, phone, email,
+    floor_preference: fl.name.en,
+    floor_id: (typeof FL_ID !== 'undefined' ? FL_ID : ''),
+    preferred_date: date, preferred_time: time,
+    notes: notesVal, source: 'floor-detail', status: 'pending'
+  };
   document.getElementById('visit-ref').textContent = ref;
   document.getElementById('book-form').style.display = 'none';
   document.getElementById('book-success').style.display = 'block';
-  // persist to localStorage for admin
   try {
-    const bookings = JSON.parse(localStorage.getItem('ar_bookings') || '[]');
-    bookings.push({ref, floor: fl.name.en, date: document.querySelector('#bf-date').value, ts: Date.now(), status: 'pending'});
-    localStorage.setItem('ar_bookings', JSON.stringify(bookings));
-  } catch(err) {}
+    if (window.ArData){
+      await ArData.addVisitor({ name: booking.visitor_name, phone, email, company, source: 'floor_detail_booking' });
+      await ArData.addBooking(booking);
+      ArData.notifyWhatsApp(booking);
+    }
+  } catch(err){ console.error('[booking]', err); }
 }
 </script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/ar-data.js"></script>
+<script>if(window.ArData)ArData.init();</script>
 </body>
 </html>
