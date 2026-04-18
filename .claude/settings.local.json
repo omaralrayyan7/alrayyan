@@ -27,7 +27,10 @@
       "Bash(python _phase1_restructure.py)",
       "Bash(cmd //c \"rmdir /s /q \\\\\"images\\\\\\\\floors\\\\\\\\imaginary\\\\\" 2>&1; rmdir /s /q \\\\\"images\\\\\\\\floors\\\\\\\\avail\\\\\" 2>&1\")",
       "Bash(python _phase2_webp.py)",
-      "Bash(python _phase2_refs.py)"
+      "Bash(python _phase2_refs.py)",
+      "Bash(python -c \"from PIL import Image; img=Image.open\\('images/logo/logo.png'\\); print\\(img.size, img.mode\\)\")",
+      "Bash(python -c \"from PIL import Image; print\\('PIL ok, webp support:', Image.core.HAVE_LIBWEBP if hasattr\\(Image.core, 'HAVE_LIBWEBP'\\) else 'unknown'\\)\")",
+      "Bash(python -c \"from PIL import Image; im=Image.new\\('RGB',\\(10,10\\),'red'\\); im.save\\('__t.webp','webp',quality=80\\); print\\('webp ok'\\); import os; os.remove\\('__t.webp'\\)\")"
     ]
   }
 }
