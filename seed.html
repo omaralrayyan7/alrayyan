@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="robots" content="noindex,nofollow"/>
+  <title>Seed Firestore – Alrayyan Group</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+  <style>
+    body{font-family:system-ui,sans-serif;background:#0a0806;color:#eee;min-height:100vh;margin:0;display:flex;align-items:center;justify-content:center;padding:24px;}
+    .card{max-width:560px;width:100%;background:#141210;border:1px solid #2a2724;border-radius:14px;padding:32px;box-shadow:0 12px 40px rgba(0,0,0,0.5);}
+    h1{margin:0 0 8px;font-size:22px;letter-spacing:0.02em;}
+    p{color:#b8b1a8;font-size:14px;line-height:1.55;margin:0 0 18px;}
+    button{background:linear-gradient(180deg,#caa567,#8f6c2e);border:0;color:#1a1410;font-weight:700;padding:12px 22px;border-radius:10px;cursor:pointer;font-size:14px;letter-spacing:0.04em;}
+    button:disabled{opacity:0.5;cursor:not-allowed;}
+    #log{margin-top:18px;background:#0a0806;border:1px solid #2a2724;border-radius:8px;padding:14px;font-family:ui-monospace,monospace;font-size:12px;min-height:120px;max-height:320px;overflow:auto;white-space:pre-wrap;color:#c9c1b4;}
+    .ok{color:#7bd88f;} .err{color:#ff6b6b;} .warn{color:#e6c27a;}
+    a.back{display:inline-block;margin-top:14px;color:#caa567;text-decoration:none;font-size:13px;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Seed Firestore Database</h1>
+    <p>This populates Firestore with the current Alrayyan Tower inventory (floors, units, offices, businesses, lands, products, site content, pricing, and availability). Run once after deploying the Firebase project. Safe to run again — existing docs with the same IDs are overwritten.</p>
+    <button id="seed-btn">Run Seed</button>
+    <div id="log">Ready.</div>
+    <a class="back" href="admin.html">← Back to admin</a>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/seed-data.js"></script>
+  <script>
+    const logEl = document.getElementById('log');
+    const btn = document.getElementById('seed-btn');
+    function log(msg, cls){
+      const line = document.createElement('div');
+      if (cls) line.className = cls;
+      line.textContent = msg;
+      logEl.appendChild(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+    btn.addEventListener('click', async () => {
+      if (!window.ArSeed){ log('ArSeed not loaded', 'err'); return; }
+      btn.disabled = true;
+      logEl.textContent = '';
+      log('Starting seed…', 'warn');
+      try {
+        await window.ArSeed.run(log);
+        log('✔ Seed complete.', 'ok');
+      } catch (e){
+        console.error(e);
+        log('✗ ' + (e && e.message ? e.message : e), 'err');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

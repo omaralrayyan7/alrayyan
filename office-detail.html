@@ -6,6 +6,21 @@
   <meta name="color-scheme" content="dark"/>
   <meta name="theme-color" content="#050505"/>
   <title>Office Detail – Alrayyan Group</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+  <meta name="description" content="Office detail — Alrayyan Group premium office rentals."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Alrayyan Group"/>
+  <meta property="og:title" content="Office Detail – Alrayyan Group"/>
+  <meta property="og:description" content="Detailed view of an office type at Alrayyan Tower."/>
+  <meta property="og:image" content="og-image.webp"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta property="og:url" content="https://alrayyangroup.online/office-detail.html"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:image" content="og-image.webp"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet"/>
@@ -242,9 +257,9 @@ const STANDARD_AMENITIES = {
 const offices = [
   {
     id:1, typeEn:'Full Floor', typeAr:'طابق كامل',
-    // TODO: add image files: full-floor-outside.jpg & full-floor-inside-banner.jpg
-    imgOutside:'images/main/full-floor-outside.jpg',
-    imgInside: 'images/main/full-floor-inside-banner.jpg',
+    // TODO: add image files: full-floor-outside.webp & full-floor-inside-banner.webp
+    imgOutside:'images/main/full-floor-outside.webp',
+    imgInside: 'images/main/full-floor-inside-banner.webp',
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'},    value:'400 m²'},
       {label:{en:'Capacity',ar:'السعة'},               value:{en:'40 – 60 persons',ar:'40 – 60 شخصاً'}},
@@ -277,9 +292,9 @@ const offices = [
   },
   {
     id:2, typeEn:'Small Spaces', typeAr:'مساحات صغيرة',
-    // TODO: add image files: small-spaces-outside.jpg & small-spaces-inside-banner.jpg
-    imgOutside:'images/main/small-spaces-outside.jpg',
-    imgInside: 'images/main/small-spaces-inside-banner.jpg',
+    // TODO: add image files: small-spaces-outside.webp & small-spaces-inside-banner.webp
+    imgOutside:'images/main/small-spaces-outside.webp',
+    imgInside: 'images/main/small-spaces-inside-banner.webp',
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'},     value:'80 m²'},
       {label:{en:'Capacity',ar:'السعة'},               value:{en:'8 – 10 persons',ar:'8 – 10 أشخاص'}},
@@ -318,9 +333,9 @@ const offices = [
   },
   {
     id:3, typeEn:'Open Space', typeAr:'مساحة مفتوحة',
-    // TODO: add image files: open-space-outside.jpg & open-space-inside-banner.jpg
-    imgOutside:'images/main/open-space-outside.jpg',
-    imgInside: 'images/main/open-space-inside-banner.jpg',
+    // TODO: add image files: open-space-outside.webp & open-space-inside-banner.webp
+    imgOutside:'images/main/open-space-outside.webp',
+    imgInside: 'images/main/open-space-inside-banner.webp',
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'},     value:'1,000 m²'},
       {label:{en:'Capacity',ar:'السعة'},               value:{en:'80 – 120 persons',ar:'80 – 120 شخصاً'}},
@@ -361,9 +376,9 @@ const offices = [
   },
   {
     id:4, typeEn:'9th Floor – Outdoor Terrace', typeAr:'الطابق التاسع – تراس خارجي',
-    // TODO: add image files: 9th-floor-outdoor-outside.jpg & 9th-floor-outdoor-inside-banner.jpg
-    imgOutside:'images/main/9th-floor-outdoor-outside.jpg',
-    imgInside: 'images/main/9th-floor-outdoor-inside-banner.jpg',
+    // TODO: add image files: 9th-floor-outdoor-outside.webp & 9th-floor-outdoor-inside-banner.webp
+    imgOutside:'images/main/9th-floor-outdoor-outside.webp',
+    imgInside: 'images/main/9th-floor-outdoor-inside-banner.webp',
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'},     value:'300 m²'},
       {label:{en:'Capacity',ar:'السعة'},               value:{en:'Up to 200 guests',ar:'حتى 200 ضيف'}},
@@ -406,9 +421,9 @@ const offices = [
   },
   {
     id:5, typeEn:'9th Floor – Indoor Space', typeAr:'الطابق التاسع – مساحة داخلية',
-    // TODO: add image files: 9th-floor-indoor-outside.jpg & 9th-floor-indoor-inside-banner.jpg
-    imgOutside:'images/main/9th-floor-indoor-outside.jpg',
-    imgInside: 'images/main/9th-floor-indoor-inside-banner.jpg',
+    // TODO: add image files: 9th-floor-indoor-outside.webp & 9th-floor-indoor-inside-banner.webp
+    imgOutside:'images/main/9th-floor-indoor-outside.webp',
+    imgInside: 'images/main/9th-floor-indoor-inside-banner.webp',
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'},     value:'100 m²'},
       {label:{en:'Capacity',ar:'السعة'},               value:{en:'Up to 40 guests',ar:'حتى 40 ضيفاً'}},
@@ -453,9 +468,9 @@ const offices = [
   },
   {
     id:6, typeEn:'Small Shops', typeAr:'محلات صغيرة',
-    // TODO: add image files: small-shops-outside.jpg & small-shops-inside-banner.jpg
-    imgOutside:'images/main/small-shops-outside.jpg',
-    imgInside: 'images/main/small-shops-inside-banner.jpg',
+    // TODO: add image files: small-shops-outside.webp & small-shops-inside-banner.webp
+    imgOutside:'images/main/small-shops-outside.webp',
+    imgInside: 'images/main/small-shops-inside-banner.webp',
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'},     value:{en:'9 m² per shop (27 m² total)',ar:'9 م² لكل محل (27 م² إجمالي)'}},
       {label:{en:'Capacity',ar:'السعة'},               value:{en:'2 – 3 staff per shop',ar:'2 – 3 موظفين لكل محل'}},

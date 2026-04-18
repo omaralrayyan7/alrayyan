@@ -6,6 +6,21 @@
   <meta name="color-scheme" content="dark"/>
   <meta name="theme-color" content="#050505"/>
   <title>Floor Detail – Alrayyan Tower</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+  <meta name="description" content="Floor detail — Alrayyan Tower office rentals."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Alrayyan Group"/>
+  <meta property="og:title" content="Floor Detail – Alrayyan Tower"/>
+  <meta property="og:description" content="Detailed view of a floor or unit at Alrayyan Tower."/>
+  <meta property="og:image" content="og-image.webp"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta property="og:url" content="https://alrayyangroup.online/floor-detail.html"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:image" content="og-image.webp"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet"/>
@@ -474,40 +489,22 @@ function renderFloor() {
   document.getElementById('bf-floor').value = fl.name.en;
   document.getElementById('overview-desc').innerHTML = fl.description[L];
 
-  // hero background image — per-floor, matches files in images/floors/
-  const HERO_IMG = {
-    'b1': 'images/floors/b1-floor.jpg',
-    'g':  'images/floors/g-floor.jpg',
-    '3':  'images/floors/3rd-floor.jpg',
-    '4':  'images/floors/4th-floor.jpg',
-    '5':  'images/floors/5th-floor.jpg',
-    '6':  'images/floors/6th-floor.jpg',
-    '7':  'images/floors/7th-floor.jpg',
-    '9-indoor':  'images/floors/9th-floor-indoor.jpg',
-    '9-outdoor': 'images/floors/9th-floor-outdoor-terrace.jpg',
-  };
+  // hero background image — per-floor, matches files in images/floors/floor-{id}/banner/
   const heroEl = document.getElementById('fl-hero');
-  const heroImg = HERO_IMG[fl.id];
-  if (heroEl && heroImg) {
+  const heroImg = 'images/floors/floor-' + fl.id + '/banner/' + FL_LABEL[fl.id] + '-banner.webp';
+  if (heroEl) {
     heroEl.style.backgroundImage =
       "linear-gradient(135deg, rgba(5,5,5,0.5), rgba(10,8,4,0.9)), url('" + heroImg + "')";
     heroEl.style.backgroundSize = 'cover';
     heroEl.style.backgroundPosition = 'center';
   }
-  const AVAIL_IMG = {
-    'b1': 'images/floors/avail/b1-avail.jpg',
-    'g':  'images/floors/avail/g-avail.jpg',
-    '3':  'images/floors/avail/3-avail.jpg',
-    '4':  'images/floors/avail/4-avail.jpg',
-    '5':  'images/floors/avail/5-avail.jpg',
-    '6':  'images/floors/avail/6-avail.jpg',
-    '7':  'images/floors/avail/7-avail.jpg',
-    '9-indoor':  'images/floors/avail/9-indoor-avail.jpg',
-    '9-outdoor': 'images/floors/avail/9-outdoor-avail.jpg',
-  };
+  const AVAIL_IMG = {};
+  Object.keys(FL_LABEL).forEach(k => {
+    AVAIL_IMG[k] = 'images/floors/floor-' + k + '/' + FL_LABEL[k] + '-avail.webp';
+  });
   const availEl = document.getElementById('avail-img');
   if (availEl) {
-    availEl.src = AVAIL_IMG[fl.id] || 'images/floors/placeholder.jpg';
+    availEl.src = AVAIL_IMG[fl.id] || 'images/floors/placeholder.webp';
     availEl.className = 'avail-img avail-' + fl.id;
   }
 
@@ -634,16 +631,33 @@ function openMaps() {
   window.open('https://www.google.com/maps/search/Alrayyan+Tower+Queen+Rania+Street+Amman','_blank');
 }
 
+// ── FLOOR META (image paths) ───────────────────────────────────────────────
+const FL_LABEL = {
+  'b1': 'b1-floor',
+  'g':  'g-floor',
+  '3':  '3rd-floor',
+  '4':  '4th-floor',
+  '5':  '5th-floor',
+  '6':  '6th-floor',
+  '7':  '7th-floor',
+  '9-outdoor': '9th-floor-outdoor',
+  '9-indoor':  '9th-floor-indoor',
+};
+const IMAGINARY_COUNTS = {
+  'b1': 4, 'g': 3, '3': 0, '4': 6, '5': 1, '6': 5, '7': 5,
+  '9-outdoor': 3, '9-indoor': 3,
+};
+
 // ── SECTION A: FLOOR IMAGES GALLERY ────────────────────────────────────────
 const floorImageConfig = {
-  '4':         { real: 19, mains: 3, ext: 'jpg' },
-  '5':         { real: 2,  mains: 0, ext: 'jpg' },
-  '6':         { real: 12, mains: 3, ext: 'jpg' },
-  '7':         { real: 10, mains: 3, ext: 'jpg' },
-  '9-indoor':  { real: 4,  mains: 2, ext: 'jpg' },
-  '9-outdoor': { real: 12, mains: 3, ext: 'jpg' },
-  'b1':        { real: 3,  mains: 0, ext: 'jpg' },
-  'g':         { real: 2,  mains: 2, ext: 'svg' },
+  '4':         { real: 19, mains: 3, ext: 'webp' },
+  '5':         { real: 2,  mains: 0, ext: 'webp' },
+  '6':         { real: 12, mains: 3, ext: 'webp' },
+  '7':         { real: 10, mains: 3, ext: 'webp' },
+  '9-indoor':  { real: 4,  mains: 2, ext: 'webp' },
+  '9-outdoor': { real: 12, mains: 3, ext: 'webp' },
+  'b1':        { real: 3,  mains: 0, ext: 'webp' },
+  'g':         { real: 2,  mains: 2, ext: 'webp' },
 };
 
 (function buildFloorGallery() {
@@ -651,13 +665,14 @@ const floorImageConfig = {
   const container = document.getElementById('floor-gallery');
   if (!cfg || cfg.real === 0) { container.style.display = 'none'; return; }
 
-  const imgExt = cfg.ext || 'jpg';
+  const imgExt = cfg.ext || 'webp';
+  const label  = FL_LABEL[floorId];
   const basePath = 'images/floors/floor-' + floorId + '/real/';
   let html = `<p class="sec-eye" data-i18n="secGalEye">Photography</p>
     <h2 class="sec-title"><span data-i18n="secGalTitleA">Floor</span> <em data-i18n="secGalTitleB">Images</em></h2>
     <div class="gold-line"></div>`;
 
-  const fileName = (i) => `img-${i}-floor-${floorId}.${imgExt}`;
+  const fileName = (i) => `${label}-real-img-${i}.${imgExt}`;
   // onerror handler collapses broken images so missing uploads don't reserve empty space.
   const errH = `onerror="this.style.display='none';this.dataset.broken='1'"`;
 
@@ -720,12 +735,13 @@ const floorImageConfig = {
 function swapMainImage(thumbEl, imgIndex) {
   const cfg = floorImageConfig[floorId];
   if (!cfg) return;
-  const imgExt = cfg.ext || 'jpg';
+  const imgExt = cfg.ext || 'webp';
+  const label  = FL_LABEL[floorId];
   // swap clicked thumbnail into first main slot
   const mainImg = document.getElementById('fg-main-1');
   if (mainImg) {
     const basePath = 'images/floors/floor-' + floorId + '/real/';
-    mainImg.src = basePath + 'img-' + imgIndex + '-floor-' + floorId + '.' + imgExt;
+    mainImg.src = basePath + label + '-real-img-' + imgIndex + '.' + imgExt;
   }
   // update active states
   document.querySelectorAll('#fg-thumbs img').forEach(t => t.classList.remove('active'));
@@ -749,16 +765,20 @@ function updateThumbArrows() {
 }
 
 // ── SECTION B: IMAGINARY RENDERS CAROUSEL ──────────────────────────────────
+const renderTotal = IMAGINARY_COUNTS[floorId] || 0;
 (function buildRendersCarousel() {
   const container = document.getElementById('floor-renders');
-  const totalRenders = 5;
+  if (!container) return;
+  if (renderTotal === 0) { container.style.display = 'none'; return; }
+  const label = FL_LABEL[floorId];
+  const basePath = 'images/floors/floor-' + floorId + '/imaginary/';
   let html = `<p class="sec-eye" data-i18n="secRndEye">Imaginary Views</p>
     <h2 class="sec-title"><span data-i18n="secRndTitleA">Floor</span> <em data-i18n="secRndTitleB">Layout</em></h2>
     <div class="gold-line"></div>
     <div class="fr-carousel" id="fr-carousel">
       <div class="fr-track" id="fr-track">`;
-  for (let i = 1; i <= totalRenders; i++) {
-    html += `<img src="images/floors/imaginary/render-${i}.svg" alt="Render ${i}" onerror="this.src='images/floors/imaginary/render-${i}.jpg'"/>`;
+  for (let i = 1; i <= renderTotal; i++) {
+    html += `<img src="${basePath}${label}-imaginary-img-${i}.webp" alt="Render ${i}" onerror="this.style.visibility='hidden'"/>`;
   }
   html += `</div>
     <div class="fr-arrows">
@@ -766,7 +786,7 @@ function updateThumbArrows() {
       <button class="fg-arrow" onclick="slideRender(1)">→</button>
     </div></div>
     <div class="fr-dots" id="fr-dots">`;
-  for (let i = 0; i < totalRenders; i++) {
+  for (let i = 0; i < renderTotal; i++) {
     html += `<button class="fr-dot${i === 0 ? ' active' : ''}" onclick="goToRender(${i})"></button>`;
   }
   html += `</div>`;
@@ -774,10 +794,10 @@ function updateThumbArrows() {
 })();
 
 let renderIndex = 0;
-const renderTotal = 5;
-let renderInterval = setInterval(autoSlideRender, 5000);
+let renderInterval = renderTotal > 1 ? setInterval(autoSlideRender, 5000) : null;
 
 function slideRender(dir) {
+  if (renderTotal < 1) return;
   renderIndex = (renderIndex + dir + renderTotal) % renderTotal;
   updateRenderPos();
 }
@@ -786,6 +806,7 @@ function goToRender(i) {
   updateRenderPos();
 }
 function autoSlideRender() {
+  if (renderTotal < 1) return;
   renderIndex = (renderIndex + 1) % renderTotal;
   updateRenderPos();
 }
@@ -798,8 +819,8 @@ function updateRenderPos() {
 // Pause on hover
 document.addEventListener('DOMContentLoaded', () => {
   const carousel = document.getElementById('fr-carousel');
-  if (carousel) {
-    carousel.addEventListener('mouseenter', () => clearInterval(renderInterval));
+  if (carousel && renderTotal > 1) {
+    carousel.addEventListener('mouseenter', () => { if (renderInterval) clearInterval(renderInterval); });
     carousel.addEventListener('mouseleave', () => { renderInterval = setInterval(autoSlideRender, 5000); });
   }
 });

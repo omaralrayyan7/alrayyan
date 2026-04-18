@@ -208,13 +208,13 @@
     }
     .unit-chip.on::before { content: '✓'; font-weight: 700; }
     .unit-chip.off {
-      background: rgba(136,136,136,0.05);
-      border-color: rgba(136,136,136,0.15);
-      color: rgba(136,136,136,0.55);
-      text-decoration: line-through;
-      text-decoration-color: rgba(136,136,136,0.4);
+      background: #2a2a2a;
+      border-color: rgba(120,120,120,0.25);
+      color: #888;
+      text-decoration: none !important;
+      pointer-events: none;
     }
-    .unit-chip.off::before { content: '✗'; text-decoration: none; display: inline-block; }
+    .unit-chip.off::before { content: '✗'; font-weight: 700; color: #888; }
     .unit-chip.exception {
       background: rgba(34,197,94,0.1);
       border-color: rgba(34,197,94,0.3);
@@ -344,7 +344,7 @@
       color: var(--muted); letter-spacing: 3px; text-transform: uppercase;
     }
 
-    .nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; flex-wrap: nowrap; min-width: 0; }
     .nav-links a {
       font-size: 0.82rem; font-weight: 600; letter-spacing: 1.5px;
       text-transform: uppercase; color: var(--muted);
@@ -1025,6 +1025,41 @@
     .mobile-menu a:hover { color: var(--gold); }
 
     /* ===== RESPONSIVE ===== */
+    /* Keep nav items on one line; allow middle links to shrink before wrapping. */
+    nav { gap: 1rem; flex-wrap: nowrap; }
+    .nav-logo { flex: 0 1 auto; min-width: 0; }
+    .nav-links { flex: 1 1 auto; justify-content: center; min-width: 0; }
+    .lang-sw { flex: 0 0 auto; }
+
+    /* Navbar shrink for medium widths (769-1200px) — prevents link overflow */
+    @media (min-width: 769px) and (max-width: 1200px) {
+      nav { padding: 0 3%; gap: 0.75rem; }
+      .nav-links { gap: 1rem; flex-wrap: nowrap; }
+      .nav-links a { font-size: 0.68rem; letter-spacing: 0.8px; white-space: nowrap; }
+      .nav-cta { padding: 6px 12px; }
+      .lang-sw { margin-left: 6px; }
+      .nav-logo img { height: 40px; }
+      .nav-logo-text .name { font-size: 0.95rem; letter-spacing: 1px; }
+      .nav-logo-text .tagline { font-size: 0.5rem; letter-spacing: 1.5px; }
+    }
+    @media (min-width: 769px) and (max-width: 960px) {
+      nav { gap: 0.5rem; padding: 0 2.5%; }
+      .nav-links { gap: 0.65rem; }
+      .nav-links a { font-size: 0.6rem; letter-spacing: 0.3px; padding-bottom: 2px; }
+      .nav-links a#nav-avail-link { font-size: 0.65rem; }
+      .nav-logo-text .tagline { display: none; }
+      .nav-logo-text .name { font-size: 0.85rem; letter-spacing: 0.8px; }
+      .nav-logo img { height: 36px; }
+      .nav-cta { padding: 5px 9px; font-size: 0.6rem; letter-spacing: 0.5px; }
+      .lang-sw { margin-left: 4px; }
+      .lang-btn { padding: 4px 6px; font-size: 0.52rem; }
+    }
+    @media (min-width: 769px) and (max-width: 840px) {
+      .nav-links { gap: 0.5rem; }
+      .nav-links a { font-size: 0.55rem; }
+      .nav-links a#nav-avail-link { font-size: 0.58rem; }
+      .nav-cta { padding: 4px 8px; font-size: 0.55rem; }
+    }
     @media (max-width: 1024px) {
       .about-wrap, .features-wrap { grid-template-columns: 1fr; }
       .features-img  { display: block; }
