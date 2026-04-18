@@ -10,6 +10,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+  <link rel="icon" href="images/logo/logo.png" type="image/png"/>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Organization","name":"Alrayyan Group","url":"https://alrayyangroup.online","logo":"https://alrayyangroup.online/images/logo/logo.png"}
+  </script>
+  <link rel="preload" as="image" href="images/arts/hero-mosaic-1.webp"/>
   <meta name="description" content="Alrayyan Arts — calligraphy gallery, originals, and commissions by Alrayyan Group."/>
   <meta property="og:type" content="website"/>
   <meta property="og:site_name" content="Alrayyan Group"/>
@@ -60,9 +65,9 @@
 <!-- HERO -->
 <section id="hero">
   <div class="hero-bg-mosaic">
-    <div><img src="images/arts/hero-mosaic-1.webp" alt=""/></div>
-    <div><img src="images/arts/hero-mosaic-2.webp" alt=""/></div>
-    <div><img src="images/arts/hero-mosaic-3.webp" alt=""/></div>
+    <div><img src="images/arts/hero-mosaic-1.webp" alt="" decoding="async" loading="eager" fetchpriority="high" width="800" height="500"/></div>
+    <div><img src="images/arts/hero-mosaic-2.webp" alt="" decoding="async" loading="lazy" width="800" height="500"/></div>
+    <div><img src="images/arts/hero-mosaic-3.webp" alt="" decoding="async" loading="lazy" width="800" height="500"/></div>
   </div>
   <div class="hero-bg-overlay"></div>
   <div class="hero-content">
@@ -235,7 +240,7 @@ function productCardHTML(p){
   return `
     <div class="product-card" onclick="location.href='painting-detail.html?id=${p.id}'">
       <div class="product-img-wrap">
-        <img src="${p.img}" alt="${p.name}" loading="lazy"/>
+        <img src="${p.img}" alt="${p.name}" loading="lazy" decoding="async"/>
         <span class="prod-medium">${p.medium}</span>
         <button class="prod-plus-btn" onclick="addToCart(${p.id},event)">+</button>
         <div class="prod-quick-bar">
@@ -300,7 +305,7 @@ function renderCart(){
   if(!cart.length){body.innerHTML='<div class="cart-empty"><div class="ico">🖼️</div>Your cart is empty</div>';document.getElementById('cartTotal').textContent='0.00 JOD';return;}
   body.innerHTML=cart.map(item=>`
     <div class="cart-item">
-      <img class="cart-item-img" src="${item.img}" alt="${item.name}"/>
+      <img class="cart-item-img" src="${item.img}" alt="${item.name}" decoding="async" loading="lazy"/>
       <div class="cart-item-info">
         <div class="cart-item-name">${item.name}</div>
         <div class="cart-item-artist">${item.artist}</div>
@@ -425,10 +430,10 @@ function setLang(lang){
 (function(){const s=localStorage.getItem('al_lang'); if(s==='ar') setLang('ar');})();
 </script>
 <!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="js/ar-data.js"></script>
-<script>if(window.ArData)ArData.init();</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js" defer></script>
+<script src="js/firebase-config.js" defer></script>
+<script src="js/ar-data.js" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){if(window.ArData)ArData.init();});</script>
 </body>
 </html>

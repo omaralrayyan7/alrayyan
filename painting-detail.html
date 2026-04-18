@@ -10,6 +10,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+  <link rel="icon" href="images/logo/logo.png" type="image/png"/>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Organization","name":"Alrayyan Group","url":"https://alrayyangroup.online","logo":"https://alrayyangroup.online/images/logo/logo.png"}
+  </script>
+  <link rel="preload" as="image" href="images/logo/logo.png"/>
   <meta name="description" content="Artwork detail — Alrayyan Arts by Alrayyan Group."/>
   <meta property="og:type" content="website"/>
   <meta property="og:site_name" content="Alrayyan Group"/>
@@ -111,7 +116,7 @@ function render(lang){
   root.innerHTML = `
     <div class="wrap">
       <div class="art-img-box">
-        <img src="${painting.img}" alt="${painting.name}"/>
+        <img src="${painting.img}" alt="${painting.name}" decoding="async" loading="lazy"/>
       </div>
       <div class="art-meta">
         <p class="eye">${painting.medium}</p>
@@ -165,10 +170,10 @@ function setLang(lang){
 })();
 </script>
 <!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="js/ar-data.js"></script>
-<script>if(window.ArData)ArData.init();</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js" defer></script>
+<script src="js/firebase-config.js" defer></script>
+<script src="js/ar-data.js" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){if(window.ArData)ArData.init();});</script>
 </body>
 </html>

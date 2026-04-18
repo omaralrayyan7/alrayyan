@@ -8,6 +8,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+  <link rel="icon" href="images/logo/logo.png" type="image/png"/>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Organization","name":"Alrayyan Group","url":"https://alrayyangroup.online","logo":"https://alrayyangroup.online/images/logo/logo.png"}
+  </script>
+  <link rel="preload" as="image" href="images/logo/logo.png"/>
   <meta name="description" content="Product detail — Alrayyan Fashion by Alrayyan Group."/>
   <meta property="og:type" content="product"/>
   <meta property="og:site_name" content="Alrayyan Group"/>
@@ -56,7 +61,7 @@
   <!-- GALLERY -->
   <div class="gallery-col fade-in">
     <div class="main-img-wrap" id="main-img-wrap">
-      <img id="main-img" src="" alt="" onclick="openLightbox()"/>
+      <img id="main-img" src="" alt="" onclick="openLightbox()" decoding="async" loading="lazy"/>
       <div class="sale-ribbon" id="sale-ribbon" style="display:none"></div>
     </div>
     <div class="thumb-row" id="thumb-row"></div>
@@ -164,7 +169,7 @@
 <!-- LIGHTBOX -->
 <div id="lightbox" style="display:none;position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,0.94);align-items:center;justify-content:center;" onclick="closeLightbox()">
   <span style="position:absolute;top:20px;right:28px;font-size:2rem;color:rgba(255,255,255,0.5);cursor:pointer;">✕</span>
-  <img id="lb-img" src="" style="max-width:90vw;max-height:90vh;object-fit:contain;border-radius:2px;"/>
+  <img id="lb-img" src="" style="max-width:90vw;max-height:90vh;object-fit:contain;border-radius:2px;" decoding="async" loading="lazy"/>
 </div>
 
 <!-- CART DRAWER -->
@@ -455,7 +460,7 @@ function renderCart(){
   }
   body.innerHTML = cart.map(item => `
     <div class="cart-item">
-      <img class="cart-item-img" src="${item.img}" alt="${item.name}"/>
+      <img class="cart-item-img" src="${item.img}" alt="${item.name}" decoding="async" loading="lazy"/>
       <div class="cart-item-info">
         <div class="cart-item-name">${item.name}</div>
         <div class="cart-item-size">Size: ${item.selectedSize}</div>
@@ -516,7 +521,7 @@ const relatedEl = document.getElementById('related-grid');
 const related = products.filter(x => x.id !== p.id).slice(0, 4);
 relatedEl.innerHTML = related.map(r => `
   <div class="rel-card" onclick="location.href='fashion-product.html?id=${r.id}'">
-    <img src="${r.img}" alt="${r.name}" loading="lazy"/>
+    <img src="${r.img}" alt="${r.name}" loading="lazy" decoding="async"/>
     <div class="rel-card-body">
       <div class="rel-name">${r.name}</div>
       <div class="rel-price">
@@ -589,10 +594,10 @@ function setPageLang(lang) {
 })();
 </script>
 <!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="js/ar-data.js"></script>
-<script>if(window.ArData)ArData.init();</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js" defer></script>
+<script src="js/firebase-config.js" defer></script>
+<script src="js/ar-data.js" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){if(window.ArData)ArData.init();});</script>
 </body>
 </html>

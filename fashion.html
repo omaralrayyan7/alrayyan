@@ -10,6 +10,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"/>
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+  <link rel="icon" href="images/logo/logo.png" type="image/png"/>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Organization","name":"Alrayyan Group","url":"https://alrayyangroup.online","logo":"https://alrayyangroup.online/images/logo/logo.png"}
+  </script>
+  <link rel="preload" as="image" href="images/fashion/hero.webp"/>
   <meta name="description" content="Alrayyan Fashion — curated luxury and contemporary fashion by Alrayyan Group."/>
   <meta property="og:type" content="website"/>
   <meta property="og:site_name" content="Alrayyan Group"/>
@@ -78,7 +83,7 @@
   </div>
   <div class="hero-img-side">
     <div class="hero-img-frame">
-      <div class="resizable-img"><img src="images/fashion/hero.webp" alt="Fashion"/></div>
+      <div class="resizable-img"><img src="images/fashion/hero.webp" alt="Fashion" decoding="async" loading="eager" fetchpriority="high" width="800" height="500"/></div>
       <div class="hero-img-tag">New In</div>
     </div>
   </div>
@@ -128,9 +133,9 @@
     <div class="rose-line"></div>
   </div>
   <div class="col-grid fade-in">
-    <div class="col-card"><img src="images/fashion/collection-evening-wear.webp" alt="" loading="lazy"/><div class="col-overlay"><div class="col-tag">SS 2025</div><div class="col-name">Evening Wear</div></div></div>
-    <div class="col-card"><img src="images/fashion/collection-everyday-luxury.webp" alt="" loading="lazy"/><div class="col-overlay"><div class="col-tag">Essentials</div><div class="col-name">Everyday Luxury</div></div></div>
-    <div class="col-card"><img src="images/fashion/collection-bespoke-tailoring.webp" alt="" loading="lazy"/><div class="col-overlay"><div class="col-tag">Made-to-Measure</div><div class="col-name">Bespoke Tailoring</div></div></div>
+    <div class="col-card"><img src="images/fashion/collection-evening-wear.webp" alt="" loading="lazy" decoding="async" width="800" height="500"/><div class="col-overlay"><div class="col-tag">SS 2025</div><div class="col-name">Evening Wear</div></div></div>
+    <div class="col-card"><img src="images/fashion/collection-everyday-luxury.webp" alt="" loading="lazy" decoding="async" width="800" height="500"/><div class="col-overlay"><div class="col-tag">Essentials</div><div class="col-name">Everyday Luxury</div></div></div>
+    <div class="col-card"><img src="images/fashion/collection-bespoke-tailoring.webp" alt="" loading="lazy" decoding="async" width="800" height="500"/><div class="col-overlay"><div class="col-tag">Made-to-Measure</div><div class="col-name">Bespoke Tailoring</div></div></div>
   </div>
 </section>
 
@@ -389,7 +394,7 @@ function renderProducts(filter){
   grid.innerHTML=list.map(p=>`
     <div class="product-card" onclick="location.href='fashion-product.html?id=${p.id}'">
       <div class="product-img-wrap">
-        <img src="${p.img}" alt="${p.name}" loading="lazy"/>
+        <img src="${p.img}" alt="${p.name}" loading="lazy" decoding="async"/>
         ${p.sale?`<div class="sale-badge">−${p.salePercent}%</div>`:''}
         <button class="prod-plus-btn" onclick="addToCart(${p.id},event)">+</button>
         <div class="prod-quick-bar">
@@ -415,7 +420,7 @@ function renderSaleGrid(){
   grid.innerHTML=saleItems.map(p=>`
     <div class="sale-card" onclick="location.href='fashion-product.html?id=${p.id}'">
       <div class="sale-card-img">
-        <img src="${p.img}" alt="${p.name}" loading="lazy"/>
+        <img src="${p.img}" alt="${p.name}" loading="lazy" decoding="async"/>
         <div class="sale-badge-lg">−${p.salePercent}% OFF</div>
       </div>
       <div class="sale-card-body">
@@ -496,7 +501,7 @@ function renderCart(){
   }
   body.innerHTML=cart.map(item=>`
     <div class="cart-item">
-      <img class="cart-item-img" src="${item.img}" alt="${item.name}"/>
+      <img class="cart-item-img" src="${item.img}" alt="${item.name}" decoding="async" loading="lazy"/>
       <div class="cart-item-info">
         <div class="cart-item-name">${item.name}</div>
         <div class="cart-item-size">Size: ${item.selectedSize||item.sizes[0]}</div>
@@ -636,10 +641,10 @@ function setLang(lang){
 (function(){const s=localStorage.getItem('al_lang'); if(s==='ar') setLang('ar');})();
 </script>
 <!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="js/ar-data.js"></script>
-<script>if(window.ArData)ArData.init();</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js" defer></script>
+<script src="js/firebase-config.js" defer></script>
+<script src="js/ar-data.js" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){if(window.ArData)ArData.init();});</script>
 </body>
 </html>
