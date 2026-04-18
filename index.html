@@ -520,9 +520,11 @@
       <div class="biz-card-wrap fade-in">
         <div class="biz-card">
           <div class="biz-front">
-            <img class="biz-front-img"
-              src="images/main/biz-fashion.webp"
-              alt="Alrayyan Fashion" decoding="async" loading="lazy" width="495" height="504"/>
+            <div class="logo-container">
+              <img class="biz-front-img"
+                src="images/main/biz-fashion.webp"
+                alt="Alrayyan Fashion" decoding="async" loading="lazy" width="495" height="504"/>
+            </div>
             <div class="biz-front-body">
               <div class="biz-front-name-wrap">
                 <div class="biz-front-name">Alrayyan <span>Fashion</span></div>
@@ -550,9 +552,11 @@
       <div class="biz-card-wrap fade-in">
         <div class="biz-card">
           <div class="biz-front">
-            <img class="biz-front-img"
-              src="images/main/biz-arts.webp"
-              alt="Alrayyan Calligraphy Arts" decoding="async" loading="lazy" width="541" height="461"/>
+            <div class="logo-container">
+              <img class="biz-front-img"
+                src="images/main/biz-arts.webp"
+                alt="Alrayyan Calligraphy Arts" decoding="async" loading="lazy" width="541" height="461"/>
+            </div>
             <div class="biz-front-body">
               <div class="biz-front-name-wrap">
                 <div class="biz-front-name">Alrayyan <span>Arts</span></div>
@@ -580,9 +584,11 @@
       <div class="biz-card-wrap fade-in">
         <div class="biz-card">
           <div class="biz-front">
-            <img class="biz-front-img"
-              src="images/main/biz-land.webp"
-              alt="Alrayyan Lands" decoding="async" loading="lazy" width="2048" height="1850"/>
+            <div class="logo-container">
+              <img class="biz-front-img"
+                src="images/main/biz-land.webp"
+                alt="Alrayyan Lands" decoding="async" loading="lazy" width="2048" height="1850"/>
+            </div>
             <div class="biz-front-body">
               <div class="biz-front-name-wrap">
                 <div class="biz-front-name">Alrayyan <span>Lands</span></div>
@@ -787,7 +793,9 @@
   <footer>
     <div class="footer-top">
       <div class="footer-brand">
-        <img src="images/logo/logo.png" alt="Alrayyan Group" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" class="brand-logo-img" decoding="async" loading="eager" width="656" height="656"/>
+        <div class="footer-logo">
+          <img src="images/logo/logo.png" alt="Alrayyan Group" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" class="brand-logo-img" decoding="async" loading="eager" width="656" height="656"/>
+        </div>
         <div class="brand-name">ALRAYYAN GROUP</div>
         <p>Your first choice for premium office rentals and diversified business ventures — where ambition finds its address.</p>
       </div>
@@ -1221,6 +1229,13 @@
           if (addr) addr.textContent = c.address;
         }
         document.body.classList.toggle('show-pricing', c.show_pricing === true);
+
+        // Apply admin-controlled business logo scale (50 – 150, integer %).
+        const rawScale = parseInt(c.biz_logo_scale, 10);
+        if (!isNaN(rawScale)) {
+          const pct = Math.max(50, Math.min(150, rawScale));
+          document.documentElement.style.setProperty('--biz-logo-scale', (pct / 100).toString());
+        }
       } catch(e) { console.warn('admin site content override skipped', e); }
     }
     (function hookSiteContent(){

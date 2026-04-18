@@ -517,6 +517,10 @@ const floorImageConfig = {
   '9-indoor':  { real: 0, mains: 0, ext: 'webp' },
   '9-outdoor': { real: 0, mains: 0, ext: 'webp' },
 };
+// Carousel state — declared before renderFloor() / init IIFE to avoid TDZ.
+const renderTotal = IMAGINARY_COUNTS[floorId] || 0;
+let renderIndex = 0;
+let renderInterval = null;
 
 function renderFloor() {
   const L = currentLang;
@@ -585,6 +589,10 @@ function renderFloor() {
   const amEl = document.getElementById('amenities-grid');
   amEl.innerHTML = '';
   STANDARD_AMENITIES[L].forEach(a => { amEl.innerHTML += `<div class="amenity-item">${a}</div>`; });
+
+  // Rebuild imagery-bound sections so they survive language switches
+  renderFloorGallery();
+  renderFloorRenders();
 }
 
 // ── I18N ────────────────────────────────────────────────────────────────────
@@ -674,21 +682,36 @@ function openMaps() {
 }
 
 // ── SECTION A: FLOOR IMAGES GALLERY ────────────────────────────────────────
-(function buildFloorGallery() {
-  const cfg = floorImageConfig[floorId];
+// Named function — called from renderFloor() so it rebuilds on every language switch.
+// Always renders (no display:none). If cfg.real === 0 or all images fail, shows placeholders.
+function renderFloorGallery() {
   const container = document.getElementById('floor-gallery');
-  if (!cfg || cfg.real === 0) { container.style.display = 'none'; return; }
+  if (!container) return;
+  container.style.display = '';
 
+  const cfg = floorImageConfig[floorId] || { real: 0, mains: 0, ext: 'webp' };
+  const t = I18N[currentLang] || I18N.en;
   const imgExt = cfg.ext || 'webp';
   const label  = FL_LABEL[floorId];
   const basePath = 'images/floors/floor-' + floorId + '/real/';
-  let html = `<p class="sec-eye" data-i18n="secGalEye">Photography</p>
-    <h2 class="sec-title"><span data-i18n="secGalTitleA">Floor</span> <em data-i18n="secGalTitleB">Images</em></h2>
+  const errH = `onerror="this.onerror=null;this.src='images/architecture/placeholders/placeholder-1.webp'"`;
+
+  let html = `<p class="sec-eye">${t.secGalEye}</p>
+    <h2 class="sec-title"><span>${t.secGalTitleA}</span> <em>${t.secGalTitleB}</em></h2>
     <div class="gold-line"></div>`;
 
+  if (cfg.real === 0) {
+    // Placeholder mode — always show the section so layout is consistent across all floors.
+    html += `<div class="fg-simple cols-3">`;
+    for (let i = 1; i <= 3; i++) {
+      html += `<img src="images/architecture/placeholders/placeholder-${i}.webp" alt="Floor ${floorId} preview ${i}" class="fg-placeholder" loading="lazy" decoding="async"/>`;
+    }
+    html += `</div>`;
+    container.innerHTML = html;
+    return;
+  }
+
   const fileName = (i) => `${label}-real-img-${i}.${imgExt}`;
-  // onerror handler collapses broken images so missing uploads don't reserve empty space.
-  const errH = `onerror="this.style.display='none';this.dataset.broken='1'"`;
 
   if (cfg.mains > 0) {
     const mainCols = cfg.mains === 2 ? 'cols-2' : 'cols-3';
@@ -721,30 +744,7 @@ function openMaps() {
 
   container.innerHTML = html;
   updateThumbArrows();
-
-  // After all gallery images settle, hide the whole section if none loaded —
-  // this prevents the huge empty gap on floors whose /real folder is empty.
-  (function collapseIfAllBroken(){
-    const imgs = container.querySelectorAll('img');
-    if (!imgs.length){ container.style.display='none'; return; }
-    let pending = imgs.length;
-    let anyOk = false;
-    const done = ()=>{
-      pending--;
-      if (pending <= 0 && !anyOk) container.style.display = 'none';
-    };
-    imgs.forEach(img => {
-      if (img.complete){
-        if (img.naturalWidth > 0) anyOk = true;
-        else img.style.display = 'none';
-        done();
-      } else {
-        img.addEventListener('load',  ()=>{ anyOk = true; done(); }, {once:true});
-        img.addEventListener('error', ()=>{ img.style.display='none'; done(); }, {once:true});
-      }
-    });
-  })();
-})();
+}
 
 function swapMainImage(thumbEl, imgIndex) {
   const cfg = floorImageConfig[floorId];
@@ -779,20 +779,28 @@ function updateThumbArrows() {
 }
 
 // ── SECTION B: IMAGINARY RENDERS CAROUSEL ──────────────────────────────────
-const renderTotal = IMAGINARY_COUNTS[floorId] || 0;
-(function buildRendersCarousel() {
+// Named function — called from renderFloor() so the carousel rebuilds on language switch.
+// Loads from images/floors/floor-{id}/imaginary/ ; missing files swap to architecture placeholder.
+// (renderTotal / renderIndex / renderInterval are declared earlier, above renderFloor(), to avoid TDZ.)
+
+function renderFloorRenders() {
   const container = document.getElementById('floor-renders');
   if (!container) return;
   if (renderTotal === 0) { container.style.display = 'none'; return; }
+  container.style.display = '';
+
+  const t = I18N[currentLang] || I18N.en;
   const label = FL_LABEL[floorId];
   const basePath = 'images/floors/floor-' + floorId + '/imaginary/';
-  let html = `<p class="sec-eye" data-i18n="secRndEye">Imaginary Views</p>
-    <h2 class="sec-title"><span data-i18n="secRndTitleA">Floor</span> <em data-i18n="secRndTitleB">Layout</em></h2>
+
+  let html = `<p class="sec-eye">${t.secRndEye}</p>
+    <h2 class="sec-title"><span>${t.secRndTitleA}</span> <em>${t.secRndTitleB}</em></h2>
     <div class="gold-line"></div>
     <div class="fr-carousel" id="fr-carousel">
       <div class="fr-track" id="fr-track">`;
   for (let i = 1; i <= renderTotal; i++) {
-    html += `<img src="${basePath}${label}-imaginary-img-${i}.webp" alt="Render ${i}" loading="lazy" onerror="this.style.visibility='hidden'" decoding="async"/>`;
+    const ph = 'images/architecture/placeholders/placeholder-' + (((i - 1) % 3) + 1) + '.webp';
+    html += `<img src="${basePath}${label}-imaginary-img-${i}.webp" alt="Render ${i}" loading="lazy" onerror="this.onerror=null;this.src='${ph}'" decoding="async"/>`;
   }
   html += `</div>
     <div class="fr-arrows">
@@ -805,10 +813,21 @@ const renderTotal = IMAGINARY_COUNTS[floorId] || 0;
   }
   html += `</div>`;
   container.innerHTML = html;
-})();
 
-let renderIndex = 0;
-let renderInterval = renderTotal > 1 ? setInterval(autoSlideRender, 5000) : null;
+  // Reset state and reposition track (LTR forced via CSS so RTL pages still slide correctly).
+  renderIndex = 0;
+  updateRenderPos();
+
+  if (renderInterval) { clearInterval(renderInterval); renderInterval = null; }
+  if (renderTotal > 1) {
+    renderInterval = setInterval(autoSlideRender, 5000);
+    const carousel = document.getElementById('fr-carousel');
+    if (carousel) {
+      carousel.addEventListener('mouseenter', () => { if (renderInterval) { clearInterval(renderInterval); renderInterval = null; } });
+      carousel.addEventListener('mouseleave', () => { if (!renderInterval) renderInterval = setInterval(autoSlideRender, 5000); });
+    }
+  }
+}
 
 function slideRender(dir) {
   if (renderTotal < 1) return;
@@ -829,15 +848,6 @@ function updateRenderPos() {
   if (track) track.style.transform = 'translateX(-' + (renderIndex * 100) + '%)';
   document.querySelectorAll('.fr-dot').forEach((d, i) => d.classList.toggle('active', i === renderIndex));
 }
-
-// Pause on hover
-document.addEventListener('DOMContentLoaded', () => {
-  const carousel = document.getElementById('fr-carousel');
-  if (carousel && renderTotal > 1) {
-    carousel.addEventListener('mouseenter', () => { if (renderInterval) clearInterval(renderInterval); });
-    carousel.addEventListener('mouseleave', () => { renderInterval = setInterval(autoSlideRender, 5000); });
-  }
-});
 
 async function submitVisit(e) {
   e.preventDefault();

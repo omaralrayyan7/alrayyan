@@ -328,6 +328,23 @@
       <!-- ── BUSINESSES ── -->
       <div class="adm-panel" id="panel-businesses">
         <div style="margin-bottom:20px;font-size:.72rem;color:var(--muted);">Manage the group's business units shown on the main page.</div>
+
+        <!-- Responsive Logo Scaling — scales all 3 business logos on the public site. -->
+        <div class="adm-card" style="margin-bottom:18px;padding:18px 20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+            <div>
+              <div style="font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold-light);margin-bottom:4px;">Logo Scale</div>
+              <div style="font-size:.7rem;color:var(--muted);">Adjust the visual size of all business logos on the public site. Applies live.</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;min-width:260px;flex:1;max-width:420px;">
+              <span style="font-size:.66rem;color:var(--muted);">50%</span>
+              <input id="biz-logo-scale" type="range" min="50" max="150" step="1" value="100" oninput="onBizLogoScaleInput(this.value)" style="flex:1;accent-color:var(--gold,#d4af37);cursor:pointer;"/>
+              <span style="font-size:.66rem;color:var(--muted);">150%</span>
+              <span id="biz-logo-scale-val" style="min-width:48px;text-align:right;font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--gold-light);font-weight:600;">100%</span>
+            </div>
+          </div>
+        </div>
+
         <div class="adm-card">
           <div style="overflow-x:auto">
             <table class="adm-table">
@@ -363,8 +380,8 @@
       </div>
       <div class="adm-form-row">
         <div class="adm-form-group">
-          <label class="adm-form-label">Available Units</label>
-          <input class="adm-form-control" type="number" id="off-avail" placeholder="0" min="0"/>
+          <label class="adm-form-label">Available Units <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(auto — from Availability tab)</span></label>
+          <input class="adm-form-control" type="number" id="off-avail" placeholder="0" min="0" readonly style="opacity:.7;cursor:not-allowed"/>
         </div>
         <div class="adm-form-group">
           <label class="adm-form-label">Status</label>
@@ -716,15 +733,21 @@ function adminFsSave(key, value){
 }
 
 function loadOffices(){
+  // Canonical office types — names MUST match Office Rental Solutions on index.html
+  // and the offices[] array in office-detail.html. Available unit counts are
+  // derived live from calculateAvailableUnits() rather than stored.
   const def = [
-    {id:1,name:'Executive Offices',     price:'From JOD 3,500 / month',avail:8, status:'available',desc:'Private, fully furnished executive offices with dedicated reception, high-speed internet, and premium finishes.',size:'25–80 m²'},
-    {id:2,name:'Co-Working Spaces',    price:'From JOD 800 / month',  avail:24,status:'available',desc:'Flexible shared workspaces designed for startups and freelancers — dynamic, inspiring environments.',size:'Open plan'},
-    {id:3,name:'Meeting Rooms',        price:'From JOD 250 / hour',   avail:6, status:'available',desc:'State-of-the-art conference facilities available hourly or daily, fully equipped with AV technology.',size:'4–40 persons'},
-    {id:4,name:'Virtual Offices',      price:'From JOD 400 / month',  avail:12,status:'available',desc:'Prestigious business address with mail handling and call answering — your identity, without the overhead.',size:'N/A'},
-    {id:5,name:'Full Floor Offices',   price:'Custom Pricing',        avail:2, status:'low',      desc:'Entire floors available for enterprise clients requiring expansive, customisable corporate headquarters.',size:'800–1,400 m²'},
-    {id:6,name:'Smart Offices',        price:'From JOD 5,000 / month',avail:4, status:'low',      desc:'Tech-integrated spaces with IoT controls, automated lighting, climate management and smart security.',size:'30–120 m²'},
+    {id:1,name:'Full Floor',                 price:'Custom Pricing',        status:'available',desc:'Entire floor for one tenant. Open layout, maximum space, fully customisable. Ideal for corporate headquarters.',                      size:'400 m²'},
+    {id:2,name:'Small Spaces',               price:'From JOD 4,000 / month',status:'available',desc:'Pre-divided units within a shared floor. Choose 80 m² or 160 m² units, fitted with private entrances and shared corridor.',    size:'80 – 160 m²'},
+    {id:3,name:'Open Space',                 price:'Custom Pricing',        status:'available',desc:'Large undivided open-plan space. Perfect for showrooms, event venues, or custom buildouts. Ground & basement levels.',         size:'1,000 m²'},
+    {id:4,name:'9th Floor – Outdoor Terrace',price:'Custom Pricing',        status:'available',desc:'Rooftop outdoor terrace with panoramic city views. Ideal for restaurants, lounges, event spaces, or open-air offices.',       size:'300 m²'},
+    {id:5,name:'9th Floor – Indoor Space',   price:'Custom Pricing',        status:'available',desc:'Premium penthouse-level indoor space with exclusive access. Perfect for executive offices, private studios, or VIP lounges.', size:'100 m²'},
+    {id:6,name:'Small Shops',                price:'Custom Pricing',        status:'available',desc:'Compact 3×3 m ground-floor retail units with street-level access. Ideal for cafés, boutiques, or service counters.',          size:'9 m² × 3'},
   ];
-  return ADMIN_FS.offices || def;
+  // Attach live availability counts so every consumer of loadOffices() sees
+  // the same number that's shown in the dashboard / public site.
+  const base = ADMIN_FS.offices || def;
+  return base.map(o => ({ ...o, avail: calculateAvailableUnits(o.name) }));
 }
 function saveOffices(data){ adminFsSave('offices', data); }
 
@@ -845,8 +868,9 @@ function availFlip(key, el){
     if (state[key]){ lbl.className='avail-toggle-state on'; lbl.textContent='✓ Available'; sw.classList.add('on'); }
     else           { lbl.className='avail-toggle-state off'; lbl.textContent='✗ Not available'; sw.classList.remove('on'); }
   }
-  // Keep dashboard overview counts in sync with live toggles
+  // Keep dashboard overview + offices table counts in sync with live toggles
   try { renderDashboard(); } catch(e){}
+  try { renderOffices(); } catch(e){}
 }
 function availSave(){
   // Saving is instant on flip; republish to be explicit.
@@ -859,6 +883,29 @@ function availReset(){
   renderAvailability();
   try { renderDashboard(); } catch(e){}
   showToast('Availability reset to defaults.');
+}
+
+// ── BIZ LOGO SCALE ─────────────────────────────────────────────────────────
+// Stored as a percentage integer in site_content/main.biz_logo_scale (e.g. 100).
+// The public site reads it and sets --biz-logo-scale on :root.
+let _bizLogoScaleSaveT = null;
+function onBizLogoScaleInput(val){
+  const pct = Math.max(50, Math.min(150, parseInt(val, 10) || 100));
+  const lbl = document.getElementById('biz-logo-scale-val');
+  if (lbl) lbl.textContent = pct + '%';
+  // Debounce the Firestore write so dragging doesn't spam it.
+  if (_bizLogoScaleSaveT) clearTimeout(_bizLogoScaleSaveT);
+  _bizLogoScaleSaveT = setTimeout(() => {
+    if (window.ArData) ArData.setSiteContent({ biz_logo_scale: pct });
+  }, 250);
+}
+function syncBizLogoScaleUI(){
+  const sc = (window.ArData && ArData.get.siteContent()) || {};
+  const pct = parseInt(sc.biz_logo_scale, 10) || 100;
+  const slider = document.getElementById('biz-logo-scale');
+  const lbl = document.getElementById('biz-logo-scale-val');
+  if (slider) slider.value = pct;
+  if (lbl) lbl.textContent = pct + '%';
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
@@ -875,6 +922,11 @@ async function initAdmin(){
   renderProducts();
   renderSiteContent();
   renderPricing();
+  // Pull current Biz Logo Scale from ArData (Firestore) once data has loaded.
+  if (window.ArData){
+    ArData.subscribe('site_content', () => syncBizLogoScaleUI());
+  }
+  syncBizLogoScaleUI();
 }
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
@@ -920,7 +972,14 @@ function savePricingState(obj){
   if (window.ArData) ArData.setPricing(obj);
 }
 
-// Count available units by solution type from live toggle state
+// Count available units by solution type from live toggle state.
+// Mapping mirrors Office Rental Solutions on the public site:
+//   B1 (1,000 m²)      → Open Space
+//   _400 (Full Floors) → Full Floor
+//   _80, _160          → Small Spaces
+//   g_shop*            → Small Shops
+//   9-outdoor_300      → 9th Floor – Outdoor Terrace
+//   9-indoor_100       → 9th Floor – Indoor Space
 function countAvailByType(){
   const state = (typeof loadAvail === 'function') ? loadAvail() : {};
   const counts = {
@@ -929,15 +988,22 @@ function countAvailByType(){
   };
   Object.keys(state).forEach(key => {
     if (!state[key]) return;
-    if (key === 'b1_1000')            counts['Full Floor']++;
+    if (key === 'b1_1000')            counts['Open Space']++;
     else if (key === '9-outdoor_300') counts['9th Floor – Outdoor Terrace']++;
     else if (key === '9-indoor_100')  counts['9th Floor – Indoor Space']++;
     else if (/^g_shop/.test(key))     counts['Small Shops']++;
     else if (/_80$/.test(key))        counts['Small Spaces']++;
-    else if (/_160$/.test(key))       counts['Open Space']++;
+    else if (/_160$/.test(key))       counts['Small Spaces']++;
     else if (/_400$/.test(key))       counts['Full Floor']++;
   });
   return counts;
+}
+
+// Public helper — returns the number of available units for a given
+// Office Rental Solutions type name. Reads from the live availability toggles.
+function calculateAvailableUnits(type){
+  const counts = countAvailByType();
+  return counts[type] || 0;
 }
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────
@@ -1083,9 +1149,9 @@ function saveOffice(){
   const price = document.getElementById('off-price').value.trim();
   if(!name||!price){ showToast('Please fill in required fields','error'); return; }
   const offices = loadOffices();
+  // `avail` is derived live from availability toggles — do not persist the display value.
   const data = {
     name, price,
-    avail: parseInt(document.getElementById('off-avail').value)||0,
     status: document.getElementById('off-status').value,
     desc: document.getElementById('off-desc').value.trim(),
     size: document.getElementById('off-size').value.trim(),
