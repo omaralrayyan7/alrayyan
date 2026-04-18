@@ -485,6 +485,35 @@ const floorId = params.get('floor') || 'b1';
 const fl      = FLOORS[floorId] || FLOORS['b1'];
 let currentLang = localStorage.getItem('al_lang') || 'en';
 
+// ── FLOOR META (image paths) ───────────────────────────────────────────────
+// Must be defined before renderFloor() / gallery / carousel IIFEs reference them.
+const FL_LABEL = {
+  'b1': 'b1-floor',
+  'g':  'g-floor',
+  '3':  '3rd-floor',
+  '4':  '4th-floor',
+  '5':  '5th-floor',
+  '6':  '6th-floor',
+  '7':  '7th-floor',
+  '9-outdoor': '9th-floor-outdoor',
+  '9-indoor':  '9th-floor-indoor',
+};
+const IMAGINARY_COUNTS = {
+  'b1': 4, 'g': 3, '3': 0, '4': 6, '5': 1, '6': 5, '7': 5,
+  '9-outdoor': 3, '9-indoor': 3,
+};
+const floorImageConfig = {
+  'b1':        { real: 3, mains: 0, ext: 'webp' },
+  'g':         { real: 0, mains: 0, ext: 'webp' },
+  '3':         { real: 0, mains: 0, ext: 'webp' },
+  '4':         { real: 0, mains: 0, ext: 'webp' },
+  '5':         { real: 0, mains: 0, ext: 'webp' },
+  '6':         { real: 0, mains: 0, ext: 'webp' },
+  '7':         { real: 0, mains: 0, ext: 'webp' },
+  '9-indoor':  { real: 0, mains: 0, ext: 'webp' },
+  '9-outdoor': { real: 0, mains: 0, ext: 'webp' },
+};
+
 function renderFloor() {
   const L = currentLang;
   document.title = (fl.name[L]) + ' – Alrayyan Tower';
@@ -638,36 +667,7 @@ function openMaps() {
   window.open('https://www.google.com/maps/search/Alrayyan+Tower+Queen+Rania+Street+Amman','_blank');
 }
 
-// ── FLOOR META (image paths) ───────────────────────────────────────────────
-const FL_LABEL = {
-  'b1': 'b1-floor',
-  'g':  'g-floor',
-  '3':  '3rd-floor',
-  '4':  '4th-floor',
-  '5':  '5th-floor',
-  '6':  '6th-floor',
-  '7':  '7th-floor',
-  '9-outdoor': '9th-floor-outdoor',
-  '9-indoor':  '9th-floor-indoor',
-};
-const IMAGINARY_COUNTS = {
-  'b1': 4, 'g': 3, '3': 0, '4': 6, '5': 1, '6': 5, '7': 5,
-  '9-outdoor': 3, '9-indoor': 3,
-};
-
 // ── SECTION A: FLOOR IMAGES GALLERY ────────────────────────────────────────
-const floorImageConfig = {
-  'b1':        { real: 3, mains: 0, ext: 'webp' },
-  'g':         { real: 0, mains: 0, ext: 'webp' },
-  '3':         { real: 0, mains: 0, ext: 'webp' },
-  '4':         { real: 0, mains: 0, ext: 'webp' },
-  '5':         { real: 0, mains: 0, ext: 'webp' },
-  '6':         { real: 0, mains: 0, ext: 'webp' },
-  '7':         { real: 0, mains: 0, ext: 'webp' },
-  '9-indoor':  { real: 0, mains: 0, ext: 'webp' },
-  '9-outdoor': { real: 0, mains: 0, ext: 'webp' },
-};
-
 (function buildFloorGallery() {
   const cfg = floorImageConfig[floorId];
   const container = document.getElementById('floor-gallery');
