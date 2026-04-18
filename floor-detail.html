@@ -687,7 +687,7 @@ const floorImageConfig = {
     const mainCols = cfg.mains === 2 ? 'cols-2' : 'cols-3';
     html += `<div class="fg-mains ${mainCols}" id="fg-mains">`;
     for (let i = 1; i <= cfg.mains; i++) {
-      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" id="fg-main-${i}" class="fg-${floorId}-${i}" ${errH}/>`;
+      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" id="fg-main-${i}" class="fg-${floorId}-${i}" loading="lazy" ${errH}/>`;
     }
     html += `</div>`;
 
@@ -695,7 +695,7 @@ const floorImageConfig = {
       html += `<div class="fg-thumbs-wrap"><div class="fg-thumbs" id="fg-thumbs">`;
       for (let i = 1; i <= cfg.real; i++) {
         const isMain = i <= cfg.mains;
-        html += `<img src="${basePath}${fileName(i)}" alt="Thumbnail ${i}" class="fg-${floorId}-${i}-thumb ${isMain ? 'active' : ''}" onclick="swapMainImage(this, ${i})" ${errH}/>`;
+        html += `<img src="${basePath}${fileName(i)}" alt="Thumbnail ${i}" class="fg-${floorId}-${i}-thumb ${isMain ? 'active' : ''}" onclick="swapMainImage(this, ${i})" loading="lazy" ${errH}/>`;
       }
       html += `</div>
         <div class="fg-arrows">
@@ -707,7 +707,7 @@ const floorImageConfig = {
     const gridCols = cfg.real === 2 ? 'cols-2' : 'cols-3';
     html += `<div class="fg-simple ${gridCols}">`;
     for (let i = 1; i <= cfg.real; i++) {
-      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" class="fg-${floorId}-${i}" ${errH}/>`;
+      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" class="fg-${floorId}-${i}" loading="lazy" ${errH}/>`;
     }
     html += `</div>`;
   }
@@ -785,7 +785,7 @@ const renderTotal = IMAGINARY_COUNTS[floorId] || 0;
     <div class="fr-carousel" id="fr-carousel">
       <div class="fr-track" id="fr-track">`;
   for (let i = 1; i <= renderTotal; i++) {
-    html += `<img src="${basePath}${label}-imaginary-img-${i}.webp" alt="Render ${i}" onerror="this.style.visibility='hidden'"/>`;
+    html += `<img src="${basePath}${label}-imaginary-img-${i}.webp" alt="Render ${i}" loading="lazy" onerror="this.style.visibility='hidden'"/>`;
   }
   html += `</div>
     <div class="fr-arrows">
