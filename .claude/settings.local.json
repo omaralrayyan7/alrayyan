@@ -30,7 +30,14 @@
       "Bash(python _phase2_refs.py)",
       "Bash(python -c \"from PIL import Image; img=Image.open\\('images/logo/logo.png'\\); print\\(img.size, img.mode\\)\")",
       "Bash(python -c \"from PIL import Image; print\\('PIL ok, webp support:', Image.core.HAVE_LIBWEBP if hasattr\\(Image.core, 'HAVE_LIBWEBP'\\) else 'unknown'\\)\")",
-      "Bash(python -c \"from PIL import Image; im=Image.new\\('RGB',\\(10,10\\),'red'\\); im.save\\('__t.webp','webp',quality=80\\); print\\('webp ok'\\); import os; os.remove\\('__t.webp'\\)\")"
+      "Bash(python -c \"from PIL import Image; im=Image.new\\('RGB',\\(10,10\\),'red'\\); im.save\\('__t.webp','webp',quality=80\\); print\\('webp ok'\\); import os; os.remove\\('__t.webp'\\)\")",
+      "Bash(python _bulk_head_update.py)",
+      "Bash(python _bulk_defer.py)",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Bash(git -C \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower\" status)",
+      "Bash(git -C \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower\" add -A)",
+      "Bash(git -C \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower\" commit -m \"fix: floor real images renamed with floor-specific IDs, dark mode disabled on all subpages\")"
     ]
   }
 }

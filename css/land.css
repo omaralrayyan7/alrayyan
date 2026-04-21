@@ -1,3 +1,4 @@
+html { color-scheme: only light !important; }
 
     :root {
       --earth:      #080a06;
@@ -18,6 +19,18 @@
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--earth); }
     ::-webkit-scrollbar-thumb { background: var(--olive); border-radius: 2px; }
+
+    /* Prevent dark-mode extensions from filtering logo/nav images */
+    .nav-logo img,
+    .nav-brand img,
+    .footer-brand img,
+    .contact-logo,
+    img[src*="logo"] {
+      filter: none !important;
+      -webkit-filter: none !important;
+      mix-blend-mode: normal !important;
+      isolation: isolate;
+    }
 
     /* NAV */
     nav {

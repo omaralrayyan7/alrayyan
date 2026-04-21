@@ -1,3 +1,4 @@
+html { color-scheme: only light !important; }
 
     :root{
       --ink:#0a0608;--deep:#140b10;--rose:#c8738a;--rose-light:#e8a0b4;
@@ -12,6 +13,18 @@
     ::-webkit-scrollbar{width:4px;}
     ::-webkit-scrollbar-track{background:var(--ink);}
     ::-webkit-scrollbar-thumb{background:var(--rose);border-radius:2px;}
+
+    /* Prevent dark-mode extensions from filtering logo/nav images */
+    .nav-logo img,
+    .nav-brand img,
+    .footer-brand img,
+    .contact-logo,
+    img[src*="logo"] {
+      filter: none !important;
+      -webkit-filter: none !important;
+      mix-blend-mode: normal !important;
+      isolation: isolate;
+    }
 
     /* SALES BAR */
     #sales-bar{

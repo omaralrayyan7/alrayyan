@@ -1,3 +1,4 @@
+html { color-scheme: only light !important; }
 
     :root{
       --black:#050505;--dark:#0a0a0a;--dark2:#111;
@@ -12,6 +13,18 @@
     a{text-decoration:none;color:inherit;}
     img{max-width:100%;display:block;}
     ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--black);}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+
+    /* Prevent dark-mode extensions from filtering logo/nav images */
+    .nav-logo img,
+    .nav-brand img,
+    .footer-brand img,
+    .contact-logo,
+    img[src*="logo"] {
+      filter: none !important;
+      -webkit-filter: none !important;
+      mix-blend-mode: normal !important;
+      isolation: isolate;
+    }
 
     /* NAV */
     nav{position:fixed;top:0;left:0;right:0;z-index:900;padding:0 5%;height:72px;
@@ -448,4 +461,23 @@ html.dark footer img[src*="logo"], html[data-theme="dark"] footer img[src*="logo
 }
 @media (max-width: 360px) {
   .nav-brand { font-size: 0.72rem; }
+}
+
+/* ── Mobile: stack floor gallery images vertically ── */
+@media (max-width: 768px) {
+  .fg-simple.cols-3,
+  .fg-simple.cols-2,
+  .fg-mains.cols-3,
+  .fg-mains.cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  .fg-simple img,
+  .fg-mains img {
+    height: 260px;
+    width: 100%;
+  }
+  .fg-thumbs img {
+    width: 90px;
+    height: 60px;
+  }
 }

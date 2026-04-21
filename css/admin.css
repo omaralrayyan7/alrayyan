@@ -1,3 +1,4 @@
+html { color-scheme: only light !important; }
 
     :root{
       --black:#050505;--dark:#0c0a06;--gold:#b87333;--gold-light:#d4976a;

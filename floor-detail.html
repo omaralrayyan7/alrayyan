@@ -2,15 +2,16 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8"/>
+  <meta name="darkreader-lock">
+  <meta name="color-scheme" content="only light">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="color-scheme" content="dark"/>
   <meta name="theme-color" content="#050505"/>
   <title>Floor Detail – Alrayyan Tower</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico"/>
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
-  <link rel="icon" href="images/logo/logo.png" type="image/png"/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/logo/favicon.png"/>
+  <link rel="shortcut icon" href="images/logo/favicon.png"/>
+  <link rel="apple-touch-icon" href="images/logo/favicon.png"/>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Organization","name":"Alrayyan Group","url":"https://alrayyangroup.online","logo":"https://alrayyangroup.online/images/logo/logo.png"}
   </script>
@@ -35,7 +36,7 @@
 <body>
 
 <nav id="navbar">
-  <a href="index.html"><div class="nav-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" class="brand-logo-img" style="height:32px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:none;" decoding="async" loading="eager" width="656" height="656"/>ALRAYYAN GROUP</div></a>
+  <a href="index.html"><div class="nav-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" data-darkreader-inline-filter="" class="brand-logo-img" style="height:32px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:none;" decoding="async" loading="eager" width="656" height="656"/>ALRAYYAN GROUP</div></a>
   <div class="nav-right">
     <a href="index.html#available" class="nav-back" data-i18n="backToAvail">← Back to Floors</a>
     <div class="lang-sw">
@@ -220,7 +221,7 @@
 </style>
 
 <footer>
-  <div class="f-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" class="brand-logo-img" style="height:28px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:none;" decoding="async" loading="eager" width="656" height="656"/>ALRAYYAN GROUP</div>
+  <div class="f-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" data-darkreader-inline-filter="" class="brand-logo-img" style="height:28px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:none;" decoding="async" loading="eager" width="656" height="656"/>ALRAYYAN GROUP</div>
   <div class="f-copy" data-i18n="footCopy">© 2025 Alrayyan Group. All rights reserved.</div>
 </footer>
 
@@ -507,15 +508,15 @@ const IMAGINARY_COUNTS = {
   '9-outdoor': 3, '9-indoor': 3,
 };
 const floorImageConfig = {
-  'b1':        { real: 3, mains: 0, ext: 'webp' },
-  'g':         { real: 0, mains: 0, ext: 'webp' },
-  '3':         { real: 0, mains: 0, ext: 'webp' },
-  '4':         { real: 0, mains: 0, ext: 'webp' },
-  '5':         { real: 0, mains: 0, ext: 'webp' },
-  '6':         { real: 0, mains: 0, ext: 'webp' },
-  '7':         { real: 0, mains: 0, ext: 'webp' },
-  '9-indoor':  { real: 0, mains: 0, ext: 'webp' },
-  '9-outdoor': { real: 0, mains: 0, ext: 'webp' },
+  'b1':        { real: 3, mains: 0, ext: 'jpg' },
+  'g':         { real: 0, mains: 0, ext: 'jpg' },
+  '3':         { real: 0, mains: 0, ext: 'jpg' },
+  '4':         { real: 0, mains: 0, ext: 'jpg' },
+  '5':         { real: 0, mains: 0, ext: 'jpg' },
+  '6':         { real: 1, mains: 0, ext: 'jpg' },
+  '7':         { real: 0, mains: 0, ext: 'jpg' },
+  '9-indoor':  { real: 0, mains: 0, ext: 'jpg' },
+  '9-outdoor': { real: 0, mains: 0, ext: 'jpg' },
 };
 // Carousel state — declared before renderFloor() / init IIFE to avoid TDZ.
 const renderTotal = IMAGINARY_COUNTS[floorId] || 0;
@@ -610,31 +611,33 @@ const I18N = {
     secBkEye:'Schedule a Visit', secBkTitleA:'Book a', secBkTitleB:'Site Visit',
     bkHead:'Request a Visit', bkSub:'Our team confirms within 24 hours',
     lblFname:'First Name *', lblLname:'Last Name *', lblCompany:'Company',
-    lblPhone:'Phone / WhatsApp *', lblDate:'Preferred Date *', lblTime:'Preferred Time',
+    lblPhone:'Phone / WhatsApp *', lblEmail:'Email', lblDate:'Preferred Date *', lblTime:'Preferred Time',
     lblNotes:'Notes', anyTime:'Any time',
     btnConfirm:'Confirm Visit →', bkNote:'Free of charge · No obligation · Sun–Thu 9am–6pm',
     sxTitle:'Visit Requested!', sxBody:'Our team will contact you within 24 hours to confirm your appointment.', sxRef:'Ref',
     qcCall:'Call Us', qcWA:'WhatsApp', qcChat:'Chat Now',
+    qcIG:'Instagram', qcFollow:'Follow', waFloat:'WhatsApp',
     footCopy:'© 2025 Alrayyan Group. All rights reserved.',
   },
   ar: {
     backToAvail:'← العودة للطوابق',
     bcHome:'الرئيسية', bcAvail:'الطوابق المتاحة',
     heroEye:'تفاصيل الطابق',
-    secOvEye:'نظرة عامة', secOvTitleA:'عن هذه', secOvTitleB:'المساحة',
+    secOvEye:'نظرة عامة', secOvTitleA:'عن هذا', secOvTitleB:'الفضاء',
     secGalEye:'التصوير', secGalTitleA:'صور', secGalTitleB:'الطابق',
-    secRndEye:'مشاهد تخيلية', secRndTitleA:'تصميم', secRndTitleB:'الطابق',
-    secAmEye:'ما هو مُدرج', secAmTitleA:'المرافق', secAmTitleB:'والميزات',
-    secFuEye:'الموقع', secFuTitleA:'اعثر', secFuTitleB:'علينا',
-    locAddr:'برج الريان · عمّان، الأردن', locClick:'انقر لفتح خرائط جوجل →',
+    secRndEye:'مشاهد تخيلية', secRndTitleA:'مخطط', secRndTitleB:'الطابق',
+    secAmEye:'ما هو مشمول', secAmTitleA:'المرافق', secAmTitleB:'والميزات',
+    secFuEye:'الموقع', secFuTitleA:'ابحث', secFuTitleB:'عنا',
+    locAddr:'برج الريان، شارع الملكة رانيا، عمان', locClick:'انقر للفتح في خرائط جوجل ←',
     secBkEye:'جدولة زيارة', secBkTitleA:'احجز', secBkTitleB:'زيارة ميدانية',
     bkHead:'اطلب زيارة', bkSub:'يؤكد فريقنا خلال 24 ساعة',
     lblFname:'الاسم الأول *', lblLname:'اسم العائلة *', lblCompany:'الشركة',
-    lblPhone:'الهاتف / واتساب *', lblDate:'التاريخ المفضل *', lblTime:'الوقت المفضل',
+    lblPhone:'الهاتف / واتساب *', lblEmail:'البريد الإلكتروني', lblDate:'التاريخ المفضل *', lblTime:'الوقت المفضل',
     lblNotes:'ملاحظات', anyTime:'أي وقت',
     btnConfirm:'تأكيد الزيارة →', bkNote:'مجاناً · بدون التزام · أحد–خميس 9ص–6م',
     sxTitle:'تم طلب الزيارة!', sxBody:'سيتصل فريقنا بك خلال 24 ساعة لتأكيد موعدك.', sxRef:'المرجع',
     qcCall:'اتصل بنا', qcWA:'واتساب', qcChat:'محادثة',
+    qcIG:'إنستغرام', qcFollow:'متابعة', waFloat:'واتساب',
     footCopy:'© 2025 مجموعة الريان. جميع الحقوق محفوظة.',
   }
 };
@@ -687,37 +690,37 @@ function openMaps() {
 function renderFloorGallery() {
   const container = document.getElementById('floor-gallery');
   if (!container) return;
-  container.style.display = '';
 
   const cfg = floorImageConfig[floorId] || { real: 0, mains: 0, ext: 'webp' };
   const t = I18N[currentLang] || I18N.en;
   const imgExt = cfg.ext || 'webp';
-  const label  = FL_LABEL[floorId];
   const basePath = 'images/floors/floor-' + floorId + '/real/';
-  const errH = `onerror="this.onerror=null;this.src='images/architecture/placeholders/placeholder-1.webp'"`;
-
-  let html = `<p class="sec-eye">${t.secGalEye}</p>
-    <h2 class="sec-title"><span>${t.secGalTitleA}</span> <em>${t.secGalTitleB}</em></h2>
-    <div class="gold-line"></div>`;
+  // Per-floor-only paths: on error, collapse the broken image to zero opacity so the
+  // surrounding grid stays intact and other images still render cleanly.
+  const errH = `onerror="this.onerror=null;this.closest('.fg-simple, .fg-mains')?.style && (this.style.opacity='0')"`;
 
   if (cfg.real === 0) {
-    // Placeholder mode — always show the section so layout is consistent across all floors.
-    html += `<div class="fg-simple cols-3">`;
-    for (let i = 1; i <= 3; i++) {
-      html += `<img src="images/architecture/placeholders/placeholder-${i}.webp" alt="Floor ${floorId} preview ${i}" class="fg-placeholder" loading="lazy" decoding="async"/>`;
-    }
-    html += `</div>`;
-    container.innerHTML = html;
+    container.style.display = 'none';
+    container.innerHTML = '';
     return;
   }
+  container.style.display = '';
 
-  const fileName = (i) => `${label}-real-img-${i}.${imgExt}`;
+  const floorName = (fl.name && fl.name[currentLang]) || (fl.name && fl.name.en) || '';
+  const galleryTitle = currentLang === 'ar'
+    ? `<span>صور</span> <em>${floorName}</em>`
+    : `<span>${floorName}</span> <em>Images</em>`;
+  let html = `<p class="sec-eye">${t.secGalEye}</p>
+    <h2 class="sec-title">${galleryTitle}</h2>
+    <div class="gold-line"></div>`;
+
+  const fileName = (i) => `${floorId}-real-img-${i}.${imgExt}`;
 
   if (cfg.mains > 0) {
     const mainCols = cfg.mains === 2 ? 'cols-2' : 'cols-3';
     html += `<div class="fg-mains ${mainCols}" id="fg-mains">`;
     for (let i = 1; i <= cfg.mains; i++) {
-      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" id="fg-main-${i}" class="fg-${floorId}-${i}" loading="lazy" ${errH} decoding="async"/>`;
+      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" id="fg-img-${floorId}-${i}" class="fg-img fg-${floorId}-${i}" loading="eager" ${errH} decoding="sync"/>`;
     }
     html += `</div>`;
 
@@ -725,7 +728,7 @@ function renderFloorGallery() {
       html += `<div class="fg-thumbs-wrap"><div class="fg-thumbs" id="fg-thumbs">`;
       for (let i = 1; i <= cfg.real; i++) {
         const isMain = i <= cfg.mains;
-        html += `<img src="${basePath}${fileName(i)}" alt="Thumbnail ${i}" class="fg-${floorId}-${i}-thumb ${isMain ? 'active' : ''}" onclick="swapMainImage(this, ${i})" loading="lazy" ${errH} decoding="async"/>`;
+        html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" id="fg-img-${floorId}-${i}-thumb" class="fg-img fg-${floorId}-${i}-thumb ${isMain ? 'active' : ''}" onclick="swapMainImage(this, ${i})" loading="eager" ${errH} decoding="async"/>`;
       }
       html += `</div>
         <div class="fg-arrows">
@@ -737,7 +740,8 @@ function renderFloorGallery() {
     const gridCols = cfg.real === 2 ? 'cols-2' : 'cols-3';
     html += `<div class="fg-simple ${gridCols}">`;
     for (let i = 1; i <= cfg.real; i++) {
-      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" class="fg-${floorId}-${i}" loading="lazy" ${errH} decoding="async"/>`;
+      const decodeAttr = i <= 3 ? 'sync' : 'async';
+      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${floorId} image ${i}" id="fg-img-${floorId}-${i}" class="fg-img fg-${floorId}-${i}" loading="eager" ${errH} decoding="${decodeAttr}"/>`;
     }
     html += `</div>`;
   }
@@ -750,14 +754,11 @@ function swapMainImage(thumbEl, imgIndex) {
   const cfg = floorImageConfig[floorId];
   if (!cfg) return;
   const imgExt = cfg.ext || 'webp';
-  const label  = FL_LABEL[floorId];
-  // swap clicked thumbnail into first main slot
   const mainImg = document.getElementById('fg-main-1');
   if (mainImg) {
     const basePath = 'images/floors/floor-' + floorId + '/real/';
-    mainImg.src = basePath + label + '-real-img-' + imgIndex + '.' + imgExt;
+    mainImg.src = basePath + floorId + '-real-img-' + imgIndex + '.' + imgExt;
   }
-  // update active states
   document.querySelectorAll('#fg-thumbs img').forEach(t => t.classList.remove('active'));
   thumbEl.classList.add('active');
 }
@@ -799,8 +800,7 @@ function renderFloorRenders() {
     <div class="fr-carousel" id="fr-carousel">
       <div class="fr-track" id="fr-track">`;
   for (let i = 1; i <= renderTotal; i++) {
-    const ph = 'images/architecture/placeholders/placeholder-' + (((i - 1) % 3) + 1) + '.webp';
-    html += `<img src="${basePath}${label}-imaginary-img-${i}.webp" alt="Render ${i}" loading="lazy" onerror="this.onerror=null;this.src='${ph}'" decoding="async"/>`;
+    html += `<img src="${basePath}${label}-imaginary-img-${i}.webp" alt="Render ${i}" loading="lazy" onerror="this.onerror=null;this.style.display='none'" decoding="async"/>`;
   }
   html += `</div>
     <div class="fr-arrows">

@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
+  <meta name="darkreader-lock">
+  <meta name="color-scheme" content="only light">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel – Alrayyan Group</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico"/>
@@ -714,7 +716,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 const ADMIN_FS = {};
 async function adminFsLoadAll(){
   if (!window.db) return;
-  const keys = ['offices','floors','bookings','biz','availability','pricing','floor_details','lands','products','site_content','show_pricing'];
+  const keys = ['offices','floors','biz','availability','pricing','floor_details','lands','products','site_content','show_pricing'];
   await Promise.all(keys.map(async k => {
     try {
       const snap = await window.db.doc('admin_state/' + k).get();
@@ -776,8 +778,30 @@ function loadFloors(){
 }
 function saveFloors(data){ adminFsSave('floors', data); }
 
-function loadBookings(){ return ADMIN_FS.bookings || []; }
-function saveBookings(data){ adminFsSave('bookings', data); }
+// Bookings live in Firestore collection `bookings` (see js/ar-data.js).
+// _FS_BOOKINGS is populated by the onSnapshot listener in initBookingsListener().
+let _FS_BOOKINGS = [];
+let _bookingsUnsub = null;
+function initBookingsListener(){
+  if (!window.db || _bookingsUnsub) return;
+  _bookingsUnsub = window.db.collection('bookings')
+    .orderBy('created_at', 'desc')
+    .onSnapshot(snap => {
+      _FS_BOOKINGS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      try { renderBookings(); } catch(e){}
+      try { renderDashboard(); } catch(e){}
+    }, err => console.error('[bookings listener]', err));
+}
+async function updateBookingStatusFS(id, status){
+  try {
+    await window.db.collection('bookings').doc(String(id)).update({ status });
+    showToast('Booking '+status, 'success');
+  } catch(e){ console.error('[updateBookingStatusFS]', e); showToast('Update failed', 'error'); }
+}
+function deleteBookingFS(id){
+  if (!window.db) return Promise.resolve();
+  return window.db.collection('bookings').doc(String(id)).delete();
+}
 
 function loadBiz(){
   const def=[
@@ -915,7 +939,8 @@ async function initAdmin(){
   renderDashboard();
   renderOffices();
   renderFloors();
-  renderBookings();
+  renderBookings();       // initial empty render; live listener repaints on updates
+  initBookingsListener();
   renderBiz();
   renderFloorDetails();
   renderLands();
@@ -1008,7 +1033,7 @@ function calculateAvailableUnits(type){
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────
 function renderDashboard(){
-  const bookings = loadBookings();
+  const bookings = _FS_BOOKINGS;
   const counts = countAvailByType();
   const totalAvail = Object.values(counts).reduce((s,n)=>s+n,0);
   document.getElementById('st-avail').textContent = totalAvail;
@@ -1236,48 +1261,57 @@ function saveFloor(){
   showToast(_editFloorId?'Floor updated':'Floor added','success');
 }
 
-// ── BOOKINGS ──────────────────────────────────────────────────────────────────
+// ── BOOKINGS (Firestore-backed via initBookingsListener) ─────────────────────
 function renderBookings(){
-  const bookings = loadBookings();
+  const bookings = _FS_BOOKINGS;
   const tbody = document.getElementById('bookings-tbody');
+  if (!tbody) return;
   if(!bookings.length){
     tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:28px">No bookings yet.</td></tr>';
+    const st = document.getElementById('st-bookings'); if (st) st.textContent = '0';
     return;
   }
-  tbody.innerHTML = bookings.map(b=>`
+  tbody.innerHTML = bookings.map(b=>{
+    const name = b.visitor_name || b.name || '—';
+    const office = b.floor_preference || b.office || '—';
+    const date = b.preferred_date || b.date || '—';
+    const idJson = JSON.stringify(String(b.id));
+    const refEsc = String(b.ref||'').replace(/'/g,'&#39;');
+    return `
     <tr>
-      <td style="color:var(--gold);font-size:.65rem">${b.ref}</td>
-      <td style="font-weight:600">${b.name}</td>
+      <td style="color:var(--gold);font-size:.65rem">${b.ref||'—'}</td>
+      <td style="font-weight:600">${name}</td>
       <td style="color:var(--muted)">${b.company||'—'}</td>
-      <td style="color:var(--muted);font-size:.7rem">${b.office}</td>
-      <td style="color:var(--muted)">${b.date}</td>
-      <td style="color:var(--muted)">${b.phone}</td>
-      <td><span class="booking-status-badge ${b.status}">${b.status}</span></td>
+      <td style="color:var(--muted);font-size:.7rem">${office}</td>
+      <td style="color:var(--muted)">${date}</td>
+      <td style="color:var(--muted)">${b.phone||'—'}</td>
+      <td><span class="booking-status-badge ${b.status||'pending'}">${b.status||'pending'}</span></td>
       <td>
         <div style="display:flex;gap:4px;flex-wrap:wrap">
-          ${b.status==='pending'?`<button class="btn-sm-gold" onclick="updateBookingStatus(${b.id},'confirmed')">✓</button>`:''}
-          <button class="btn-sm-danger" onclick="confirmDelete('booking',${b.id},'Delete booking ${b.ref}?')">Del</button>
+          ${b.status==='pending'?`<button class="btn-sm-gold" onclick="updateBookingStatusFS(${idJson},'confirmed')">✓</button>`:''}
+          <button class="btn-sm-danger" onclick="confirmDelete('booking',${idJson},'Delete booking ${refEsc}?')">Del</button>
         </div>
       </td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
   document.getElementById('st-bookings').textContent = bookings.filter(b=>b.status==='pending').length;
 }
-function updateBookingStatus(id,status){
-  const bookings = loadBookings();
-  const b = bookings.find(x=>x.id===id);
-  if(b){ b.status=status; saveBookings(bookings); renderBookings(); showToast('Booking '+status,'success'); }
-}
-function addDemoBooking(){
-  const bookings = loadBookings();
-  bookings.push({
-    id:Date.now(),ref:'ARG-DEMO'+bookings.length,
-    name:'Ahmad Al-Hassan',company:'Demo Co.',
-    office:'Executive Offices',date:'2025-06-15',
-    phone:'+962 79 000 0000',status:'pending'
-  });
-  saveBookings(bookings);
-  renderBookings();
-  showToast('Demo booking added','success');
+async function addDemoBooking(){
+  if (!window.db){ showToast('Firestore not ready', 'error'); return; }
+  try {
+    await window.db.collection('bookings').add({
+      ref: 'ARG-DEMO-' + Date.now().toString(36).toUpperCase().slice(-5),
+      visitor_name: 'Ahmad Al-Hassan',
+      company: 'Demo Co.',
+      floor_preference: 'Executive Offices',
+      preferred_date: '2025-06-15',
+      phone: '+962 79 000 0000',
+      status: 'pending',
+      source: 'admin_demo',
+      created_at: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    showToast('Demo booking added','success');
+  } catch(e){ console.error('[addDemoBooking]', e); showToast('Failed to add demo booking', 'error'); }
 }
 
 // ── BUSINESSES ────────────────────────────────────────────────────────────────
@@ -1314,7 +1348,7 @@ document.getElementById('confirm-yes-btn').addEventListener('click',()=>{
   } else if(_deleteType==='floor'){
     const fl=loadFloors().filter(f=>f.id!==_deleteId);saveFloors(fl);renderFloors();
   } else if(_deleteType==='booking'){
-    const bk=loadBookings().filter(b=>b.id!==_deleteId);saveBookings(bk);renderBookings();
+    deleteBookingFS(_deleteId);
   } else if(_deleteType==='floorDetail'){
     const fd=loadFloorDetails(); delete fd[_deleteId]; saveFloorDetailsData(fd); renderFloorDetails();
   } else if(_deleteType==='land'){
