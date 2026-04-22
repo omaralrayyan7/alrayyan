@@ -42,15 +42,16 @@
       <div class="tag">Admin Dashboard</div>
     </div>
     <nav class="adm-nav">
-      <div class="adm-nav-item active" onclick="showPanel('dashboard',this)"><span class="ico">🏠</span> Home</div>
-      <div class="adm-nav-item" onclick="showPanel('siteContent',this)"><span class="ico">ℹ️</span> About</div>
-      <div class="adm-nav-item" onclick="showPanel('offices',this)"><span class="ico">🏢</span> Offices</div>
-      <div class="adm-nav-item" onclick="showPanel('availability',this)"><span class="ico">✅</span> Available Offices</div>
+      <div class="adm-nav-item active" onclick="showPanel('dashboard',this)"><span class="ico">🏠</span> Dashboard</div>
+      <div class="adm-nav-item" onclick="showPanel('siteContent',this)"><span class="ico">ℹ️</span> Homepage Content</div>
+      <div class="adm-nav-item" onclick="showPanel('offices',this)"><span class="ico">🏢</span> Office Types</div>
+      <div class="adm-nav-item" onclick="showPanel('availability',this)"><span class="ico">✅</span> Available Units</div>
       <div class="adm-nav-section" style="font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(212,175,55,.45);padding:14px 22px 6px;">Our Businesses</div>
       <div class="adm-nav-item" onclick="showPanel('products',this)"><span class="ico">👗</span> Alrayyan Fashion</div>
-      <div class="adm-nav-item" onclick="showPanel('businesses',this)"><span class="ico">🎨</span> Alrayyan Arts</div>
+      <div class="adm-nav-item" onclick="showPanel('arts',this)"><span class="ico">🎨</span> Alrayyan Arts</div>
+      <div class="adm-nav-item" onclick="showPanel('businesses',this)"><span class="ico">🏛️</span> Alrayyan Businesses</div>
       <div class="adm-nav-item" onclick="showPanel('lands',this)"><span class="ico">🗺️</span> Alrayyan Lands</div>
-      <div class="adm-nav-item" onclick="showPanel('bookings',this)"><span class="ico">📅</span> Contact & Bookings</div>
+      <div class="adm-nav-item" onclick="showPanel('bookings',this)"><span class="ico">📅</span> Visit Bookings</div>
       <div class="adm-nav-item" onclick="window.open('index.html','_blank')"><span class="ico">🔗</span> View Site</div>
     </nav>
     <div class="adm-sidebar-foot">
@@ -340,6 +341,22 @@
               </label>
               <div style="font-size:.68rem;color:var(--muted);margin-top:4px;">When enabled, pricing labels (e.g. "From JOD 3,500 / month") will be visible on office cards.</div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ARTS ── -->
+      <div class="adm-panel" id="panel-arts">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+          <div style="font-size:.72rem;color:var(--muted);">Manage artworks shown on arts.html — paintings, sculptures, and gallery pieces.</div>
+          <button class="btn-sm-gold" onclick="openAddArt()">+ Add Artwork</button>
+        </div>
+        <div class="adm-card">
+          <div style="overflow-x:auto">
+            <table class="adm-table">
+              <thead><tr><th>#</th><th>Title</th><th>Artist</th><th>Medium</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="arts-tbody"></tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -650,6 +667,65 @@
   </div>
 </div>
 
+<!-- ====== ART MODAL ====== -->
+<div class="adm-modal-overlay" id="art-modal">
+  <div class="adm-modal">
+    <div class="adm-modal-head">
+      <h4 id="art-modal-title">Add Artwork</h4>
+      <button class="adm-modal-close" onclick="closeArtModal()">✕</button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="art-edit-id"/>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Title *</label>
+          <input class="adm-form-control" type="text" id="ar-title" placeholder="Desert Sunrise"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Artist</label>
+          <input class="adm-form-control" type="text" id="ar-artist" placeholder="Yousef Al Hamad"/>
+        </div>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Medium</label>
+          <input class="adm-form-control" type="text" id="ar-medium" placeholder="Oil on canvas"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Price</label>
+          <input class="adm-form-control" type="text" id="ar-price" placeholder="JOD 1,800"/>
+        </div>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Status</label>
+          <select class="adm-form-control" id="ar-status">
+            <option value="available">Available</option>
+            <option value="sold">Sold</option>
+            <option value="reserved">Reserved</option>
+          </select>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">Year</label>
+          <input class="adm-form-control" type="text" id="ar-year" placeholder="2024"/>
+        </div>
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-form-label">Description</label>
+        <textarea class="adm-form-control" id="ar-desc" style="min-height:90px"></textarea>
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-form-label">Image URL</label>
+        <input class="adm-form-control" type="text" id="ar-image"/>
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn-sm-ghost" onclick="closeArtModal()">Cancel</button>
+      <button class="btn-sm-gold" onclick="saveArt()">Save</button>
+    </div>
+  </div>
+</div>
+
 <!-- ====== DELETE CONFIRM MODAL ====== -->
 <div class="adm-modal-overlay" id="confirm-modal">
   <div class="confirm-modal">
@@ -669,9 +745,9 @@
 // ── I18N (Admin) ─────────────────────────────────────────────────────────────
 const ADMIN_I18N = {
   en: {
-    dashboard:'Dashboard', offices:'Offices', floors:'Floor Availability',
-    bookings:'Visit Bookings', businesses:'Businesses', floorDetails:'Floor Details',
-    lands:'Land Listings', products:'Fashion Products', siteContent:'Site Content',
+    dashboard:'Dashboard', offices:'Office Types', floors:'Available Units',
+    bookings:'Visit Bookings', businesses:'Alrayyan Businesses', floorDetails:'Floor Sub-Pages',
+    lands:'Alrayyan Lands', products:'Alrayyan Fashion', arts:'Alrayyan Arts', siteContent:'Homepage Content',
     viewSite:'View Site', signOut:'Sign Out',
     officeTypes:'Office Types', totalUnits:'Total Available Units',
     pendingBookings:'Pending Bookings', activeBusinesses:'Active Businesses',
@@ -690,9 +766,9 @@ const ADMIN_I18N = {
     addDemo:'+ Add Demo Booking',
   },
   ar: {
-    dashboard:'الرئيسية', offices:'المكاتب', floors:'توفر الطوابق',
-    bookings:'حجوزات الزيارة', businesses:'الأعمال', floorDetails:'تفاصيل الطوابق',
-    lands:'قوائم الأراضي', products:'منتجات الأزياء', siteContent:'محتوى الموقع',
+    dashboard:'الرئيسية', offices:'أنواع المكاتب', floors:'الوحدات المتاحة',
+    bookings:'حجوزات الزيارة', businesses:'أعمال الريان', floorDetails:'صفحات الطوابق',
+    lands:'أراضي الريان', products:'أزياء الريان', arts:'أزياء الريان للفنون', siteContent:'محتوى الصفحة الرئيسية',
     viewSite:'عرض الموقع', signOut:'تسجيل الخروج',
     officeTypes:'أنواع المكاتب', totalUnits:'إجمالي الوحدات المتاحة',
     pendingBookings:'الحجوزات المعلقة', activeBusinesses:'الأعمال النشطة',
@@ -735,9 +811,10 @@ function t(key) {
 
 function applyAdminI18n() {
   const T = ADMIN_I18N[adminLang];
-  // Sidebar nav items
+  // Sidebar nav items — order matches the HTML sidebar:
+  // dashboard, siteContent, offices, floors (availability), products, arts, businesses, lands, bookings, viewSite
   const navItems = document.querySelectorAll('.adm-nav-item');
-  const navKeys = ['dashboard','offices','floors','bookings','businesses','floorDetails','lands','products','siteContent','viewSite'];
+  const navKeys = ['dashboard','siteContent','offices','floors','products','arts','businesses','lands','bookings','viewSite'];
   navItems.forEach((el, i) => {
     const ico = el.querySelector('.ico');
     if (ico && navKeys[i]) el.innerHTML = ico.outerHTML + ' ' + T[navKeys[i]];
@@ -1052,6 +1129,7 @@ async function initAdmin(){
   renderFloorDetails();
   renderLands();
   renderProducts();
+  renderArts();
   renderSiteContent();
   renderPricing();
   renderRentals();
@@ -1064,7 +1142,7 @@ async function initAdmin(){
 }
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
-const panelTitles = {dashboard:'Home',availability:'Available Offices',offices:'Offices',bookings:'Contact & Bookings',businesses:'Alrayyan Arts',lands:'Alrayyan Lands',products:'Alrayyan Fashion',siteContent:'About'};
+const panelTitles = {dashboard:'Dashboard',availability:'Available Units',offices:'Office Types',bookings:'Visit Bookings',businesses:'Alrayyan Businesses',lands:'Alrayyan Lands',products:'Alrayyan Fashion',arts:'Alrayyan Arts',siteContent:'Homepage Content'};
 function showPanel(name, el){
   document.querySelectorAll('.adm-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.adm-nav-item').forEach(n=>n.classList.remove('active'));
@@ -1185,14 +1263,14 @@ function renderDashboardBookings(){
 
 // ── RENTALS (localStorage-backed) ────────────────────────────────────────────
 const RENTAL_DEFAULTS = [
-  { id:1, floor:'1st Floor', tenant:'Link Solution',        size:400, leaseExpiry:'', managerPhone:'', notes:'' },
-  { id:2, floor:'2nd Floor', tenant:'Canon',                size:400, leaseExpiry:'', managerPhone:'', notes:'' },
-  { id:3, floor:'3rd Floor', tenant:'Tower Administration', size:80,  leaseExpiry:'', managerPhone:'', notes:'' },
-  { id:4, floor:'3rd Floor', tenant:'Hybrid Solution',      size:120, leaseExpiry:'', managerPhone:'', notes:'' },
-  { id:5, floor:'3rd Floor', tenant:'Abu Own',              size:80,  leaseExpiry:'', managerPhone:'', notes:'' },
-  { id:6, floor:'3rd Floor', tenant:'Usta Lahem',           size:60,  leaseExpiry:'', managerPhone:'', notes:'' },
-  { id:7, floor:'5th Floor', tenant:'Al Awael',             size:320, leaseExpiry:'', managerPhone:'', notes:'' },
-  { id:8, floor:'8th Floor', tenant:'Noor Alkhaleej',       size:400, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:1, floor:'1st Floor', tenant:'Link Solution',        size:400, parking:4, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:2, floor:'2nd Floor', tenant:'Canon',                size:400, parking:4, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:3, floor:'3rd Floor', tenant:'Tower Administration', size:80,  parking:1, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:4, floor:'3rd Floor', tenant:'Hybrid Solution',      size:120, parking:2, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:5, floor:'3rd Floor', tenant:'Abu Own',              size:80,  parking:1, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:6, floor:'3rd Floor', tenant:'Usta Lahem',           size:60,  parking:1, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:7, floor:'5th Floor', tenant:'Al Awael',             size:320, parking:4, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:8, floor:'8th Floor', tenant:'Noor Alkhaleej',       size:400, parking:4, leaseExpiry:'', managerPhone:'', notes:'' },
 ];
 function loadRentals(){
   const raw = localStorage.getItem('ar_rentals');
@@ -1215,13 +1293,15 @@ function renderRentals(){
     <th>${t('colNotes')}</th><th>${t('colActions')}</th>
   </tr></thead>`;
   const body = rentals.map(r => {
-    const parking = Math.ceil((Number(r.size)||0) / 100);
+    const parking = (r.parking !== undefined && r.parking !== null && r.parking !== '')
+      ? Number(r.parking)
+      : Math.ceil((Number(r.size)||0) / 100);
     if (_editingRentalId === r.id){
       return `<tr data-id="${r.id}">
         <td><input class="adm-form-control rental-edit" data-f="floor" value="${(r.floor||'').replace(/"/g,'&quot;')}"/></td>
         <td><input class="adm-form-control rental-edit" data-f="tenant" value="${(r.tenant||'').replace(/"/g,'&quot;')}"/></td>
-        <td><input class="adm-form-control rental-edit" data-f="size" type="number" min="0" value="${Number(r.size)||0}" oninput="this.closest('tr').querySelector('.rental-parking').textContent=Math.ceil((parseInt(this.value)||0)/100)"/></td>
-        <td><span class="rental-parking" style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--gold-light)">${parking}</span></td>
+        <td><input class="adm-form-control rental-edit" data-f="size" type="number" min="0" value="${Number(r.size)||0}"/></td>
+        <td><input class="adm-form-control rental-edit" data-f="parking" type="number" min="0" value="${parking}"/></td>
         <td><input class="adm-form-control rental-edit" data-f="leaseExpiry" type="date" value="${r.leaseExpiry||''}"/></td>
         <td><input class="adm-form-control rental-edit" data-f="managerPhone" value="${(r.managerPhone||'').replace(/"/g,'&quot;')}"/></td>
         <td><input class="adm-form-control rental-edit" data-f="notes" value="${(r.notes||'').replace(/"/g,'&quot;')}"/></td>
@@ -1261,7 +1341,7 @@ function saveRentalEdit(id){
   if (!row) return;
   row.querySelectorAll('.rental-edit').forEach(inp => {
     const f = inp.dataset.f;
-    if (f === 'size') rentals[idx][f] = parseInt(inp.value, 10) || 0;
+    if (f === 'size' || f === 'parking') rentals[idx][f] = parseInt(inp.value, 10) || 0;
     else rentals[idx][f] = inp.value.trim();
   });
   saveRentals(rentals);
@@ -1279,7 +1359,8 @@ function deleteRental(id){
 function addRental(){
   const rentals = loadRentals();
   const nextId = rentals.reduce((m,r) => Math.max(m, r.id||0), 0) + 1;
-  rentals.push({ id: nextId, floor:'', tenant:'New Tenant', size:0, leaseExpiry:'', managerPhone:'', notes:'' });
+  const size = 0;
+  rentals.push({ id: nextId, floor:'', tenant:'New Tenant', size, parking: Math.ceil(size/100), leaseExpiry:'', managerPhone:'', notes:'' });
   saveRentals(rentals);
   _editingRentalId = nextId;
   renderRentals();
@@ -1609,6 +1690,8 @@ document.getElementById('confirm-yes-btn').addEventListener('click',()=>{
     const ln=loadLands().filter(l=>l.id!==_deleteId);saveLands(ln);renderLands();
   } else if(_deleteType==='product'){
     const pr=loadProducts().filter(p=>p.id!==_deleteId);saveProducts(pr);renderProducts();
+  } else if(_deleteType==='art'){
+    const ar=loadArts().filter(a=>a.id!==_deleteId);saveArts(ar);renderArts();
   }
   closeConfirm();showToast('Deleted successfully','success');
 });
@@ -1851,6 +1934,92 @@ function saveProduct(){
   showToast(_editProductId?'Product updated':'Product added','success');
 }
 
+// ── ARTS ─────────────────────────────────────────────────────────────────────
+function loadArts(){
+  const def = [
+    {id:1,title:'Desert Sunrise',artist:'Yousef Al Hamad',medium:'Oil on canvas',price:'JOD 1,800',status:'available',year:'2024',desc:'A vivid oil painting capturing the first light over the Wadi Rum dunes.',image:''},
+    {id:2,title:'Amman Reflections',artist:'Lina Saqqa',medium:'Mixed media',price:'JOD 2,200',status:'available',year:'2023',desc:'Layered cityscape exploring the textures of old and new Amman.',image:''},
+    {id:3,title:'Bronze Falcon',artist:'Khaled Nofal',medium:'Bronze sculpture',price:'JOD 3,500',status:'reserved',year:'2024',desc:'Hand-cast bronze sculpture symbolising heritage and freedom.',image:''},
+    {id:4,title:'Calligraphy Study #7',artist:'Maya Darwish',medium:'Ink on paper',price:'JOD 950',status:'available',year:'2025',desc:'Contemporary Arabic calligraphy in flowing black ink.',image:''},
+  ];
+  return ADMIN_FS.arts || def;
+}
+function saveArts(data){ adminFsSave('arts', data); }
+function renderArts(){
+  const arts = loadArts();
+  const tbody = document.getElementById('arts-tbody');
+  if(!tbody) return;
+  const statusBadge = (s) => {
+    const map = {available:'#1e8e3e', sold:'#c0392b', reserved:'#b8732d'};
+    const label = (s||'available').charAt(0).toUpperCase()+(s||'available').slice(1);
+    return `<span style="background:${map[s]||'#888'};color:#fff;padding:3px 8px;border-radius:3px;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;">${label}</span>`;
+  };
+  tbody.innerHTML = arts.map((a,i)=>`
+    <tr>
+      <td style="color:var(--muted)">${i+1}</td>
+      <td style="font-weight:600">${a.title}</td>
+      <td style="color:var(--muted)">${a.artist||'—'}</td>
+      <td style="color:var(--muted)">${a.medium||'—'}</td>
+      <td style="color:var(--gold-light);font-weight:600">${a.price||'—'}</td>
+      <td>${statusBadge(a.status)}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-sm-ghost" onclick="editArt(${a.id})">Edit</button>
+          <button class="btn-sm-danger" onclick="confirmDelete('art',${a.id},'Delete artwork &ldquo;${a.title}&rdquo;?')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+let _editArtId = null;
+function openAddArt(){
+  _editArtId = null;
+  document.getElementById('art-modal-title').textContent = 'Add Artwork';
+  ['ar-title','ar-artist','ar-medium','ar-price','ar-year','ar-desc','ar-image'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ar-status').value = 'available';
+  document.getElementById('art-modal').classList.add('open');
+}
+function editArt(id){
+  const a = loadArts().find(x=>x.id===id); if(!a) return;
+  _editArtId = id;
+  document.getElementById('art-modal-title').textContent = 'Edit Artwork';
+  document.getElementById('ar-title').value = a.title||'';
+  document.getElementById('ar-artist').value = a.artist||'';
+  document.getElementById('ar-medium').value = a.medium||'';
+  document.getElementById('ar-price').value = a.price||'';
+  document.getElementById('ar-status').value = a.status||'available';
+  document.getElementById('ar-year').value = a.year||'';
+  document.getElementById('ar-desc').value = a.desc||'';
+  document.getElementById('ar-image').value = a.image||'';
+  document.getElementById('art-modal').classList.add('open');
+}
+function closeArtModal(){ document.getElementById('art-modal').classList.remove('open'); }
+function saveArt(){
+  const title = document.getElementById('ar-title').value.trim();
+  if(!title){ showToast('Title is required','error'); return; }
+  const arts = loadArts();
+  const data = {
+    title,
+    artist: document.getElementById('ar-artist').value.trim(),
+    medium: document.getElementById('ar-medium').value.trim(),
+    price: document.getElementById('ar-price').value.trim(),
+    status: document.getElementById('ar-status').value,
+    year: document.getElementById('ar-year').value.trim(),
+    desc: document.getElementById('ar-desc').value.trim(),
+    image: document.getElementById('ar-image').value.trim(),
+  };
+  if(_editArtId){
+    const idx = arts.findIndex(a=>a.id===_editArtId);
+    if(idx>-1) arts[idx]={...arts[idx],...data};
+  } else {
+    data.id = Date.now();
+    arts.push(data);
+  }
+  saveArts(arts);
+  closeArtModal();
+  renderArts();
+  showToast(_editArtId?'Artwork updated':'Artwork added','success');
+}
+
 // ── SITE CONTENT ──────────────────────────────────────────────────────────────
 function loadSiteContent(){
   const def = {
@@ -1908,7 +2077,7 @@ function saveSiteContent(){
 }
 
 // Close modals on overlay click
-['office-modal','floor-modal','confirm-modal','fd-modal','land-modal','product-modal'].forEach(id=>{
+['office-modal','floor-modal','confirm-modal','fd-modal','land-modal','product-modal','art-modal'].forEach(id=>{
   document.getElementById(id).addEventListener('click',function(e){
     if(e.target===this)this.classList.remove('open');
   });
@@ -1917,7 +2086,7 @@ function saveSiteContent(){
 // Keyboard ESC
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
-    ['office-modal','floor-modal','confirm-modal','fd-modal','land-modal','product-modal'].forEach(id=>
+    ['office-modal','floor-modal','confirm-modal','fd-modal','land-modal','product-modal','art-modal'].forEach(id=>
       document.getElementById(id).classList.remove('open'));
   }
 });

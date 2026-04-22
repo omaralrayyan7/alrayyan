@@ -694,8 +694,8 @@ function renderFloorGallery() {
   const container = document.getElementById('floor-gallery');
   if (!container) return;
 
-  const cfg = floorImageConfig[floorId] || { real: 0, mains: 0, ext: 'webp' };
-  if (cfg && cfg.placeholder) {
+  const cfg = floorImageConfig[floorId];
+  const renderPlaceholder = () => {
     container.style.display = '';
     container.innerHTML = `
       <p class="sec-eye">Photography</p>
@@ -709,6 +709,9 @@ function renderFloorGallery() {
             Image Coming Soon
           </div>`).join('')}
       </div>`;
+  };
+  if (!cfg || cfg.placeholder === true || (cfg.real|0) === 0) {
+    renderPlaceholder();
     return;
   }
   const t = I18N[currentLang] || I18N.en;
@@ -718,11 +721,6 @@ function renderFloorGallery() {
   // surrounding grid stays intact and other images still render cleanly.
   const errH = `onerror="this.onerror=null;this.closest('.fg-simple, .fg-mains')?.style && (this.style.opacity='0')"`;
 
-  if (cfg.real === 0) {
-    container.style.display = 'none';
-    container.innerHTML = '';
-    return;
-  }
   container.style.display = '';
 
   const floorName = (fl.name && fl.name[currentLang]) || (fl.name && fl.name.en) || '';
