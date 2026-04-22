@@ -508,15 +508,18 @@ const IMAGINARY_COUNTS = {
   '9-outdoor': 3, '9-indoor': 3,
 };
 const floorImageConfig = {
-  'b1':        { real: 3, mains: 0, ext: 'jpg' },
-  'g':         { real: 0, mains: 0, ext: 'jpg' },
-  '3':         { real: 0, mains: 0, ext: 'jpg' },
-  '4':         { real: 0, mains: 0, ext: 'jpg' },
-  '5':         { real: 0, mains: 0, ext: 'jpg' },
-  '6':         { real: 1, mains: 0, ext: 'jpg' },
-  '7':         { real: 0, mains: 0, ext: 'jpg' },
-  '9-indoor':  { real: 0, mains: 0, ext: 'jpg' },
-  '9-outdoor': { real: 0, mains: 0, ext: 'jpg' },
+  'b1':        { real: 3, mains: 0, ext: 'webp' },
+  'g':         { real: 0, mains: 0, ext: 'webp' },
+  '1':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
+  '2':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
+  '3':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
+  '4':         { real: 0, mains: 0, ext: 'webp' },
+  '5':         { real: 0, mains: 0, ext: 'webp' },
+  '6':         { real: 1, mains: 0, ext: 'webp' },
+  '7':         { real: 0, mains: 0, ext: 'webp' },
+  '8':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
+  '9-indoor':  { real: 0, mains: 0, ext: 'webp' },
+  '9-outdoor': { real: 0, mains: 0, ext: 'webp' },
 };
 // Carousel state — declared before renderFloor() / init IIFE to avoid TDZ.
 const renderTotal = IMAGINARY_COUNTS[floorId] || 0;
@@ -692,6 +695,22 @@ function renderFloorGallery() {
   if (!container) return;
 
   const cfg = floorImageConfig[floorId] || { real: 0, mains: 0, ext: 'webp' };
+  if (cfg && cfg.placeholder) {
+    container.style.display = '';
+    container.innerHTML = `
+      <p class="sec-eye">Photography</p>
+      <h2 class="sec-title"><span>Floor</span> <em>Images</em></h2>
+      <div class="gold-line"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:16px;">
+        ${[1,2,3,4].map(()=>`
+          <div style="width:100%;height:280px;background:#111;border:1px solid rgba(184,115,51,0.15);
+            border-radius:3px;display:flex;align-items:center;justify-content:center;
+            color:rgba(184,115,51,0.3);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;">
+            Image Coming Soon
+          </div>`).join('')}
+      </div>`;
+    return;
+  }
   const t = I18N[currentLang] || I18N.en;
   const imgExt = cfg.ext || 'webp';
   const basePath = 'images/floors/floor-' + floorId + '/real/';

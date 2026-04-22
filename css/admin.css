@@ -328,3 +328,23 @@ html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo
   .avail-toggle-row{ grid-template-columns: 1fr auto; }
   .avail-toggle-state{ grid-column: 1 / -1; justify-self:start; }
 }
+
+/* ── Admin Language Toggle ─────────────────────────────────────────────────── */
+.adm-lang-toggle { display:flex; gap:2px; background:rgba(184,115,51,0.08); border:1px solid rgba(184,115,51,0.15); border-radius:3px; padding:2px; }
+.adm-lang-btn { background:none; border:none; color:var(--muted); font-size:.6rem; font-weight:700; letter-spacing:1.5px; padding:4px 10px; border-radius:2px; cursor:pointer; transition:.2s; }
+.adm-lang-btn.active { background:var(--gold); color:var(--black); }
+
+/* ── RTL ───────────────────────────────────────────────────────────────────── */
+html[dir="rtl"] .adm-sidebar { left:auto; right:0; }
+html[dir="rtl"] .adm-main { margin-left:0; margin-right:240px; }
+html[dir="rtl"] .adm-card-head h5 { letter-spacing:0; font-family:'Cairo', sans-serif; }
+html[dir="rtl"] .adm-nav-item { text-align:right; }
+html[dir="rtl"] .adm-sidebar-logo { text-align:right; }
+@media(max-width:992px){
+  html[dir="rtl"] .adm-main { margin-right:200px; }
+}
+@media(max-width:768px){
+  html[dir="rtl"] .adm-sidebar { transform:translateX(100%); }
+  html[dir="rtl"] .adm-sidebar.mobile-open { transform:translateX(0); }
+  html[dir="rtl"] .adm-main { margin-right:0; }
+}

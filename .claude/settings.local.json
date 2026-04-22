@@ -37,7 +37,10 @@
       "Bash(git add *)",
       "Bash(git -C \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower\" status)",
       "Bash(git -C \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower\" add -A)",
-      "Bash(git -C \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower\" commit -m \"fix: floor real images renamed with floor-specific IDs, dark mode disabled on all subpages\")"
+      "Bash(git -C \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower\" commit -m \"fix: floor real images renamed with floor-specific IDs, dark mode disabled on all subpages\")",
+      "Bash(git -C \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower\" push)",
+      "Bash(python -c \"from PIL import Image; print\\('PIL available'\\)\")",
+      "Bash(python -c ' *)"
     ]
   }
 }

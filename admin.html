@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
   <meta name="robots" content="noindex,nofollow"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
@@ -65,6 +65,10 @@
     <div class="adm-topbar">
       <div class="adm-page-title" id="adm-page-title">Dashboard</div>
       <div class="adm-topbar-right">
+        <div class="adm-lang-toggle">
+          <button class="adm-lang-btn active" id="lang-en-btn" onclick="setAdminLang('en')">EN</button>
+          <button class="adm-lang-btn" id="lang-ar-btn" onclick="setAdminLang('ar')">AR</button>
+        </div>
         <span class="adm-admin-badge" id="adm-user-badge">Admin</span>
         <button class="btn-sm-ghost" onclick="toggleMobileSidebar()">☰ Menu</button>
       </div>
@@ -83,7 +87,7 @@
 
         <div class="adm-card">
           <div class="adm-card-head">
-            <h5>Quick Overview — Office Availability</h5>
+            <h5 data-i18n-key="quickOverview">Quick Overview — Office Availability</h5>
           </div>
           <div style="overflow-x:auto">
             <table class="adm-table" id="dash-overview-table"></table>
@@ -91,9 +95,22 @@
         </div>
 
         <div class="adm-card">
-          <div class="adm-card-head"><h5>Recent Visit Bookings</h5></div>
-          <div style="padding:20px;color:var(--muted);font-size:.8rem;text-align:center;" id="dash-bookings-preview">
-            No bookings yet. Bookings submitted via the website will appear here.
+          <div class="adm-card-head">
+            <h5 data-i18n-key="recentBookings">Recent Visit Bookings</h5>
+            <button class="btn-sm-gold" onclick="goToBookings()" data-i18n-key="viewAll">View All →</button>
+          </div>
+          <div style="overflow-x:auto" id="dash-bookings-preview">
+            <table class="adm-table" id="dash-bookings-table"></table>
+          </div>
+        </div>
+
+        <div class="adm-card">
+          <div class="adm-card-head">
+            <h5 data-i18n-key="currentRentals">Current Rentals — Occupied Spaces</h5>
+            <button class="btn-sm-gold" onclick="addRental()" data-i18n-key="addRental">+ Add Rental</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="adm-table" id="rentals-table"></table>
           </div>
         </div>
       </div>
@@ -649,6 +666,96 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+// ── I18N (Admin) ─────────────────────────────────────────────────────────────
+const ADMIN_I18N = {
+  en: {
+    dashboard:'Dashboard', offices:'Offices', floors:'Floor Availability',
+    bookings:'Visit Bookings', businesses:'Businesses', floorDetails:'Floor Details',
+    lands:'Land Listings', products:'Fashion Products', siteContent:'Site Content',
+    viewSite:'View Site', signOut:'Sign Out',
+    officeTypes:'Office Types', totalUnits:'Total Available Units',
+    pendingBookings:'Pending Bookings', activeBusinesses:'Active Businesses',
+    quickOverview:'Quick Overview — Office Availability',
+    recentBookings:'Recent Visit Bookings', viewAll:'View All →',
+    currentRentals:'Current Rentals — Occupied Spaces', addRental:'+ Add Rental',
+    colFloor:'Floor', colTenant:'Tenant Name', colSize:'Size (m²)',
+    colParking:'Parking 🚗', colLease:'Lease Expiry', colManager:'Manager Phone',
+    colNotes:'Notes', colActions:'Actions',
+    colOfficeType:'Office Type', colAvailUnits:'Available Units',
+    colPrice:'Price', colStatus:'Status',
+    colRef:'Ref', colName:'Name', colPhone:'Phone',
+    colOffice:'Office', colDate:'Date',
+    edit:'Edit', save:'Save', delete:'Delete', cancel:'Cancel',
+    noBookings:'No bookings yet. Bookings submitted via the website will appear here.',
+    addDemo:'+ Add Demo Booking',
+  },
+  ar: {
+    dashboard:'الرئيسية', offices:'المكاتب', floors:'توفر الطوابق',
+    bookings:'حجوزات الزيارة', businesses:'الأعمال', floorDetails:'تفاصيل الطوابق',
+    lands:'قوائم الأراضي', products:'منتجات الأزياء', siteContent:'محتوى الموقع',
+    viewSite:'عرض الموقع', signOut:'تسجيل الخروج',
+    officeTypes:'أنواع المكاتب', totalUnits:'إجمالي الوحدات المتاحة',
+    pendingBookings:'الحجوزات المعلقة', activeBusinesses:'الأعمال النشطة',
+    quickOverview:'نظرة عامة سريعة — توفر المكاتب',
+    recentBookings:'آخر حجوزات الزيارة', viewAll:'عرض الكل →',
+    currentRentals:'الإيجارات الحالية — المساحات المشغولة', addRental:'+ إضافة إيجار',
+    colFloor:'الطابق', colTenant:'اسم المستأجر', colSize:'المساحة (م²)',
+    colParking:'مواقف 🚗', colLease:'انتهاء الإيجار', colManager:'هاتف المدير',
+    colNotes:'ملاحظات', colActions:'إجراءات',
+    colOfficeType:'نوع المكتب', colAvailUnits:'الوحدات المتاحة',
+    colPrice:'السعر', colStatus:'الحالة',
+    colRef:'المرجع', colName:'الاسم', colPhone:'الهاتف',
+    colOffice:'المكتب', colDate:'التاريخ',
+    edit:'تعديل', save:'حفظ', delete:'حذف', cancel:'إلغاء',
+    noBookings:'لا توجد حجوزات بعد. ستظهر الحجوزات المقدمة عبر الموقع هنا.',
+    addDemo:'+ إضافة حجز تجريبي',
+  }
+};
+let adminLang = localStorage.getItem('ar_admin_lang') || 'en';
+
+function setAdminLang(lang) {
+  adminLang = lang;
+  localStorage.setItem('ar_admin_lang', lang);
+  const html = document.documentElement;
+  html.lang = lang === 'ar' ? 'ar' : 'en';
+  html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+  const enBtn = document.getElementById('lang-en-btn');
+  const arBtn = document.getElementById('lang-ar-btn');
+  if (enBtn) enBtn.classList.toggle('active', lang === 'en');
+  if (arBtn) arBtn.classList.toggle('active', lang === 'ar');
+  applyAdminI18n();
+  try { renderDashboard(); } catch(e){}
+  try { renderRentals(); } catch(e){}
+  try { renderDashboardBookings(); } catch(e){}
+}
+
+function t(key) {
+  return (ADMIN_I18N[adminLang] && ADMIN_I18N[adminLang][key]) || ADMIN_I18N.en[key] || key;
+}
+
+function applyAdminI18n() {
+  const T = ADMIN_I18N[adminLang];
+  // Sidebar nav items
+  const navItems = document.querySelectorAll('.adm-nav-item');
+  const navKeys = ['dashboard','offices','floors','bookings','businesses','floorDetails','lands','products','siteContent','viewSite'];
+  navItems.forEach((el, i) => {
+    const ico = el.querySelector('.ico');
+    if (ico && navKeys[i]) el.innerHTML = ico.outerHTML + ' ' + T[navKeys[i]];
+  });
+  // Sign out button
+  const logoutBtn = document.querySelector('.adm-logout-btn');
+  if (logoutBtn) logoutBtn.innerHTML = '<span>⏏</span> ' + T.signOut;
+  // Stat card labels
+  const lbls = document.querySelectorAll('.s-lbl');
+  const lblKeys = ['officeTypes','totalUnits','pendingBookings','activeBusinesses'];
+  lbls.forEach((el, i) => { if (lblKeys[i]) el.textContent = T[lblKeys[i]]; });
+  // Elements with explicit data-i18n-key
+  document.querySelectorAll('[data-i18n-key]').forEach(el => {
+    const k = el.getAttribute('data-i18n-key');
+    if (T[k]) el.textContent = T[k];
+  });
+}
+
 // ── AUTH ──────────────────────────────────────────────────────────────────────
 // Credentials: stored as SHA-256 digest of the password. Client-side auth is
 // not real security — any determined attacker can read this file — but it
@@ -947,11 +1054,13 @@ async function initAdmin(){
   renderProducts();
   renderSiteContent();
   renderPricing();
+  renderRentals();
   // Pull current Biz Logo Scale from ArData (Firestore) once data has loaded.
   if (window.ArData){
     ArData.subscribe('site_content', () => syncBizLogoScaleUI());
   }
   syncBizLogoScaleUI();
+  setAdminLang(adminLang);
 }
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
@@ -1032,6 +1141,150 @@ function calculateAvailableUnits(type){
 }
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function loadBookings(){ return Array.isArray(_FS_BOOKINGS) ? _FS_BOOKINGS.slice() : []; }
+
+function goToBookings(){
+  const target = Array.from(document.querySelectorAll('.adm-nav-item'))
+    .find(el => /showPanel\('bookings'/.test(el.getAttribute('onclick') || ''))
+    || document.querySelector('.adm-nav-item:nth-child(4)');
+  showPanel('bookings', target);
+}
+
+function renderDashboardBookings(){
+  const tbl = document.getElementById('dash-bookings-table');
+  if (!tbl) return;
+  const bookings = loadBookings()
+    .slice()
+    .sort((a,b) => {
+      const ai = String(a.id||'');
+      const bi = String(b.id||'');
+      return bi.localeCompare(ai);
+    })
+    .slice(0, 5);
+  if (!bookings.length){
+    tbl.innerHTML = `<tbody><tr><td style="text-align:center;color:var(--muted);font-size:.8rem;padding:24px">${t('noBookings')}</td></tr></tbody>`;
+    return;
+  }
+  tbl.innerHTML = `<thead><tr>
+      <th>${t('colRef')}</th><th>${t('colName')}</th><th>${t('colPhone')}</th>
+      <th>${t('colOffice')}</th><th>${t('colDate')}</th><th>${t('colStatus')}</th>
+    </tr></thead><tbody>${bookings.map(b=>{
+      const name = b.visitor_name || b.name || '—';
+      const office = b.floor_preference || b.office || '—';
+      const date = b.preferred_date || b.date || '—';
+      return `<tr>
+        <td style="color:var(--gold);font-size:.65rem">${b.ref||'—'}</td>
+        <td style="font-weight:600">${name}</td>
+        <td style="color:var(--muted)">${b.phone||'—'}</td>
+        <td style="color:var(--muted);font-size:.7rem">${office}</td>
+        <td style="color:var(--muted)">${date}</td>
+        <td><span class="booking-status-badge ${b.status||'pending'}">${b.status||'pending'}</span></td>
+      </tr>`;
+    }).join('')}</tbody>`;
+}
+
+// ── RENTALS (localStorage-backed) ────────────────────────────────────────────
+const RENTAL_DEFAULTS = [
+  { id:1, floor:'1st Floor', tenant:'Link Solution',        size:400, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:2, floor:'2nd Floor', tenant:'Canon',                size:400, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:3, floor:'3rd Floor', tenant:'Tower Administration', size:80,  leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:4, floor:'3rd Floor', tenant:'Hybrid Solution',      size:120, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:5, floor:'3rd Floor', tenant:'Abu Own',              size:80,  leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:6, floor:'3rd Floor', tenant:'Usta Lahem',           size:60,  leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:7, floor:'5th Floor', tenant:'Al Awael',             size:320, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:8, floor:'8th Floor', tenant:'Noor Alkhaleej',       size:400, leaseExpiry:'', managerPhone:'', notes:'' },
+];
+function loadRentals(){
+  const raw = localStorage.getItem('ar_rentals');
+  if (!raw){
+    localStorage.setItem('ar_rentals', JSON.stringify(RENTAL_DEFAULTS));
+    return RENTAL_DEFAULTS.slice();
+  }
+  try { return JSON.parse(raw) || []; } catch(e){ return RENTAL_DEFAULTS.slice(); }
+}
+function saveRentals(data){ localStorage.setItem('ar_rentals', JSON.stringify(data)); }
+
+let _editingRentalId = null;
+function renderRentals(){
+  const tbl = document.getElementById('rentals-table');
+  if (!tbl) return;
+  const rentals = loadRentals();
+  const head = `<thead><tr>
+    <th>${t('colFloor')}</th><th>${t('colTenant')}</th><th>${t('colSize')}</th>
+    <th>${t('colParking')}</th><th>${t('colLease')}</th><th>${t('colManager')}</th>
+    <th>${t('colNotes')}</th><th>${t('colActions')}</th>
+  </tr></thead>`;
+  const body = rentals.map(r => {
+    const parking = Math.ceil((Number(r.size)||0) / 100);
+    if (_editingRentalId === r.id){
+      return `<tr data-id="${r.id}">
+        <td><input class="adm-form-control rental-edit" data-f="floor" value="${(r.floor||'').replace(/"/g,'&quot;')}"/></td>
+        <td><input class="adm-form-control rental-edit" data-f="tenant" value="${(r.tenant||'').replace(/"/g,'&quot;')}"/></td>
+        <td><input class="adm-form-control rental-edit" data-f="size" type="number" min="0" value="${Number(r.size)||0}" oninput="this.closest('tr').querySelector('.rental-parking').textContent=Math.ceil((parseInt(this.value)||0)/100)"/></td>
+        <td><span class="rental-parking" style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--gold-light)">${parking}</span></td>
+        <td><input class="adm-form-control rental-edit" data-f="leaseExpiry" type="date" value="${r.leaseExpiry||''}"/></td>
+        <td><input class="adm-form-control rental-edit" data-f="managerPhone" value="${(r.managerPhone||'').replace(/"/g,'&quot;')}"/></td>
+        <td><input class="adm-form-control rental-edit" data-f="notes" value="${(r.notes||'').replace(/"/g,'&quot;')}"/></td>
+        <td>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn-sm-gold" onclick="saveRentalEdit(${r.id})">${t('save')}</button>
+            <button class="btn-sm-ghost" onclick="cancelRentalEdit()">${t('cancel')}</button>
+          </div>
+        </td>
+      </tr>`;
+    }
+    return `<tr data-id="${r.id}">
+      <td style="font-weight:600">${r.floor||'—'}</td>
+      <td>${r.tenant||'—'}</td>
+      <td style="color:var(--muted)">${r.size||0} m²</td>
+      <td><span style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--gold-light)">${parking}</span></td>
+      <td style="color:var(--muted)">${r.leaseExpiry||'—'}</td>
+      <td style="color:var(--muted)">${r.managerPhone||'—'}</td>
+      <td style="color:var(--muted);font-size:.72rem">${r.notes||'—'}</td>
+      <td>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn-sm-ghost" onclick="editRental(${r.id})">${t('edit')}</button>
+          <button class="btn-sm-danger" onclick="deleteRental(${r.id})">${t('delete')}</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+  tbl.innerHTML = head + '<tbody>' + body + '</tbody>';
+}
+function editRental(id){ _editingRentalId = id; renderRentals(); }
+function cancelRentalEdit(){ _editingRentalId = null; renderRentals(); }
+function saveRentalEdit(id){
+  const rentals = loadRentals();
+  const idx = rentals.findIndex(r => r.id === id);
+  if (idx < 0) return;
+  const row = document.querySelector('#rentals-table tr[data-id="'+id+'"]');
+  if (!row) return;
+  row.querySelectorAll('.rental-edit').forEach(inp => {
+    const f = inp.dataset.f;
+    if (f === 'size') rentals[idx][f] = parseInt(inp.value, 10) || 0;
+    else rentals[idx][f] = inp.value.trim();
+  });
+  saveRentals(rentals);
+  _editingRentalId = null;
+  renderRentals();
+  showToast('Rental updated','success');
+}
+function deleteRental(id){
+  if (!confirm('Delete this rental?')) return;
+  const rentals = loadRentals().filter(r => r.id !== id);
+  saveRentals(rentals);
+  renderRentals();
+  showToast('Rental deleted','success');
+}
+function addRental(){
+  const rentals = loadRentals();
+  const nextId = rentals.reduce((m,r) => Math.max(m, r.id||0), 0) + 1;
+  rentals.push({ id: nextId, floor:'', tenant:'New Tenant', size:0, leaseExpiry:'', managerPhone:'', notes:'' });
+  saveRentals(rentals);
+  _editingRentalId = nextId;
+  renderRentals();
+}
+
 function renderDashboard(){
   const bookings = _FS_BOOKINGS;
   const counts = countAvailByType();
@@ -1039,18 +1292,19 @@ function renderDashboard(){
   document.getElementById('st-avail').textContent = totalAvail;
   document.getElementById('st-bookings').textContent = bookings.filter(b=>b.status==='pending').length;
   const tbl = document.getElementById('dash-overview-table');
-  tbl.innerHTML = `<thead><tr><th>#</th><th>Office Type</th><th>Available Units</th><th>Status</th></tr></thead>
-    <tbody>${OFFICE_SOLUTION_TYPES.map((t,i)=>{
-      const n = counts[t.key] || 0;
+  tbl.innerHTML = `<thead><tr><th>#</th><th>${t('colOfficeType')}</th><th>${t('colAvailUnits')}</th><th>${t('colStatus')}</th></tr></thead>
+    <tbody>${OFFICE_SOLUTION_TYPES.map((tt,i)=>{
+      const n = counts[tt.key] || 0;
       const status = n === 0 ? 'occupied' : (n <= 2 ? 'low' : 'available');
       const statusLabel = n === 0 ? 'occupied' : (n <= 2 ? 'low' : 'available');
       return `<tr>
         <td style="color:var(--muted)">${i+1}</td>
-        <td style="font-weight:600">${t.key}</td>
+        <td style="font-weight:600">${tt.key}</td>
         <td><span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold-light)">${n}</span></td>
         <td><span class="status-badge ${status}">${statusLabel}</span></td>
       </tr>`;
     }).join('')}</tbody>`;
+  renderDashboardBookings();
 }
 
 // ── PRICING (sub-tab inside Available Offices) ───────────────────────────────
