@@ -560,17 +560,23 @@ function renderOffice(L){
 }
 
 // Related (other 3 offices)
-const relEl = document.getElementById('related-grid');
-offices.filter(x => x.id !== o.id).slice(0, 3).forEach(r => {
-  relEl.innerHTML += `
-    <div class="rel-card" onclick="location.href='office-detail.html?id=${r.id}'">
-      <img src="${r.imgOutside}" alt="${r.typeEn}" loading="lazy" decoding="async"/>
-      <div class="rel-card-body">
-        <div class="rel-name">${r.typeEn}</div>
-        <div class="rel-avail" style="font-size:.65rem;color:var(--gold-light);margin-top:4px;">${r.availText.en}</div>
-      </div>
-    </div>`;
-});
+function renderRelated(L) {
+  const relEl = document.getElementById('related-grid');
+  if (!relEl) return;
+  relEl.innerHTML = '';
+  offices.filter(x => x.id !== o.id).slice(0, 3).forEach(r => {
+    const typeLbl = L === 'ar' ? r.typeAr : r.typeEn;
+    const availLbl = L === 'ar' ? r.availText.ar : r.availText.en;
+    relEl.innerHTML += `
+      <div class="rel-card" onclick="location.href='office-detail.html?id=${r.id}'">
+        <img src="${r.imgOutside}" alt="${typeLbl}" loading="lazy" decoding="async"/>
+        <div class="rel-card-body">
+          <div class="rel-name">${typeLbl}</div>
+          <div class="rel-avail" style="font-size:.65rem;color:var(--gold-light);margin-top:4px;">${availLbl}</div>
+        </div>
+      </div>`;
+  });
+}
 
 // ── BOOK VISIT FORM ──────────────────────────────────────────────────────────
 async function submitVisit(e) {
@@ -666,6 +672,7 @@ function setPageLang(lang) {
     if (t[k]) el.textContent = t[k];
   });
   renderOffice(lang);
+  renderRelated(lang);
 }
 (function(){
   const saved = localStorage.getItem('al_lang') || 'en';

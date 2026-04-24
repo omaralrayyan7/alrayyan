@@ -504,7 +504,7 @@ const FL_LABEL = {
   '9-indoor':  '9th-floor-indoor',
 };
 const IMAGINARY_COUNTS = {
-  'b1': 4, 'g': 0, '3': 0, '4': 6, '5': 1, '6': 5, '7': 5,
+  'b1': 4, 'g': 3, '3': 0, '4': 6, '5': 1, '6': 5, '7': 5,
   '9-outdoor': 3, '9-indoor': 3,
 };
 const floorImageConfig = {
@@ -519,7 +519,7 @@ const floorImageConfig = {
   '7':         { real: 6, mains: 0, ext: 'webp' },
   '8':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
   '9-indoor':  { real: 3, mains: 0, ext: 'webp' },
-  '9-outdoor': { real: 4, mains: 0, ext: 'webp' },
+  '9-outdoor': { real: 6, mains: 0, ext: 'webp' },
 };
 // Carousel state — declared before renderFloor() / init IIFE to avoid TDZ.
 const renderTotal = IMAGINARY_COUNTS[floorId] || 0;
