@@ -504,22 +504,22 @@ const FL_LABEL = {
   '9-indoor':  '9th-floor-indoor',
 };
 const IMAGINARY_COUNTS = {
-  'b1': 4, 'g': 3, '3': 0, '4': 6, '5': 1, '6': 5, '7': 5,
-  '9-outdoor': 3, '9-indoor': 3,
+  'b1': 4, 'g': 0, '3': 0, '4': 6, '5': 1, '6': 5, '7': 5,
+  '9-outdoor': 0, '9-indoor': 0,
 };
 const floorImageConfig = {
   'b1':        { real: 3, mains: 0, ext: 'webp' },
-  'g':         { real: 0, mains: 0, ext: 'webp' },
+  'g':         { real: 3, mains: 0, ext: 'webp' },
   '1':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
   '2':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
   '3':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
-  '4':         { real: 6, mains: 0, ext: 'jpg' },
-  '5':         { real: 2, mains: 0, ext: 'jpg' },
-  '6':         { real: 6, mains: 0, ext: 'jpg' },
-  '7':         { real: 3, mains: 0, ext: 'jpg' },
+  '4':         { real: 7, mains: 0, ext: 'webp' },
+  '5':         { real: 0, mains: 0, ext: 'webp', hideGallery: true },
+  '6':         { real: 7, mains: 0, ext: 'webp' },
+  '7':         { real: 6, mains: 0, ext: 'webp' },
   '8':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
-  '9-indoor':  { real: 0, mains: 0, ext: 'webp' },
-  '9-outdoor': { real: 0, mains: 0, ext: 'webp' },
+  '9-indoor':  { real: 3, mains: 0, ext: 'webp' },
+  '9-outdoor': { real: 3, mains: 0, ext: 'webp' },
 };
 // Carousel state — declared before renderFloor() / init IIFE to avoid TDZ.
 const renderTotal = IMAGINARY_COUNTS[floorId] || 0;
@@ -695,6 +695,10 @@ function renderFloorGallery() {
   if (!container) return;
 
   const cfg = floorImageConfig[floorId];
+  if (cfg && cfg.hideGallery === true) {
+    container.style.display = 'none';
+    return;
+  }
   const renderPlaceholder = () => {
     container.style.display = '';
     container.innerHTML = `
