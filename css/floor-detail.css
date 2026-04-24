@@ -311,21 +311,20 @@ img { max-width: 100%; height: auto; }
 .avail-6,
 .avail-7,
 .avail-9-outdoor {
-  height: auto;
+  height: 420px;
   width: 100%;
-  max-height: 520px;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center center;
   background: #0d0d0d;
 }
 @media (max-width: 1024px){
-  .avail-4, .avail-6, .avail-7, .avail-9-outdoor { max-height: 420px; }
+  .avail-4, .avail-6, .avail-7, .avail-9-outdoor { height: 320px; }
 }
 @media (max-width: 768px){
-  .avail-4, .avail-6, .avail-7, .avail-9-outdoor { max-height: 320px; }
+  .avail-4, .avail-6, .avail-7, .avail-9-outdoor { height: 260px; }
 }
 @media (max-width: 480px){
-  .avail-4, .avail-6, .avail-7, .avail-9-outdoor { max-height: 240px; }
+  .avail-4, .avail-6, .avail-7, .avail-9-outdoor { height: 200px; }
 }
 
 /* =========================================================
