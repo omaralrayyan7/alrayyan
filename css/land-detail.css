@@ -242,14 +242,16 @@ html { color-scheme: only light !important; }
     }
     @media (max-width: 520px){ .quick-contact { grid-template-columns: 1fr 1fr; } }
     .q-chip {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-decoration: none; color: inherit;
       background: rgba(255,255,255,0.02); border: 1px solid rgba(138,170,74,0.1);
       border-radius: 3px; padding: 14px 14px; text-align: center;
       transition: var(--t); cursor: pointer;
     }
     .q-chip:hover { border-color: var(--olive); }
-    .q-chip .ico { font-size: 1.1rem; margin-bottom: 6px; }
-    .q-chip p { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.5px; }
-    .q-chip a { color: var(--olive-light); font-size: 0.75rem; font-weight: 600; }
+    .q-chip .ico { font-size: 1.1rem; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; }
+    .q-chip p { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.5px; margin: 0; }
+    .q-chip span { color: var(--olive-light); font-size: 0.75rem; font-weight: 600; margin-top: 2px; }
 
     /* RELATED */
     .related-section { padding: 80px 6%; background: var(--deep); }

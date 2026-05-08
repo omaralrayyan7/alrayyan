@@ -12,15 +12,15 @@
   // ── Availability (settings/availability) — mirrors admin.html defaults ──
   const AVAILABILITY = {
     'b1_1000': true,
-    'g_shop1': true, 'g_shop2': true, 'g_shop3': true,
-    '1_80': false, '1_160': false, '1_400': false,
-    '2_80': false, '2_160': false, '2_400': false,
-    '3_80': true,  '3_160': false, '3_400': false,
-    '4_80': false, '4_160': false, '4_400': true,
-    '5_80': true,  '5_160': false, '5_400': false,
-    '6_80': false, '6_160': false, '6_400': true,
-    '7_80': false, '7_160': false, '7_400': true,
-    '8_80': false, '8_160': false, '8_400': false,
+    'g_shop1': true, 'g_shop2': true, 'g_shop3': true, 'g_pharmacy': true,
+    '1_80': false, '1_100': false, '1_160': false, '1_240': false, '1_400': false,
+    '2_80': false, '2_100': false, '2_160': false, '2_240': false, '2_400': false,
+    '3_80': true,  '3_100': false, '3_160': false, '3_240': false, '3_400': false,
+    '4_80': false, '4_100': false, '4_160': false, '4_240': false, '4_400': true,
+    '5_80': true,  '5_100': false, '5_160': false, '5_240': false, '5_400': false,
+    '6_80': false, '6_100': false, '6_160': false, '6_240': false, '6_400': true,
+    '7_80': false, '7_100': false, '7_160': false, '7_240': false, '7_400': true,
+    '8_80': false, '8_100': false, '8_160': false, '8_240': false, '8_400': false,
     '9-outdoor_300': true,
     '9-indoor_100': true
   };
@@ -47,14 +47,14 @@
     aboutBodyAr: 'مجموعة الريان هي شركة قابضة متنوعة مقرها عمان، الأردن، تعمل في العقارات الفاخرة والأزياء الراقية والفنون والاستثمار في الأراضي.',
     phone: '+962 79 055 0787',
     email: 'info@alrayyangroup.com',
-    address: 'Alrayyan Tower, Queen Rania Street, Amman',
+    address: 'Alrayyan Tower, Queen Alia Street, Amman',
     show_pricing: true
   };
 
   // ── Floors (high-level floor records) ──
   const FLOORS = [
     { id:'b1', name:'B1 Floor',   name_ar:'الطابق B1',   subtitle:'Underground · Exception', subtitle_ar:'تحت الأرض · استثناء', total_size:'1,000 m²', type:'Open Space',   order:1, status:'available' },
-    { id:'g',  name:'G Floor',    name_ar:'الطابق الأرضي', subtitle:'Ground · Shops',          subtitle_ar:'أرضي · محلات',       total_size:'27 m²',    type:'Small Shops',  order:2, status:'available' },
+    { id:'g',  name:'G Floor',    name_ar:'الطابق الأرضي', subtitle:'Indoor Shops + Outdoor Pharmacy', subtitle_ar:'محلات داخلية + صيدلية خارجية', total_size:'225 m²', type:'Small Shops',  order:2, status:'available' },
     { id:'1',  name:'1st Floor',  name_ar:'الطابق الأول',  subtitle:'Fully Occupied',          subtitle_ar:'مشغول بالكامل',      total_size:'400 m²',   type:'Office',       order:3, status:'occupied' },
     { id:'2',  name:'2nd Floor',  name_ar:'الطابق الثاني', subtitle:'Fully Occupied',          subtitle_ar:'مشغول بالكامل',      total_size:'400 m²',   type:'Office',       order:4, status:'occupied' },
     { id:'3',  name:'3rd Floor',  name_ar:'الطابق الثالث', subtitle:'Mid Level',               subtitle_ar:'طابق متوسط',         total_size:'400 m²',   type:'Office',       order:5, status:'available' },
@@ -70,13 +70,16 @@
   // ── Floor units (child records) ──
   const FLOOR_UNITS = [
     { floor_id:'b1', label:'1,000 m² Full', label_ar:'1,000 م² كامل', size_key:'1000', size:'1,000 m²', status:'available' },
-    { floor_id:'g',  label:'3×3 Shop',      label_ar:'محل 3×3',       size_key:'shop1',size:'9 m²',     status:'available' },
-    { floor_id:'g',  label:'3×3 Shop',      label_ar:'محل 3×3',       size_key:'shop2',size:'9 m²',     status:'available' },
-    { floor_id:'g',  label:'3×3 Shop',      label_ar:'محل 3×3',       size_key:'shop3',size:'9 m²',     status:'available' }
+    { floor_id:'g',  label:'25 m² Shop',    label_ar:'محل 25 م²',     size_key:'shop1',   size:'25 m²',  status:'available' },
+    { floor_id:'g',  label:'25 m² Shop',    label_ar:'محل 25 م²',     size_key:'shop2',   size:'25 m²',  status:'available' },
+    { floor_id:'g',  label:'25 m² Shop',    label_ar:'محل 25 م²',     size_key:'shop3',   size:'25 m²',  status:'available' },
+    { floor_id:'g',  label:'Pharmacy (6 doors)', label_ar:'صيدلية (6 أبواب)', size_key:'pharmacy', size:'150 m²', status:'available' }
   ];
   ['1','2','3','4','5','6','7','8'].forEach(f => {
     FLOOR_UNITS.push({ floor_id:f, label:'80 m²',  label_ar:'80 م²',  size_key:'80',  size:'80 m²',  status: AVAILABILITY[f+'_80']?'available':'unavailable' });
+    FLOOR_UNITS.push({ floor_id:f, label:'100 m²', label_ar:'100 م²', size_key:'100', size:'100 m²', status: AVAILABILITY[f+'_100']?'available':'unavailable' });
     FLOOR_UNITS.push({ floor_id:f, label:'160 m²', label_ar:'160 م²', size_key:'160', size:'160 m²', status: AVAILABILITY[f+'_160']?'available':'unavailable' });
+    FLOOR_UNITS.push({ floor_id:f, label:'240 m²', label_ar:'240 م²', size_key:'240', size:'240 m²', status: AVAILABILITY[f+'_240']?'available':'unavailable' });
     FLOOR_UNITS.push({ floor_id:f, label:'400 m² Full Floor', label_ar:'400 م² طابق كامل', size_key:'400', size:'400 m²', status: AVAILABILITY[f+'_400']?'available':'unavailable' });
   });
   FLOOR_UNITS.push({ floor_id:'9-outdoor', label:'300 m² Outdoor', label_ar:'300 م² خارجي', size_key:'300', size:'300 m²', status:'available' });

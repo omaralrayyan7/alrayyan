@@ -603,8 +603,14 @@
     }
     .about-img-wrap { position: relative; }
     .about-img-wrap img {
-      width: 100%; height: 480px; object-fit: cover;
-      border-radius: 4px; filter: brightness(0.85);  transform: scale(1);
+      width: 100%;
+      height: auto;
+      max-height: 720px;
+      object-fit: contain;
+      object-position: center;
+      border-radius: 4px;
+      filter: brightness(0.9);
+      display: block;
     }
     .about-img-wrap::before {
       content: ''; position: absolute;
@@ -939,6 +945,21 @@
       color: var(--gold-light);
     }
 
+    /* A Glimpse Inside — auto-slider */
+    .gallery-slider{position:relative;width:100%;max-width:1400px;margin:0 auto;
+      border:1px solid rgba(184,115,51,0.1);border-radius:4px;overflow:hidden;background:#0a0a0a;}
+    .gs-track{position:relative;width:100%;aspect-ratio:16/9;}
+    .gs-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;}
+    .gs-slide.active{opacity:1;}
+    .gs-slide img{width:100%;height:100%;object-fit:cover;display:block;}
+    .gs-slide .g-overlay{position:absolute;left:0;right:0;bottom:0;top:auto;inset:auto 0 0 0;
+      background:linear-gradient(0deg,rgba(0,0,0,.75),transparent);padding:18px;opacity:1;display:flex;align-items:flex-end;}
+    .gs-dots{display:flex;justify-content:center;gap:8px;padding:14px;}
+    .gs-dot{width:8px;height:8px;border-radius:50%;background:rgba(184,115,51,0.25);
+      border:none;cursor:pointer;transition:var(--t);padding:0;}
+    .gs-dot.active{background:var(--gold);transform:scale(1.3);}
+    @media(max-width:640px){ .gs-track{aspect-ratio:4/3;} }
+
     /* Lightbox */
     .lightbox {
       display: none; position: fixed; inset: 0; z-index: 9999;
@@ -1138,7 +1159,7 @@
       .section-desc { font-size: 0.82rem; }
       .about-wrap { grid-template-columns: 1fr; gap: 40px; }
       .about-img-wrap { order: -1; }
-      .about-img-wrap img { height: 280px; }
+      .about-img-wrap img { height: auto; max-height: 480px; }
       .about-img-wrap::before { display: none; }
       .about-img-badge { display: none; }
       .offices-grid { grid-template-columns: 1fr; }
@@ -1176,7 +1197,7 @@
       .stats-row { grid-template-columns: 1fr 1fr; }
       .stat-num { font-size: 1.6rem; }
       .stat-cell { padding: 22px 10px; }
-      .about-img-wrap img { height: 220px; }
+      .about-img-wrap img { height: auto; max-height: 480px; }
       .office-card-body { padding: 20px 16px 24px; }
       .biz-card-wrap { height: 340px; }
       .biz-front-body { padding: 20px 20px 18px; }

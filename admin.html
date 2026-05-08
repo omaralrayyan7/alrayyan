@@ -1002,29 +1002,35 @@ function saveBiz(data){ adminFsSave('biz', data); }
 // and settings/availability) and by the public site to resolve each unit-chip.
 const AVAIL_FLOORS = [
   { id:'b1',        label:'B1 Floor',   sub:'Underground · Exception', sizes:[{k:'1000', label:'1,000 m² Full'}] },
-  { id:'g',         label:'G Floor',    sub:'Ground · Shops',           sizes:[{k:'shop1', label:'3×3 Shop'},{k:'shop2', label:'3×3 Shop'},{k:'shop3', label:'3×3 Shop'}] },
-  { id:'1',         label:'1st Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'160', label:'160 m²'},{k:'400', label:'400 m² Full Floor'}] },
-  { id:'2',         label:'2nd Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'160', label:'160 m²'},{k:'400', label:'400 m² Full Floor'}] },
-  { id:'3',         label:'3rd Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'160', label:'160 m²'},{k:'400', label:'400 m² Full Floor'}] },
-  { id:'4',         label:'4th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'160', label:'160 m²'},{k:'400', label:'400 m² Full Floor'}] },
-  { id:'5',         label:'5th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'160', label:'160 m²'},{k:'400', label:'400 m² Full Floor'}] },
-  { id:'6',         label:'6th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'160', label:'160 m²'},{k:'400', label:'400 m² Full Floor'}] },
-  { id:'7',         label:'7th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'160', label:'160 m²'},{k:'400', label:'400 m² Full Floor'}] },
-  { id:'8',         label:'8th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'160', label:'160 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'g',         label:'G Floor',    sub:'Indoor Shops + Outdoor Pharmacy',
+    sizes:[
+      {k:'shop1',    label:'Indoor Shop 1 (25 m²)'},
+      {k:'shop2',    label:'Indoor Shop 2 (25 m²)'},
+      {k:'shop3',    label:'Indoor Shop 3 (25 m²)'},
+      {k:'pharmacy', label:'Outdoor Pharmacy (6 doors)'}
+    ] },
+  { id:'1',         label:'1st Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'2',         label:'2nd Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'3',         label:'3rd Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'4',         label:'4th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'5',         label:'5th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'6',         label:'6th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'7',         label:'7th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'8',         label:'8th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
   { id:'9-outdoor', label:'9th Floor',  sub:'Outdoor Terrace · Exception', sizes:[{k:'300', label:'300 m² Outdoor'}] },
   { id:'9-indoor',  label:'9th Floor',  sub:'Indoor Space · Exception',    sizes:[{k:'100', label:'100 m² Indoor'}] },
 ];
 const AVAIL_DEFAULTS = {
   'b1_1000':true,
-  'g_shop1':true,'g_shop2':true,'g_shop3':true,
-  '1_80':false,'1_160':false,'1_400':false,
-  '2_80':false,'2_160':false,'2_400':false,
-  '3_80':true, '3_160':false,'3_400':false,
-  '4_80':false,'4_160':false,'4_400':true,
-  '5_80':true, '5_160':false,'5_400':false,
-  '6_80':false,'6_160':false,'6_400':true,
-  '7_80':false,'7_160':false,'7_400':true,
-  '8_80':false,'8_160':false,'8_400':false,
+  'g_shop1':true,'g_shop2':true,'g_shop3':true,'g_pharmacy':true,
+  '1_80':false,'1_100':false,'1_160':false,'1_240':false,'1_400':false,
+  '2_80':false,'2_100':false,'2_160':false,'2_240':false,'2_400':false,
+  '3_80':true, '3_100':false,'3_160':false,'3_240':false,'3_400':false,
+  '4_80':false,'4_100':false,'4_160':false,'4_240':false,'4_400':true,
+  '5_80':true, '5_100':false,'5_160':false,'5_240':false,'5_400':false,
+  '6_80':false,'6_100':false,'6_160':false,'6_240':false,'6_400':true,
+  '7_80':false,'7_100':false,'7_160':false,'7_240':false,'7_400':true,
+  '8_80':false,'8_100':false,'8_160':false,'8_240':false,'8_400':false,
   '9-outdoor_300':true,
   '9-indoor_100':true
 };
@@ -1203,7 +1209,10 @@ function countAvailByType(){
     if (key === 'b1_1000')            counts['Open Space']++;
     else if (key === '9-outdoor_300') counts['9th Floor – Outdoor Terrace']++;
     else if (key === '9-indoor_100')  counts['9th Floor – Indoor Space']++;
+    else if (key === 'g_pharmacy')    counts['Small Shops']++;
     else if (/^g_shop/.test(key))     counts['Small Shops']++;
+    else if (/_100$/.test(key))       counts['Small Spaces']++;
+    else if (/_240$/.test(key))       counts['Small Spaces']++;
     else if (/_80$/.test(key))        counts['Small Spaces']++;
     else if (/_160$/.test(key))       counts['Small Spaces']++;
     else if (/_400$/.test(key))       counts['Full Floor']++;
@@ -2033,7 +2042,7 @@ function loadSiteContent(){
     aboutBodyAr:'مجموعة الريان هي شركة قابضة متنوعة مقرها عمان، الأردن، تعمل في العقارات الفاخرة والأزياء الراقية والفنون والاستثمار في الأراضي. برج الريان هو تجسيد للهندسة المعمارية المؤسسية الحديثة.',
     phone:'+962 6 000 0000',
     email:'info@alrayyan-group.com',
-    address:'Alrayyan Tower, Queen Rania Street, Amman',
+    address:'Alrayyan Tower, Queen Alia Street, Amman',
   };
   return ADMIN_FS.site_content || def;
 }
