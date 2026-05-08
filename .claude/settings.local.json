@@ -41,7 +41,9 @@
       "Bash(git -C \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower\" push)",
       "Bash(python -c \"from PIL import Image; print\\('PIL available'\\)\")",
       "Bash(python -c ' *)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(git -C 'c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower' commit -m ' *)",
+      "Bash(git -C \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower\" push origin main)"
     ]
   }
 }

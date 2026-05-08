@@ -59,9 +59,12 @@ html { color-scheme: only light !important; }
     .fl-hero{position:relative;margin-top:72px;height:46vh;min-height:320px;
       display:flex;align-items:flex-end;overflow:hidden;
       background-color:#0a0a0a;
-      background-image:linear-gradient(135deg, rgba(5,5,5,0.5), rgba(10,8,4,0.9));
-      background-size:cover;background-position:center;
+      background-image:linear-gradient(135deg, rgba(5,5,5,0.45), rgba(10,8,4,0.85));
+      background-size:110% auto;background-position:center 40%;
+      background-repeat:no-repeat;
     }
+    /* Floor 5: banner positioned lower to show interior details */
+    .fl-hero.floor-5 { background-position: center 70%; }
     .fl-hero::before{content:'';position:absolute;inset:0;
       background-image:
         linear-gradient(rgba(184,115,51,0.04) 1px, transparent 1px),
@@ -302,7 +305,9 @@ img { max-width: 100%; height: auto; }
 
 /* per-floor sizing */
 .avail-b1        { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
-.avail-g         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
+.avail-g         { height: 180px; max-width: 520px; object-fit: cover; object-position: center 50%; display:block; margin:0 auto 12px; }
+.avail-g-indoor  { height: 180px; max-width: 520px; object-fit: cover; object-position: center 50%; display:block; margin:0 auto 12px; }
+.avail-g-outdoor { height: 180px; max-width: 520px; object-fit: cover; object-position: center 50%; display:block; margin:0 auto 12px; }
 .avail-3         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
 .avail-5         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
 .avail-9-indoor  { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
@@ -311,22 +316,33 @@ img { max-width: 100%; height: auto; }
    switch to contain + auto height so the 80/160/400 m² cards never get cropped. */
 .avail-4,
 .avail-6,
-.avail-7,
-.avail-9-outdoor {
+.avail-7 {
   height: 420px;
   width: 100%;
   object-fit: cover;
   object-position: center center;
   background: #0d0d0d;
 }
+.avail-9-outdoor {
+  height: 220px !important;
+  max-width: 640px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center 75%;
+  background: #0d0d0d;
+  display: block;
+  margin: 0 auto 12px;
+}
+@media (max-width: 768px) { .avail-9-outdoor { height: 160px !important; } }
+@media (max-width: 480px) { .avail-9-outdoor { height: 130px !important; } }
 @media (max-width: 1024px){
-  .avail-4, .avail-6, .avail-7, .avail-9-outdoor { height: 320px; }
+  .avail-4, .avail-6, .avail-7 { height: 320px; }
 }
 @media (max-width: 768px){
-  .avail-4, .avail-6, .avail-7, .avail-9-outdoor { height: 260px; }
+  .avail-4, .avail-6, .avail-7 { height: 260px; }
 }
 @media (max-width: 480px){
-  .avail-4, .avail-6, .avail-7, .avail-9-outdoor { height: 200px; }
+  .avail-4, .avail-6, .avail-7 { height: 200px; }
 }
 
 /* =========================================================

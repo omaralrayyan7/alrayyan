@@ -45,8 +45,8 @@
     aboutTitleAr: 'عن مجموعة الريان',
     aboutBodyEn: 'Alrayyan Group is a diversified holding company based in Amman, Jordan, operating across premium real estate, luxury fashion, arts, and land investments.',
     aboutBodyAr: 'مجموعة الريان هي شركة قابضة متنوعة مقرها عمان، الأردن، تعمل في العقارات الفاخرة والأزياء الراقية والفنون والاستثمار في الأراضي.',
-    phone: '+962 79 055 0787',
-    email: 'info@alrayyangroup.com',
+    phone: '+962 79 998 8006',
+    email: 'alrayyantower@gmail.com',
     address: 'Alrayyan Tower, Queen Alia Street, Amman',
     show_pricing: true
   };
@@ -54,7 +54,7 @@
   // ── Floors (high-level floor records) ──
   const FLOORS = [
     { id:'b1', name:'B1 Floor',   name_ar:'الطابق B1',   subtitle:'Underground · Exception', subtitle_ar:'تحت الأرض · استثناء', total_size:'1,000 m²', type:'Open Space',   order:1, status:'available' },
-    { id:'g',  name:'G Floor',    name_ar:'الطابق الأرضي', subtitle:'Indoor Shops + Outdoor Pharmacy', subtitle_ar:'محلات داخلية + صيدلية خارجية', total_size:'225 m²', type:'Small Shops',  order:2, status:'available' },
+    { id:'g',  name:'G Floor',    name_ar:'الطابق الأرضي', subtitle:'Indoor Shops + Outdoor Shop', subtitle_ar:'محلات داخلية + محل خارجي', total_size:'225 m²', type:'Small Shops',  order:2, status:'available' },
     { id:'1',  name:'1st Floor',  name_ar:'الطابق الأول',  subtitle:'Fully Occupied',          subtitle_ar:'مشغول بالكامل',      total_size:'400 m²',   type:'Office',       order:3, status:'occupied' },
     { id:'2',  name:'2nd Floor',  name_ar:'الطابق الثاني', subtitle:'Fully Occupied',          subtitle_ar:'مشغول بالكامل',      total_size:'400 m²',   type:'Office',       order:4, status:'occupied' },
     { id:'3',  name:'3rd Floor',  name_ar:'الطابق الثالث', subtitle:'Mid Level',               subtitle_ar:'طابق متوسط',         total_size:'400 m²',   type:'Office',       order:5, status:'available' },
@@ -73,7 +73,7 @@
     { floor_id:'g',  label:'25 m² Shop',    label_ar:'محل 25 م²',     size_key:'shop1',   size:'25 m²',  status:'available' },
     { floor_id:'g',  label:'25 m² Shop',    label_ar:'محل 25 م²',     size_key:'shop2',   size:'25 m²',  status:'available' },
     { floor_id:'g',  label:'25 m² Shop',    label_ar:'محل 25 م²',     size_key:'shop3',   size:'25 m²',  status:'available' },
-    { floor_id:'g',  label:'Pharmacy (6 doors)', label_ar:'صيدلية (6 أبواب)', size_key:'pharmacy', size:'150 m²', status:'available' }
+    { floor_id:'g',  label:'Outdoor Shop (6 doors)', label_ar:'محل خارجي (6 أبواب)', size_key:'pharmacy', size:'150 m²', status:'available' }
   ];
   ['1','2','3','4','5','6','7','8'].forEach(f => {
     FLOOR_UNITS.push({ floor_id:f, label:'80 m²',  label_ar:'80 م²',  size_key:'80',  size:'80 m²',  status: AVAILABILITY[f+'_80']?'available':'unavailable' });

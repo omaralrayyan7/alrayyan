@@ -927,11 +927,11 @@
     }
     .g-item:hover { border-color: rgba(184,115,51,0.3); }
     .g-item img {
-      width: 100%; height: 260px; object-fit: cover;
+      width: 100%; height: 180px; object-fit: cover;
       transition: transform 0.5s ease, filter 0.5s ease;
       filter: brightness(0.75) saturate(0.8);
     }
-    .g-item:first-child img { height: 260px; }
+    .g-item:first-child img { height: 180px; }
     .g-item:hover img { transform: scale(1.06); filter: brightness(0.95) saturate(1); }
     .g-overlay {
       position: absolute; inset: 0;
@@ -948,7 +948,7 @@
     /* A Glimpse Inside — auto-slider */
     .gallery-slider{position:relative;width:100%;max-width:1400px;margin:0 auto;
       border:1px solid rgba(184,115,51,0.1);border-radius:4px;overflow:hidden;background:#0a0a0a;}
-    .gs-track{position:relative;width:100%;aspect-ratio:16/9;}
+    .gs-track{position:relative;width:100%;aspect-ratio:16/9;max-height:480px;overflow:hidden;}
     .gs-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;}
     .gs-slide.active{opacity:1;}
     .gs-slide img{width:100%;height:100%;object-fit:cover;display:block;}
@@ -1148,7 +1148,7 @@
       .nav-logo img { height: 38px; }
       section { padding: 60px 4%; }
       #hero { padding-top: 68px; }
-      .hero-logo { width: min(45vw, 180px); height: auto; aspect-ratio: 1 / 1; margin-bottom: 20px; object-fit: contain; }
+      .hero-logo { width: min(35vw, 140px); height: auto; aspect-ratio: 1 / 1; margin-bottom: 16px; object-fit: contain; }
       .hero-brand { letter-spacing: 3px; }
       .hero-subtitle { letter-spacing: 3px; margin-bottom: 32px; font-size: clamp(0.65rem, 1.2vw, 0.85rem); }
       .hero-buttons { flex-direction: column; align-items: center; gap: 12px; width: 100%; padding: 0 20px; }
@@ -1190,7 +1190,7 @@
     @media (max-width: 480px) {
       nav { padding: 0 3%; }
       section { padding: 48px 3%; }
-      .hero-logo { width: min(65vw, 200px); height: auto; aspect-ratio: 1 / 1; object-fit: contain; }
+      .hero-logo { width: min(40vw, 130px); height: auto; aspect-ratio: 1 / 1; object-fit: contain; }
       .hero-brand { font-size: clamp(1.4rem, 5vw, 2rem); letter-spacing: 2px; }
       .hero-divider { margin: 12px 0 14px; }
       .section-title { font-size: clamp(1.3rem, 3vw, 1.8rem); }
@@ -1251,7 +1251,7 @@ img { max-width: 100%; height: auto; }
 }
 
 /* --- resizable hero/banner images (appended) --- */
-.resizable-img { resize: vertical; overflow: hidden; min-height: 200px; max-height: 900px; width: 100%; }
+.resizable-img { overflow: hidden; width: 100%; }
 .resizable-img img { width:100%; height:100%; object-fit:cover; }
 
 /* ── Logo: always render in original colors, defeat any dark-mode / auto-darken / extension filters ── */
