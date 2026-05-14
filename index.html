@@ -848,11 +848,45 @@
     <div class="footer-bottom">
       <span>© 2025 Alrayyan Group. All rights reserved.</span>
       <span>Premium Office Rentals · Amman, Jordan</span>
+      <span><a href="privacy.html" style="color:var(--gold);text-decoration:none;" data-i18n="cookiePolicy">Privacy &amp; Cookies Policy</a></span>
     </div>
   </footer>
 
   <!-- Scroll to Top Button -->
   <button class="scroll-top-btn" id="scrollTopBtn" onclick="document.querySelector('#hero').scrollIntoView({behavior:'smooth'})" aria-label="Scroll to top">↑</button>
+
+  <!-- ===== COOKIES CONSENT BANNER ===== -->
+  <div id="cookie-banner" role="dialog" aria-labelledby="cookie-title" style="display:none;position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;max-width:560px;width:calc(100% - 28px);background:linear-gradient(135deg,#0f0d0a 0%,#181410 100%);border:1px solid var(--gold);border-radius:6px;box-shadow:0 14px 40px rgba(0,0,0,.65);padding:18px 22px;font-family:'Montserrat',sans-serif;">
+    <p id="cookie-title" data-i18n="cookieMsg" style="margin:0 0 14px;color:var(--off-white);font-size:.78rem;line-height:1.55;">
+      We use cookies to make Alrayyan Tower work, remember your language preference and analyse anonymous traffic so we can improve the site. By accepting you agree to our <a href="privacy.html" style="color:var(--gold);text-decoration:underline;" data-i18n="cookiePolicy">Privacy &amp; Cookies Policy</a>.
+    </p>
+    <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
+      <button id="cookie-decline" onclick="declineCookies()" data-i18n="cookieDecline" style="background:transparent;border:1px solid rgba(212,175,55,.4);color:#cfcfcf;font-family:inherit;font-size:.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:9px 18px;border-radius:3px;cursor:pointer;transition:.2s;">Decline</button>
+      <button id="cookie-accept"  onclick="acceptCookies()"  data-i18n="cookieAccept" style="background:var(--gold);border:1px solid var(--gold);color:#0a0a0a;font-family:inherit;font-size:.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:9px 22px;border-radius:3px;cursor:pointer;transition:.2s;">Accept</button>
+    </div>
+  </div>
+  <script>
+    (function(){
+      const KEY = 'al_cookies_v1';
+      const choice = localStorage.getItem(KEY);
+      if (!choice){
+        // Show banner shortly after load (avoid jank during paint).
+        window.addEventListener('load', () => {
+          setTimeout(() => { const b=document.getElementById('cookie-banner'); if(b) b.style.display='block'; }, 400);
+        });
+      }
+      window.acceptCookies = function(){
+        localStorage.setItem(KEY, 'accepted');
+        const b=document.getElementById('cookie-banner'); if(b) b.style.display='none';
+      };
+      window.declineCookies = function(){
+        localStorage.setItem(KEY, 'declined');
+        // Decline = leave the site, per requested behavior.
+        try { window.location.href = 'https://www.google.com'; }
+        catch(e){ document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#fff;background:#000;height:100vh;">You have declined our cookies policy. Please close this tab.</div>'; }
+      };
+    })();
+  </script>
 
   <!-- ====== JAVASCRIPT ====== -->
   <!-- Bootstrap JS -->
@@ -1024,6 +1058,9 @@
         footQL:'Quick Links', footOB:'Our Businesses', footCon:'Contact',
         footCopy:'© 2025 Alrayyan Group. All rights reserved.', footTag:'Premium Office Rentals · Amman, Jordan',
         mHome:'Home', mAbout:'About', mOffices:'Offices', mBiz:'Our Businesses', mGallery:'Gallery', mContact:'Contact',
+        cookieMsg:'We use cookies to make Alrayyan Tower work, remember your language preference and analyse anonymous traffic so we can improve the site. By accepting you agree to our Privacy & Cookies Policy.',
+        cookiePolicy:'Privacy & Cookies Policy',
+        cookieAccept:'Accept', cookieDecline:'Decline',
         navAvailable:'Available',
         availEye:'Current Availability', availTitle:'Available Floors & Units',
         availDesc:'Real-time inventory across Alrayyan Tower — including B1, G floor, and the 9th-floor spaces. Click any row to view details.',
@@ -1084,6 +1121,9 @@
         footQL:'روابط سريعة', footOB:'أعمالنا', footCon:'تواصل',
         footCopy:'© 2025 مجموعة الريان. جميع الحقوق محفوظة.', footTag:'تأجير مكاتب فاخرة · الأردن',
         mHome:'الرئيسية', mAbout:'من نحن', mOffices:'المكاتب', mBiz:'أعمالنا', mGallery:'المعرض', mContact:'تواصل',
+        cookieMsg:'نستخدم ملفات تعريف الارتباط لتشغيل برج الريان وحفظ تفضيلات اللغة وتحليل الزيارات لتحسين الموقع. بالموافقة فأنت توافق على سياسة الخصوصية وملفات تعريف الارتباط.',
+        cookiePolicy:'سياسة الخصوصية وملفات تعريف الارتباط',
+        cookieAccept:'موافق', cookieDecline:'رفض',
         navAvailable:'المتاح',
         availEye:'التوافر الحالي', availTitle:'الطوابق والوحدات المتاحة',
         availDesc:'المخزون المباشر في برج الريان — بما في ذلك B1 والطابق الأرضي ومساحات الطابق التاسع. انقر على أي صف لعرض التفاصيل.',
@@ -1212,6 +1252,8 @@
 
       const t = i18n[lang];
       if (!t) return;
+      // Expose to other scripts (availability button labels reach for this).
+      window.__i18nDict = t;
 
       selMap.concat(hintMap, galMap).forEach(([sel, key]) => {
         const el = document.querySelector(sel);
@@ -1226,6 +1268,16 @@
           if (htmlKeys.has(key)) { el.innerHTML = t[key]; }
           else { el.textContent = t[key]; }
         }
+      });
+
+      // Translate unit-chip area labels that don't have explicit i18n keys
+      // (e.g. "80 m²", "100 m²") — just swap the m² token to the Arabic one.
+      document.querySelectorAll('.unit-chip').forEach(chip => {
+        if (chip.hasAttribute('data-i18n')) return;            // already handled above
+        const base = (chip.dataset.chipLabel || chip.textContent || '').replace(/^\s*[✓✗]\s*/, '').trim();
+        const out  = lang === 'ar' ? base.replace(/m²/g, 'م²') : base.replace(/م²/g, 'm²');
+        chip.dataset.chipLabel = out;
+        chip.textContent = out;
       });
 
       // Visit Website buttons
