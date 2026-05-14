@@ -1,9 +1,13 @@
 <!DOCTYPE html>
+<!-- build: 2026-05-14-sidebar-v3 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="darkreader-lock">
   <meta name="color-scheme" content="only light">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel – Alrayyan Group</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico"/>
@@ -71,7 +75,7 @@
           <button class="adm-lang-btn" id="lang-ar-btn" onclick="setAdminLang('ar')">AR</button>
         </div>
         <span class="adm-admin-badge" id="adm-user-badge">Admin</span>
-        <button class="btn-sm-ghost" onclick="toggleMobileSidebar()">☰ Menu</button>
+        <button class="btn-sm-ghost" onclick="toggleMobileSidebar()" data-i18n-key="menu">☰ Menu</button>
       </div>
     </div>
 
@@ -79,22 +83,6 @@
 
       <!-- ── DASHBOARD ── -->
       <div class="adm-panel active" id="panel-dashboard">
-        <div class="adm-stat-grid">
-          <div class="adm-stat-card"><div class="s-num" id="st-total">6</div><div class="s-lbl">Office Types</div><div class="s-change">↑ All managed</div></div>
-          <div class="adm-stat-card"><div class="s-num" id="st-avail">56</div><div class="s-lbl">Total Available Units</div><div class="s-change">↑ Updated live</div></div>
-          <div class="adm-stat-card"><div class="s-num" id="st-bookings">0</div><div class="s-lbl">Pending Bookings</div><div class="s-change">Via website form</div></div>
-          <div class="adm-stat-card"><div class="s-num" id="st-biz">3</div><div class="s-lbl">Active Businesses</div><div class="s-change">Fashion · Arts · Land</div></div>
-        </div>
-
-        <div class="adm-card">
-          <div class="adm-card-head">
-            <h5 data-i18n-key="quickOverview">Quick Overview — Office Availability</h5>
-          </div>
-          <div style="overflow-x:auto">
-            <table class="adm-table" id="dash-overview-table"></table>
-          </div>
-        </div>
-
         <div class="adm-card">
           <div class="adm-card-head">
             <h5 data-i18n-key="recentBookings">Recent Visit Bookings</h5>
@@ -226,14 +214,24 @@
 
       <!-- ── BOOKINGS ── -->
       <div class="adm-panel" id="panel-bookings">
-        <div style="margin-bottom:20px;font-size:.72rem;color:var(--muted);">Visit booking requests submitted through the website.</div>
+        <div style="margin-bottom:20px;font-size:.72rem;color:var(--muted);" data-i18n-key="bookingsDesc">Visit booking requests submitted through the website.</div>
         <div class="adm-card">
-          <div class="adm-card-head"><h5>Visit Booking Requests</h5>
-            <button class="btn-sm-ghost" onclick="addDemoBooking()">+ Add Demo Booking</button>
+          <div class="adm-card-head"><h5 data-i18n-key="bookingsTitle">Visit Booking Requests</h5>
+            <button class="btn-sm-ghost" onclick="addDemoBooking()" data-i18n-key="addDemo">+ Add Demo Booking</button>
           </div>
           <div style="overflow-x:auto">
             <table class="adm-table">
-              <thead><tr><th>Ref</th><th>Name</th><th>Email</th><th>Phone</th><th>Office / Floor</th><th>Date</th><th>Status</th><th>Notified</th><th>Actions</th></tr></thead>
+              <thead><tr>
+                <th data-i18n-key="colRef">Ref</th>
+                <th data-i18n-key="colName">Name</th>
+                <th data-i18n-key="colEmail">Email</th>
+                <th data-i18n-key="colPhone">Phone</th>
+                <th data-i18n-key="colOfficeFloor">Office / Floor</th>
+                <th data-i18n-key="colDate">Date</th>
+                <th data-i18n-key="colStatus">Status</th>
+                <th data-i18n-key="colNotified">Notified</th>
+                <th data-i18n-key="colActions">Actions</th>
+              </tr></thead>
               <tbody id="bookings-tbody"></tbody>
             </table>
           </div>
@@ -805,11 +803,17 @@ const ADMIN_I18N = {
     edit:'Edit', save:'Save', delete:'Delete', cancel:'Cancel',
     noBookings:'No bookings yet. Bookings submitted via the website will appear here.',
     addDemo:'+ Add Demo Booking',
+    bookingsTitle:'Visit Booking Requests',
+    bookingsDesc:'Visit booking requests submitted through the website.',
+    colEmail:'Email', colOfficeFloor:'Office / Floor', colNotified:'Notified',
+    actAccept:'✓ Accept', actReschedule:'⟳ Reschedule', actReset:'↺ Reset', actDel:'Del',
+    statusPending:'pending', statusConfirmed:'confirmed', statusRejected:'rejected', statusRescheduled:'rescheduled',
+    menu:'☰ Menu',
   },
   ar: {
     dashboard:'الرئيسية', offices:'أنواع المكاتب', floors:'الوحدات المتاحة',
     bookings:'حجوزات الزيارة', businesses:'أعمال الريان', floorDetails:'صفحات الطوابق',
-    lands:'أراضي الريان', products:'أزياء الريان', arts:'أزياء الريان للفنون', siteContent:'محتوى الصفحة الرئيسية',
+    lands:'أراضي الريان', products:'أزياء الريان', arts:'فنون الريان', siteContent:'محتوى الصفحة الرئيسية',
     viewSite:'عرض الموقع', signOut:'تسجيل الخروج',
     officeTypes:'أنواع المكاتب', totalUnits:'إجمالي الوحدات المتاحة',
     pendingBookings:'الحجوزات المعلقة', activeBusinesses:'الأعمال النشطة',
@@ -826,6 +830,12 @@ const ADMIN_I18N = {
     edit:'تعديل', save:'حفظ', delete:'حذف', cancel:'إلغاء',
     noBookings:'لا توجد حجوزات بعد. ستظهر الحجوزات المقدمة عبر الموقع هنا.',
     addDemo:'+ إضافة حجز تجريبي',
+    bookingsTitle:'طلبات حجز الزيارة',
+    bookingsDesc:'طلبات حجز الزيارة المقدمة عبر الموقع.',
+    colEmail:'البريد الإلكتروني', colOfficeFloor:'المكتب / الطابق', colNotified:'تم الإبلاغ',
+    actAccept:'✓ قبول', actReschedule:'⟳ إعادة جدولة', actReset:'↺ إعادة', actDel:'حذف',
+    statusPending:'قيد الانتظار', statusConfirmed:'مؤكد', statusRejected:'مرفوض', statusRescheduled:'معاد الجدولة',
+    menu:'☰ القائمة',
   }
 };
 let adminLang = localStorage.getItem('ar_admin_lang') || 'en';
@@ -844,6 +854,7 @@ function setAdminLang(lang) {
   try { renderDashboard(); } catch(e){}
   try { renderRentals(); } catch(e){}
   try { renderDashboardBookings(); } catch(e){}
+  try { renderBookings(); } catch(e){}
 }
 
 function t(key) {
@@ -852,10 +863,18 @@ function t(key) {
 
 function applyAdminI18n() {
   const T = ADMIN_I18N[adminLang];
-  // Sidebar nav items — order matches the HTML sidebar:
-  // dashboard, siteContent, offices, floors (availability), products, arts, businesses, lands, bookings, viewSite
+  // Refresh top page title for the currently visible panel.
+  try {
+    const key = (typeof panelTitleKeys !== 'undefined' && panelTitleKeys[_currentPanelName]) || 'dashboard';
+    const titleEl = document.getElementById('adm-page-title');
+    if (titleEl) titleEl.textContent = T[key] || titleEl.textContent;
+  } catch(e){}
+  // Sidebar nav items — the array order MUST match the current HTML sidebar
+  // order exactly (this loop rewrites labels by index). Current HTML order:
+  // dashboard, siteContent, offices, availability, bookings, [Our Businesses header],
+  // products, arts, lands, businesses, viewSite
   const navItems = document.querySelectorAll('.adm-nav-item');
-  const navKeys = ['dashboard','siteContent','offices','floors','products','arts','businesses','lands','bookings','viewSite'];
+  const navKeys = ['dashboard','siteContent','offices','floors','bookings','products','arts','lands','businesses','viewSite'];
   navItems.forEach((el, i) => {
     const ico = el.querySelector('.ico');
     if (ico && navKeys[i]) el.innerHTML = ico.outerHTML + ' ' + T[navKeys[i]];
@@ -1247,13 +1266,17 @@ async function initAdmin(){
 }
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
-const panelTitles = {dashboard:'Dashboard',availability:'Available Units',offices:'Office Types',bookings:'Visit Bookings',businesses:'Alrayyan Businesses',lands:'Alrayyan Lands',products:'Alrayyan Fashion',arts:'Alrayyan Arts',siteContent:'Homepage Content'};
+// Maps panel name → ADMIN_I18N key so the top page-title translates.
+const panelTitleKeys = {dashboard:'dashboard',availability:'floors',offices:'offices',bookings:'bookings',businesses:'businesses',lands:'lands',products:'products',arts:'arts',siteContent:'siteContent'};
+let _currentPanelName = 'dashboard';
 function showPanel(name, el){
   document.querySelectorAll('.adm-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.adm-nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('panel-'+name).classList.add('active');
   el.classList.add('active');
-  document.getElementById('adm-page-title').textContent = panelTitles[name];
+  _currentPanelName = name;
+  const key = panelTitleKeys[name] || 'dashboard';
+  document.getElementById('adm-page-title').textContent = t(key);
 }
 function toggleMobileSidebar(){
   document.getElementById('adm-sidebar').classList.toggle('mobile-open');
@@ -1475,24 +1498,8 @@ function addRental(){
 }
 
 function renderDashboard(){
-  const bookings = _FS_BOOKINGS;
-  const counts = countAvailByType();
-  const totalAvail = Object.values(counts).reduce((s,n)=>s+n,0);
-  document.getElementById('st-avail').textContent = totalAvail;
-  document.getElementById('st-bookings').textContent = bookings.filter(b=>b.status==='pending').length;
-  const tbl = document.getElementById('dash-overview-table');
-  tbl.innerHTML = `<thead><tr><th>#</th><th>${t('colOfficeType')}</th><th>${t('colAvailUnits')}</th><th>${t('colStatus')}</th></tr></thead>
-    <tbody>${OFFICE_SOLUTION_TYPES.map((tt,i)=>{
-      const n = counts[tt.key] || 0;
-      const status = n === 0 ? 'occupied' : (n <= 2 ? 'low' : 'available');
-      const statusLabel = n === 0 ? 'occupied' : (n <= 2 ? 'low' : 'available');
-      return `<tr>
-        <td style="color:var(--muted)">${i+1}</td>
-        <td style="font-weight:600">${tt.key}</td>
-        <td><span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold-light)">${n}</span></td>
-        <td><span class="status-badge ${status}">${statusLabel}</span></td>
-      </tr>`;
-    }).join('')}</tbody>`;
+  // Dashboard simplified to just the live Recent Visit Bookings preview.
+  // (Stat cards and Quick Overview table were removed per request.)
   renderDashboardBookings();
 }
 
@@ -1710,7 +1717,7 @@ function renderBookings(){
   const tbody = document.getElementById('bookings-tbody');
   if (!tbody) return;
   if(!bookings.length){
-    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px">No bookings yet.</td></tr>';
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px">${t('noBookings')}</td></tr>`;
     const st = document.getElementById('st-bookings'); if (st) st.textContent = '0';
     return;
   }
@@ -1726,17 +1733,18 @@ function renderBookings(){
     const customerNotified = b.customer_notified_at ? '✉️' : (b.customer_notify_error ? '⚠️' : '—');
     const adminNotified = b.admin_notified_at ? '✓' : (b.admin_notify_error ? '⚠️' : '…');
     let actions = '';
+    const statusLabel = t('status' + status.charAt(0).toUpperCase() + status.slice(1)) || status;
     if (status === 'pending'){
       actions = `
         <button class="btn-sm-gold"   title="Accept — sends confirmation email to customer"
-                onclick="updateBookingStatusFS('${idAttr}','confirmed')">✓ Accept</button>
+                onclick="updateBookingStatusFS('${idAttr}','confirmed')">${t('actAccept')}</button>
         <button class="btn-sm-ghost"  title="Reschedule — propose a new date/time and email the customer"
-                onclick="rescheduleBookingFS('${idAttr}')">⟳ Reschedule</button>`;
+                onclick="rescheduleBookingFS('${idAttr}')">${t('actReschedule')}</button>`;
     } else if (status === 'confirmed' || status === 'rejected' || status === 'rescheduled'){
       actions = `<button class="btn-sm-ghost" title="Revert to pending"
-                  onclick="updateBookingStatusFS('${idAttr}','pending')">↺ Reset</button>`;
+                  onclick="updateBookingStatusFS('${idAttr}','pending')">${t('actReset')}</button>`;
     }
-    actions += ` <button class="btn-sm-danger" onclick="confirmDelete('booking','${idAttr}','Delete booking ${refEsc}?')">Del</button>`;
+    actions += ` <button class="btn-sm-danger" onclick="confirmDelete('booking','${idAttr}','Delete booking ${refEsc}?')">${t('actDel')}</button>`;
     return `
     <tr>
       <td style="color:var(--gold);font-size:.65rem">${b.ref||'—'}</td>
@@ -1745,7 +1753,7 @@ function renderBookings(){
       <td style="color:var(--muted);font-size:.7rem">${b.phone||'—'}</td>
       <td style="color:var(--muted);font-size:.7rem">${office}</td>
       <td style="color:var(--muted);font-size:.7rem">${date}<div style="font-size:.6rem;color:var(--muted)">${b.preferred_time||''}</div></td>
-      <td><span class="booking-status-badge ${status}">${status}</span></td>
+      <td><span class="booking-status-badge ${status}">${statusLabel}</span></td>
       <td style="text-align:center;font-size:.7rem" title="Admin notified ${adminNotified} · Customer notified ${customerNotified}">
         <div>A:${adminNotified}</div><div>C:${customerNotified}</div>
       </td>
@@ -1754,7 +1762,8 @@ function renderBookings(){
       </td>
     </tr>`;
   }).join('');
-  document.getElementById('st-bookings').textContent = bookings.filter(b=>b.status==='pending').length;
+  // st-bookings stat card was removed from the dashboard panel.
+  const _st = document.getElementById('st-bookings'); if (_st) _st.textContent = bookings.filter(b=>b.status==='pending').length;
 }
 async function addDemoBooking(){
   if (!window.db){ showToast('Firestore not ready', 'error'); return; }

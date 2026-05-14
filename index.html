@@ -58,9 +58,9 @@
       <li><a href="#gallery">Gallery</a></li>
       <li><a href="#contact" class="nav-cta">Contact Us</a></li>
     </ul>
-    <div class="lang-sw">
-      <button class="lang-btn active" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" onclick="setLang('ar')">AR</button>
+    <div class="lang-sw" dir="ltr" style="direction:ltr;display:inline-flex;">
+      <button class="lang-btn active" onclick="setLang('en')" style="min-width:36px;">EN</button>
+      <button class="lang-btn" onclick="setLang('ar')" style="min-width:36px;">AR</button>
     </div>
     <div class="hamburger" id="hamburger">
       <span></span><span></span><span></span>
@@ -814,34 +814,34 @@
 
 
         </div>
-        <div class="brand-name">ALRAYYAN GROUP</div>
-        <p>Your first choice for premium office rentals and diversified business ventures — where ambition finds its address.</p>
+        <div class="brand-name" data-i18n="footBrand">ALRAYYAN GROUP</div>
+        <p data-i18n="footDesc">Your first choice for premium office rentals and diversified business ventures — where ambition finds its address.</p>
       </div>
       <div class="footer-col">
-        <h4>Quick Links</h4>
+        <h4 data-i18n="footQL">Quick Links</h4>
         <ul>
-          <li><a href="#hero">Home</a></li>
-          <li><a href="#about">About Us</a></li>
-          <li><a href="#offices">Offices</a></li>
-          <li><a href="#businesses">Our Businesses</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#hero"       data-i18n="mHome">Home</a></li>
+          <li><a href="#about"      data-i18n="mAbout">About Us</a></li>
+          <li><a href="#offices"    data-i18n="mOffices">Offices</a></li>
+          <li><a href="#businesses" data-i18n="mBiz">Our Businesses</a></li>
+          <li><a href="#contact"    data-i18n="mContact">Contact</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Our Businesses</h4>
+        <h4 data-i18n="footOB">Our Businesses</h4>
         <ul>
-          <li><a href="fashion.html">Alrayyan Fashion</a></li>
-          <li><a href="arts.html">Alrayyan Arts</a></li>
-          <li><a href="land.html">Alrayyan Lands</a></li>
+          <li><a href="fashion.html" data-i18n="bizFashBack">Alrayyan Fashion</a></li>
+          <li><a href="arts.html"    data-i18n="bizArtsBack">Alrayyan Arts</a></li>
+          <li><a href="land.html"    data-i18n="bizLandBack">Alrayyan Lands</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h4 data-i18n="footCon">Contact</h4>
         <ul>
           <li><a href="tel:+962799880066" dir="ltr">+962 79 988 0066</a></li>
           <li><a href="mailto:alrayyantower@gmail.com">alrayyantower@gmail.com</a></li>
-          <li><a>Alrayyan Tower, Queen Alia Street, Amman</a></li>
-          <li><a>Sat–Thu: 9am–6pm</a></li>
+          <li><a data-i18n="conLocV">Alrayyan Tower, Queen Alia Street, Amman</a></li>
+          <li><a data-i18n="conHoursV">Sat–Thu: 9am–6pm</a></li>
         </ul>
       </div>
     </div>
@@ -857,9 +857,10 @@
 
   <!-- ===== COOKIES CONSENT BANNER ===== -->
   <div id="cookie-banner" role="dialog" aria-labelledby="cookie-title" style="display:none;position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;max-width:560px;width:calc(100% - 28px);background:linear-gradient(135deg,#0f0d0a 0%,#181410 100%);border:1px solid var(--gold);border-radius:6px;box-shadow:0 14px 40px rgba(0,0,0,.65);padding:18px 22px;font-family:'Montserrat',sans-serif;">
-    <p id="cookie-title" data-i18n="cookieMsg" style="margin:0 0 14px;color:var(--off-white);font-size:.78rem;line-height:1.55;">
-      We use cookies to make Alrayyan Tower work, remember your language preference and analyse anonymous traffic so we can improve the site. By accepting you agree to our <a href="privacy.html" style="color:var(--gold);text-decoration:underline;" data-i18n="cookiePolicy">Privacy &amp; Cookies Policy</a>.
+    <p id="cookie-title" data-i18n="cookieMsg" style="margin:0 0 10px;color:var(--off-white);font-size:.78rem;line-height:1.55;">
+      We use cookies to make Alrayyan Tower work, remember your language preference and analyse anonymous traffic. By accepting you agree to our Privacy &amp; Cookies Policy.
     </p>
+    <a href="privacy.html" target="_blank" data-i18n="cookieReadPolicy" style="display:inline-block;color:var(--gold);text-decoration:underline;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;font-weight:700;margin-bottom:14px;">Read full Privacy &amp; Cookies Policy →</a>
     <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
       <button id="cookie-decline" onclick="declineCookies()" data-i18n="cookieDecline" style="background:transparent;border:1px solid rgba(212,175,55,.4);color:#cfcfcf;font-family:inherit;font-size:.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:9px 18px;border-radius:3px;cursor:pointer;transition:.2s;">Decline</button>
       <button id="cookie-accept"  onclick="acceptCookies()"  data-i18n="cookieAccept" style="background:var(--gold);border:1px solid var(--gold);color:#0a0a0a;font-family:inherit;font-size:.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:9px 22px;border-radius:3px;cursor:pointer;transition:.2s;">Accept</button>
@@ -867,20 +868,15 @@
   </div>
   <script>
     (function(){
-      const KEY = 'al_cookies_v1';
-      const choice = localStorage.getItem(KEY);
-      if (!choice){
-        // Show banner shortly after load (avoid jank during paint).
-        window.addEventListener('load', () => {
-          setTimeout(() => { const b=document.getElementById('cookie-banner'); if(b) b.style.display='block'; }, 400);
-        });
-      }
+      // Show the banner on EVERY visit (per request) — no persistent
+      // "accepted" memory. The banner appears once per page load.
+      window.addEventListener('load', () => {
+        setTimeout(() => { const b=document.getElementById('cookie-banner'); if(b) b.style.display='block'; }, 400);
+      });
       window.acceptCookies = function(){
-        localStorage.setItem(KEY, 'accepted');
         const b=document.getElementById('cookie-banner'); if(b) b.style.display='none';
       };
       window.declineCookies = function(){
-        localStorage.setItem(KEY, 'declined');
         // Decline = leave the site, per requested behavior.
         try { window.location.href = 'https://www.google.com'; }
         catch(e){ document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#fff;background:#000;height:100vh;">You have declined our cookies policy. Please close this tab.</div>'; }
@@ -1054,12 +1050,14 @@
         conEye:'Get In Touch', conTitle:"Let's Find Your Perfect Office",
         conLoc:'Location', conLocV:'Alrayyan Tower, Queen Alia Street, Amman', conPhone:'Phone', conEmail:'Email', conHours:'Hours', conHoursV:'Sat–Thu: 9am–6pm',
         conWA:'WhatsApp Us', conCall:'📞 Call Direct', conMail:'✉️ Email Us',
+        footBrand:'ALRAYYAN GROUP',
         footDesc:'Your first choice for premium office rentals and diversified business ventures — where ambition finds its address.',
         footQL:'Quick Links', footOB:'Our Businesses', footCon:'Contact',
         footCopy:'© 2025 Alrayyan Group. All rights reserved.', footTag:'Premium Office Rentals · Amman, Jordan',
         mHome:'Home', mAbout:'About', mOffices:'Offices', mBiz:'Our Businesses', mGallery:'Gallery', mContact:'Contact',
-        cookieMsg:'We use cookies to make Alrayyan Tower work, remember your language preference and analyse anonymous traffic so we can improve the site. By accepting you agree to our Privacy & Cookies Policy.',
+        cookieMsg:'We use cookies to make Alrayyan Tower work, remember your language preference and analyse anonymous traffic. By accepting you agree to our Privacy & Cookies Policy.',
         cookiePolicy:'Privacy & Cookies Policy',
+        cookieReadPolicy:'Read full Privacy & Cookies Policy →',
         cookieAccept:'Accept', cookieDecline:'Decline',
         navAvailable:'Available',
         availEye:'Current Availability', availTitle:'Available Floors & Units',
@@ -1117,12 +1115,14 @@
         conEye:'تواصل معنا', conTitle:'دعنا نجد مكتبك المثالي',
         conLoc:'الموقع', conLocV:'برج الريان، شارع الملكة علياء، عمّان', conPhone:'الهاتف', conEmail:'البريد', conHours:'ساعات العمل', conHoursV:'سبت–خميس: 9ص–6م',
         conWA:'واتساب', conCall:'📞 اتصل مباشرة', conMail:'✉️ راسلنا',
+        footBrand:'مجموعة الريان',
         footDesc:'خيارك الأول لتأجير المكاتب الفاخرة والمشاريع التجارية المتنوعة — حيث يجد الطموح عنوانه.',
         footQL:'روابط سريعة', footOB:'أعمالنا', footCon:'تواصل',
         footCopy:'© 2025 مجموعة الريان. جميع الحقوق محفوظة.', footTag:'تأجير مكاتب فاخرة · الأردن',
         mHome:'الرئيسية', mAbout:'من نحن', mOffices:'المكاتب', mBiz:'أعمالنا', mGallery:'المعرض', mContact:'تواصل',
         cookieMsg:'نستخدم ملفات تعريف الارتباط لتشغيل برج الريان وحفظ تفضيلات اللغة وتحليل الزيارات لتحسين الموقع. بالموافقة فأنت توافق على سياسة الخصوصية وملفات تعريف الارتباط.',
         cookiePolicy:'سياسة الخصوصية وملفات تعريف الارتباط',
+        cookieReadPolicy:'اقرأ سياسة الخصوصية الكاملة ←',
         cookieAccept:'موافق', cookieDecline:'رفض',
         navAvailable:'المتاح',
         availEye:'التوافر الحالي', availTitle:'الطوابق والوحدات المتاحة',
