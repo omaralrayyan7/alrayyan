@@ -63,6 +63,7 @@
     <div class="detail-eyebrow" id="hero-eyebrow">Office Type</div>
     <h1 class="detail-title" id="hero-title">Office Name</h1>
     <div class="detail-price-tag" id="hero-price" style="font-family:'Montserrat',sans-serif;font-size:.82rem;color:var(--gold-light);font-weight:600;letter-spacing:.5px;"></div>
+    <div id="floor-btns-hero" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;"></div>
   </div>
 </div>
 
@@ -101,10 +102,10 @@
       <p class="sec-eye" data-i18n="ecLoc">Location</p>
       <h2 class="sec-title"><span data-i18n="ttFuA">Find</span> <em style="font-style:italic;color:var(--gold-light);" data-i18n="ttFuB">Us</em></h2>
       <div class="gold-line"></div>
-      <div style="width:100%;height:220px;background:rgba(184,115,51,0.04);border:1px solid rgba(184,115,51,0.12);border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;" onclick="window.open('https://www.google.com/maps/search/Alrayyan+Tower+Amman','_blank')">
-        <span style="font-size:2rem">📍</span>
-        <p style="font-size:.78rem;color:var(--off-white);" data-i18n="locAddr">Alrayyan Tower, Queen Alia Street, Amman</p>
-        <p style="font-size:.65rem;color:var(--gold);letter-spacing:1px;" data-i18n="locClick">Click to open in Google Maps →</p>
+      <div class="find-us-box" onclick="window.open('https://www.google.com/maps/search/Alrayyan+Tower+Amman','_blank')">
+        <span class="pin">📍</span>
+        <p class="addr" data-i18n="locAddr">Alrayyan Tower, Queen Alia Street, Amman</p>
+        <p class="click" data-i18n="locClick">Click to open in Google Maps →</p>
       </div>
     </div>
 
@@ -142,6 +143,10 @@
             <label class="bf-label" data-i18n="lblPhone">Phone / WhatsApp *</label>
             <input class="bf-input" type="tel" id="bf-phone" placeholder="+962 7X XXX XXXX" required/>
           </div>
+          <div class="bf-group">
+            <label class="bf-label" data-i18n="lblEmail">Email *</label>
+            <input class="bf-input" type="email" id="bf-email" placeholder="you@example.com" required/>
+          </div>
           <div class="bf-row">
             <div class="bf-group">
               <label class="bf-label" data-i18n="lblDate">Preferred Date *</label>
@@ -173,10 +178,10 @@
       </div>
 
       <div class="quick-contact">
-        <a class="q-chip" href="tel:+962799988006">
+        <a class="q-chip" href="tel:+962799880066">
           <div class="ico">📞</div>
           <p data-i18n="qcCall">Call Us</p>
-          <span>+962 79 998 8006</span>
+          <span>+962 79 988 0066</span>
         </a>
         <a class="q-chip" href="https://www.instagram.com/alrayyan.tower/" target="_blank" rel="noopener">
           <div class="ico">
@@ -185,7 +190,7 @@
           <p data-i18n="qcIG">Instagram</p>
           <span data-i18n="qcFollow">Follow</span>
         </a>
-        <a class="q-chip" href="https://wa.me/962799988006" target="_blank" rel="noopener">
+        <a class="q-chip" href="https://wa.me/962799880066" target="_blank" rel="noopener">
           <div class="ico">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#25d366" aria-hidden="true">
               <path d="M20.52 3.48A11.86 11.86 0 0012.04 0C5.47 0 .12 5.35.12 11.93c0 2.1.55 4.16 1.6 5.97L0 24l6.27-1.64a11.93 11.93 0 005.77 1.47h.01c6.57 0 11.92-5.35 11.92-11.93 0-3.19-1.24-6.19-3.45-8.42zm-8.48 18.36h-.01a9.9 9.9 0 01-5.04-1.38l-.36-.21-3.72.98.99-3.63-.24-.37a9.9 9.9 0 01-1.52-5.3c0-5.47 4.45-9.92 9.92-9.92 2.65 0 5.14 1.03 7.01 2.91a9.86 9.86 0 012.9 7.02c0 5.47-4.45 9.9-9.93 9.9zm5.43-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.67-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.49 1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.35.19 1.86.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/>
@@ -211,7 +216,7 @@
 </div>
 
 <!-- ===== Floating WhatsApp button ===== -->
-<a href="https://wa.me/962799988006" target="_blank" rel="noopener" class="wa-float" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
+<a href="https://wa.me/962799880066" target="_blank" rel="noopener" class="wa-float" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
   <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true">
     <path d="M20.52 3.48A11.86 11.86 0 0012.04 0C5.47 0 .12 5.35.12 11.93c0 2.1.55 4.16 1.6 5.97L0 24l6.27-1.64a11.93 11.93 0 005.77 1.47h.01c6.57 0 11.92-5.35 11.92-11.93 0-3.19-1.24-6.19-3.45-8.42zm-8.48 18.36h-.01a9.9 9.9 0 01-5.04-1.38l-.36-.21-3.72.98.99-3.63-.24-.37a9.9 9.9 0 01-1.52-5.3c0-5.47 4.45-9.92 9.92-9.92 2.65 0 5.14 1.03 7.01 2.91a9.86 9.86 0 012.9 7.02c0 5.47-4.45 9.9-9.93 9.9zm5.43-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.67-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.49 1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.35.19 1.86.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/>
   </svg>
@@ -252,6 +257,7 @@ const STANDARD_AMENITIES = {
     'Personal listing in building directory',
     'Underground parking — 1 spot per 100 m²',
     'Emergency exit',
+    'Private hidden waste disposal unit per floor',
   ],
   ar:[
     'توصيلات كهرباء وماء',
@@ -262,6 +268,7 @@ const STANDARD_AMENITIES = {
     'إدراج شخصي في دليل المبنى',
     'مواقف تحت الأرض — موقف لكل 100 متر مربع',
     'مخرج طوارئ',
+    'وحدة تخلص من النفايات خاصة ومخفية لكل طابق',
   ],
 };
 
@@ -391,14 +398,14 @@ const offices = [
     imgOutside:'images/main/9th-floor-outdoor-outside.webp',
     imgInside: 'images/main/9th-floor-outdoor-inside-banner.webp',
     specs:[
-      {label:{en:'Office Size',ar:'مساحة المكتب'},     value:'300 m²'},
-      {label:{en:'Capacity',ar:'السعة'},               value:{en:'Up to 200 guests',ar:'حتى 200 ضيف'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'},     value:'240 m²'},
+      {label:{en:'Capacity',ar:'السعة'},               value:{en:'Up to 160 guests',ar:'حتى 160 ضيفاً'}},
       {label:{en:'Floors',ar:'الطوابق'},               value:{en:'9th Floor (Outdoor)',ar:'الطابق التاسع (الخارجي)'}},
       {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Annual',ar:'سنوي'}},
       {label:{en:'Setup Time',ar:'وقت التجهيز'},       value:{en:'Same Day',ar:'نفس اليوم'}},
-      {label:{en:'Availability',ar:'التوفر'},          value:{en:'Available in: 9th Floor Outdoor Terrace (300m²)',ar:'متاح في: الطابق التاسع التراس الخارجي (300م²)'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'Available in: 9th Floor Outdoor Terrace (240m²)',ar:'متاح في: الطابق التاسع التراس الخارجي (240م²)'}},
     ],
-    availText:{ en:'Available in: 9th Floor Outdoor Terrace (300m²)', ar:'متاح في: الطابق التاسع التراس الخارجي (300م²)' },
+    availText:{ en:'Available in: 9th Floor Outdoor Terrace (240m²)', ar:'متاح في: الطابق التاسع التراس الخارجي (240م²)' },
     description:{
       en:`<p>Establish a premium Amman business presence without the overhead of a physical office. The Alrayyan Virtual Office gives your company a prestigious address in one of the Kingdom's most recognised business towers — the perfect foundation for any growing company.</p>
       <p>From mail collection and forwarding to dedicated phone answering in your company name, our packages flex to meet your exact needs.</p>`,
@@ -436,14 +443,14 @@ const offices = [
     imgOutside:'images/main/9th-floor-indoor-outside.webp',
     imgInside: 'images/main/9th-floor-indoor-inside-banner.webp',
     specs:[
-      {label:{en:'Office Size',ar:'مساحة المكتب'},     value:'100 m²'},
-      {label:{en:'Capacity',ar:'السعة'},               value:{en:'Up to 40 guests',ar:'حتى 40 ضيفاً'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'},     value:'160 m²'},
+      {label:{en:'Capacity',ar:'السعة'},               value:{en:'Up to 60 guests',ar:'حتى 60 ضيفاً'}},
       {label:{en:'Floors',ar:'الطوابق'},               value:{en:'9th Floor (Indoor)',ar:'الطابق التاسع (الداخلي)'}},
       {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Annual',ar:'سنوي'}},
       {label:{en:'Setup Time',ar:'وقت التجهيز'},       value:{en:'Same Day',ar:'نفس اليوم'}},
-      {label:{en:'Availability',ar:'التوفر'},          value:{en:'Available in: 9th Floor Indoor (100m²)',ar:'متاح في: الطابق التاسع الداخلي (100م²)'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'Available in: 9th Floor Indoor (160m²)',ar:'متاح في: الطابق التاسع الداخلي (160م²)'}},
     ],
-    availText:{ en:'Available in: 9th Floor Indoor (100m²)', ar:'متاح في: الطابق التاسع الداخلي (100م²)' },
+    availText:{ en:'Available in: 9th Floor Indoor (160m²)', ar:'متاح في: الطابق التاسع الداخلي (160م²)' },
     description:{
       en:`<p>For enterprises that demand space, privacy, and identity — a full floor at Alrayyan Tower is the definitive statement. Three entire floors are currently available (4th, 6th, 7th), each 400 m², offered as shell-and-core or in a range of turnkey fit-out packages designed to your brand identity.</p>
       <p>Full floors feature a dedicated lobby with your company branding, exclusive elevator access, and complete freedom to configure the layout. Our in-house design team manages the full process from concept to move-in.</p>`,
@@ -528,6 +535,33 @@ const offices = [
   },
 ];
 
+// ── OFFICE → FLOOR LINKS ─────────────────────────────────────────────────────
+// Each office solution maps to one or more floor subpages on floor-detail.html.
+const OFFICE_FLOOR_LINKS = {
+  1: [ // Full Floor
+    { label:'4th Floor', labelAr:'الطابق الرابع', floor:'4' },
+    { label:'6th Floor', labelAr:'الطابق السادس', floor:'6' },
+    { label:'7th Floor', labelAr:'الطابق السابع', floor:'7' },
+  ],
+  2: [ // Small Spaces
+    { label:'3rd Floor', labelAr:'الطابق الثالث', floor:'3' },
+    { label:'5th Floor', labelAr:'الطابق الخامس', floor:'5' },
+  ],
+  3: [ // Open Space (B1)
+    { label:'B1 Floor',  labelAr:'الطابق B1',     floor:'b1' },
+  ],
+  4: [ // 9th Outdoor
+    { label:'9th Floor', labelAr:'الطابق التاسع', floor:'9-outdoor' },
+  ],
+  5: [ // 9th Indoor
+    { label:'9th Floor', labelAr:'الطابق التاسع', floor:'9-indoor' },
+  ],
+  6: [ // Small Shops
+    { label:'G Floor (Indoor)',  labelAr:'الطابق الأرضي (داخلي)', floor:'g-indoor' },
+    { label:'G Floor (Outdoor)', labelAr:'الطابق الأرضي (خارجي)', floor:'g-outdoor' },
+  ],
+};
+
 // ── LOAD PAGE ────────────────────────────────────────────────────────────────
 const params = new URLSearchParams(window.location.search);
 const offId  = parseInt(params.get('id')) || 1;
@@ -556,6 +590,29 @@ function renderOffice(L){
 
   // Description (Space Overview)
   document.getElementById('detail-desc').innerHTML = o.description[L];
+
+  // Floor buttons in the hero (directly under "Available in:" line).
+  const floorBtnsEl = document.getElementById('floor-btns-hero');
+  if (floorBtnsEl) {
+    floorBtnsEl.innerHTML = '';
+    const links = OFFICE_FLOOR_LINKS[o.id] || [];
+    if (links.length) {
+      const availInLabel = L === 'ar' ? 'متاح في' : 'Available In';
+      let btnHtml = `<p style="font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;width:100%;">${availInLabel}</p>`;
+      links.forEach(lk => {
+        const lbl = L === 'ar' ? (lk.labelAr || lk.label) : lk.label;
+        btnHtml += `<button onclick="location.href='floor-detail.html?floor=${lk.floor}'"
+          style="background:transparent;border:1px solid var(--gold);color:var(--gold-light);
+          font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1.5px;
+          text-transform:uppercase;padding:8px 18px;cursor:pointer;transition:all .25s;border-radius:2px;"
+          onmouseover="this.style.background='var(--gold)';this.style.color='#050505';"
+          onmouseout="this.style.background='transparent';this.style.color='var(--gold-light)';">
+          ${lbl}
+        </button>`;
+      });
+      floorBtnsEl.innerHTML = btnHtml;
+    }
+  }
 
   // Amenities — standardized list applied to every Office Rental Solutions card
   const amEl = document.getElementById('amenities-grid');
@@ -589,6 +646,7 @@ async function submitVisit(e) {
   const fname = (document.getElementById('bf-fname').value || '').trim();
   const lname = (document.getElementById('bf-lname').value || '').trim();
   const phone = (document.getElementById('bf-phone').value || '').trim();
+  const email = (document.getElementById('bf-email').value || '').trim();
   const company = (document.getElementById('bf-company').value || '').trim();
   const date = (document.getElementById('bf-date').value || '').trim();
   const time = (document.getElementById('bf-time').value || '').trim();
@@ -596,7 +654,7 @@ async function submitVisit(e) {
   const office = (document.getElementById('bf-office').value || '').trim();
   const booking = {
     ref, visitor_name: (fname + ' ' + lname).trim(),
-    phone, company, office, floor_preference: office,
+    phone, email, company, office, floor_preference: office,
     preferred_date: date, preferred_time: time, notes,
     source: 'office_detail_booking'
   };
@@ -615,7 +673,7 @@ async function submitVisit(e) {
 // ── SCROLL & FADE ────────────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
-});
+}, { passive: true });
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }});
 }, {threshold:0.1});
@@ -635,7 +693,7 @@ const PAGE_I18N = {
     ecSched:'Schedule a Visit', ttBkA:'Book a', ttBkB:'Site Visit',
     bkHead:'Request a Visit', bkSub:'Our team confirms within 24 hours',
     lblFname:'First Name *', lblLname:'Last Name *', lblCompany:'Company',
-    lblPhone:'Phone / WhatsApp *', lblDate:'Preferred Date *', lblTime:'Preferred Time',
+    lblPhone:'Phone / WhatsApp *', lblEmail:'Email *', lblDate:'Preferred Date *', lblTime:'Preferred Time',
     lblNotes:'Notes', anyTime:'Any time',
     btnConfirm:'Confirm Visit →', bkNote:'Free of charge · No obligation · Sat–Thu 9am–6pm',
     sxTitle:'Visit Requested!', sxBody:'Our team will contact you within 24 hours to confirm your appointment.', sxRef:'Ref',
@@ -650,11 +708,11 @@ const PAGE_I18N = {
     ecAbout:'عن هذه المساحة', ttOvA:'نظرة', ttOvB:'عامة',
     ecIncl:'ما هو مُدرج', ttAmA:'المرافق', ttAmB:'والميزات',
     ecLoc:'الموقع', ttFuA:'اعثر', ttFuB:'علينا',
-    locAddr:'عمّان، الأردن', locClick:'انقر لفتح خرائط جوجل →',
+    locAddr:'برج الريان، شارع الملكة علياء، عمّان', locClick:'انقر لفتح خرائط جوجل →',
     ecSched:'جدولة زيارة', ttBkA:'احجز', ttBkB:'زيارة ميدانية',
     bkHead:'اطلب زيارة', bkSub:'يؤكد فريقنا خلال 24 ساعة',
     lblFname:'الاسم الأول *', lblLname:'اسم العائلة *', lblCompany:'الشركة',
-    lblPhone:'الهاتف / واتساب *', lblDate:'التاريخ المفضل *', lblTime:'الوقت المفضل',
+    lblPhone:'الهاتف / واتساب *', lblEmail:'البريد الإلكتروني *', lblDate:'التاريخ المفضل *', lblTime:'الوقت المفضل',
     lblNotes:'ملاحظات', anyTime:'أي وقت',
     btnConfirm:'تأكيد الزيارة →', bkNote:'مجاناً · بدون التزام · سبت–خميس 9ص–6م',
     sxTitle:'تم طلب الزيارة!', sxBody:'سيتصل فريقنا بك خلال 24 ساعة لتأكيد موعدك.', sxRef:'المرجع',

@@ -152,8 +152,11 @@
     return `https://wa.me/${num}?text=${msg}`;
   }
   function notifyWhatsApp(booking){
-    const url = buildWhatsAppLink(booking);
-    window.open(url, '_blank');
+    // Disabled: admin is notified via Cloud Function email instead of opening
+    // a WhatsApp tab on the visitor's device. Kept as a no-op so existing
+    // callers (office-detail / floor-detail / land-detail / index) continue
+    // to work without edits. Re-enable here if you want the old behavior.
+    return;
   }
 
   window.ArData = {

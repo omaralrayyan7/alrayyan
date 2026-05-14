@@ -173,9 +173,10 @@
       padding: 22px 28px;
       border-bottom: 1px solid rgba(184,115,51,0.08);
       transition: var(--t);
+      cursor: pointer;
     }
     .avail-row:last-child { border-bottom: none; }
-    .avail-row:hover { background: rgba(184,115,51,0.04); }
+    .avail-row[data-avail-row]:hover { background: rgba(184,115,51,0.06); }
     .avail-row .fl-name {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.25rem;

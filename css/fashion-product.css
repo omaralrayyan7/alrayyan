@@ -51,8 +51,10 @@ html { color-scheme: only light !important; }
       display:flex;gap:8px;align-items:center;
       border-bottom:1px solid rgba(200,115,138,0.07);padding-bottom:14px;
     }
-    .breadcrumb a{color:var(--rose);}
-    .breadcrumb span{color:rgba(200,115,138,0.35);}
+    .breadcrumb a{color:rgba(255,255,255,0.35);text-decoration:none;}
+    .breadcrumb a:hover{color:var(--rose);}
+    .breadcrumb span:not(#bc-name){color:rgba(200,115,138,0.25);}
+    .breadcrumb #bc-name{color:var(--rose);font-weight:600;}
 
     /* PRODUCT LAYOUT */
     .product-wrap{

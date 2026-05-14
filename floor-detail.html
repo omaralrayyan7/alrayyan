@@ -140,8 +140,8 @@
             <input class="bf-input" type="tel" id="bf-phone" placeholder="+962 7X XXX XXXX" required/>
           </div>
           <div class="bf-group">
-            <label class="bf-label" data-i18n="lblEmail">Email</label>
-            <input class="bf-input" type="email" id="bf-email" placeholder="your@email.com"/>
+            <label class="bf-label" data-i18n="lblEmail">Email *</label>
+            <input class="bf-input" type="email" id="bf-email" placeholder="your@email.com" required/>
           </div>
           <div class="bf-row">
             <div class="bf-group">
@@ -174,10 +174,10 @@
       </div>
 
       <div class="quick-contact">
-        <a class="q-chip" href="tel:+962799988006">
+        <a class="q-chip" href="tel:+962799880066">
           <div class="ico">📞</div>
           <p data-i18n="qcCall">Call Us</p>
-          <span>+962 79 998 8006</span>
+          <span>+962 79 988 0066</span>
         </a>
         <a class="q-chip" href="https://www.instagram.com/alrayyan.tower/" target="_blank" rel="noopener">
           <div class="ico">
@@ -191,7 +191,7 @@
           <p data-i18n="qcIG">Instagram</p>
           <span data-i18n="qcFollow">Follow</span>
         </a>
-        <a class="q-chip" href="https://wa.me/962799988006" target="_blank" rel="noopener">
+        <a class="q-chip" href="https://wa.me/962799880066" target="_blank" rel="noopener">
           <div class="ico">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#25d366" aria-hidden="true">
               <path d="M20.52 3.48A11.86 11.86 0 0012.04 0C5.47 0 .12 5.35.12 11.93c0 2.1.55 4.16 1.6 5.97L0 24l6.27-1.64a11.93 11.93 0 005.77 1.47h.01c6.57 0 11.92-5.35 11.92-11.93 0-3.19-1.24-6.19-3.45-8.42zm-8.48 18.36h-.01a9.9 9.9 0 01-5.04-1.38l-.36-.21-3.72.98.99-3.63-.24-.37a9.9 9.9 0 01-1.52-5.3c0-5.47 4.45-9.92 9.92-9.92 2.65 0 5.14 1.03 7.01 2.91a9.86 9.86 0 012.9 7.02c0 5.47-4.45 9.9-9.93 9.9zm5.43-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.67-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.49 1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.35.19 1.86.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/>
@@ -207,7 +207,7 @@
 </div>
 
 <!-- ===== Floating WhatsApp button ===== -->
-<a href="https://wa.me/962799988006" target="_blank" rel="noopener" class="wa-float" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
+<a href="https://wa.me/962799880066" target="_blank" rel="noopener" class="wa-float" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
   <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true">
     <path d="M20.52 3.48A11.86 11.86 0 0012.04 0C5.47 0 .12 5.35.12 11.93c0 2.1.55 4.16 1.6 5.97L0 24l6.27-1.64a11.93 11.93 0 005.77 1.47h.01c6.57 0 11.92-5.35 11.92-11.93 0-3.19-1.24-6.19-3.45-8.42zm-8.48 18.36h-.01a9.9 9.9 0 01-5.04-1.38l-.36-.21-3.72.98.99-3.63-.24-.37a9.9 9.9 0 01-1.52-5.3c0-5.47 4.45-9.92 9.92-9.92 2.65 0 5.14 1.03 7.01 2.91a9.86 9.86 0 012.9 7.02c0 5.47-4.45 9.9-9.93 9.9zm5.43-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.67-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.49 1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.35.19 1.86.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/>
   </svg>
@@ -391,22 +391,22 @@ const FLOORS = {
   '9-outdoor': {
     id:'9-outdoor',
     name:{ en:'9th Floor Outdoor', ar:'الطابق التاسع الخارجي' },
-    subtitle:{ en:'Terrace · 300 m² Available', ar:'تراس · 300 م² متاح' },
-    size:'300 m²',
-    sizeLbl:{ en:'300 m² Outdoor Terrace', ar:'300 م² تراس خارجي' },
+    subtitle:{ en:'Terrace · 240 m² Available', ar:'تراس · 240 م² متاح' },
+    size:'240 m²',
+    sizeLbl:{ en:'240 m² Outdoor Terrace', ar:'240 م² تراس خارجي' },
     description:{
-      en:`<p>Alrayyan Tower's 9th-floor outdoor terrace is one of the most unique leasable spaces in Amman. At 300 m², this open-air venue offers panoramic skyline views, landscaped zones, and the flexibility to host high-end brand events, rooftop restaurants, private lounges, or wellness studios.</p>
+      en:`<p>Alrayyan Tower's 9th-floor outdoor terrace is one of the most unique leasable spaces in Amman. At 240 m², this open-air venue offers panoramic skyline views, landscaped zones, and the flexibility to host high-end brand events, rooftop restaurants, private lounges, or wellness studios.</p>
           <p>The space includes shaded pergolas, power and water connections, and direct elevator access. A perfect canvas for a signature hospitality concept or corporate entertainment venue.</p>`,
-      ar:`<p>التراس الخارجي في الطابق التاسع من أكثر المساحات القابلة للإيجار تميزاً في عمّان. بمساحة 300 م²، يوفر هذا الفضاء المفتوح إطلالات بانورامية على الأفق ومناطق مُنسَّقة.</p>
+      ar:`<p>التراس الخارجي في الطابق التاسع من أكثر المساحات القابلة للإيجار تميزاً في عمّان. بمساحة 240 م²، يوفر هذا الفضاء المفتوح إطلالات بانورامية على الأفق ومناطق مُنسَّقة.</p>
           <p>تشمل المساحة عُرُشاً مظلَّلة وتوصيلات كهرباء وماء، ووصولاً مباشراً بالمصعد. قماشة مثالية لمفهوم ضيافة مميز.</p>`
     },
     specs:[
-      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'300 m²'},
-      {label:{en:'Capacity',ar:'السعة'}, value:{en:'Up to 200 guests',ar:'حتى 200 ضيف'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'240 m²'},
+      {label:{en:'Capacity',ar:'السعة'}, value:{en:'Up to 160 guests',ar:'حتى 160 ضيفاً'}},
       {label:{en:'Floors',ar:'الطوابق'}, value:{en:'9th Floor (Outdoor)',ar:'الطابق التاسع (الخارجي)'}},
       {label:{en:'Lease Term',ar:'مدة الإيجار'}, value:{en:'Annual',ar:'سنوي'}},
       {label:{en:'Setup Time',ar:'وقت التجهيز'}, value:{en:'Same Day',ar:'نفس اليوم'}},
-      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: 9th Floor Outdoor Terrace (300m²)',ar:'متاح في: الطابق التاسع التراس الخارجي (300م²)'}},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: 9th Floor Outdoor Terrace (240m²)',ar:'متاح في: الطابق التاسع التراس الخارجي (240م²)'}},
     ],
     amenities:{
       en:['Panoramic skyline views','Shaded pergola zones','Power & water connections','Direct elevator access','Landscaped planters','Ambient lighting infrastructure','Weather-protected zones','Separate service entrance','Fire safety systems','Event-grade flooring','Outdoor speaker wiring','Licensing support available'],
@@ -416,22 +416,22 @@ const FLOORS = {
   '9-indoor': {
     id:'9-indoor',
     name:{ en:'9th Floor Indoor', ar:'الطابق التاسع الداخلي' },
-    subtitle:{ en:'Premium Space · 100 m² Available', ar:'مساحة فاخرة · 100 م² متاح' },
-    size:'100 m²',
-    sizeLbl:{ en:'100 m² Indoor Space', ar:'100 م² مساحة داخلية' },
+    subtitle:{ en:'Premium Space · 160 m² Available', ar:'مساحة فاخرة · 160 م² متاح' },
+    size:'160 m²',
+    sizeLbl:{ en:'160 m² Indoor Space', ar:'160 م² مساحة داخلية' },
     description:{
-      en:`<p>The 9th-floor indoor space is a 100 m² enclosed premium area adjacent to the outdoor terrace. Fully glazed on two sides, it's perfectly suited as a lounge, private dining room, boardroom, gallery, or VIP office with direct terrace access.</p>
-          <p>Climate-controlled and delivered with a high-end fit-out baseline, it pairs naturally with the outdoor 300 m² terrace for a combined hospitality or event venue.</p>`,
-      ar:`<p>المساحة الداخلية في الطابق التاسع هي مساحة مغلقة فاخرة بمساحة 100 م² بجوار التراس الخارجي. مكسوة بالزجاج من جانبين، ومناسبة تماماً كصالة أو غرفة طعام خاصة أو قاعة اجتماعات.</p>
+      en:`<p>The 9th-floor indoor space is a 160 m² enclosed premium area adjacent to the outdoor terrace. Fully glazed on two sides, it's perfectly suited as a lounge, private dining room, boardroom, gallery, or VIP office with direct terrace access.</p>
+          <p>Climate-controlled and delivered with a high-end fit-out baseline, it pairs naturally with the outdoor 240 m² terrace for a combined hospitality or event venue.</p>`,
+      ar:`<p>المساحة الداخلية في الطابق التاسع هي مساحة مغلقة فاخرة بمساحة 160 م² بجوار التراس الخارجي. مكسوة بالزجاج من جانبين، ومناسبة تماماً كصالة أو غرفة طعام خاصة أو قاعة اجتماعات.</p>
           <p>مكيّفة بالكامل ومسلّمة بأساس تجهيز فاخر، تتكامل مع التراس الخارجي.</p>`
     },
     specs:[
-      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'100 m²'},
-      {label:{en:'Capacity',ar:'السعة'}, value:{en:'Up to 40 guests',ar:'حتى 40 ضيفاً'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'160 m²'},
+      {label:{en:'Capacity',ar:'السعة'}, value:{en:'Up to 60 guests',ar:'حتى 60 ضيفاً'}},
       {label:{en:'Floors',ar:'الطوابق'}, value:{en:'9th Floor (Indoor)',ar:'الطابق التاسع (الداخلي)'}},
       {label:{en:'Lease Term',ar:'مدة الإيجار'}, value:{en:'Annual',ar:'سنوي'}},
       {label:{en:'Setup Time',ar:'وقت التجهيز'}, value:{en:'Same Day',ar:'نفس اليوم'}},
-      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: 9th Floor Indoor (100m²)',ar:'متاح في: الطابق التاسع الداخلي (100م²)'}},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: 9th Floor Indoor (160m²)',ar:'متاح في: الطابق التاسع الداخلي (160م²)'}},
     ],
     amenities:{
       en:['Two-sided panoramic glazing','Direct terrace access','Premium finishes included','Full HVAC system','Integrated audio-visual','Concealed lighting','Executive washroom','Private entry lobby','High-end flooring','Wi-Fi infrastructure','Sound insulation','Combined with outdoor option'],
@@ -518,20 +518,20 @@ const FLOORS = {
     name:{ en:'9th Floor – Outdoor Terrace + Indoor Space', ar:'الطابق التاسع – تراس خارجي + مساحة داخلية' },
     subtitle:{ en:'Outdoor Terrace + Indoor Space · Exception', ar:'تراس خارجي + مساحة داخلية · استثناء' },
     size:'400 m²',
-    sizeLbl:{ en:'300 m² Outdoor + 100 m² Indoor', ar:'300 م² خارجي + 100 م² داخلي' },
+    sizeLbl:{ en:'240 m² Outdoor + 160 m² Indoor', ar:'240 م² خارجي + 160 م² داخلي' },
     description:{
-      en:`<p>The 9th floor combines a 300 m² rooftop outdoor terrace with a 100 m² premium indoor space — Alrayyan Tower's signature top-floor venue. Ideal as a single combined offering for hospitality concepts, event venues, executive offices with terrace access, or wellness studios.</p>
+      en:`<p>The 9th floor combines a 240 m² rooftop outdoor terrace with a 160 m² premium indoor space — Alrayyan Tower's signature top-floor venue. Ideal as a single combined offering for hospitality concepts, event venues, executive offices with terrace access, or wellness studios.</p>
           <p>The two areas can be leased together as one full floor (400 m²) or separately. Two stacked sections below show each space individually.</p>`,
-      ar:`<p>يجمع الطابق التاسع بين تراس خارجي على السطح بمساحة 300 م² ومساحة داخلية فاخرة بمساحة 100 م² — أبرز معالم الطابق العلوي في برج الريان. مثالي كعرض مدمج لمفاهيم الضيافة أو الفعاليات أو المكاتب التنفيذية أو استوديوهات العافية.</p>
+      ar:`<p>يجمع الطابق التاسع بين تراس خارجي على السطح بمساحة 240 م² ومساحة داخلية فاخرة بمساحة 160 م² — أبرز معالم الطابق العلوي في برج الريان. مثالي كعرض مدمج لمفاهيم الضيافة أو الفعاليات أو المكاتب التنفيذية أو استوديوهات العافية.</p>
           <p>يمكن استئجار المساحتين معاً كطابق كامل (400 م²) أو بشكل منفصل. يعرض القسمان أدناه كل مساحة على حدة.</p>`
     },
     specs:[
-      {label:{en:'Total Size',ar:'المساحة الإجمالية'}, value:{en:'400 m² (300 outdoor + 100 indoor)',ar:'400 م² (300 خارجي + 100 داخلي)'}},
+      {label:{en:'Total Size',ar:'المساحة الإجمالية'}, value:{en:'400 m² (240 outdoor + 160 indoor)',ar:'400 م² (240 خارجي + 160 داخلي)'}},
       {label:{en:'Capacity',ar:'السعة'}, value:{en:'Up to 240 guests combined',ar:'حتى 240 ضيفاً مجتمعين'}},
       {label:{en:'Floors',ar:'الطوابق'}, value:{en:'9th Floor (Outdoor + Indoor)',ar:'الطابق التاسع (خارجي + داخلي)'}},
       {label:{en:'Lease Term',ar:'مدة الإيجار'}, value:{en:'Annual',ar:'سنوي'}},
       {label:{en:'Setup Time',ar:'وقت التجهيز'}, value:{en:'Same Day',ar:'نفس اليوم'}},
-      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available: Outdoor Terrace (300 m²) + Indoor Space (100 m²)',ar:'متاح: تراس خارجي (300 م²) + مساحة داخلية (100 م²)'}},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available: Outdoor Terrace (240 m²) + Indoor Space (160 m²)',ar:'متاح: تراس خارجي (240 م²) + مساحة داخلية (160 م²)'}},
     ],
     amenities:{
       en:['Panoramic skyline views','Outdoor terrace + indoor lounge','Direct elevator access','Climate-controlled indoor zone','Power & water connections','Event-grade flooring','Ambient lighting infrastructure','Fire safety systems','Premium finishes','Sound insulation (indoor)','Combined or split leasing','Licensing support available'],
@@ -591,14 +591,14 @@ const FL_LABEL = {
   '9-indoor':  '9th-floor-indoor',
 };
 const IMAGINARY_COUNTS = {
-  'b1': 4, 'g': 3, 'g-indoor': 3, 'g-outdoor': 0,
+  'b1': 4, 'g': 3, 'g-indoor': 3, 'g-outdoor': 3,
   '3': 0, '4': 6, '5': 1, '6': 5, '7': 5,
   '9': 0, '9-outdoor': 3, '9-indoor': 3,
 };
 const floorImageConfig = {
   'b1':        { real: 3, mains: 0, ext: 'webp' },
-  'g':         { real: 3, mains: 0, ext: 'webp' },
-  'g-indoor':  { real: 3, mains: 0, ext: 'webp' },
+  'g':         { real: 3, mains: 0, ext: 'webp', placeholder: true },
+  'g-indoor':  { real: 0, mains: 0, ext: 'webp', placeholder: true },
   'g-outdoor': { real: 0, mains: 0, ext: 'webp', placeholder: true },
   '1':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
   '2':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
@@ -631,8 +631,8 @@ function renderFloor() {
   if (fl.id === '9' && FLOORS['9-outdoor'] && FLOORS['9-indoor']) {
     const eyeOut = L === 'ar' ? 'تراس خارجي' : 'Outdoor Terrace';
     const eyeIn  = L === 'ar' ? 'مساحة داخلية' : 'Indoor Space';
-    const headOut = L === 'ar' ? 'تراس خارجي – 300 م²' : 'Outdoor Terrace – 300 m²';
-    const headIn  = L === 'ar' ? 'مساحة داخلية – 100 م²' : 'Indoor Space – 100 m²';
+    const headOut = L === 'ar' ? 'تراس خارجي – 240 م²' : 'Outdoor Terrace – 240 m²';
+    const headIn  = L === 'ar' ? 'مساحة داخلية – 160 م²' : 'Indoor Space – 160 m²';
     document.getElementById('overview-desc').innerHTML =
       `<p class="sec-eye">${eyeOut}</p>
        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--gold-light);margin:6px 0 12px;">${headOut}</h3>
@@ -660,13 +660,30 @@ function renderFloor() {
     // Per-floor banner position class (e.g. floor-5 lowers the focus point).
     heroEl.classList.forEach(c => { if (/^floor-/.test(c)) heroEl.classList.remove(c); });
     heroEl.classList.add('floor-' + String(fl.id).replace('-', '_'));
+    // Floors without a banner image yet: gradient-only background.
+    if (['g-indoor','g-outdoor'].includes(fl.id)) {
+      heroEl.style.backgroundImage = 'linear-gradient(135deg, rgba(5,5,5,0.7), rgba(10,8,4,0.95))';
+    }
   }
   const availEl = document.getElementById('avail-img');
+  // Clean up any previously-injected placeholder so language switches don't stack.
+  if (availEl && availEl.previousElementSibling && availEl.previousElementSibling.dataset && availEl.previousElementSibling.dataset.availPlaceholder === '1') {
+    availEl.previousElementSibling.remove();
+  }
   if (availEl) {
     availEl.style.display = '';
     availEl.onerror = () => { availEl.style.display = 'none'; };
     availEl.src = 'images/floors/floor-' + folderId + '/' + (FL_LABEL[folderId] || FL_LABEL[fl.id]) + '-avail.webp';
     availEl.className = 'avail-img avail-' + fl.id;
+    // For floors without an avail image yet, show a styled placeholder box.
+    if (['g-indoor','g-outdoor'].includes(fl.id)) {
+      availEl.style.display = 'none';
+      const phAvail = document.createElement('div');
+      phAvail.dataset.availPlaceholder = '1';
+      phAvail.style.cssText = 'width:100%;max-width:520px;height:160px;background:#111;border:1px solid rgba(184,115,51,0.15);border-radius:3px;display:flex;align-items:center;justify-content:center;color:rgba(184,115,51,0.3);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;margin:0 auto 12px;';
+      phAvail.textContent = 'Image Coming Soon';
+      availEl.parentNode.insertBefore(phAvail, availEl);
+    }
   }
 
   // specs
@@ -689,6 +706,7 @@ function renderFloor() {
       'Personal listing in building directory',
       'Underground parking — 1 spot per 100 m²',
       'Emergency exit',
+      'Private hidden waste disposal unit per floor',
     ],
     ar: [
       'توصيلات كهرباء وماء',
@@ -699,6 +717,7 @@ function renderFloor() {
       'إدراج شخصي في دليل المبنى',
       'مواقف تحت الأرض — موقف لكل 100 متر مربع',
       'مخرج طوارئ',
+      'وحدة تخلص من النفايات خاصة ومخفية لكل طابق',
     ],
   };
   const amEl = document.getElementById('amenities-grid');
@@ -785,7 +804,7 @@ function setLang(lang) {
 // ── EVENTS ──────────────────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
-});
+}, { passive: true });
 
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
@@ -949,13 +968,19 @@ function renderFloorRenders() {
   const label = FL_LABEL[floorId];
   const basePath = 'images/floors/floor-' + floorId + '/imaginary/';
 
+  // Floors with no real imaginary files yet — render styled placeholder boxes.
+  const usePlaceholder = ['g-indoor','g-outdoor'].includes(floorId);
   let html = `<p class="sec-eye">${t.secRndEye}</p>
     <h2 class="sec-title"><span>${t.secRndTitleA}</span> <em>${t.secRndTitleB}</em></h2>
     <div class="gold-line"></div>
     <div class="fr-carousel" id="fr-carousel">
       <div class="fr-track" id="fr-track">`;
   for (let i = 1; i <= renderTotal; i++) {
-    html += `<img src="${basePath}${label}-imaginary-img-${i}.webp" alt="Render ${i}" loading="lazy" onerror="this.onerror=null;this.style.display='none'" decoding="async"/>`;
+    if (usePlaceholder) {
+      html += `<div style="min-width:100%;height:300px;background:#111;border:1px solid rgba(184,115,51,0.15);border-radius:3px;display:flex;align-items:center;justify-content:center;color:rgba(184,115,51,0.3);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;flex-shrink:0;">Image Coming Soon</div>`;
+    } else {
+      html += `<img src="${basePath}${label}-imaginary-img-${i}.webp" alt="Render ${i}" loading="lazy" onerror="this.onerror=null;this.style.display='none'" decoding="async"/>`;
+    }
   }
   html += `</div>
     <div class="fr-arrows">

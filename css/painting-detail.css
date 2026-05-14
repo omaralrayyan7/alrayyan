@@ -40,8 +40,10 @@ html { color-scheme: only light !important; }
     .lang-btn.active{background:var(--accent);color:var(--primary);border-color:var(--accent);}
 
     .breadcrumb{padding:92px 5% 14px;font-size:.68rem;color:var(--muted);display:flex;gap:8px;}
-    .breadcrumb a{color:var(--accent);}
-    .breadcrumb span.sep{color:rgba(201,168,76,0.3);}
+    .breadcrumb a{color:rgba(255,255,255,0.35);text-decoration:none;}
+    .breadcrumb a:hover{color:var(--accent);}
+    .breadcrumb span.sep{color:rgba(201,168,76,0.25);}
+    .breadcrumb #bc-name{color:var(--accent);font-weight:600;}
 
     .wrap{max-width:1200px;margin:0 auto;padding:24px 5% 80px;display:grid;grid-template-columns:1.1fr 1fr;gap:56px;}
     .art-img-box{background:var(--deep);border:1px solid rgba(201,168,76,0.12);padding:18px;}

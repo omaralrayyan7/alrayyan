@@ -21,8 +21,8 @@
     '6_80': false, '6_100': false, '6_160': false, '6_240': false, '6_400': true,
     '7_80': false, '7_100': false, '7_160': false, '7_240': false, '7_400': true,
     '8_80': false, '8_100': false, '8_160': false, '8_240': false, '8_400': false,
-    '9-outdoor_300': true,
-    '9-indoor_100': true
+    '9-outdoor_240': true,
+    '9-indoor_160': true
   };
 
   // ── Pricing ──
@@ -45,7 +45,7 @@
     aboutTitleAr: 'عن مجموعة الريان',
     aboutBodyEn: 'Alrayyan Group is a diversified holding company based in Amman, Jordan, operating across premium real estate, luxury fashion, arts, and land investments.',
     aboutBodyAr: 'مجموعة الريان هي شركة قابضة متنوعة مقرها عمان، الأردن، تعمل في العقارات الفاخرة والأزياء الراقية والفنون والاستثمار في الأراضي.',
-    phone: '+962 79 998 8006',
+    phone: '+962 79 988 0066',
     email: 'alrayyantower@gmail.com',
     address: 'Alrayyan Tower, Queen Alia Street, Amman',
     show_pricing: true
@@ -63,8 +63,8 @@
     { id:'6',  name:'6th Floor',  name_ar:'الطابق السادس', subtitle:'Full Floor Available',    subtitle_ar:'طابق كامل متاح',     total_size:'400 m²',   type:'Full Floor',   order:8, status:'available' },
     { id:'7',  name:'7th Floor',  name_ar:'الطابق السابع', subtitle:'Full Floor Available',    subtitle_ar:'طابق كامل متاح',     total_size:'400 m²',   type:'Full Floor',   order:9, status:'available' },
     { id:'8',  name:'8th Floor',  name_ar:'الطابق الثامن', subtitle:'Fully Occupied',          subtitle_ar:'مشغول بالكامل',      total_size:'400 m²',   type:'Office',       order:10,status:'occupied' },
-    { id:'9-outdoor', name:'9th Floor', name_ar:'الطابق التاسع', subtitle:'Outdoor Terrace · Exception', subtitle_ar:'تراس خارجي · استثناء', total_size:'300 m²', type:'9th Floor – Outdoor Terrace', order:11, status:'available' },
-    { id:'9-indoor',  name:'9th Floor', name_ar:'الطابق التاسع', subtitle:'Indoor Space · Exception',    subtitle_ar:'مساحة داخلية · استثناء', total_size:'100 m²', type:'9th Floor – Indoor Space',   order:12, status:'available' }
+    { id:'9-outdoor', name:'9th Floor', name_ar:'الطابق التاسع', subtitle:'Outdoor Terrace · Exception', subtitle_ar:'تراس خارجي · استثناء', total_size:'240 m²', type:'9th Floor – Outdoor Terrace', order:11, status:'available' },
+    { id:'9-indoor',  name:'9th Floor', name_ar:'الطابق التاسع', subtitle:'Indoor Space · Exception',    subtitle_ar:'مساحة داخلية · استثناء', total_size:'160 m²', type:'9th Floor – Indoor Space',   order:12, status:'available' }
   ];
 
   // ── Floor units (child records) ──
@@ -82,8 +82,8 @@
     FLOOR_UNITS.push({ floor_id:f, label:'240 m²', label_ar:'240 م²', size_key:'240', size:'240 m²', status: AVAILABILITY[f+'_240']?'available':'unavailable' });
     FLOOR_UNITS.push({ floor_id:f, label:'400 m² Full Floor', label_ar:'400 م² طابق كامل', size_key:'400', size:'400 m²', status: AVAILABILITY[f+'_400']?'available':'unavailable' });
   });
-  FLOOR_UNITS.push({ floor_id:'9-outdoor', label:'300 m² Outdoor', label_ar:'300 م² خارجي', size_key:'300', size:'300 m²', status:'available' });
-  FLOOR_UNITS.push({ floor_id:'9-indoor',  label:'100 m² Indoor',  label_ar:'100 م² داخلي',  size_key:'100', size:'100 m²', status:'available' });
+  FLOOR_UNITS.push({ floor_id:'9-outdoor', label:'240 m² Outdoor', label_ar:'240 م² خارجي', size_key:'240', size:'240 m²', status:'available' });
+  FLOOR_UNITS.push({ floor_id:'9-indoor',  label:'160 m² Indoor',  label_ar:'160 م² داخلي',  size_key:'160', size:'160 m²', status:'available' });
 
   // ── Floor details (for floor-detail.html) — subset used on the site ──
   const FLOOR_DETAILS = {
@@ -123,15 +123,15 @@
       amenitiesEn:['Panoramic city views','Full customization','Executive office layout','Private washrooms','VIP reception'],
       amenitiesAr:['إطلالات بانورامية','تخصيص كامل','تصميم مكتب تنفيذي','دورات مياه خاصة','استقبال VIP'],
       price:'Custom', status:'available'},
-    '9-outdoor': {key:'9-outdoor', titleEn:'9th Floor – Outdoor Space', titleAr:'الطابق التاسع – مساحة خارجية', size:'300 m²',
-      overviewEn:'Unique 300 m² outdoor space on the 9th floor.',
-      overviewAr:'مساحة خارجية فريدة بمساحة 300 م² في الطابق التاسع.',
+    '9-outdoor': {key:'9-outdoor', titleEn:'9th Floor – Outdoor Space', titleAr:'الطابق التاسع – مساحة خارجية', size:'240 m²',
+      overviewEn:'Unique 240 m² outdoor space on the 9th floor.',
+      overviewAr:'مساحة خارجية فريدة بمساحة 240 م² في الطابق التاسع.',
       amenitiesEn:['Open rooftop terrace','Panoramic 360° views','Event-ready layout','Utility connections','Private access'],
       amenitiesAr:['تراس سطح مفتوح','إطلالات بانورامية 360°','تصميم جاهز للفعاليات','توصيلات مرافق','وصول خاص'],
       price:'Custom', status:'available'},
-    '9-indoor': {key:'9-indoor', titleEn:'9th Floor – Indoor Space', titleAr:'الطابق التاسع – مساحة داخلية', size:'100 m²',
-      overviewEn:'Intimate 100 m² indoor space on the 9th floor.',
-      overviewAr:'مساحة داخلية مميزة بمساحة 100 م² في الطابق التاسع.',
+    '9-indoor': {key:'9-indoor', titleEn:'9th Floor – Indoor Space', titleAr:'الطابق التاسع – مساحة داخلية', size:'160 m²',
+      overviewEn:'Intimate 160 m² indoor space on the 9th floor.',
+      overviewAr:'مساحة داخلية مميزة بمساحة 160 م² في الطابق التاسع.',
       amenitiesEn:['Premium finishes','Panoramic windows','Private entrance','Climate control','High-speed internet'],
       amenitiesAr:['تشطيبات راقية','نوافذ بانورامية','مدخل خاص','تحكم بالمناخ','إنترنت فائق السرعة'],
       price:'Custom', status:'available'}
@@ -141,8 +141,8 @@
     {id:'full-floor',   name:'Full Floor',                 price:'Custom Pricing',           avail:3, status:'available', desc:'Entire floor for one tenant. Open layout, maximum space, fully customisable.', size:'400 m²',  order:1},
     {id:'small-spaces', name:'Small Spaces',               price:'From JOD 4,000 / mo',      avail:2, status:'available', desc:'Pre-divided units within a shared floor. 80 m² or 160 m².',                     size:'80–160 m²',order:2},
     {id:'open-space',   name:'Open Space',                 price:'From JOD 7,500 / mo',      avail:1, status:'available', desc:'Large undivided open-plan space — showrooms, events, buildouts.',             size:'1,000 m²',order:3},
-    {id:'9th-outdoor',  name:'9th Floor – Outdoor Terrace',price:'Custom Pricing',           avail:1, status:'available', desc:'Rooftop outdoor terrace with panoramic views.',                                 size:'300 m²',  order:4},
-    {id:'9th-indoor',   name:'9th Floor – Indoor Space',   price:'Custom Pricing',           avail:1, status:'available', desc:'Premium penthouse-level indoor space.',                                         size:'100 m²',  order:5},
+    {id:'9th-outdoor',  name:'9th Floor – Outdoor Terrace',price:'Custom Pricing',           avail:1, status:'available', desc:'Rooftop outdoor terrace with panoramic views.',                                 size:'240 m²',  order:4},
+    {id:'9th-indoor',   name:'9th Floor – Indoor Space',   price:'Custom Pricing',           avail:1, status:'available', desc:'Premium penthouse-level indoor space.',                                         size:'160 m²',  order:5},
     {id:'small-shops',  name:'Small Shops',                price:'Contact for pricing',      avail:3, status:'available', desc:'3×3 m ground-floor retail units with street-level access.',                    size:'9 m²',    order:6}
   ];
 

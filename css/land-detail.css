@@ -94,8 +94,10 @@ html { color-scheme: only light !important; }
       border-bottom: 1px solid rgba(138,170,74,0.07);
       display: flex; gap: 8px; align-items: center;
     }
-    .breadcrumb a { color: var(--olive); }
-    .breadcrumb span { color: rgba(138,170,74,0.4); }
+    .breadcrumb a { color: rgba(255,255,255,0.35); text-decoration:none; }
+    .breadcrumb a:hover { color: var(--olive); }
+    .breadcrumb span:not(#bc-name) { color: rgba(138,170,74,0.4); }
+    .breadcrumb #bc-name { color: var(--olive-light); font-weight: 600; }
 
     /* MAIN LAYOUT */
     .detail-wrap {

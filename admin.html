@@ -46,12 +46,12 @@
       <div class="adm-nav-item" onclick="showPanel('siteContent',this)"><span class="ico">ℹ️</span> Homepage Content</div>
       <div class="adm-nav-item" onclick="showPanel('offices',this)"><span class="ico">🏢</span> Office Types</div>
       <div class="adm-nav-item" onclick="showPanel('availability',this)"><span class="ico">✅</span> Available Units</div>
+      <div class="adm-nav-item" onclick="showPanel('bookings',this)"><span class="ico">📅</span> Visit Bookings</div>
       <div class="adm-nav-section" style="font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(212,175,55,.45);padding:14px 22px 6px;">Our Businesses</div>
       <div class="adm-nav-item" onclick="showPanel('products',this)"><span class="ico">👗</span> Alrayyan Fashion</div>
       <div class="adm-nav-item" onclick="showPanel('arts',this)"><span class="ico">🎨</span> Alrayyan Arts</div>
-      <div class="adm-nav-item" onclick="showPanel('businesses',this)"><span class="ico">🏛️</span> Alrayyan Businesses</div>
       <div class="adm-nav-item" onclick="showPanel('lands',this)"><span class="ico">🗺️</span> Alrayyan Lands</div>
-      <div class="adm-nav-item" onclick="showPanel('bookings',this)"><span class="ico">📅</span> Visit Bookings</div>
+      <div class="adm-nav-item" onclick="showPanel('businesses',this)"><span class="ico">🏛️</span> Alrayyan Businesses</div>
       <div class="adm-nav-item" onclick="window.open('index.html','_blank')"><span class="ico">🔗</span> View Site</div>
     </nav>
     <div class="adm-sidebar-foot">
@@ -233,7 +233,7 @@
           </div>
           <div style="overflow-x:auto">
             <table class="adm-table">
-              <thead><tr><th>Ref</th><th>Name</th><th>Company</th><th>Office</th><th>Date</th><th>Phone</th><th>Status</th><th>Actions</th></tr></thead>
+              <thead><tr><th>Ref</th><th>Name</th><th>Email</th><th>Phone</th><th>Office / Floor</th><th>Date</th><th>Status</th><th>Notified</th><th>Actions</th></tr></thead>
               <tbody id="bookings-tbody"></tbody>
             </table>
           </div>
@@ -492,6 +492,47 @@
     <div class="adm-modal-foot">
       <button class="btn-sm-ghost" onclick="closeFloorModal()">Cancel</button>
       <button class="btn-sm-gold" onclick="saveFloor()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== RESCHEDULE BOOKING MODAL ====== -->
+<div class="adm-modal-overlay" id="reschedule-modal">
+  <div class="adm-modal" style="max-width:520px">
+    <div class="adm-modal-head">
+      <h4>⟳ Reschedule Visit</h4>
+      <button class="adm-modal-close" onclick="closeRescheduleModal()">✕</button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="rs-id"/>
+      <div style="background:rgba(255,255,255,0.03);padding:12px 14px;border-radius:6px;margin-bottom:14px;font-size:.78rem">
+        <div style="color:var(--muted);font-size:.65rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Visitor</div>
+        <div id="rs-who" style="font-weight:600"></div>
+        <div id="rs-email" style="color:var(--muted);font-size:.72rem;margin-top:2px"></div>
+        <div style="color:var(--muted);font-size:.65rem;letter-spacing:1px;text-transform:uppercase;margin:10px 0 4px">Originally requested</div>
+        <div id="rs-original" style="color:#facc15"></div>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group">
+          <label class="adm-form-label">New Date *</label>
+          <input class="adm-form-control" type="date" id="rs-date"/>
+        </div>
+        <div class="adm-form-group">
+          <label class="adm-form-label">New Time *</label>
+          <input class="adm-form-control" type="time" id="rs-time"/>
+        </div>
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-form-label">Note for the customer <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(optional — added to the email)</span></label>
+        <textarea class="adm-form-control" id="rs-note" rows="3" placeholder="e.g. Our team is unavailable on your requested date — could you join us on the proposed slot instead?"></textarea>
+      </div>
+      <p style="color:var(--muted);font-size:.7rem;margin:6px 2px 0">
+        An email with the new proposed slot will be sent to the customer when you click <strong>Send</strong>.
+      </p>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn-sm-ghost" onclick="closeRescheduleModal()">Cancel</button>
+      <button class="btn-sm-gold" onclick="confirmReschedule()">Send Reschedule Email</button>
     </div>
   </div>
 </div>
@@ -926,8 +967,8 @@ function loadOffices(){
     {id:1,name:'Full Floor',                 price:'Custom Pricing',        status:'available',desc:'Entire floor for one tenant. Open layout, maximum space, fully customisable. Ideal for corporate headquarters.',                      size:'400 m²'},
     {id:2,name:'Small Spaces',               price:'From JOD 4,000 / month',status:'available',desc:'Pre-divided units within a shared floor. Choose 80 m² or 160 m² units, fitted with private entrances and shared corridor.',    size:'80 – 160 m²'},
     {id:3,name:'Open Space',                 price:'Custom Pricing',        status:'available',desc:'Large undivided open-plan space. Perfect for showrooms, event venues, or custom buildouts. Ground & basement levels.',         size:'1,000 m²'},
-    {id:4,name:'9th Floor – Outdoor Terrace',price:'Custom Pricing',        status:'available',desc:'Rooftop outdoor terrace with panoramic city views. Ideal for restaurants, lounges, event spaces, or open-air offices.',       size:'300 m²'},
-    {id:5,name:'9th Floor – Indoor Space',   price:'Custom Pricing',        status:'available',desc:'Premium penthouse-level indoor space with exclusive access. Perfect for executive offices, private studios, or VIP lounges.', size:'100 m²'},
+    {id:4,name:'9th Floor – Outdoor Terrace',price:'Custom Pricing',        status:'available',desc:'Rooftop outdoor terrace with panoramic city views. Ideal for restaurants, lounges, event spaces, or open-air offices.',       size:'240 m²'},
+    {id:5,name:'9th Floor – Indoor Space',   price:'Custom Pricing',        status:'available',desc:'Premium penthouse-level indoor space with exclusive access. Perfect for executive offices, private studios, or VIP lounges.', size:'160 m²'},
     {id:6,name:'Small Shops',                price:'Custom Pricing',        status:'available',desc:'Compact 3×3 m ground-floor retail units with street-level access. Ideal for cafés, boutiques, or service counters.',          size:'9 m² × 3'},
   ];
   // Attach live availability counts so every consumer of loadOffices() sees
@@ -955,8 +996,8 @@ function loadFloors(){
     {id:14,name:'7th Floor – 80 m²',  type:'Unit',        size:'80 m²',    price:'JOD 4,800/mo', status:'full'},
     {id:15,name:'7th Floor – 160 m²', type:'Unit',        size:'160 m²',   price:'JOD 9,000/mo', status:'full'},
     {id:16,name:'7th Floor – 400 m²', type:'Full Floor',  size:'400 m²',   price:'Custom',       status:'available'},
-    {id:17,name:'9th Floor Outdoor',  type:'Exception',   size:'300 m²',   price:'Custom',       status:'available'},
-    {id:18,name:'9th Floor Indoor',   type:'Exception',   size:'100 m²',   price:'Custom',       status:'available'},
+    {id:17,name:'9th Floor Outdoor',  type:'Exception',   size:'240 m²',   price:'Custom',       status:'available'},
+    {id:18,name:'9th Floor Indoor',   type:'Exception',   size:'160 m²',   price:'Custom',       status:'available'},
   ];
   return ADMIN_FS.floors || def;
 }
@@ -977,10 +1018,58 @@ function initBookingsListener(){
     }, err => console.error('[bookings listener]', err));
 }
 async function updateBookingStatusFS(id, status){
+  // Friendly confirmation so admin doesn't accidentally fire a customer email.
+  const b = (_FS_BOOKINGS || []).find(x => String(x.id) === String(id)) || {};
+  const who = b.visitor_name || b.email || b.phone || 'this visitor';
+  if (status === 'confirmed'){
+    if (!confirm(`Accept this visit?\n\nA confirmation email will be sent to:\n${b.email || '(no email on record)'}\nVisitor: ${who}`)) return;
+  }
   try {
-    await window.db.collection('bookings').doc(String(id)).update({ status });
-    showToast('Booking '+status, 'success');
+    await window.db.collection('bookings').doc(String(id)).update({
+      status,
+      status_changed_at: firebase.firestore.FieldValue.serverTimestamp(),
+      status_changed_by: 'admin'
+    });
+    showToast('Booking ' + status + ' — email queued', 'success');
   } catch(e){ console.error('[updateBookingStatusFS]', e); showToast('Update failed', 'error'); }
+}
+
+// Reschedule: open the modal so admin can pick a new date + time with a real picker.
+function rescheduleBookingFS(id){
+  const b = (_FS_BOOKINGS || []).find(x => String(x.id) === String(id)) || {};
+  const who = b.visitor_name || b.email || b.phone || 'this visitor';
+  const curDate = b.preferred_date || '';
+  const curTime = b.preferred_time || '';
+  document.getElementById('rs-id').value = String(id);
+  document.getElementById('rs-who').textContent = who + (b.company ? ' — ' + b.company : '');
+  document.getElementById('rs-email').textContent = b.email ? '✉ ' + b.email : '(no email on record — customer will not receive notification)';
+  document.getElementById('rs-original').textContent = (curDate || '—') + (curTime ? ' at ' + curTime : '');
+  // Pre-fill new date/time with current values + smart defaults: if no time, default 10:00.
+  document.getElementById('rs-date').value = curDate || '';
+  document.getElementById('rs-time').value = /^\d\d:\d\d$/.test(curTime) ? curTime : '10:00';
+  document.getElementById('rs-note').value = '';
+  document.getElementById('reschedule-modal').classList.add('open');
+}
+function closeRescheduleModal(){ document.getElementById('reschedule-modal').classList.remove('open'); }
+async function confirmReschedule(){
+  const id   = document.getElementById('rs-id').value;
+  const date = document.getElementById('rs-date').value;
+  const time = document.getElementById('rs-time').value;
+  const note = document.getElementById('rs-note').value.trim();
+  if (!date){ showToast('Pick a new date first', 'error'); return; }
+  if (!time){ showToast('Pick a new time first', 'error'); return; }
+  try {
+    await window.db.collection('bookings').doc(String(id)).update({
+      status: 'rescheduled',
+      proposed_date: date,
+      proposed_time: time,
+      reschedule_note: note,
+      status_changed_at: firebase.firestore.FieldValue.serverTimestamp(),
+      status_changed_by: 'admin'
+    });
+    closeRescheduleModal();
+    showToast('Reschedule sent — email queued', 'success');
+  } catch(e){ console.error('[confirmReschedule]', e); showToast('Update failed', 'error'); }
 }
 function deleteBookingFS(id){
   if (!window.db) return Promise.resolve();
@@ -995,7 +1084,16 @@ function loadBiz(){
   ];
   return ADMIN_FS.biz || def;
 }
-function saveBiz(data){ adminFsSave('biz', data); }
+function saveBiz(data){
+  adminFsSave('biz', data);
+  // Publish biz statuses to the site_content singleton so the public site
+  // reacts immediately via its existing site_content onSnapshot listener.
+  if (window.ArData) {
+    const statusMap = {};
+    (data || []).forEach(b => { statusMap['biz_status_' + b.id] = b.status; });
+    ArData.setSiteContent(statusMap);
+  }
+}
 
 // ── AVAILABILITY (per-floor / per-size toggles) ─────────────────────────────
 // Canonical list of floor slots. Keys are used in Firestore (admin_state/availability
@@ -1017,8 +1115,8 @@ const AVAIL_FLOORS = [
   { id:'6',         label:'6th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
   { id:'7',         label:'7th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
   { id:'8',         label:'8th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
-  { id:'9-outdoor', label:'9th Floor',  sub:'Outdoor Terrace · Exception', sizes:[{k:'300', label:'300 m² Outdoor'}] },
-  { id:'9-indoor',  label:'9th Floor',  sub:'Indoor Space · Exception',    sizes:[{k:'100', label:'100 m² Indoor'}] },
+  { id:'9-outdoor', label:'9th Floor',  sub:'Outdoor Terrace · Exception', sizes:[{k:'240', label:'240 m² Outdoor'}] },
+  { id:'9-indoor',  label:'9th Floor',  sub:'Indoor Space · Exception',    sizes:[{k:'160', label:'160 m² Indoor'}] },
 ];
 const AVAIL_DEFAULTS = {
   'b1_1000':true,
@@ -1031,8 +1129,8 @@ const AVAIL_DEFAULTS = {
   '6_80':false,'6_100':false,'6_160':false,'6_240':false,'6_400':true,
   '7_80':false,'7_100':false,'7_160':false,'7_240':false,'7_400':true,
   '8_80':false,'8_100':false,'8_160':false,'8_240':false,'8_400':false,
-  '9-outdoor_300':true,
-  '9-indoor_100':true
+  '9-outdoor_240':true,
+  '9-indoor_160':true
 };
 function loadAvail(){
   const raw = ADMIN_FS.availability;
@@ -1132,6 +1230,7 @@ async function initAdmin(){
   renderBookings();       // initial empty render; live listener repaints on updates
   initBookingsListener();
   renderBiz();
+  saveBiz(loadBiz()); // Backfill biz_status_* keys into site_content on admin load
   renderFloorDetails();
   renderLands();
   renderProducts();
@@ -1196,8 +1295,8 @@ function savePricingState(obj){
 //   _400 (Full Floors) → Full Floor
 //   _80, _160          → Small Spaces
 //   g_shop*            → Small Shops
-//   9-outdoor_300      → 9th Floor – Outdoor Terrace
-//   9-indoor_100       → 9th Floor – Indoor Space
+//   9-outdoor_240      → 9th Floor – Outdoor Terrace
+//   9-indoor_160       → 9th Floor – Indoor Space
 function countAvailByType(){
   const state = (typeof loadAvail === 'function') ? loadAvail() : {};
   const counts = {
@@ -1207,8 +1306,8 @@ function countAvailByType(){
   Object.keys(state).forEach(key => {
     if (!state[key]) return;
     if (key === 'b1_1000')            counts['Open Space']++;
-    else if (key === '9-outdoor_300') counts['9th Floor – Outdoor Terrace']++;
-    else if (key === '9-indoor_100')  counts['9th Floor – Indoor Space']++;
+    else if (key === '9-outdoor_240') counts['9th Floor – Outdoor Terrace']++;
+    else if (key === '9-indoor_160')  counts['9th Floor – Indoor Space']++;
     else if (key === 'g_pharmacy')    counts['Small Shops']++;
     else if (/^g_shop/.test(key))     counts['Small Shops']++;
     else if (/_100$/.test(key))       counts['Small Spaces']++;
@@ -1611,7 +1710,7 @@ function renderBookings(){
   const tbody = document.getElementById('bookings-tbody');
   if (!tbody) return;
   if(!bookings.length){
-    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:28px">No bookings yet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px">No bookings yet.</td></tr>';
     const st = document.getElementById('st-bookings'); if (st) st.textContent = '0';
     return;
   }
@@ -1619,22 +1718,39 @@ function renderBookings(){
     const name = b.visitor_name || b.name || '—';
     const office = b.floor_preference || b.office || '—';
     const date = b.preferred_date || b.date || '—';
-    const idJson = JSON.stringify(String(b.id));
+    // Escape ID for safe embedding inside an onclick="…" double-quoted attribute.
+    // Single-quote string literal in JS, single quotes & ampersands HTML-escaped.
+    const idAttr = String(b.id).replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
     const refEsc = String(b.ref||'').replace(/'/g,'&#39;');
+    const status = b.status || 'pending';
+    const customerNotified = b.customer_notified_at ? '✉️' : (b.customer_notify_error ? '⚠️' : '—');
+    const adminNotified = b.admin_notified_at ? '✓' : (b.admin_notify_error ? '⚠️' : '…');
+    let actions = '';
+    if (status === 'pending'){
+      actions = `
+        <button class="btn-sm-gold"   title="Accept — sends confirmation email to customer"
+                onclick="updateBookingStatusFS('${idAttr}','confirmed')">✓ Accept</button>
+        <button class="btn-sm-ghost"  title="Reschedule — propose a new date/time and email the customer"
+                onclick="rescheduleBookingFS('${idAttr}')">⟳ Reschedule</button>`;
+    } else if (status === 'confirmed' || status === 'rejected' || status === 'rescheduled'){
+      actions = `<button class="btn-sm-ghost" title="Revert to pending"
+                  onclick="updateBookingStatusFS('${idAttr}','pending')">↺ Reset</button>`;
+    }
+    actions += ` <button class="btn-sm-danger" onclick="confirmDelete('booking','${idAttr}','Delete booking ${refEsc}?')">Del</button>`;
     return `
     <tr>
       <td style="color:var(--gold);font-size:.65rem">${b.ref||'—'}</td>
-      <td style="font-weight:600">${name}</td>
-      <td style="color:var(--muted)">${b.company||'—'}</td>
+      <td style="font-weight:600">${name}<div style="font-size:.6rem;color:var(--muted);font-weight:400">${b.company||''}</div></td>
+      <td style="color:var(--muted);font-size:.68rem">${b.email||'—'}</td>
+      <td style="color:var(--muted);font-size:.7rem">${b.phone||'—'}</td>
       <td style="color:var(--muted);font-size:.7rem">${office}</td>
-      <td style="color:var(--muted)">${date}</td>
-      <td style="color:var(--muted)">${b.phone||'—'}</td>
-      <td><span class="booking-status-badge ${b.status||'pending'}">${b.status||'pending'}</span></td>
+      <td style="color:var(--muted);font-size:.7rem">${date}<div style="font-size:.6rem;color:var(--muted)">${b.preferred_time||''}</div></td>
+      <td><span class="booking-status-badge ${status}">${status}</span></td>
+      <td style="text-align:center;font-size:.7rem" title="Admin notified ${adminNotified} · Customer notified ${customerNotified}">
+        <div>A:${adminNotified}</div><div>C:${customerNotified}</div>
+      </td>
       <td>
-        <div style="display:flex;gap:4px;flex-wrap:wrap">
-          ${b.status==='pending'?`<button class="btn-sm-gold" onclick="updateBookingStatusFS(${idJson},'confirmed')">✓</button>`:''}
-          <button class="btn-sm-danger" onclick="confirmDelete('booking',${idJson},'Delete booking ${refEsc}?')">Del</button>
-        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">${actions}</div>
       </td>
     </tr>`;
   }).join('');
@@ -1721,8 +1837,8 @@ function loadFloorDetails(){
     '5':         {key:'5',         titleEn:'5th Floor – 80 m² Unit',titleAr:'الطابق الخامس – وحدة 80 م²',size:'80 m²',   overviewEn:'Bright 80 m² executive unit on the 5th floor. Premium views and finishes.', overviewAr:'وحدة تنفيذية مضيئة بمساحة 80 م² في الطابق الخامس. إطلالات وتشطيبات راقية.', amenitiesEn:['Panoramic windows','High-speed internet','Meeting room access','Premium finishes','Cleaning included'], amenitiesAr:['نوافذ بانورامية','إنترنت فائق السرعة','الوصول لقاعات الاجتماعات','تشطيبات فاخرة','التنظيف مشمول'], price:'JOD 4,400 / month', status:'available'},
     '6':         {key:'6',         titleEn:'6th Floor – Full Floor',titleAr:'الطابق السادس – طابق كامل',size:'400 m²', overviewEn:'Full 400 m² floor on level 6 — customisable corporate space with elevated views.', overviewAr:'طابق كامل 400 م² في المستوى السادس — مساحة مؤسسية قابلة للتخصيص بإطلالات مرتفعة.', amenitiesEn:['Full-floor customization','Executive washrooms','Kitchenette & lounge','Dedicated reception','Private meeting rooms'], amenitiesAr:['تخصيص كامل للطابق','دورات مياه تنفيذية','مطبخ صغير واستراحة','استقبال مخصص','قاعات اجتماعات خاصة'], price:'Custom', status:'available'},
     '7':         {key:'7',         titleEn:'7th Floor – Full Floor',titleAr:'الطابق السابع – طابق كامل',size:'400 m²', overviewEn:'Premium 400 m² full floor on level 7 with commanding city views, ideal for executive headquarters.', overviewAr:'طابق كامل مميز بمساحة 400 م² في المستوى السابع مع إطلالة رائعة على المدينة، مثالي للمقرات التنفيذية.', amenitiesEn:['Panoramic city views','Full customization','Executive office layout','Private washrooms','VIP reception'], amenitiesAr:['إطلالات بانورامية','تخصيص كامل','تصميم مكتب تنفيذي','دورات مياه خاصة','استقبال VIP'], price:'Custom', status:'available'},
-    '9-outdoor': {key:'9-outdoor', titleEn:'9th Floor – Outdoor Space',titleAr:'الطابق التاسع – مساحة خارجية',size:'300 m²', overviewEn:'Unique 300 m² outdoor space on the 9th floor — perfect for rooftop events, dining venues, or open-air offices.', overviewAr:'مساحة خارجية فريدة بمساحة 300 م² في الطابق التاسع — مثالية لفعاليات السطح أو المطاعم أو المكاتب المفتوحة.', amenitiesEn:['Open rooftop terrace','Panoramic 360° views','Event-ready layout','Utility connections','Private access'], amenitiesAr:['تراس سطح مفتوح','إطلالات بانورامية 360°','تصميم جاهز للفعاليات','توصيلات مرافق','وصول خاص'], price:'Custom', status:'available'},
-    '9-indoor':  {key:'9-indoor',  titleEn:'9th Floor – Indoor Space',titleAr:'الطابق التاسع – مساحة داخلية',size:'100 m²',  overviewEn:'Intimate 100 m² indoor space on the 9th floor — ideal for executive lounges, private offices, or boutique studios.', overviewAr:'مساحة داخلية مميزة بمساحة 100 م² في الطابق التاسع — مثالية لصالات تنفيذية أو مكاتب خاصة أو استوديوهات فاخرة.', amenitiesEn:['Premium finishes','Panoramic windows','Private entrance','Climate control','High-speed internet'], amenitiesAr:['تشطيبات راقية','نوافذ بانورامية','مدخل خاص','تحكم بالمناخ','إنترنت فائق السرعة'], price:'Custom', status:'available'},
+    '9-outdoor': {key:'9-outdoor', titleEn:'9th Floor – Outdoor Space',titleAr:'الطابق التاسع – مساحة خارجية',size:'240 m²', overviewEn:'Unique 240 m² outdoor space on the 9th floor — perfect for rooftop events, dining venues, or open-air offices.', overviewAr:'مساحة خارجية فريدة بمساحة 240 م² في الطابق التاسع — مثالية لفعاليات السطح أو المطاعم أو المكاتب المفتوحة.', amenitiesEn:['Open rooftop terrace','Panoramic 360° views','Event-ready layout','Utility connections','Private access'], amenitiesAr:['تراس سطح مفتوح','إطلالات بانورامية 360°','تصميم جاهز للفعاليات','توصيلات مرافق','وصول خاص'], price:'Custom', status:'available'},
+    '9-indoor':  {key:'9-indoor',  titleEn:'9th Floor – Indoor Space',titleAr:'الطابق التاسع – مساحة داخلية',size:'160 m²',  overviewEn:'Intimate 160 m² indoor space on the 9th floor — ideal for executive lounges, private offices, or boutique studios.', overviewAr:'مساحة داخلية مميزة بمساحة 160 م² في الطابق التاسع — مثالية لصالات تنفيذية أو مكاتب خاصة أو استوديوهات فاخرة.', amenitiesEn:['Premium finishes','Panoramic windows','Private entrance','Climate control','High-speed internet'], amenitiesAr:['تشطيبات راقية','نوافذ بانورامية','مدخل خاص','تحكم بالمناخ','إنترنت فائق السرعة'], price:'Custom', status:'available'},
   };
   return ADMIN_FS.floor_details || def;
 }

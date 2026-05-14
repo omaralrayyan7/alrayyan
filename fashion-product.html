@@ -536,7 +536,7 @@ relatedEl.innerHTML = related.map(r => `
 // ── SCROLL ────────────────────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
-});
+}, { passive: true });
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }});
 }, {threshold:0.1});
