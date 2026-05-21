@@ -672,14 +672,15 @@ function renderFloor() {
     availEl.previousElementSibling.remove();
   }
   if (availEl) {
+    // Floors with no avail image — hide immediately, don't load anything.
+    if (['g-indoor', '3'].includes(fl.id)) {
+      availEl.style.display = 'none';
+      availEl.src = '';
+    } else {
     availEl.style.display = '';
     availEl.onerror = () => { availEl.style.display = 'none'; };
     availEl.src = 'images/floors/floor-' + folderId + '/' + (FL_LABEL[folderId] || FL_LABEL[fl.id]) + '-avail.webp';
     availEl.className = 'avail-img avail-' + fl.id;
-    // Floors with no avail image — just hide.
-    if (['g-indoor', '3'].includes(fl.id)) {
-      availEl.style.display = 'none';
-    }
     // For floors without an avail image yet, show a styled placeholder box.
     if (['g-outdoor'].includes(fl.id)) {
       availEl.style.display = 'none';
@@ -689,6 +690,7 @@ function renderFloor() {
       phAvail.textContent = 'Image Coming Soon';
       availEl.parentNode.insertBefore(phAvail, availEl);
     }
+    } // end else (floors that have avail images)
   }
 
   // specs
