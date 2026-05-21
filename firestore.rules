@@ -1,0 +1,49 @@
+rules_version = '2';
+
+// ────────────────────────────────────────────────────────────────────────────
+// Alrayyan Tower — Firestore Security Rules
+//
+// NOTE: These are DEV-permissive rules. They allow the public site and admin
+// panel to read/write the collections they need without authentication. For
+// production hardening you should:
+//   - require auth for writes on `admin_state/*`, `settings/*`, `site_content/*`,
+//     `bookings` status updates, and deletes on any collection
+//   - keep public WRITE allowed only on `bookings` (visitor creates booking),
+//     `cookie_acceptances` (visitor accepts cookies), and `visitors` (anonymous
+//     profile create/update)
+// ────────────────────────────────────────────────────────────────────────────
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Visit bookings — admin panel reads, public form writes.
+    match /bookings/{id} {
+      allow read, write: if true;
+    }
+
+    // Cookie acceptance log — public site writes on Accept; admin reads.
+    match /cookie_acceptances/{id} {
+      allow read, write: if true;
+    }
+
+    // Anonymous visitor profiles — keyed by visitor_id (UUID in localStorage).
+    match /visitors/{id} {
+      allow read, write: if true;
+    }
+
+    // Availability settings — admin panel writes, public site reads.
+    match /settings/{doc} {
+      allow read, write: if true;
+    }
+
+    // Cross-device published site content (business statuses, etc.).
+    match /site_content/{doc} {
+      allow read, write: if true;
+    }
+
+    // Admin blob state (offices, floors, lands, products, ...).
+    match /admin_state/{doc} {
+      allow read, write: if true;
+    }
+  }
+}

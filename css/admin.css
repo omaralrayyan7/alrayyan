@@ -350,3 +350,30 @@ html[dir="rtl"] .adm-sidebar-logo { text-align:right; }
   html[dir="rtl"] .adm-sidebar.mobile-open { transform:translateX(0); }
   html[dir="rtl"] .adm-main { margin-right:0; }
 }
+
+/* ── Admin topbar responsiveness (no overflow / clipping at any width) ──────── */
+.adm-topbar-right{ flex-shrink:0; }
+.adm-page-title{ min-width:0; }
+@media(max-width:992px){
+  .adm-topbar{ padding:14px 20px; }
+  .adm-page-title{
+    font-size:1.15rem;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    max-width:48vw;
+  }
+}
+@media(max-width:768px){
+  .adm-topbar{ padding:12px 16px; }
+  .adm-topbar-right{ gap:8px; }
+  .adm-page-title{ font-size:1.05rem; max-width:42vw; }
+}
+@media(max-width:576px){
+  .adm-topbar{ padding:11px 13px; }
+  .adm-page-title{ font-size:.98rem; max-width:50vw; }
+  .adm-admin-badge{ display:none; }
+}
+@media(max-width:480px){
+  .adm-topbar{ padding:10px 11px; }
+  .adm-page-title{ font-size:.9rem; max-width:55vw; }
+  .adm-lang-btn{ font-size:.55rem; padding:3px 7px; letter-spacing:1px; }
+}

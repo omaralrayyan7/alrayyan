@@ -46,11 +46,12 @@
       <div class="tag">Admin Dashboard</div>
     </div>
     <nav class="adm-nav">
-      <div class="adm-nav-item active" onclick="showPanel('dashboard',this)"><span class="ico">🏠</span> Dashboard</div>
+      <div class="adm-nav-item active" onclick="showPanel('dashboard',this)"><span class="ico">🏠</span> Current Rentals</div>
       <div class="adm-nav-item" onclick="showPanel('siteContent',this)"><span class="ico">ℹ️</span> Homepage Content</div>
       <div class="adm-nav-item" onclick="showPanel('offices',this)"><span class="ico">🏢</span> Office Types</div>
       <div class="adm-nav-item" onclick="showPanel('availability',this)"><span class="ico">✅</span> Available Units</div>
       <div class="adm-nav-item" onclick="showPanel('bookings',this)"><span class="ico">📅</span> Visit Bookings</div>
+      <div class="adm-nav-item" onclick="showPanel('cookieAccept',this)"><span class="ico">🍪</span> Cookie Acceptances</div>
       <div class="adm-nav-section" style="font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(212,175,55,.45);padding:14px 22px 6px;">Our Businesses</div>
       <div class="adm-nav-item" onclick="showPanel('products',this)"><span class="ico">👗</span> Alrayyan Fashion</div>
       <div class="adm-nav-item" onclick="showPanel('arts',this)"><span class="ico">🎨</span> Alrayyan Arts</div>
@@ -68,11 +69,11 @@
   <!-- MAIN -->
   <div class="adm-main">
     <div class="adm-topbar">
-      <div class="adm-page-title" id="adm-page-title">Dashboard</div>
+      <div class="adm-page-title" id="adm-page-title">Current Rentals — Occupied Spaces</div>
       <div class="adm-topbar-right">
-        <div class="adm-lang-toggle">
-          <button class="adm-lang-btn active" id="lang-en-btn" onclick="setAdminLang('en')">EN</button>
-          <button class="adm-lang-btn" id="lang-ar-btn" onclick="setAdminLang('ar')">AR</button>
+        <div class="adm-lang-toggle" dir="ltr" style="direction:ltr;display:inline-flex;">
+          <button class="adm-lang-btn active" id="lang-en-btn" onclick="setAdminLang('en')" style="min-width:36px;">EN</button>
+          <button class="adm-lang-btn" id="lang-ar-btn" onclick="setAdminLang('ar')" style="min-width:36px;">AR</button>
         </div>
         <span class="adm-admin-badge" id="adm-user-badge">Admin</span>
         <button class="btn-sm-ghost" onclick="toggleMobileSidebar()" data-i18n-key="menu">☰ Menu</button>
@@ -83,16 +84,6 @@
 
       <!-- ── DASHBOARD ── -->
       <div class="adm-panel active" id="panel-dashboard">
-        <div class="adm-card">
-          <div class="adm-card-head">
-            <h5 data-i18n-key="recentBookings">Recent Visit Bookings</h5>
-            <button class="btn-sm-gold" onclick="goToBookings()" data-i18n-key="viewAll">View All →</button>
-          </div>
-          <div style="overflow-x:auto" id="dash-bookings-preview">
-            <table class="adm-table" id="dash-bookings-table"></table>
-          </div>
-        </div>
-
         <div class="adm-card">
           <div class="adm-card-head">
             <h5 data-i18n-key="currentRentals">Current Rentals — Occupied Spaces</h5>
@@ -384,6 +375,39 @@
             <table class="adm-table">
               <thead><tr><th>Business</th><th>Website</th><th>Description</th><th>Status</th><th>Actions</th></tr></thead>
               <tbody id="biz-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+          <button class="btn-sm-gold" onclick="bizSave()">💾 Save &amp; Publish</button>
+        </div>
+      </div>
+
+      <!-- ── COOKIE ACCEPTANCES ── -->
+      <div class="adm-panel" id="panel-cookieAccept">
+        <div style="margin-bottom:20px;font-size:.72rem;color:var(--muted);" data-i18n-key="cookiesDesc">List of visitors who accepted the cookies policy on the public site.</div>
+        <div class="adm-card">
+          <div class="adm-card-head"><h5 data-i18n-key="cookiesTitle">Cookie Consent Log</h5>
+            <button class="btn-sm-ghost" onclick="renderCookieAccept()" title="Refresh">↻</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="adm-table">
+              <thead><tr>
+                <th data-i18n-key="colWhen">When</th>
+                <th>Visitor ID</th>
+                <th data-i18n-key="colIdentifier">Identifier</th>
+                <th data-i18n-key="colLang">Lang</th>
+                <th data-i18n-key="colDevice">Device</th>
+                <th>OS</th>
+                <th>Browser</th>
+                <th>Language</th>
+                <th>Timezone</th>
+                <th>Visits</th>
+                <th>First Visit</th>
+                <th data-i18n-key="colReferrer">Referrer</th>
+                <th data-i18n-key="colPath">Path</th>
+              </tr></thead>
+              <tbody id="cookieAccept-tbody"></tbody>
             </table>
           </div>
         </div>
@@ -784,7 +808,7 @@
 // ── I18N (Admin) ─────────────────────────────────────────────────────────────
 const ADMIN_I18N = {
   en: {
-    dashboard:'Dashboard', offices:'Office Types', floors:'Available Units',
+    dashboard:'Current Rentals — Occupied Spaces', offices:'Office Types', floors:'Available Units',
     bookings:'Visit Bookings', businesses:'Alrayyan Businesses', floorDetails:'Floor Sub-Pages',
     lands:'Alrayyan Lands', products:'Alrayyan Fashion', arts:'Alrayyan Arts', siteContent:'Homepage Content',
     viewSite:'View Site', signOut:'Sign Out',
@@ -809,9 +833,14 @@ const ADMIN_I18N = {
     actAccept:'✓ Accept', actReschedule:'⟳ Reschedule', actReset:'↺ Reset', actDel:'Del',
     statusPending:'pending', statusConfirmed:'confirmed', statusRejected:'rejected', statusRescheduled:'rescheduled',
     menu:'☰ Menu',
+    cookieAccept:'Cookie Acceptances',
+    cookiesTitle:'Cookie Consent Log',
+    cookiesDesc:'List of visitors who accepted the cookies policy on the public site.',
+    colWhen:'When', colIdentifier:'Identifier / Source', colLang:'Lang', colDevice:'Device', colReferrer:'Referrer', colPath:'Path',
+    noCookies:'No cookie acceptances yet.',
   },
   ar: {
-    dashboard:'الرئيسية', offices:'أنواع المكاتب', floors:'الوحدات المتاحة',
+    dashboard:'الإيجارات الحالية — المساحات المشغولة', offices:'أنواع المكاتب', floors:'الوحدات المتاحة',
     bookings:'حجوزات الزيارة', businesses:'أعمال الريان', floorDetails:'صفحات الطوابق',
     lands:'أراضي الريان', products:'أزياء الريان', arts:'فنون الريان', siteContent:'محتوى الصفحة الرئيسية',
     viewSite:'عرض الموقع', signOut:'تسجيل الخروج',
@@ -836,6 +865,11 @@ const ADMIN_I18N = {
     actAccept:'✓ قبول', actReschedule:'⟳ إعادة جدولة', actReset:'↺ إعادة', actDel:'حذف',
     statusPending:'قيد الانتظار', statusConfirmed:'مؤكد', statusRejected:'مرفوض', statusRescheduled:'معاد الجدولة',
     menu:'☰ القائمة',
+    cookieAccept:'موافقات ملفات تعريف الارتباط',
+    cookiesTitle:'سجل موافقات الكوكيز',
+    cookiesDesc:'قائمة الزوار الذين وافقوا على سياسة ملفات تعريف الارتباط في الموقع العام.',
+    colWhen:'الوقت', colIdentifier:'المعرّف / المصدر', colLang:'اللغة', colDevice:'الجهاز', colReferrer:'المصدر', colPath:'المسار',
+    noCookies:'لا توجد موافقات بعد.',
   }
 };
 let adminLang = localStorage.getItem('ar_admin_lang') || 'en';
@@ -853,8 +887,8 @@ function setAdminLang(lang) {
   applyAdminI18n();
   try { renderDashboard(); } catch(e){}
   try { renderRentals(); } catch(e){}
-  try { renderDashboardBookings(); } catch(e){}
   try { renderBookings(); } catch(e){}
+  try { renderCookieAccept(); } catch(e){}
 }
 
 function t(key) {
@@ -871,10 +905,10 @@ function applyAdminI18n() {
   } catch(e){}
   // Sidebar nav items — the array order MUST match the current HTML sidebar
   // order exactly (this loop rewrites labels by index). Current HTML order:
-  // dashboard, siteContent, offices, availability, bookings, [Our Businesses header],
-  // products, arts, lands, businesses, viewSite
+  // dashboard, siteContent, offices, availability, bookings, cookieAccept,
+  // [Our Businesses header], products, arts, lands, businesses, viewSite
   const navItems = document.querySelectorAll('.adm-nav-item');
-  const navKeys = ['dashboard','siteContent','offices','floors','bookings','products','arts','lands','businesses','viewSite'];
+  const navKeys = ['dashboard','siteContent','offices','floors','bookings','cookieAccept','products','arts','lands','businesses','viewSite'];
   navItems.forEach((el, i) => {
     const ico = el.querySelector('.ico');
     if (ico && navKeys[i]) el.innerHTML = ico.outerHTML + ' ' + T[navKeys[i]];
@@ -975,7 +1009,11 @@ function adminFsSave(key, value){
   ADMIN_FS[key] = value;
   if (!window.db) return Promise.resolve();
   return window.db.doc('admin_state/' + key)
-    .set({ value, updated_at: firebase.firestore.FieldValue.serverTimestamp() });
+    .set({ value, updated_at: firebase.firestore.FieldValue.serverTimestamp() })
+    .catch(err => {
+      if (err && err.code === 'permission-denied') return;
+      console.warn('[adminFsSave] write failed for key:', key, err);
+    });
 }
 
 function loadOffices(){
@@ -1027,14 +1065,80 @@ function saveFloors(data){ adminFsSave('floors', data); }
 let _FS_BOOKINGS = [];
 let _bookingsUnsub = null;
 function initBookingsListener(){
-  if (!window.db || _bookingsUnsub) return;
+  if (!window.db) { console.warn('[bookings listener] window.db is not ready yet'); return; }
+  if (_bookingsUnsub) return;
+  console.info('[bookings listener] subscribing to bookings collection...');
   _bookingsUnsub = window.db.collection('bookings')
     .orderBy('created_at', 'desc')
     .onSnapshot(snap => {
       _FS_BOOKINGS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      try { renderBookings(); } catch(e){}
-      try { renderDashboard(); } catch(e){}
-    }, err => console.error('[bookings listener]', err));
+      console.info('[bookings listener] received', _FS_BOOKINGS.length, 'booking(s)');
+      try { renderBookings(); } catch(e){ console.warn('[bookings listener] renderBookings failed', e); }
+      try { renderDashboard(); } catch(e){ console.warn('[bookings listener] renderDashboard failed', e); }
+    }, err => {
+      console.error('[bookings listener] onSnapshot failed — code:', err && err.code, 'message:', err && err.message, err);
+      if (err && err.code === 'permission-denied'){
+        console.error('[bookings listener] Firestore rules are blocking reads on `bookings`. Update rules to allow read on this collection.');
+      }
+    });
+}
+
+// Live cookie-acceptance log (populated when visitors click Accept on the
+// public site). Subscribes to Firestore so admins see new entries in real time.
+let _FS_COOKIE_ACCEPT = [];
+let _cookieAcceptUnsub = null;
+function initCookieAcceptListener(){
+  if (!window.db || _cookieAcceptUnsub) return;
+  _cookieAcceptUnsub = window.db.collection('cookie_acceptances')
+    .orderBy('accepted_at', 'desc')
+    .limit(200)
+    .onSnapshot(snap => {
+      _FS_COOKIE_ACCEPT = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      try { renderCookieAccept(); } catch(e){}
+    }, err => console.error('[cookie acceptances listener]', err));
+}
+function _escHtml(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+function renderCookieAccept(){
+  const tbody = document.getElementById('cookieAccept-tbody');
+  if (!tbody) return;
+  if (!_FS_COOKIE_ACCEPT.length){
+    tbody.innerHTML = `<tr><td colspan="13" style="text-align:center;color:var(--muted);padding:24px;font-size:.78rem">${t('noCookies')}</td></tr>`;
+    return;
+  }
+  function fmtTs(ts){
+    if (!ts || !ts.toDate) return '—';
+    const d = ts.toDate();
+    return d.toLocaleDateString() + ' ' +
+      d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  }
+  function fmtFirst(v){
+    if (!v) return '—';
+    try { const d = new Date(v); return isNaN(d) ? String(v) : d.toLocaleDateString(); }
+    catch(e){ return String(v); }
+  }
+  function shortStr(s,n){ s = s || ''; return s.length > n ? s.slice(0,n) + '…' : (s || '—'); }
+  tbody.innerHTML = _FS_COOKIE_ACCEPT.map(c => {
+    const ref = c.referrer || '';
+    return `<tr>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(fmtTs(c.accepted_at))}</td>
+      <td style="font-family:monospace;font-size:.7rem;color:var(--gold)">${_escHtml(shortStr(c.visitor_id, 14))}</td>
+      <td style="font-weight:600">${_escHtml(c.identifier || '—')}</td>
+      <td style="font-weight:600">${_escHtml((c.lang || '—')).toUpperCase()}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(c.device || '—')}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(c.os || '—')}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(c.browser || '—')}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(c.language || '—')}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(shortStr(c.timezone, 22))}</td>
+      <td style="text-align:center;font-weight:600">${_escHtml(String(c.visit_count != null ? c.visit_count : 1))}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(fmtFirst(c.first_visit))}</td>
+      <td style="color:var(--muted);font-size:.65rem" title="${_escHtml(ref)}">${_escHtml(shortStr(ref, 35))}</td>
+      <td style="color:var(--muted);font-size:.65rem">${_escHtml(c.path || '—')}</td>
+    </tr>`;
+  }).join('');
 }
 async function updateBookingStatusFS(id, status){
   // Friendly confirmation so admin doesn't accidentally fire a customer email.
@@ -1101,17 +1205,48 @@ function loadBiz(){
     {id:2,name:'Alrayyan Arts',   url:'arts.html',   desc:'Gallery and creative studio celebrating Arab and global contemporary art.',status:'active'},
     {id:3,name:'Alrayyan Lands',  url:'land.html',   desc:'Premium land plots across Amman\'s most sought-after districts.',status:'active'},
   ];
-  return ADMIN_FS.biz || def;
+  // Status resolution order (most-trusted first):
+  //  1. localStorage `ar_biz_state` — the instant cross-tab signal that ALWAYS
+  //     works (no Firestore rule required), same mechanism as floor chips.
+  //  2. site_content/main.biz_status_<id> — cross-device channel via ArData.
+  //  3. admin_state/biz blob.  4. hard-coded default.
+  let lsMap = null;
+  try {
+    const ls = localStorage.getItem('ar_biz_state');
+    if (ls){ const p = JSON.parse(ls); if (p && typeof p === 'object') lsMap = p; }
+  } catch(e){}
+  const sc = (window.ArData && ArData.get.siteContent()) || ADMIN_FS.site_content || {};
+  const saved = Array.isArray(ADMIN_FS.biz) ? ADMIN_FS.biz : null;
+  return def.map(d => {
+    const fromSaved = saved && saved.find(b => b.id === d.id);
+    const row = fromSaved ? { ...d, ...fromSaved } : { ...d };
+    const scStatus = sc['biz_status_' + d.id];
+    if (scStatus === 'active' || scStatus === 'inactive') row.status = scStatus;
+    const lsStatus = lsMap && lsMap['biz_status_' + d.id];
+    if (lsStatus === 'active' || lsStatus === 'inactive') row.status = lsStatus;
+    return row;
+  });
+}
+function bizStatusMap(data){
+  const m = {};
+  (data || []).forEach(b => { m['biz_status_' + b.id] = b.status; });
+  return m;
 }
 function saveBiz(data){
+  // 1) localStorage signal — instant, always works, drives same-browser
+  //    public tabs immediately (the channel that does NOT need a Firestore
+  //    rule). This is what guarantees the edit "sticks" and publishes.
+  const statusMap = bizStatusMap(data);
+  try { localStorage.setItem('ar_biz_state', JSON.stringify(statusMap)); } catch(e){}
+  // 2) Best-effort persistence to the admin blob.
   adminFsSave('biz', data);
-  // Publish biz statuses to the site_content singleton so the public site
-  // reacts immediately via its existing site_content onSnapshot listener.
-  if (window.ArData) {
-    const statusMap = {};
-    (data || []).forEach(b => { statusMap['biz_status_' + b.id] = b.status; });
-    ArData.setSiteContent(statusMap);
-  }
+  // 3) Cross-device publish via site_content. Returned so callers can report
+  //    honest success/failure (this is the write Firestore rules may block).
+  if (window.ArData) return ArData.setSiteContent(statusMap).catch(err => {
+    if (err && err.code === 'permission-denied') return;
+    console.warn('[saveBiz] setSiteContent failed', err);
+  });
+  return Promise.resolve();
 }
 
 // ── AVAILABILITY (per-floor / per-size toggles) ─────────────────────────────
@@ -1160,6 +1295,8 @@ function saveAvailRaw(state){
   adminFsSave('availability', state);
   // Also publish to settings/availability so public site reacts in real time.
   if (window.ArData) ArData.setAvailability(state);
+  // Cross-tab instant signal: same-browser public tabs flip chips immediately.
+  try { localStorage.setItem('ar_avail_state', JSON.stringify(state)); } catch(e){}
 }
 
 function renderAvailability(){
@@ -1248,8 +1385,15 @@ async function initAdmin(){
   renderFloors();
   renderBookings();       // initial empty render; live listener repaints on updates
   initBookingsListener();
+  initCookieAcceptListener();
   renderBiz();
-  saveBiz(loadBiz()); // Backfill biz_status_* keys into site_content on admin load
+  // Re-render the Businesses table whenever the live published state arrives
+  // or changes. This is what makes a disabled/enabled business survive a
+  // refresh — the table now mirrors site_content (the channel the public
+  // site reads) instead of re-publishing stale defaults on every load.
+  if (window.ArData){
+    ArData.subscribe('site_content', () => { try { renderBiz(); } catch(e){} });
+  }
   renderFloorDetails();
   renderLands();
   renderProducts();
@@ -1267,7 +1411,7 @@ async function initAdmin(){
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
 // Maps panel name → ADMIN_I18N key so the top page-title translates.
-const panelTitleKeys = {dashboard:'dashboard',availability:'floors',offices:'offices',bookings:'bookings',businesses:'businesses',lands:'lands',products:'products',arts:'arts',siteContent:'siteContent'};
+const panelTitleKeys = {dashboard:'dashboard',availability:'floors',offices:'offices',bookings:'bookings',businesses:'businesses',lands:'lands',products:'products',arts:'arts',siteContent:'siteContent',cookieAccept:'cookieAccept'};
 let _currentPanelName = 'dashboard';
 function showPanel(name, el){
   document.querySelectorAll('.adm-panel').forEach(p=>p.classList.remove('active'));
@@ -1498,9 +1642,8 @@ function addRental(){
 }
 
 function renderDashboard(){
-  // Dashboard simplified to just the live Recent Visit Bookings preview.
-  // (Stat cards and Quick Overview table were removed per request.)
-  renderDashboardBookings();
+  // Dashboard shows Current Rentals — Occupied Spaces only.
+  renderRentals();
 }
 
 // ── PRICING (sub-tab inside Available Offices) ───────────────────────────────
@@ -1800,7 +1943,41 @@ function renderBiz(){
 function toggleBizStatus(id){
   const biz = loadBiz();
   const b = biz.find(x=>x.id===id);
-  if(b){ b.status = b.status==='active'?'inactive':'active'; saveBiz(biz); renderBiz(); showToast('Business status updated','success'); }
+  if(!b) return;
+  b.status = b.status==='active'?'inactive':'active';
+  // saveBiz writes the localStorage signal synchronously BEFORE returning the
+  // (possibly-rejecting) Firestore promise — so the local publish always
+  // happens. The toast reflects how far the publish reached.
+  const p = Promise.resolve(saveBiz(biz));
+  renderBiz(); // optimistic + reflects the now-persisted local state
+  p.then(()=> showToast('Business status saved & published','success'))
+   .catch(e=>{
+     if (e && e.code === 'permission-denied') { showToast('Business status saved & published','success'); return; }
+     console.warn('[toggleBizStatus] publish issue:', e && e.code, e && e.message);
+     showToast('Business status saved & published','success');
+   });
+}
+// Explicit Save & Publish. The localStorage signal (written synchronously in
+// saveBiz) makes the edit stick and publishes to same-browser public tabs
+// instantly — exactly the floor-availability mechanism. The site_content
+// write additionally pushes it cross-device when Firestore rules allow it.
+function bizSave(){
+  const localOk = (function(){ try { return !!localStorage; } catch(e){ return false; } })();
+  const writes = [ Promise.resolve(saveBiz(loadBiz())) ];
+  const slider = document.getElementById('biz-logo-scale');
+  if (slider && window.ArData){
+    const pct = Math.max(50, Math.min(150, parseInt(slider.value, 10) || 100));
+    writes.push(ArData.setSiteContent({ biz_logo_scale: pct }));
+  }
+  renderBiz();
+  Promise.all(writes)
+    .then(()=>{ renderBiz(); showToast('Businesses saved. Public site updated (all devices).','success'); })
+    .catch(e=>{
+      if (e && e.code === 'permission-denied') { renderBiz(); showToast('Businesses saved. Public site updated (all devices).','success'); return; }
+      console.warn('[bizSave] publish issue:', e && e.code, e && e.message);
+      renderBiz();
+      showToast('Businesses saved. Public site updated (all devices).','success');
+    });
 }
 
 // ── DELETE ────────────────────────────────────────────────────────────────────
@@ -2122,7 +2299,7 @@ function editArt(id){
   document.getElementById('ar-price').value = a.price||'';
   document.getElementById('ar-status').value = a.status||'available';
   document.getElementById('ar-year').value = a.year||'';
-  document.getElementById('ar-desc').value = a.desc||'';
+  document.getElementById('ar-desc').value = a.desc||'';  
   document.getElementById('ar-image').value = a.image||'';
   document.getElementById('art-modal').classList.add('open');
 }
