@@ -70,7 +70,7 @@
 
     <!-- SPACE OVERVIEW -->
     <div class="fade-in">
-      <img alt="Space" id="avail-img" class="avail-img" decoding="async" loading="lazy">
+      <img alt="" id="avail-img" class="avail-img" style="display:none" decoding="async" loading="lazy">
       <p class="sec-eye" data-i18n="secOvEye">Space Overview</p>
       <h2 class="sec-title"><span data-i18n="secOvTitleA">About This</span> <em data-i18n="secOvTitleB">Space</em></h2>
       <div class="gold-line"></div>
@@ -672,25 +672,16 @@ function renderFloor() {
     availEl.previousElementSibling.remove();
   }
   if (availEl) {
-    // Floors with no avail image — hide immediately, don't load anything.
-    if (['g-indoor', '3'].includes(fl.id)) {
-      availEl.style.display = 'none';
-      availEl.src = '';
-    } else {
-    availEl.style.display = '';
-    availEl.onerror = () => { availEl.style.display = 'none'; };
-    availEl.src = 'images/floors/floor-' + folderId + '/' + (FL_LABEL[folderId] || FL_LABEL[fl.id]) + '-avail.webp';
-    availEl.className = 'avail-img avail-' + fl.id;
-    // For floors without an avail image yet, show a styled placeholder box.
-    if (['g-outdoor'].includes(fl.id)) {
-      availEl.style.display = 'none';
-      const phAvail = document.createElement('div');
-      phAvail.dataset.availPlaceholder = '1';
-      phAvail.style.cssText = 'width:100%;max-width:520px;height:160px;background:#111;border:1px solid rgba(184,115,51,0.15);border-radius:3px;display:flex;align-items:center;justify-content:center;color:rgba(184,115,51,0.3);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;margin:0 auto 12px;';
-      phAvail.textContent = 'Image Coming Soon';
-      availEl.parentNode.insertBefore(phAvail, availEl);
+    // Always start hidden + empty — only show for floors that have a real avail image.
+    availEl.style.display = 'none';
+    availEl.src = '';
+    const NO_AVAIL = ['3', 'g-indoor', 'g-outdoor', '1', '2', '8'];
+    if (!NO_AVAIL.includes(fl.id)) {
+      availEl.style.display = '';
+      availEl.onerror = () => { availEl.style.display = 'none'; };
+      availEl.src = 'images/floors/floor-' + folderId + '/' + (FL_LABEL[folderId] || FL_LABEL[fl.id]) + '-avail.webp';
+      availEl.className = 'avail-img avail-' + fl.id;
     }
-    } // end else (floors that have avail images)
   }
 
   // specs

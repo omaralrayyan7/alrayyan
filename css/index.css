@@ -1298,14 +1298,16 @@ html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo
   #hero { padding-top: 64px; }
 }
 @media (max-width: 480px) {
-  #navbar { height: 58px; padding: 0 3%; }
-  .nav-logo img { height: 30px !important; }
-  .nav-logo-text .name { font-size: 0.82rem; letter-spacing: 0.5px; }
-  .nav-logo-text .tagline { display: none; }
-  #hero { padding-top: 58px; }
+  #navbar { height: 54px; padding: 0 3%; }
+  .nav-logo img { height: 28px !important; }
+  /* Hide logo text — keep only the icon */
+  .nav-logo-text { display: none !important; }
+  #hero { padding-top: 54px; }
 }
 @media (max-width: 360px) {
-  .nav-logo-text .name { font-size: 0.72rem; }
+  #navbar { height: 50px; }
+  .nav-logo img { height: 26px !important; }
+  #hero { padding-top: 50px; }
 }
 
 /* ── Arabic (RTL) typography: prevent descender/ascender clipping ── */

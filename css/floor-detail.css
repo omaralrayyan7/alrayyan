@@ -580,12 +580,18 @@ html.dark footer img[src*="logo"], html[data-theme="dark"] footer img[src*="logo
 }
 @media (max-width: 480px) {
   nav { height: 54px; padding: 0 3%; }
-  .nav-brand { font-size: 0.82rem; letter-spacing: 1px; }
-  .nav-brand img { height: 24px !important; margin-right: 5px !important; }
+  /* Hide brand text — keep only the logo icon */
+  .nav-brand { font-size: 0 !important; letter-spacing: 0; }
+  .nav-brand img { height: 26px !important; margin-right: 0 !important; }
+  /* Collapse back button to arrow only */
+  .nav-back { font-size: 0 !important; padding: 6px 10px; border-radius: 3px; }
+  .nav-back::before { content: '←'; font-size: 0.85rem; display: inline; }
+  html[dir="rtl"] .nav-back::before { content: '→'; }
   .fl-hero { margin-top: 54px; }
 }
 @media (max-width: 360px) {
-  .nav-brand { font-size: 0.72rem; }
+  .nav-brand { font-size: 0 !important; }
+  .nav-back { padding: 5px 8px; }
 }
 
 /* ── Mobile: stack floor gallery images vertically ── */
