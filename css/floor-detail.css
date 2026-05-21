@@ -377,6 +377,8 @@ html { color-scheme: only light !important; }
       .find-us-box .pin{font-size:2rem;}
       .find-us-box .addr{font-size:.82rem;}
       footer{padding:24px 4% 18px;flex-direction:column;text-align:center;gap:8px;}
+      .f-brand{display:flex;flex-direction:column;align-items:center;gap:8px;}
+      .f-brand img{margin-right:0 !important;}
     }
     @media(max-width:480px){
       .fl-hero{height:32vh;min-height:220px;}
@@ -580,17 +582,17 @@ html.dark footer img[src*="logo"], html[data-theme="dark"] footer img[src*="logo
 }
 @media (max-width: 480px) {
   nav { height: 54px; padding: 0 3%; }
-  /* Hide brand text — keep only the logo icon */
-  .nav-brand { font-size: 0 !important; letter-spacing: 0; }
-  .nav-brand img { height: 26px !important; margin-right: 0 !important; }
-  /* Collapse back button to arrow only */
-  .nav-back { font-size: 0 !important; padding: 6px 10px; border-radius: 3px; }
+  /* Keep brand text compact — logo + "ALRAYYAN GROUP" as home link */
+  .nav-brand { font-size: 0.62rem !important; letter-spacing: 0.8px; }
+  .nav-brand img { height: 24px !important; margin-right: 5px !important; }
+  /* Back button: arrow only */
+  .nav-back { font-size: 0 !important; padding: 6px 10px; border-radius: 3px; min-width: 32px; }
   .nav-back::before { content: '←'; font-size: 0.85rem; display: inline; }
   html[dir="rtl"] .nav-back::before { content: '→'; }
   .fl-hero { margin-top: 54px; }
 }
 @media (max-width: 360px) {
-  .nav-brand { font-size: 0 !important; }
+  .nav-brand { font-size: 0.56rem !important; letter-spacing: 0.5px; }
   .nav-back { padding: 5px 8px; }
 }
 
