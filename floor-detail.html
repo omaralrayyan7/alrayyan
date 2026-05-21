@@ -39,9 +39,9 @@
   <a href="index.html"><div class="nav-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" data-darkreader-inline-filter="" class="brand-logo-img" style="height:32px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:none;" decoding="async" loading="eager" width="656" height="656"/>ALRAYYAN GROUP</div></a>
   <div class="nav-right">
     <a href="index.html#available" class="nav-back" data-i18n="backToAvail">← Back to Floors</a>
-    <div class="lang-sw">
-      <button class="lang-btn active" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" onclick="setLang('ar')">AR</button>
+    <div class="lang-sw" dir="ltr" style="direction:ltr;display:inline-flex;">
+      <button class="lang-btn active" onclick="setLang('en')" style="min-width:36px;">EN</button>
+      <button class="lang-btn" onclick="setLang('ar')" style="min-width:36px;">AR</button>
     </div>
   </div>
 </nav>
@@ -245,10 +245,10 @@ const FLOORS = {
     size:'1,000 m²',
     sizeLbl:{ en:'1,000 m² Full Floor', ar:'1,000 م² طابق كامل' },
     description:{
-      en:`<p>The B1 Floor is a unique 1,000 m² underground space at Alrayyan Tower — the only floor of its kind in the building. Originally designed for flexible commercial use, it offers a rare combination of size, privacy, and discrete access that makes it ideal for storage, showrooms, event spaces, logistics operations, or large-format retail.</p>
-          <p>The floor is fully climate-controlled with dedicated HVAC zones, reinforced ceilings, and dedicated freight access. Its single-tenant layout allows for complete customisation — from open warehousing to a fully built-out experience centre.</p>`,
-      ar:`<p>الطابق B1 مساحة فريدة تحت الأرض تبلغ 1,000 م² في برج الريان — الطابق الوحيد من نوعه في المبنى. صُمم أصلاً للاستخدام التجاري المرن، ويوفر مزيجاً نادراً من المساحة والخصوصية والوصول المستقل.</p>
-          <p>الطابق مجهز بالكامل بتكييف مناخي مع مناطق تهوية مخصصة، وأسقف معززة، ووصول شحن مستقل. يتيح التخطيط لمستأجر واحد تخصيصاً كاملاً.</p>`
+      en:`<p>The B1 floor is a spacious 1,000 m² underground level, fully licensed for sports club use. With its large open area, it is also well suited as a celebration hall or event space for gatherings, corporate meetings, and private functions.</p>
+          <p>The floor's generous size and flexible layout make it one of the most versatile spaces in the tower — ready to be configured to match your vision.</p>`,
+      ar:`<p>طابق B1 مساحة واسعة تحت الأرض بمساحة 1,000 م²، مرخّصة بالكامل لاستخدامها ناديًا رياضيًا. بفضل مساحتها الكبيرة المفتوحة، تُعدّ أيضًا مناسبةً تمامًا لقاعة أفراح أو مناسبات، وللاجتماعات الخاصة والمؤسسية.</p>
+          <p>تجعل المساحة الكبيرة والتخطيط المرن من هذا الطابق أحد أكثر المساحات تعدديةً في البرج — جاهز لتهيئته وفق رؤيتك.</p>`
     },
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'1,000 m²'},
@@ -270,10 +270,10 @@ const FLOORS = {
     size:'80 m²',
     sizeLbl:{ en:'80 m² Unit · 1 Available', ar:'وحدة 80 م² · 1 متاح' },
     description:{
-      en:`<p>The 3rd Floor offers a single 80 m² premium office unit currently available for lease. This compact yet impressive space is configured for a small to medium team (up to 10 people), with floor-to-ceiling windows overlooking the boulevard and direct access from the main elevator lobby.</p>
-          <p>The unit comes ready for immediate occupancy with full cabling, lighting, and fresh paintwork. Shared reception and meeting facilities are available on the same floor.</p>`,
-      ar:`<p>يوفر الطابق الثالث وحدة مكتبية واحدة فاخرة بمساحة 80 م² متاحة للإيجار حالياً. هذه المساحة مُجهزة لفريق صغير إلى متوسط (حتى 10 أشخاص)، مع نوافذ ممتدة من الأرض إلى السقف.</p>
-          <p>الوحدة جاهزة للإشغال الفوري مع الكابلات والإضاءة الكاملة. تتوفر مرافق استقبال واجتماعات مشتركة.</p>`
+      en:`<p>The 3rd floor offers small office spaces with an available unit of 80 m², ideal for small teams or individual businesses looking for a professional workspace without committing to a large footprint.</p>
+          <p>A practical and well-located unit in the tower — clean, ready, and sized to keep your overheads lean while your business grows.</p>`,
+      ar:`<p>يوفر الطابق الثالث مساحات مكتبية صغيرة بوحدة متاحة بمساحة 80 م²، مثالية للفرق الصغيرة أو الأعمال الفردية التي تبحث عن مساحة عمل مهنية دون الالتزام بمساحة كبيرة.</p>
+          <p>وحدة عملية وموقعها مميز في البرج — جاهزة ونظيفة، بحجم يُبقي تكاليفك منخفضة بينما تنمو أعمالك.</p>`
     },
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'80 m²'},
@@ -295,10 +295,10 @@ const FLOORS = {
     size:'400 m²',
     sizeLbl:{ en:'400 m² Full Floor', ar:'400 م² طابق كامل' },
     description:{
-      en:`<p>The entire 4th Floor — a full 400 m² of prime corporate real estate — is available as a single unit. This is a rare opportunity to secure an exclusive, dedicated floor with its own elevator lobby, branded signage, and complete layout control.</p>
-          <p>Ideal for headquarters, professional firms, or any organisation seeking privacy and identity, the floor can be delivered as shell-and-core or with a full turnkey fit-out designed to your brand.</p>`,
-      ar:`<p>الطابق الرابع بأكمله — 400 م² كاملة من العقارات التجارية المتميزة — متاح كوحدة واحدة. هذه فرصة نادرة لتأمين طابق حصري مع ردهة مصعد خاصة ولافتات مخصصة.</p>
-          <p>مثالي للمقرات الرئيسية أو الشركات المهنية. يمكن تسليمه كهيكل أساسي أو مع تجهيز كامل مخصص.</p>`
+      en:`<p>The 4th floor is a fully open space offering flexible rental options ranging from 80 m² up to the full 400 m². Whether you're a small startup or a growing company, you can lease exactly the space you need and expand as your business grows.</p>
+          <p>The open layout gives you complete freedom to design and configure the space — from private offices to collaborative work environments.</p>`,
+      ar:`<p>الطابق الرابع مساحة مفتوحة بالكامل توفر خيارات إيجار مرنة تتراوح من 80 م² وصولاً إلى 400 م² كاملة. سواء كنت شركة ناشئة صغيرة أو مؤسسة متنامية، يمكنك استئجار المساحة التي تحتاجها تحديدًا والتوسع بحسب نمو أعمالك.</p>
+          <p>يمنحك التخطيط المفتوح حرية كاملة في تصميم المساحة وتهيئتها — من مكاتب خاصة إلى بيئات عمل تشاركية.</p>`
     },
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'400 m²'},
@@ -316,22 +316,22 @@ const FLOORS = {
   '5': {
     id:'5',
     name:{ en:'5th Floor', ar:'الطابق الخامس' },
-    subtitle:{ en:'Mid Level · 80 m² Unit Available', ar:'طابق متوسط · وحدة 80 م² متاحة' },
-    size:'80 m²',
-    sizeLbl:{ en:'80 m² Unit · 1 Available', ar:'وحدة 80 م² · 1 متاح' },
+    subtitle:{ en:'Mid Level · 160 m² Unit Available', ar:'طابق متوسط · وحدة 160 م² متاحة' },
+    size:'160 m²',
+    sizeLbl:{ en:'160 m² Unit · 1 Available', ar:'وحدة 160 م² · 1 متاح' },
     description:{
-      en:`<p>The 5th Floor hosts a single 80 m² unit currently available. Elevated above the lower office floors, this unit benefits from improved views, quieter acoustics, and excellent natural light. It is ideal for boutique firms, consultancies, or small creative teams.</p>
-          <p>Delivered ready for occupancy with high-spec finishes, integrated lighting, and modern fixtures. Shared meeting rooms and reception available on the floor.</p>`,
-      ar:`<p>يستضيف الطابق الخامس وحدة واحدة بمساحة 80 م² متاحة حالياً. مرتفعة فوق الطوابق السفلية، تستفيد هذه الوحدة من إطلالات محسّنة وإضاءة طبيعية ممتازة.</p>
-          <p>مسلّمة جاهزة للإشغال مع تشطيبات عالية المواصفات وإضاءة مدمجة.</p>`
+      en:`<p>The 5th floor offers a 160 m² office unit — a well-proportioned space ideal for small to mid-sized firms, consultancies, or any team that needs room to work comfortably without taking a full floor.</p>
+          <p>Well-finished and ready to move in — the right balance of size, quality, and value at a mid-level position in the tower.</p>`,
+      ar:`<p>يوفر الطابق الخامس وحدة مكتبية بمساحة 160 م² — مساحة مناسبة بامتياز للشركات الصغيرة والمتوسطة أو مكاتب الاستشارات أو أي فريق يحتاج مساحة للعمل بارتياح دون استئجار طابق كامل.</p>
+          <p>مشطّبة بعناية وجاهزة للانتقال — التوازن المثالي بين الحجم والجودة والقيمة في موقع متوسط من البرج.</p>`
     },
     specs:[
-      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'80 m²'},
-      {label:{en:'Capacity',ar:'السعة'}, value:{en:'8 – 10 persons',ar:'8 – 10 أشخاص'}},
+      {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'160 m²'},
+      {label:{en:'Capacity',ar:'السعة'}, value:{en:'15 – 20 persons',ar:'15 – 20 شخصاً'}},
       {label:{en:'Floors',ar:'الطوابق'}, value:{en:'Floors 1 – 8',ar:'الطوابق 1 – 8'}},
       {label:{en:'Lease Term',ar:'مدة الإيجار'}, value:{en:'Annual',ar:'سنوي'}},
       {label:{en:'Setup Time',ar:'وقت التجهيز'}, value:{en:'Same Day',ar:'نفس اليوم'}},
-      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: 3rd Floor (80m²), 5th Floor (80m²)',ar:'متاح في: الطابق الثالث (80م²), الطابق الخامس (80م²)'}},
+      {label:{en:'Availability',ar:'التوفر'}, value:{en:'Available in: 5th Floor (160m²)',ar:'متاح في: الطابق الخامس (160م²)'}},
     ],
     amenities:{
       en:['Premium finishes','Elevated city views','Integrated LED lighting','Modern HVAC','Shared boardroom access','Reception desk on floor','Ultra-fast fibre ready','Keycard access','2 parking spaces','Shared kitchenette','Daily cleaning','Security & CCTV'],
@@ -345,10 +345,10 @@ const FLOORS = {
     size:'400 m²',
     sizeLbl:{ en:'400 m² Full Floor', ar:'400 م² طابق كامل' },
     description:{
-      en:`<p>Take the entire 6th Floor — 400 m² of high-prestige corporate space, available now as a full-floor lease. Positioned mid-tower with sweeping views and direct elevator access, this floor is designed for enterprises that value identity, privacy, and presence.</p>
-          <p>Offered shell-and-core or with a bespoke turnkey fit-out. Alrayyan's in-house design team can deliver a move-in ready floor in 60 days.</p>`,
-      ar:`<p>احجز الطابق السادس بأكمله — 400 م² من مساحات الشركات المرموقة. يقع في منتصف البرج مع إطلالات واسعة ووصول مباشر للمصعد، هذا الطابق مصمم للشركات التي تقدّر الهوية والخصوصية.</p>
-          <p>يُعرض كهيكل أساسي أو مع تجهيز جاهز مخصص. يقدم فريق التصميم طابقاً جاهزاً للدخول خلال 60 يوماً.</p>`
+      en:`<p>The 6th floor is a fully open space offering flexible rental sizes from 80 m² up to 400 m². High-floor positioning provides excellent natural light and wide views, while the adaptable layout lets businesses configure the space to match their exact requirements.</p>
+          <p>Whether you need a single office or a full floor, the 6th floor can be shaped to fit — giving you the right amount of space at the right cost.</p>`,
+      ar:`<p>الطابق السادس مساحة مفتوحة بالكامل توفر أحجام إيجار مرنة من 80 م² حتى 400 م². يوفر الموقع المرتفع إضاءة طبيعية ممتازة وإطلالات واسعة، فيما يتيح التخطيط المرن للشركات تهيئة المساحة وفق متطلباتها تحديدًا.</p>
+          <p>سواء احتجت إلى مكتب واحد أو طابق كامل، يمكن تشكيل الطابق السادس ليناسبك — المساحة المناسبة بالتكلفة المناسبة.</p>`
     },
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'400 m²'},
@@ -370,10 +370,10 @@ const FLOORS = {
     size:'400 m²',
     sizeLbl:{ en:'400 m² Full Floor', ar:'400 م² طابق كامل' },
     description:{
-      en:`<p>The 7th Floor, a full 400 m² executive level, is now available. Situated high enough to offer commanding views yet still accessible, this floor is a favourite among professional service firms and regional HQs.</p>
-          <p>Handover options include shell, category-B fit-out, or fully bespoke turnkey — all delivered by Alrayyan's certified contractor network.</p>`,
-      ar:`<p>الطابق السابع، طابق تنفيذي كامل بمساحة 400 م²، متاح الآن. يقع في مكان مرتفع بما يكفي لتقديم إطلالات رائعة. هذا الطابق هو المفضل لدى شركات الخدمات المهنية والمقرات الإقليمية.</p>
-          <p>خيارات التسليم تشمل الهيكل أو التجهيز الجزئي أو المخصص بالكامل.</p>`
+      en:`<p>The 7th floor offers a premium open space available for flexible rental from 80 m² up to the full 400 m². Positioned high in the tower, this floor is ideal for companies seeking a commanding presence, with unobstructed views and a fully adaptable layout.</p>
+          <p>Take a single office or the entire floor — the open plan gives you full control to design a workspace that reflects your business.</p>`,
+      ar:`<p>يوفر الطابق السابع مساحة مفتوحة فاخرة متاحة للإيجار المرن من 80 م² حتى 400 م² كاملة. يقع هذا الطابق في الجزء العلوي من البرج، وهو مثالي للشركات التي تسعى إلى حضور مميز مع إطلالات واسعة وتخطيط قابل للتكيف بالكامل.</p>
+          <p>احجز مكتبًا واحدًا أو الطابق بأكمله — يمنحك التصميم المفتوح حرية كاملة في إنشاء بيئة عمل تعكس هوية مؤسستك.</p>`
     },
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'400 m²'},
@@ -395,10 +395,10 @@ const FLOORS = {
     size:'240 m²',
     sizeLbl:{ en:'240 m² Outdoor Terrace', ar:'240 م² تراس خارجي' },
     description:{
-      en:`<p>Alrayyan Tower's 9th-floor outdoor terrace is one of the most unique leasable spaces in Amman. At 240 m², this open-air venue offers panoramic skyline views, landscaped zones, and the flexibility to host high-end brand events, rooftop restaurants, private lounges, or wellness studios.</p>
-          <p>The space includes shaded pergolas, power and water connections, and direct elevator access. A perfect canvas for a signature hospitality concept or corporate entertainment venue.</p>`,
-      ar:`<p>التراس الخارجي في الطابق التاسع من أكثر المساحات القابلة للإيجار تميزاً في عمّان. بمساحة 240 م²، يوفر هذا الفضاء المفتوح إطلالات بانورامية على الأفق ومناطق مُنسَّقة.</p>
-          <p>تشمل المساحة عُرُشاً مظلَّلة وتوصيلات كهرباء وماء، ووصولاً مباشراً بالمصعد. قماشة مثالية لمفهوم ضيافة مميز.</p>`
+      en:`<p>The 9th floor outdoor terrace is a stunning panoramic space ideal for a rooftop restaurant or coffee house. With sweeping views over the city and open skies above, it offers the perfect setting for an outdoor dining experience or a signature café concept.</p>
+          <p>A rare venue at the top of the tower — one that turns an ordinary visit into something truly memorable for every guest.</p>`,
+      ar:`<p>يُعدّ التراس الخارجي في الطابق التاسع مساحةً بانوراميةً رائعةً مثاليةً لمطعم أو مقهى على السطح. بإطلالاته الواسعة على المدينة وسمائه المفتوحة، يوفر الإطار المثالي لتجربة طعام في الهواء الطلق أو مفهوم مقهى مميز.</p>
+          <p>مكانٌ استثنائي على قمة البرج — يحوّل الزيارة العادية إلى تجربة لا تُنسى لكل ضيف.</p>`
     },
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'240 m²'},
@@ -420,10 +420,10 @@ const FLOORS = {
     size:'160 m²',
     sizeLbl:{ en:'160 m² Indoor Space', ar:'160 م² مساحة داخلية' },
     description:{
-      en:`<p>The 9th-floor indoor space is a 160 m² enclosed premium area adjacent to the outdoor terrace. Fully glazed on two sides, it's perfectly suited as a lounge, private dining room, boardroom, gallery, or VIP office with direct terrace access.</p>
-          <p>Climate-controlled and delivered with a high-end fit-out baseline, it pairs naturally with the outdoor 240 m² terrace for a combined hospitality or event venue.</p>`,
-      ar:`<p>المساحة الداخلية في الطابق التاسع هي مساحة مغلقة فاخرة بمساحة 160 م² بجوار التراس الخارجي. مكسوة بالزجاج من جانبين، ومناسبة تماماً كصالة أو غرفة طعام خاصة أو قاعة اجتماعات.</p>
-          <p>مكيّفة بالكامل ومسلّمة بأساس تجهيز فاخر، تتكامل مع التراس الخارجي.</p>`
+      en:`<p>The 9th floor indoor space is a licensed 160 m² enclosed area perfectly suited for a restaurant or premium dining concept. Adjacent to the outdoor terrace, it provides a climate-controlled environment with high-end finishes for an upscale food and beverage operation.</p>
+          <p>Whether running it as a standalone restaurant or pairing it with the terrace, this space delivers the quality and ambience that a premium concept deserves.</p>`,
+      ar:`<p>المساحة الداخلية في الطابق التاسع هي مساحة مغلقة مرخّصة بمساحة 160 م²، مناسبة تمامًا لمطعم أو مفهوم طعام راقٍ. بجوار التراس الخارجي، توفر بيئة مكيّفة مع تشطيبات فاخرة لأي نشاط تجاري في مجال الأغذية والمشروبات.</p>
+          <p>سواء أدرتها مطعمًا مستقلًا أو دمجتها مع التراس، تقدم هذه المساحة الجودة والأجواء التي يستحقها أي مفهوم راقٍ.</p>`
     },
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'}, value:'160 m²'},
@@ -445,10 +445,10 @@ const FLOORS = {
     size:'75 m²',
     sizeLbl:{ en:'3 × 25 m² Shops', ar:'3 × 25 م² محلات' },
     description:{
-      en:`<p>The ground floor features three 25 m² indoor retail units with direct street-level access. Each shop is independently fitted with its own entrance, electrical panel, and signage slot — ideal for cafés, mini-markets, service counters, or boutique pop-ups.</p>
-          <p>High foot traffic location at the tower entrance, offering maximum visibility for retail tenants.</p>`,
-      ar:`<p>يضم الطابق الأرضي ثلاث وحدات تجزئة داخلية بمساحة 25 م² لكل وحدة، مع وصول مباشر من مستوى الشارع. كل محل مجهز بشكل مستقل بمدخله الخاص ولوحة كهربائية ومكان للافتة.</p>
-          <p>موقع ذو حركة مرور عالية عند مدخل البرج، مما يوفر أقصى رؤية للمستأجرين.</p>`
+      en:`<p>The ground floor hosts a mix of commercial shops in different sizes to suit a variety of businesses, along with a dedicated reception office that anchors the tower's main entrance. Inside and outside, the floor offers excellent visibility and direct street access.</p>
+          <p>A prime commercial level at the heart of the tower — the right address for any retail or service business looking to make an impression.</p>`,
+      ar:`<p>يضم الطابق الأرضي مجموعةً من المحلات التجارية بمساحات مختلفة تناسب أنواعًا متعددة من الأعمال، إلى جانب مكتب استقبال مخصص يُشكّل المدخل الرئيسي للبرج. داخليًا وخارجيًا، يوفر الطابق رؤيةً ممتازةً ووصولاً مباشراً من الشارع.</p>
+          <p>طابق تجاري متميز في قلب البرج — العنوان المناسب لأي نشاط تجاري أو خدمي يريد إحداث انطباع أول لا يُنسى.</p>`
     },
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'}, value:{en:'25 m² per shop (75 m² total)',ar:'25 م² لكل محل (75 م² إجمالي)'}},
@@ -470,10 +470,10 @@ const FLOORS = {
     size:'75 m²',
     sizeLbl:{ en:'3 × 25 m² Shops', ar:'3 × 25 م² محلات' },
     description:{
-      en:`<p>The ground floor features three 25 m² indoor retail units with direct street-level access. Each shop is independently fitted with its own entrance, electrical panel, and signage slot — ideal for cafés, mini-markets, service counters, or boutique pop-ups.</p>
-          <p>High foot traffic location at the tower entrance, offering maximum visibility for retail tenants.</p>`,
-      ar:`<p>يضم الطابق الأرضي ثلاث وحدات تجزئة داخلية بمساحة 25 م² لكل وحدة، مع وصول مباشر من مستوى الشارع. كل محل مجهز بشكل مستقل بمدخله الخاص ولوحة كهربائية ومكان للافتة.</p>
-          <p>موقع ذو حركة مرور عالية عند مدخل البرج، مما يوفر أقصى رؤية للمستأجرين.</p>`
+      en:`<p>The indoor section of the G Floor features commercial shops available in different sizes, catering to a wide range of retail and service businesses. The floor also includes a dedicated reception office, making it a well-organised commercial hub at the tower's main entrance.</p>
+          <p>A high-visibility ground-level location with steady foot traffic — the ideal spot to launch or grow a retail or service business in the heart of the tower.</p>`,
+      ar:`<p>يضم القسم الداخلي من الطابق الأرضي محلات تجارية بمساحات مختلفة، تلبّي احتياجات طيف واسع من أعمال التجزئة والخدمات. يشمل الطابق أيضًا مكتب استقبال مخصص، مما يجعله مركزًا تجاريًا منظمًا عند المدخل الرئيسي للبرج.</p>
+          <p>موقع بصري مميز على مستوى الأرض مع حركة مرور مستمرة — المكان المثالي لإطلاق نشاطك التجاري أو تنميته في قلب البرج.</p>`
     },
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'}, value:{en:'25 m² per shop (75 m² total)',ar:'25 م² لكل محل (75 م² إجمالي)'}},
@@ -495,10 +495,10 @@ const FLOORS = {
     size:'150 m²',
     sizeLbl:{ en:'150 m² Outdoor Shop (6 doors)', ar:'150 م² محل خارجي (6 أبواب)' },
     description:{
-      en:`<p>An outdoor 150 m² ground-level retail space spanning six adjacent shop doors — currently leased. Available to new tenants on lease renewal, the unit benefits from heavy street-front traffic, dedicated signage frontage, and a wide accessible entrance.</p>
-          <p>Ideal for mini-markets, retail anchors, or any concept requiring large frontage and outdoor presence.</p>`,
-      ar:`<p>محل خارجي على مستوى الأرض بمساحة 150 م² يمتد على ستة أبواب متجاورة — مستأجر حالياً. متاح لمستأجرين جدد عند تجديد الإيجار، تستفيد الوحدة من حركة عالية على الشارع وواجهة لافتات مخصصة ومدخل واسع.</p>
-          <p>مثالي للمحلات الكبيرة أو أي مفهوم يتطلب واجهة كبيرة وحضوراً خارجياً.</p>`
+      en:`<p>The G Floor outdoor shop is a street-level commercial space offering high visibility and direct access from the main street. With a wide frontage and prominent positioning at the tower's exterior, it is ideal for any retail or service business that benefits from outdoor presence and heavy foot traffic.</p>
+          <p>A standout commercial unit on one of the most visible spots in the building — hard to miss, easy to find.</p>`,
+      ar:`<p>المحل الخارجي في الطابق الأرضي هو مساحة تجارية على مستوى الشارع توفر رؤية عالية ووصولاً مباشراً من الشارع الرئيسي. بواجهته الواسعة وموقعه البارز على الجانب الخارجي للبرج، يُعدّ مثاليًا لأي نشاط تجاري يستفيد من الحضور الخارجي وحركة المرور العالية.</p>
+          <p>وحدة تجارية لافتة في أحد أكثر المواقع ظهورًا في المبنى — يصعب تجاهلها ويسهل الوصول إليها.</p>`
     },
     specs:[
       {label:{en:'Office Size',ar:'مساحة المكتب'}, value:{en:'150 m² (6 doors)',ar:'150 م² (6 أبواب)'}},
@@ -520,10 +520,10 @@ const FLOORS = {
     size:'400 m²',
     sizeLbl:{ en:'240 m² Outdoor + 160 m² Indoor', ar:'240 م² خارجي + 160 م² داخلي' },
     description:{
-      en:`<p>The 9th floor combines a 240 m² rooftop outdoor terrace with a 160 m² premium indoor space — Alrayyan Tower's signature top-floor venue. Ideal as a single combined offering for hospitality concepts, event venues, executive offices with terrace access, or wellness studios.</p>
-          <p>The two areas can be leased together as one full floor (400 m²) or separately. Two stacked sections below show each space individually.</p>`,
-      ar:`<p>يجمع الطابق التاسع بين تراس خارجي على السطح بمساحة 240 م² ومساحة داخلية فاخرة بمساحة 160 م² — أبرز معالم الطابق العلوي في برج الريان. مثالي كعرض مدمج لمفاهيم الضيافة أو الفعاليات أو المكاتب التنفيذية أو استوديوهات العافية.</p>
-          <p>يمكن استئجار المساحتين معاً كطابق كامل (400 م²) أو بشكل منفصل. يعرض القسمان أدناه كل مساحة على حدة.</p>`
+      en:`<p>The 9th floor combines a licensed 160 m² indoor space — perfectly suited for a restaurant — with a 240 m² outdoor panoramic terrace ideal for a rooftop café or an open-air dining extension. Together, they form the most prestigious venue in Alrayyan Tower.</p>
+          <p>The two spaces can be leased as one complete floor (400 m²) or separately — see the individual sections below for details on each.</p>`,
+      ar:`<p>يجمع الطابق التاسع بين مساحة داخلية مرخّصة بمساحة 160 م² — مناسبة تمامًا لمطعم — وتراس خارجي بانورامي بمساحة 240 م² مثالي لمقهى أو امتداد طعام في الهواء الطلق. معًا، يُشكّلان أبرز معالم برج الريان.</p>
+          <p>يمكن استئجار المساحتين كطابق كامل (400 م²) أو كل منهما بشكل منفصل — راجع القسمين أدناه للاطلاع على تفاصيل كل مساحة.</p>`
     },
     specs:[
       {label:{en:'Total Size',ar:'المساحة الإجمالية'}, value:{en:'400 m² (240 outdoor + 160 indoor)',ar:'400 م² (240 خارجي + 160 داخلي)'}},
@@ -592,19 +592,20 @@ const FL_LABEL = {
 };
 const IMAGINARY_COUNTS = {
   'b1': 4, 'g': 3, 'g-indoor': 3, 'g-outdoor': 3,
-  '3': 0, '4': 6, '5': 1, '6': 5, '7': 5,
-  '9': 0, '9-outdoor': 3, '9-indoor': 3,
+  '3': 1, '4': 6, '5': 2, '6': 5, '7': 5,
+  '9': 6, '9-outdoor': 3, '9-indoor': 3,
 };
 const floorImageConfig = {
   'b1':        { real: 3, mains: 0, ext: 'webp' },
   'g':         { real: 3, mains: 0, ext: 'webp', placeholder: true },
-  'g-indoor':  { real: 0, mains: 0, ext: 'webp', placeholder: true },
+  'g-indoor':  { real: 3, mains: 0, ext: 'webp', imageId: 'g',
+                 customRealNames: ['g-indoor-real-img-1','g-real-img-2','g-real-img-3'] },
   'g-outdoor': { real: 0, mains: 0, ext: 'webp', placeholder: true },
   '1':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
   '2':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
-  '3':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
+  '3':         { real: 1, mains: 0, ext: 'webp' },
   '4':         { real: 7, mains: 0, ext: 'webp' },
-  '5':         { real: 0, mains: 0, ext: 'webp', hideGallery: true },
+  '5':         { real: 3, mains: 0, ext: 'webp' },
   '6':         { real: 7, mains: 0, ext: 'webp' },
   '7':         { real: 6, mains: 0, ext: 'webp' },
   '8':         { real: 0, mains: 0, ext: 'webp', placeholder: true },
@@ -661,7 +662,7 @@ function renderFloor() {
     heroEl.classList.forEach(c => { if (/^floor-/.test(c)) heroEl.classList.remove(c); });
     heroEl.classList.add('floor-' + String(fl.id).replace('-', '_'));
     // Floors without a banner image yet: gradient-only background.
-    if (['g-indoor','g-outdoor'].includes(fl.id)) {
+    if (['g-outdoor'].includes(fl.id)) {
       heroEl.style.backgroundImage = 'linear-gradient(135deg, rgba(5,5,5,0.7), rgba(10,8,4,0.95))';
     }
   }
@@ -675,8 +676,12 @@ function renderFloor() {
     availEl.onerror = () => { availEl.style.display = 'none'; };
     availEl.src = 'images/floors/floor-' + folderId + '/' + (FL_LABEL[folderId] || FL_LABEL[fl.id]) + '-avail.webp';
     availEl.className = 'avail-img avail-' + fl.id;
+    // Floors with no avail image — just hide.
+    if (['g-indoor', '3'].includes(fl.id)) {
+      availEl.style.display = 'none';
+    }
     // For floors without an avail image yet, show a styled placeholder box.
-    if (['g-indoor','g-outdoor'].includes(fl.id)) {
+    if (['g-outdoor'].includes(fl.id)) {
       availEl.style.display = 'none';
       const phAvail = document.createElement('div');
       phAvail.dataset.availPlaceholder = '1';
@@ -756,7 +761,7 @@ const I18N = {
     backToAvail:'← العودة للطوابق',
     bcHome:'الرئيسية', bcAvail:'الطوابق المتاحة',
     heroEye:'تفاصيل الطابق',
-    secOvEye:'نظرة عامة', secOvTitleA:'عن هذا', secOvTitleB:'الفضاء',
+    secOvEye:'نظرة عامة', secOvTitleA:'عن هذه', secOvTitleB:'المساحة',
     secGalEye:'التصوير', secGalTitleA:'صور', secGalTitleB:'الطابق',
     secRndEye:'مشاهد تخيلية', secRndTitleA:'مخطط', secRndTitleB:'الطابق',
     secAmEye:'ما هو مشمول', secAmTitleA:'المرافق', secAmTitleB:'والميزات',
@@ -842,7 +847,9 @@ function buildGalleryHTML(subId, headingHTML){
   const imageId = cfg.imageId || subId;
   const basePath = 'images/floors/floor-' + imageId + '/real/';
   const errH = `onerror="this.onerror=null;this.closest('.fg-simple, .fg-mains')?.style && (this.style.opacity='0')"`;
-  const fileName = (i) => `${imageId}-real-img-${i}.${imgExt}`;
+  const fileName = (i) => cfg.customRealNames && cfg.customRealNames[i - 1]
+    ? `${cfg.customRealNames[i - 1]}.${imgExt}`
+    : `${imageId}-real-img-${i}.${imgExt}`;
   let html = headingHTML;
   if (cfg.mains > 0) {
     const mainCols = cfg.mains === 2 ? 'cols-2' : 'cols-3';
@@ -864,7 +871,7 @@ function buildGalleryHTML(subId, headingHTML){
         </div></div>`;
     }
   } else {
-    const gridCols = cfg.real === 2 ? 'cols-2' : 'cols-3';
+    const gridCols = cfg.real === 1 ? '' : cfg.real === 2 ? 'cols-2' : 'cols-3';
     html += `<div class="fg-simple ${gridCols}">`;
     for (let i = 1; i <= cfg.real; i++) {
       const decodeAttr = i <= 3 ? 'sync' : 'async';
@@ -965,19 +972,30 @@ function renderFloorRenders() {
   container.style.display = '';
 
   const t = I18N[currentLang] || I18N.en;
-  const label = FL_LABEL[floorId];
-  const basePath = 'images/floors/floor-' + floorId + '/imaginary/';
+  const renderCfg = floorImageConfig[floorId] || {};
+  const imgFolderId = renderCfg.imageId || floorId;
+  const label = FL_LABEL[imgFolderId] || FL_LABEL[floorId];
+  const basePath = 'images/floors/floor-' + imgFolderId + '/imaginary/';
 
   // Floors with no real imaginary files yet — render styled placeholder boxes.
-  const usePlaceholder = ['g-indoor','g-outdoor'].includes(floorId);
+  const usePlaceholder = ['g-outdoor'].includes(floorId);
   let html = `<p class="sec-eye">${t.secRndEye}</p>
     <h2 class="sec-title"><span>${t.secRndTitleA}</span> <em>${t.secRndTitleB}</em></h2>
     <div class="gold-line"></div>
     <div class="fr-carousel" id="fr-carousel">
       <div class="fr-track" id="fr-track">`;
+  // Combined 9th-floor view: stitch indoor (3 imgs) + outdoor (3 imgs) into one carousel.
+  const combinedFloor9 = (floorId === '9');
   for (let i = 1; i <= renderTotal; i++) {
     if (usePlaceholder) {
       html += `<div style="min-width:100%;height:300px;background:#111;border:1px solid rgba(184,115,51,0.15);border-radius:3px;display:flex;align-items:center;justify-content:center;color:rgba(184,115,51,0.3);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;flex-shrink:0;">Image Coming Soon</div>`;
+    } else if (combinedFloor9) {
+      // First 3 = indoor, next 3 = outdoor.
+      const isIndoor = i <= 3;
+      const idx = isIndoor ? i : i - 3;
+      const subLabel = isIndoor ? '9th-floor-indoor' : '9th-floor-outdoor';
+      const subPath  = 'images/floors/floor-9-' + (isIndoor ? 'indoor' : 'outdoor') + '/imaginary/';
+      html += `<img src="${subPath}${subLabel}-imaginary-img-${idx}.webp" alt="Render ${i}" loading="lazy" onerror="this.onerror=null;this.style.display='none'" decoding="async"/>`;
     } else {
       html += `<img src="${basePath}${label}-imaginary-img-${i}.webp" alt="Render ${i}" loading="lazy" onerror="this.onerror=null;this.style.display='none'" decoding="async"/>`;
     }

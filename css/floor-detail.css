@@ -60,11 +60,117 @@ html { color-scheme: only light !important; }
       display:flex;align-items:flex-end;overflow:hidden;
       background-color:#0a0a0a;
       background-image:linear-gradient(135deg, rgba(5,5,5,0.45), rgba(10,8,4,0.85));
-      background-size:110% auto;background-position:center 40%;
+      --banner-zoom: 110% auto;
+      --banner-pos:  center 40%;
+      background-size:     var(--banner-zoom);
+      background-position: var(--banner-pos);
       background-repeat:no-repeat;
     }
-    /* Floor 5: banner positioned lower to show interior details */
-    .fl-hero.floor-5 { background-position: center 70%; }
+    /* ============================================================
+       PER-FLOOR BANNER CONTROLS
+       Search "BANNER: Floor 4" (or any floor name) to jump to it.
+       Edit --banner-zoom  → zoom  (100%=no zoom, 110%=slight, 150%=more)
+       Edit --banner-pos   → crop  (center 0%=top, center 50%=mid, center 100%=bottom)
+       Edit height         → banner height (uncomment to activate)
+       ============================================================ */
+
+    /* BANNER: B1 Floor */
+    .fl-hero.floor-b1 {
+      --banner-zoom: 100% auto;   /* Zoom */
+      --banner-pos:  center 60%;  /* Crop position */
+      /* height: 46vh; */         /* Banner height */
+    }
+
+    /* BANNER: G Floor – Indoor Shops (?floor=g-indoor) */
+    .fl-hero.floor-g_indoor {
+      --banner-zoom: 95% auto;    /* Zoom */
+      --banner-pos:  center 50%; /* Crop position */
+       height: 66vh;           /* Banner height */
+    }
+
+    /* BANNER: G Floor – Outdoor Shop (?floor=g-outdoor) */
+    .fl-hero.floor-g_outdoor {
+      --banner-zoom: 90% auto;   /* Zoom */
+      --banner-pos:  center 40%;  /* Crop position */
+      /* height: 46vh; */         /* Banner height */
+    }
+
+    /* BANNER: Floor 1 */
+    .fl-hero.floor-1 {
+      --banner-zoom: 110% auto;   /* Zoom */
+      --banner-pos:  center 40%;  /* Crop position */
+      /* height: 46vh; */         /* Banner height */
+    }
+
+    /* BANNER: Floor 2 */
+    .fl-hero.floor-2 {
+      --banner-zoom: 110% auto;   /* Zoom */
+      --banner-pos:  center 40%;  /* Crop position */
+      /* height: 46vh; */         /* Banner height */
+    }
+
+    /* BANNER: Floor 3 */
+    .fl-hero.floor-3 {
+      --banner-zoom: 100% auto;   /* Zoom */
+      --banner-pos:  center 50%;  /* Crop position */
+      /* height: 46vh; */         /* Banner height */
+    }
+
+    /* BANNER: Floor 4 */
+    .fl-hero.floor-4 {
+      --banner-zoom: 99% auto;   /* Zoom */
+      --banner-pos:  center 52%;  /* Crop position */
+       height: 46vh;          /* Banner height */
+    }
+
+    /* BANNER: Floor 5 */
+    .fl-hero.floor-5 {
+      --banner-zoom: 99% auto;   /* Zoom */
+      --banner-pos:  center 60%;  /* Crop position */
+      /* height: 46vh; */         /* Banner height */
+    }
+
+    /* BANNER: Floor 6 */
+    .fl-hero.floor-6 {
+      --banner-zoom: 100% auto;   /* Zoom */
+      --banner-pos:  center 52%;  /* Crop position */
+      /* height: 46vh; */         /* Banner height */
+    }
+
+    /* BANNER: Floor 7 */
+    .fl-hero.floor-7 {
+      --banner-zoom: 100% auto;   /* Zoom */
+      --banner-pos:  center 52%;  /* Crop position */
+      /* height: 46vh; */         /* Banner height */
+    }
+
+    /* BANNER: Floor 8 */
+    .fl-hero.floor-8 {
+      --banner-zoom: 110% auto;   /* Zoom */
+      --banner-pos:  center 40%;  /* Crop position */
+      /* height: 46vh; */         /* Banner height */
+    }
+
+    /* BANNER: 9th Floor (combined view) */
+    .fl-hero.floor-9 {
+      --banner-zoom: 100% auto;   /* Zoom */
+      --banner-pos:  center 50%;  /* Crop position */
+      /* height: 46vh; */         /* Banner height */
+    }
+
+    /* BANNER: 9th Floor Outdoor */
+    .fl-hero.floor-9_outdoor {
+      --banner-zoom: 110% auto;   /* Zoom */
+      --banner-pos:  center 40%;  /* Crop position */
+      /* height: 46vh; */         /* Banner height */
+    }
+
+    /* BANNER: 9th Floor Indoor */
+    .fl-hero.floor-9_indoor {
+      --banner-zoom: 110% auto;   /* Zoom */
+      --banner-pos:  center 40%;  /* Crop position */
+      /* height: 46vh; */         /* Banner height */
+    }
     .fl-hero::before{content:'';position:absolute;inset:0;
       background-image:
         linear-gradient(rgba(184,115,51,0.04) 1px, transparent 1px),
@@ -311,7 +417,7 @@ img { max-width: 100%; height: auto; }
 .avail-g-indoor  { height: 180px; max-width: 520px; object-fit: cover; object-position: center 50%; display:block; margin:0 auto 12px; }
 .avail-g-outdoor { height: 180px; max-width: 520px; object-fit: cover; object-position: center 50%; display:block; margin:0 auto 12px; }
 .avail-3         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
-.avail-5         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
+.avail-5         { height: 320px; max-width: 100%; object-fit: cover; object-position: center 60%; }
 .avail-9-indoor  { height: 320px; max-width: 100%; object-fit: cover; object-position: center 50%; }
 
 /* Floors whose availability graphics have a different aspect ratio:
@@ -322,7 +428,7 @@ img { max-width: 100%; height: auto; }
   height: 420px;
   width: 100%;
   object-fit: cover;
-  object-position: center center;
+  object-position: center 60%;
   background: #0d0d0d;
 }
 .avail-9-outdoor {
@@ -500,3 +606,92 @@ html.dark footer img[src*="logo"], html[data-theme="dark"] footer img[src*="logo
     height: 60px;
   }
 }
+
+/* ██████████████████████████████████████████████████████████████
+   PER-IMAGE CONTROLS — floor-detail.html (Floor Subpages)
+   Search the image filename below to jump to its rule.
+   Each property is labeled. Edit the value on that line only.
+   Class = fg-{floorId}-{number}  →  matches JS-generated class.
+   ██████████████████████████████████████████████████████████████ */
+
+/* ── B1 FLOOR ── */
+
+/* ── IMAGE: b1-real-img-1.webp ── */
+img.fg-b1-1 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: b1-real-img-2.webp ── */
+img.fg-b1-2 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: b1-real-img-3.webp ── */
+img.fg-b1-3 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+
+/* ── FLOOR 4 ── */
+
+/* ── IMAGE: 4-real-img-1.webp ── */
+img.fg-4-1 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 4-real-img-2.webp ── */
+img.fg-4-2 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 4-real-img-3.webp ── */
+img.fg-4-3 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 4-real-img-4.webp ── */
+img.fg-4-4 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 4-real-img-5.webp ── */
+img.fg-4-5 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 4-real-img-6.webp ── */
+img.fg-4-6 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 4-real-img-7.webp ── */
+img.fg-4-7 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+
+/* ── FLOOR 6 ── */
+
+/* ── IMAGE: 6-real-img-1.webp ── */
+img.fg-6-1 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 6-real-img-2.webp ── */
+img.fg-6-2 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 6-real-img-3.webp ── */
+img.fg-6-3 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 6-real-img-4.webp ── */
+img.fg-6-4 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 6-real-img-5.webp ── */
+img.fg-6-5 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 6-real-img-6.webp ── */
+img.fg-6-6 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 6-real-img-7.webp ── */
+img.fg-6-7 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+
+/* ── FLOOR 7 ── */
+
+/* ── IMAGE: 7-real-img-1.webp ── */
+img.fg-7-1 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 7-real-img-2.webp ── */
+img.fg-7-2 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 7-real-img-3.webp ── */
+img.fg-7-3 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 7-real-img-4.webp ── */
+img.fg-7-4 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 7-real-img-5.webp ── */
+img.fg-7-5 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 7-real-img-6.webp ── */
+img.fg-7-6 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+
+/* ── 9TH FLOOR OUTDOOR ── */
+
+/* ── IMAGE: 9-outdoor-real-img-1.webp ── */
+img.fg-9-outdoor-1 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 9-outdoor-real-img-2.webp ── */
+img.fg-9-outdoor-2 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 9-outdoor-real-img-3.webp ── */
+img.fg-9-outdoor-3 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 9-outdoor-real-img-4.webp ── */
+img.fg-9-outdoor-4 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 9-outdoor-real-img-5.webp ── */
+img.fg-9-outdoor-5 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 9-outdoor-real-img-6.webp ── */
+img.fg-9-outdoor-6 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+
+/* ── 9TH FLOOR INDOOR ── */
+
+/* ── IMAGE: 9-indoor-real-img-1.webp ── */
+img.fg-9-indoor-1 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 9-indoor-real-img-2.webp ── */
+img.fg-9-indoor-2 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }
+/* ── IMAGE: 9-indoor-real-img-3.webp ── */
+img.fg-9-indoor-3 { /* height:320px; */ /* width:100%; */ /* object-fit:cover; */ /* object-position:center 60%; */ /* transform:rotate(5deg) scale(1.1); */ }

@@ -1140,10 +1140,17 @@
       .businesses-grid { grid-template-columns: repeat(2,1fr); }
       section { padding: 80px 5%; }
     }
-    @media (max-width: 768px) {
-      nav { padding: 0 4%; height: 68px; }
+    /* Navbar collapse: hamburger replaces the link bar at ≤960px.
+       Kept SEPARATE from the 768px layout block on purpose. */
+    @media (max-width: 960px) {
       .nav-links { display: none; }
       .hamburger { display: flex; }
+      html[dir="rtl"] .nav-links { display: none; }
+      .bottom-nav { display: flex; }
+      html[dir="rtl"] .bottom-nav { flex-direction: row-reverse; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 0 4%; height: 68px; }
       .nav-logo-text .name { font-size: 1.1rem; letter-spacing: 1px; }
       .nav-logo-text .tagline { font-size: 0.55rem; letter-spacing: 2px; }
       .nav-logo img { height: 38px; }
@@ -1348,3 +1355,140 @@ html[dir="rtl"] [class*="heading"] {
   overflow: visible !important;
   text-overflow: clip !important;
 }
+
+/* ██████████████████████████████████████████████████████████████
+   PER-IMAGE CONTROLS — index.html (Main Page)
+   Search the image name below to jump straight to its rule.
+   Each property is labeled. Edit the value on that line only.
+   ██████████████████████████████████████████████████████████████ */
+
+/* ── IMAGE: about-office-interior.webp ── */
+img.img-about-office-interior {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; */ /* Crop focus — move up/down/left/right */
+  /* transform: rotate(5deg) scale(1.1); */ /* Rotation + Zoom */
+}
+
+/* ── IMAGE: full-floor-outside.webp ── */
+img.img-full-floor-outside {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; */ /* Crop focus — move up/down/left/right */
+  /* transform: rotate(5deg) scale(1.1); */ /* Rotation + Zoom */
+}
+
+/* ── IMAGE: small-spaces-outside.webp ── */
+img.img-small-spaces-outside {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; */ /* Crop focus — move up/down/left/right */
+  /* transform: rotate(5deg) scale(1.1); */ /* Rotation + Zoom */
+}
+
+/* ── IMAGE: open-space-outside.webp ── */
+img.img-open-space-outside {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; */ /* Crop focus — move up/down/left/right */
+  /* transform: rotate(5deg) scale(1.1); */ /* Rotation + Zoom */
+}
+
+/* ── IMAGE: 9th-floor-outdoor-outside.webp ── */
+img.img-9th-floor-outdoor-outside {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; */ /* Crop focus — move up/down/left/right */
+  /* transform: rotate(5deg) scale(1.1); */ /* Rotation + Zoom */
+}
+
+/* ── IMAGE: 9th-floor-indoor-outside.webp ── */
+img.img-9th-floor-indoor-outside {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; */ /* Crop focus — move up/down/left/right */
+  /* transform: rotate(5deg) scale(1.1); */ /* Rotation + Zoom */
+}
+
+/* ── IMAGE: small-shops-outside.webp ── */
+img.img-small-shops-outside {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; */ /* Crop focus — move up/down/left/right */
+  /* transform: rotate(5deg) scale(1.1); */ /* Rotation + Zoom */
+}
+
+/* ── IMAGE: features-why-us.webp ── */
+img.img-features-why-us {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; /* Crop focus — move up/down/left/right */
+   transform: rotate(1deg) scale(1.1);  /* Rotation + Zoom */
+}
+
+/* ── IMAGE: executive-hall.webp ── */
+img.img-executive-hall {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; */ /* Crop focus — move up/down/left/right */
+  /* transform: rotate(5deg) scale(1.1); */ /* Rotation + Zoom */
+}
+
+/* ── IMAGE: open-space.webp ── */
+img.img-open-space {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; */ /* Crop focus — move up/down/left/right */
+  /* transform: rotate(5deg) scale(1.1); */ /* Rotation + Zoom */
+}
+
+/* ── IMAGE: roof-indoor.webp ── */
+img.img-roof-indoor {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; */ /* Crop focus — move up/down/left/right */
+  /* transform: rotate(5deg) scale(1.1); */ /* Rotation + Zoom */
+}
+
+/* ── IMAGE: partitions-offices.webp ── */
+img.img-partitions-offices {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; */ /* Crop focus — move up/down/left/right */
+  /* transform: rotate(5deg) scale(1.1); */ /* Rotation + Zoom */
+}
+
+/* ── IMAGE: full-space.webp ── */
+img.img-full-space {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; */ /* Crop focus — move up/down/left/right */
+  /* transform: rotate(5deg) scale(1.1); */ /* Rotation + Zoom */
+}
+
+/* ── IMAGE: front-view-office.webp ── */
+img.img-front-view-office {
+  /* height: 320px; */                /* Size */
+  /* width: 100%; */                  /* Size */
+  /* object-fit: cover; */            /* Crop focus */
+  /* object-position: center 60%; */ /* Crop focus — move up/down/left/right */
+  /* transform: rotate(5deg) scale(1.1); */ /* Rotation + Zoom */
+}
+
+/* Disable text selection (caret/highlight) sitewide � keep typing inputs still selectable. */
+html,body{caret-color:transparent;}
+*:not(input):not(textarea):not([contenteditable]){-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
+input,textarea{caret-color:auto;-webkit-user-select:text;user-select:text;}
