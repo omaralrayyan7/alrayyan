@@ -534,7 +534,7 @@
     <div class="businesses-grid">
 
       <!-- FASHION -->
-      <div class="biz-card-wrap fade-in" style="opacity:0.35;pointer-events:none;">
+      <div class="biz-card-wrap fade-in">
         <div class="biz-card">
           <div class="biz-front">
             <div class="logo-container logo-container-fashion">
@@ -566,7 +566,7 @@
       </div>
 
       <!-- ARTS -->
-      <div class="biz-card-wrap fade-in" style="opacity:0.35;pointer-events:none;">
+      <div class="biz-card-wrap fade-in">
         <div class="biz-card">
           <div class="biz-front">
             <div class="logo-container logo-container-arts">
@@ -598,7 +598,7 @@
       </div>
 
       <!-- LAND -->
-      <div class="biz-card-wrap fade-in" style="opacity:0.35;pointer-events:none;">
+      <div class="biz-card-wrap fade-in">
         <div class="biz-card">
           <div class="biz-front">
             <div class="logo-container logo-container-lands">
@@ -802,27 +802,6 @@
     </div>
   </section>
 
-  <!-- Disabled biz link click-blocker — runs in capture phase so it fires
-       before any other handler, even if pointer-events somehow gets unset.
-       Belt-and-suspenders on top of the inline `pointer-events:none`. -->
-  <script>
-    (function(){
-      var disabledHrefs = ['fashion.html','arts.html','land.html'];
-      document.addEventListener('click', function(e){
-        var a = e.target && e.target.closest && e.target.closest('a');
-        if (!a) return;
-        var href = (a.getAttribute('href') || '').toLowerCase();
-        if (disabledHrefs.indexOf(href) === -1) return;
-        if (a.getAttribute('aria-disabled') === 'true' ||
-            (a.closest('.biz-card-wrap') && a.closest('.biz-card-wrap').style.pointerEvents === 'none')) {
-          e.preventDefault();
-          e.stopPropagation();
-          return false;
-        }
-      }, true);
-    })();
-  </script>
-
   <!-- ====== FOOTER ====== -->
   <footer>
     <div class="footer-top">
@@ -848,9 +827,9 @@
       <div class="footer-col">
         <h4 data-i18n="footOB">Our Businesses</h4>
         <ul>
-          <li><a href="fashion.html" data-i18n="bizFashBack" style="opacity:0.45;text-decoration:line-through;pointer-events:none;color:var(--muted);" aria-disabled="true" tabindex="-1">Alrayyan Fashion</a></li>
-          <li><a href="arts.html"    data-i18n="bizArtsBack" style="opacity:0.45;text-decoration:line-through;pointer-events:none;color:var(--muted);" aria-disabled="true" tabindex="-1">Alrayyan Arts</a></li>
-          <li><a href="land.html"    data-i18n="bizLandBack" style="opacity:0.45;text-decoration:line-through;pointer-events:none;color:var(--muted);" aria-disabled="true" tabindex="-1">Alrayyan Lands</a></li>
+          <li><a href="fashion.html" data-i18n="bizFashBack">Alrayyan Fashion</a></li>
+          <li><a href="arts.html"    data-i18n="bizArtsBack">Alrayyan Arts</a></li>
+          <li><a href="land.html"    data-i18n="bizLandBack">Alrayyan Lands</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1478,11 +1457,6 @@
     // map: Firestore site_content (cross-device) or the localStorage signal
     // (instant, same browser — the same mechanism the floor chips use).
     function applyBizStatus(map){
-      // SAFETY DEFAULT: businesses are hardcoded as disabled in HTML.
-      // JS only re-applies disabled state; it NEVER re-enables. To enable a
-      // business, remove the inline disabled styles from the HTML directly.
-      // This prevents stale Firestore 'active' data from re-enabling links
-      // the admin meant to disable (the silent permission-denied scenario).
       if (!map) return;
       [
         { key: 'biz_status_1', wrapSel: '.biz-card-wrap:nth-child(1)', footerSel: 'footer a[href="fashion.html"]' },
@@ -1490,26 +1464,42 @@
         { key: 'biz_status_3', wrapSel: '.biz-card-wrap:nth-child(3)', footerSel: 'footer a[href="land.html"]' },
       ].forEach(({ key, wrapSel, footerSel }) => {
         const status = map[key];
-        if (!status || status === 'active') return; // fail-closed: keep HTML disabled default
+        if (!status) return; // not yet published — leave HTML default alone
+        const isActive = status === 'active';
         const wrap = document.querySelector(wrapSel);
         if (wrap) {
-          wrap.style.opacity = '0.35';
-          wrap.style.pointerEvents = 'none';
+          wrap.style.opacity = isActive ? '' : '0.35';
+          wrap.style.pointerEvents = isActive ? '' : 'none';
           const visitBtn = wrap.querySelector('.biz-back-btn');
           if (visitBtn) {
-            visitBtn.setAttribute('aria-disabled', 'true');
-            visitBtn.style.opacity = '0.4';
-            visitBtn.style.pointerEvents = 'none';
+            if (isActive) {
+              visitBtn.removeAttribute('aria-disabled');
+              visitBtn.style.opacity = '';
+              visitBtn.style.pointerEvents = '';
+            } else {
+              visitBtn.setAttribute('aria-disabled', 'true');
+              visitBtn.style.opacity = '0.4';
+              visitBtn.style.pointerEvents = 'none';
+            }
           }
         }
         const footerLink = footerSel && document.querySelector(footerSel);
         if (footerLink) {
-          footerLink.style.opacity = '0.45';
-          footerLink.style.textDecoration = 'line-through';
-          footerLink.style.pointerEvents = 'none';
-          footerLink.style.color = 'var(--muted)';
-          footerLink.setAttribute('aria-disabled', 'true');
-          footerLink.setAttribute('tabindex', '-1');
+          if (isActive) {
+            footerLink.style.opacity = '';
+            footerLink.style.textDecoration = '';
+            footerLink.style.pointerEvents = '';
+            footerLink.style.color = '';
+            footerLink.removeAttribute('aria-disabled');
+            footerLink.removeAttribute('tabindex');
+          } else {
+            footerLink.style.opacity = '0.45';
+            footerLink.style.textDecoration = 'line-through';
+            footerLink.style.pointerEvents = 'none';
+            footerLink.style.color = 'var(--muted)';
+            footerLink.setAttribute('aria-disabled', 'true');
+            footerLink.setAttribute('tabindex', '-1');
+          }
         }
       });
     }
