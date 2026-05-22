@@ -1524,6 +1524,28 @@
       if (window.ArData){ ArData.init(); wire(); }
       else document.addEventListener('DOMContentLoaded', () => { if (window.ArData){ ArData.init(); wire(); } });
     })();
+    // Fallback: read biz status directly from admin_state/biz (publicly
+    // readable, always written by admin). Covers the case where the
+    // site_content/main write silently failed (permission-denied swallowed),
+    // so cross-device visitors still see the correct disabled/enabled state.
+    (function hookAdminBizFallback(){
+      function attach(){
+        if (!window.db) return;
+        window.db.doc('admin_state/biz').onSnapshot(function(snap){
+          try {
+            if (!snap.exists) return;
+            var d = snap.data();
+            var bizArr = Array.isArray(d && d.value) ? d.value : null;
+            if (!bizArr) return;
+            var statusMap = {};
+            bizArr.forEach(function(b){ if (b.id) statusMap['biz_status_' + b.id] = b.status; });
+            applyBizStatus(statusMap);
+          } catch(e){}
+        }, function(){});
+      }
+      if (document.readyState !== 'loading') attach();
+      else document.addEventListener('DOMContentLoaded', attach);
+    })();
 
     // ── AVAILABILITY SYNC (Firestore settings/availability) ────────────────
     // Reads live availability from ArData cache and updates every unit-chip +
