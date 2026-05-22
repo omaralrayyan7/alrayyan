@@ -43,7 +43,15 @@
       "Bash(python -c ' *)",
       "Bash(node -e ' *)",
       "Bash(git -C 'c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower' commit -m ' *)",
-      "Bash(git -C \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower\" push origin main)"
+      "Bash(git -C \"c:/Users/omara/OneDrive - asu.edu.jo/Desktop/alrayyan tower\" push origin main)",
+      "Bash(firebase --version)",
+      "Bash(where firebase *)",
+      "Bash(firebase projects:list)",
+      "Bash(firebase functions:secrets:set ADMIN_EMAIL --data-file -)",
+      "Bash(firebase deploy *)",
+      "Bash(firebase functions:list)",
+      "Bash(firebase hosting:sites:list)",
+      "Bash(firebase hosting:channel:list)"
     ]
   }
 }

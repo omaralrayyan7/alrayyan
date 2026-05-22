@@ -76,7 +76,6 @@
     <a href="#businesses"   onclick="closeMobile()">Our Businesses</a>
     <a href="#gallery"      onclick="closeMobile()">Gallery</a>
     <a href="#contact"      onclick="closeMobile()">Contact</a>
-    <a href="admin.html"    style="font-size:1rem;color:var(--muted)">⚙ Admin</a>
   </div>
 
   <!-- ====== HERO ====== -->
@@ -183,7 +182,7 @@
         <div class="fl-name"><span data-i18n="flB1">B1 Floor</span><small data-i18n="flB1Sub">Underground · Exception</small></div>
         <div class="fl-size">1,000 m²</div>
         <div class="fl-units">
-          <span class="unit-chip exception" data-avail-key="b1_1000" data-i18n="unitFullB1">1,000 m² Full Available</span>
+          <span class="unit-chip exception" data-avail-key="b1_1000" data-i18n="unitFullB1">1,000 m²</span>
         </div>
         <div class="fl-action">
           <button class="btn-book-row" data-avail-btn="b1" onclick="location.href='floor-detail.html?floor=b1'" data-i18n="bookVisit">Book a Visit</button>
@@ -209,7 +208,7 @@
         <div class="fl-name"><span data-i18n="flGOut">G Floor</span><small data-i18n="flGOutSub">Outdoor Shop · Ground (6 doors)</small></div>
         <div class="fl-size">150 m²</div>
         <div class="fl-units">
-          <span class="unit-chip exception" data-avail-key="g_pharmacy" data-i18n="unitGPharm">Outdoor Shop Available</span>
+          <span class="unit-chip exception" data-avail-key="g_pharmacy" data-i18n="unitGPharm">Outdoor Shop</span>
         </div>
         <div class="fl-action">
           <button class="btn-book-row" data-avail-btn="g-outdoor" onclick="location.href='floor-detail.html?floor=g-outdoor'" data-i18n="bookVisit">Book a Visit</button>
@@ -349,8 +348,8 @@
         <div class="fl-name"><span data-i18n="fl9">9th Floor</span><small data-i18n="fl9Sub">Outdoor Terrace + Indoor Space · Exception</small></div>
         <div class="fl-size">400 m²</div>
         <div class="fl-units">
-          <span class="unit-chip exception" data-avail-key="9-outdoor_240" data-i18n="unit9Out">240 m² Outdoor Available</span>
-          <span class="unit-chip exception" data-avail-key="9-indoor_160" data-i18n="unit9In">160 m² Indoor Available</span>
+          <span class="unit-chip exception" data-avail-key="9-outdoor_240" data-i18n="unit9Out">400 m²</span>
+          <span class="unit-chip exception" data-avail-key="9-indoor_160" data-i18n="unit9In" style="display:none"></span>
         </div>
         <div class="fl-action">
           <button class="btn-book-row" data-avail-btn="9" onclick="location.href='floor-detail.html?floor=9'" data-i18n="bookVisit">Book a Visit</button>
@@ -1159,7 +1158,7 @@
         feat1T:'Prime Locations', feat1D:"Strategically positioned in Amman's top business districts.",
         feat2T:'All-Inclusive Packages', feat2D:'Utilities, maintenance, security and cleaning all bundled in — one invoice, zero surprises.',
         feat3T:'Flexible Lease Terms', feat3D:'Monthly, quarterly or annual contracts tailored to your business timeline.',
-        feat4T:'Luxury Finishing', feat4D:'European-grade materials and ergonomic furniture.',
+        feat4T:'Modern Design', feat4D:'Panoramic double-glazed façade giving you unobstructed city views, abundant natural light, and full acoustic insulation from the outside.',
         feat5T:'24/7 Security', feat5D:'Dedicated building security around the clock.',
         bizEye:'The Alrayyan Universe', bizTitle:'Our Businesses', bizHover:'Hover each card to discover our ventures',
         bizFashBack:'Alrayyan Fashion', bizFashDesc:'Curated luxury and contemporary fashion for the modern Arab individual. From bespoke tailoring to exclusive designer collections — style elevated to an art form.',
@@ -1187,7 +1186,7 @@
         availColFloor:'Floor', availColSize:'Total Size', availColStatus:'Unit Availability', availColAction:'Action',
         flB1:'B1 Floor', flB1Sub:'Underground · Exception',
         flGIn:'G Floor', flGInSub:'Indoor Shops · Ground', unitGShop1:'25 m² Shop', unitGShop2:'25 m² Shop', unitGShop3:'25 m² Shop',
-        flGOut:'G Floor', flGOutSub:'Outdoor Shop · Ground (6 doors)', unitGPharm:'Outdoor Shop Available',
+        flGOut:'G Floor', flGOutSub:'Outdoor Shop · Ground (6 doors)', unitGPharm:'Outdoor Shop',
         fl1:'1st Floor', fl1Sub:'Fully Occupied',
         fl2:'2nd Floor', fl2Sub:'Fully Occupied',
         fl8:'8th Floor', fl8Sub:'Fully Occupied',
@@ -1198,9 +1197,9 @@
         fl6:'6th Floor', fl6Sub:'Full Floor Available',
         fl7:'7th Floor', fl7Sub:'Full Floor Available',
         fl9:'9th Floor', fl9Sub:'Outdoor Terrace + Indoor Space · Exception',
-        unitFullB1:'1,000 m² Full Available',
-        unit9Out:'240 m² Outdoor Available',
-        unit9In:'160 m² Indoor Available',
+        unitFullB1:'1,000 m²',
+        unit9Out:'400 m²',
+        unit9In:'',
         bookVisit:'Book a Visit',
         sumFloors:'Spaces Available', sumTotalM:'Total m² Available', sumSmall:'Small Spaces Available', sumFull:'Full Floors', sumExcept:'Special Spaces',
       },
@@ -1224,7 +1223,7 @@
         feat1T:'مواقع رئيسية', feat1D:'موقع استراتيجي في أفضل المناطق التجارية في عمّان.',
         feat2T:'باقات شاملة', feat2D:'المرافق والصيانة والأمن والتنظيف — فاتورة واحدة بدون مفاجآت.',
         feat3T:'شروط إيجار مرنة', feat3D:'عقود شهرية أو سنوية مصممة وفقاً لجدولك الزمني.',
-        feat4T:'تشطيبات فاخرة', feat4D:'مواد أوروبية الجودة وأثاث مريح.',
+        feat4T:'تصميم عصري', feat4D:'واجهة بانورامية بزجاج مزدوج تمنحك اطلالات على المدينة مع اضاءة طبيعية وفيرة وعزل تام عن الخارج',
         feat5T:'أمن على مدار الساعة للمبنى', feat5D:'أمن مخصص للمبنى على مدار الساعة.',
         bizEye:'عالم الريان', bizTitle:'أعمالنا', bizHover:'مرر على كل بطاقة لاستكشاف مشاريعنا',
         bizFashBack:'أزياء الريان', bizFashDesc:'أزياء فاخرة ومعاصرة للفرد العربي الحديث. من الخياطة حسب الطلب إلى مجموعات المصممين الحصرية.',
@@ -1252,7 +1251,7 @@
         availColFloor:'الطابق', availColSize:'المساحة الإجمالية', availColStatus:'حالة الوحدات', availColAction:'الإجراء',
         flB1:'الطابق B1', flB1Sub:'تحت الأرض · استثناء',
         flGIn:'الطابق الأرضي', flGInSub:'محلات داخلية · أرضي', unitGShop1:'محل 25 م²', unitGShop2:'محل 25 م²', unitGShop3:'محل 25 م²',
-        flGOut:'الطابق الأرضي', flGOutSub:'محل خارجي · أرضي (6 أبواب)', unitGPharm:'محل خارجي متاح',
+        flGOut:'الطابق الأرضي', flGOutSub:'محل خارجي · أرضي (6 أبواب)', unitGPharm:'محل خارجي',
         fl1:'الطابق الأول', fl1Sub:'مشغول بالكامل',
         fl2:'الطابق الثاني', fl2Sub:'مشغول بالكامل',
         fl8:'الطابق الثامن', fl8Sub:'مشغول بالكامل',
@@ -1263,9 +1262,9 @@
         fl6:'الطابق السادس', fl6Sub:'طابق كامل متاح',
         fl7:'الطابق السابع', fl7Sub:'طابق كامل متاح',
         fl9:'الطابق التاسع', fl9Sub:'تراس خارجي + مساحة داخلية · استثناء',
-        unitFullB1:'1,000 م² كامل متاح',
-        unit9Out:'240 م² تراس خارجي متاح',
-        unit9In:'160 م² داخلي متاح',
+        unitFullB1:'1,000 م²',
+        unit9Out:'400 م²',
+        unit9In:'',
         bookVisit:'احجز زيارة',
         sumFloors:'مساحة متاحة', sumTotalM:'إجمالي م² المتاح', sumSmall:'مساحات صغيرة متاحة', sumFull:'طوابق كاملة', sumExcept:'مساحات خاصة',
       }
@@ -1483,20 +1482,20 @@
             visitBtn.style.pointerEvents = 'none';
           }
         }
-        // Footer "Our Businesses" link mirrors the card's disabled state.
+        // Footer "Our Businesses" link — scratched out when business is disabled.
         const footerLink = footerSel && document.querySelector(footerSel);
         if (footerLink) {
           if (isActive) {
             footerLink.style.opacity = '';
-            footerLink.style.pointerEvents = '';
-            footerLink.style.cursor = '';
             footerLink.style.textDecoration = '';
+            footerLink.style.pointerEvents = '';
+            footerLink.style.color = '';
             footerLink.removeAttribute('aria-disabled');
           } else {
-            footerLink.style.opacity = '0.35';
-            footerLink.style.pointerEvents = 'none';
-            footerLink.style.cursor = 'not-allowed';
+            footerLink.style.opacity = '0.45';
             footerLink.style.textDecoration = 'line-through';
+            footerLink.style.pointerEvents = 'none';
+            footerLink.style.color = 'var(--muted)';
             footerLink.setAttribute('aria-disabled', 'true');
           }
         }

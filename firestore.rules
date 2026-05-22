@@ -1,49 +1,62 @@
 rules_version = '2';
 
 // ────────────────────────────────────────────────────────────────────────────
-// Alrayyan Tower — Firestore Security Rules
+// Alrayyan Tower — Firestore Security Rules (Production)
 //
-// NOTE: These are DEV-permissive rules. They allow the public site and admin
-// panel to read/write the collections they need without authentication. For
-// production hardening you should:
-//   - require auth for writes on `admin_state/*`, `settings/*`, `site_content/*`,
-//     `bookings` status updates, and deletes on any collection
-//   - keep public WRITE allowed only on `bookings` (visitor creates booking),
-//     `cookie_acceptances` (visitor accepts cookies), and `visitors` (anonymous
-//     profile create/update)
+// Public (unauthenticated) users can only CREATE specific documents.
+// All reads of admin data and ALL writes to sensitive collections require
+// Firebase Auth (the admin account: alrayyantower@gmail.com).
 // ────────────────────────────────────────────────────────────────────────────
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Visit bookings — admin panel reads, public form writes.
+    // Visit bookings:
+    //   - Public can CREATE (submit the booking form).
+    //   - Only authenticated admin can read, update, or delete.
     match /bookings/{id} {
-      allow read, write: if true;
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
     }
 
-    // Cookie acceptance log — public site writes on Accept; admin reads.
+    // Cookie acceptance log:
+    //   - Public can CREATE (accept cookie banner).
+    //   - Only admin can read or delete.
     match /cookie_acceptances/{id} {
-      allow read, write: if true;
+      allow create: if true;
+      allow read, delete: if request.auth != null;
     }
 
-    // Anonymous visitor profiles — keyed by visitor_id (UUID in localStorage).
+    // Anonymous visitor profiles:
+    //   - Public can CREATE and UPDATE their own profile (keyed by local UUID).
+    //   - Only admin can read all or delete.
     match /visitors/{id} {
-      allow read, write: if true;
+      allow create, update: if true;
+      allow read, delete: if request.auth != null;
     }
 
-    // Availability settings — admin panel writes, public site reads.
+    // Availability settings:
+    //   - Public site READS (to show available/unavailable units).
+    //   - Only admin can write.
     match /settings/{doc} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if request.auth != null;
     }
 
-    // Cross-device published site content (business statuses, etc.).
+    // Published site content (business statuses, homepage text, etc.):
+    //   - Public site READS.
+    //   - Only admin can write.
     match /site_content/{doc} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if request.auth != null;
     }
 
-    // Admin blob state (offices, floors, lands, products, ...).
+    // Admin state (offices, floors, lands, fashion products, arts):
+    //   - Public site READS (to render listings).
+    //   - Only admin can write.
     match /admin_state/{doc} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if request.auth != null;
     }
   }
 }

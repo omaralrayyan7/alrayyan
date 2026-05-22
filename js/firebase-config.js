@@ -18,10 +18,10 @@
     firebase.initializeApp(firebaseConfig);
   }
   window.db = firebase.firestore();
+  if (typeof firebase.auth === 'function') {
+    window.auth = firebase.auth();
+  }
 
-  // Admin WhatsApp notification number. The middle digits are placeholder —
-  // edit this single constant to set the real number. Format: full international
-  // number without +, dashes, or spaces (wa.me URL format).
-  // TODO: replace 79XXXX787 with the real admin number.
-  window.ADMIN_WHATSAPP = '96279XXXX787';
+  // Admin WhatsApp notification number. Format: full international number without +, dashes, or spaces.
+  window.ADMIN_WHATSAPP = '962799880066';
 })();

@@ -7,7 +7,9 @@
       "**/node_modules/**",
       "functions/**",
       "seed.html"
-    ]
+    ],
+    "cleanUrls": true,
+    "errorPage": "404.html"
   },
   "functions": [
     {

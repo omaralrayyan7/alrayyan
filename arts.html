@@ -59,7 +59,7 @@
       <span class="cart-badge" id="cartBadge">0</span>
     </button>
     <div class="nav-sep"></div>
-    <a href="index.html" class="nav-back">← Group</a>
+    <a href="index.html" class="nav-back">← Alrayyan Group</a>
   </div>
 </nav>
 
@@ -368,7 +368,9 @@ document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
   if(navRight){
     const sw = document.createElement('div');
     sw.className = 'lang-sw';
-    sw.innerHTML = '<button class="lang-btn active" onclick="setLang(\'en\')">EN</button><button class="lang-btn" onclick="setLang(\'ar\')">AR</button>';
+    sw.setAttribute('dir','ltr');
+    sw.style.cssText = 'direction:ltr;display:inline-flex;';
+    sw.innerHTML = '<button class="lang-btn active" onclick="setLang(\'en\')" style="min-width:36px;">EN</button><button class="lang-btn" onclick="setLang(\'ar\')" style="min-width:36px;">AR</button>';
     navRight.insertBefore(sw, navRight.firstChild);
   }
 })();

@@ -40,9 +40,9 @@
   <a href="index.html"><div class="nav-brand"><img src="images/logo/logo.png" alt="Alrayyan" data-darkreader-ignore="true" data-darkreader-inline-color="initial" data-darkreader-inline-bgcolor="initial" data-darkreader-inline-bgimage="initial" data-darkreader-inline-filter="" class="brand-logo-img" style="height:32px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px;filter:none;" decoding="async" loading="eager" width="656" height="656"/>ALRAYYAN GROUP</div></a>
   <div class="nav-right">
     <a href="index.html#offices" class="nav-back" data-i18n="navBack">← All Offices</a>
-    <div class="lang-sw">
-      <button class="lang-btn active" onclick="setPageLang('en')">EN</button>
-      <button class="lang-btn" onclick="setPageLang('ar')">AR</button>
+    <div class="lang-sw" dir="ltr" style="direction:ltr;display:inline-flex;">
+      <button class="lang-btn active" onclick="setPageLang('en')" style="min-width:36px;">EN</button>
+      <button class="lang-btn" onclick="setPageLang('ar')" style="min-width:36px;">AR</button>
     </div>
   </div>
 </nav>
@@ -319,9 +319,9 @@ const offices = [
       {label:{en:'Floors',ar:'الطوابق'},               value:{en:'Floors 1 – 8',ar:'الطوابق 1 – 8'}},
       {label:{en:'Lease Term',ar:'مدة الإيجار'},       value:{en:'Annual',ar:'سنوي'}},
       {label:{en:'Setup Time',ar:'وقت التجهيز'},       value:{en:'Same Day',ar:'نفس اليوم'}},
-      {label:{en:'Availability',ar:'التوفر'},          value:{en:'Available in: 3rd Floor (80m²), 5th Floor (80m²)',ar:'متاح في: الطابق الثالث (80م²), الطابق الخامس (80م²)'}},
+      {label:{en:'Availability',ar:'التوفر'},          value:{en:'Available in: 3rd Floor (80m²), 5th Floor (160m²)',ar:'متاح في: الطابق الثالث (80م²), الطابق الخامس (160م²)'}},
     ],
-    availText:{ en:'Available in: 3rd Floor (80m²), 5th Floor (80m²)', ar:'متاح في: الطابق الثالث (80م²), الطابق الخامس (80م²)' },
+    availText:{ en:'Available in: 3rd Floor (80m²), 5th Floor (160m²)', ar:'متاح في: الطابق الثالث (80م²), الطابق الخامس (160م²)' },
     description:{
       en:`<p>The Alrayyan Co-Working floor is a dynamic, inspiring environment where ambition is the common language. Spread across an open, beautifully designed 1,200 m² floor, it offers hot desks, dedicated desks, and quiet focus pods — all within a vibrant professional community.</p>
       <p>Members gain access to one of Amman's most connected workspaces, a fully-stocked kitchen, barista coffee service, and a rooftop terrace for breaks and informal meetings.</p>`,
@@ -601,7 +601,7 @@ function renderOffice(L){
       let btnHtml = `<p style="font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;width:100%;">${availInLabel}</p>`;
       links.forEach(lk => {
         const lbl = L === 'ar' ? (lk.labelAr || lk.label) : lk.label;
-        btnHtml += `<button onclick="location.href='floor-detail.html?floor=${lk.floor}'"
+        btnHtml += `<button data-floor="${lk.floor}" onclick="location.href='floor-detail.html?floor=${lk.floor}'"
           style="background:transparent;border:1px solid var(--gold);color:var(--gold-light);
           font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1.5px;
           text-transform:uppercase;padding:8px 18px;cursor:pointer;transition:all .25s;border-radius:2px;"
@@ -747,5 +747,48 @@ function setPageLang(lang) {
 <script src="js/firebase-config.js" defer></script>
 <script src="js/ar-data.js" defer></script>
 <script>document.addEventListener("DOMContentLoaded",function(){if(window.ArData)ArData.init();});</script>
+<script>
+// ── AVAILABILITY SYNC (floor buttons) ────────────────────────────────────────
+// Maps floor key (data-floor attr) → Firestore keys in settings/availability.
+// Button grays out when ALL its Firestore keys are explicitly false.
+const FLOOR_AVAIL_KEYS = {
+  'b1':        ['b1_1000'],
+  '3':         ['3_80','3_100','3_160','3_240','3_400'],
+  '4':         ['4_80','4_100','4_160','4_240','4_400'],
+  '5':         ['5_80','5_100','5_160','5_240','5_400'],
+  '6':         ['6_80','6_100','6_160','6_240','6_400'],
+  '7':         ['7_80','7_100','7_160','7_240','7_400'],
+  '9-outdoor': ['9-outdoor_240'],
+  '9-indoor':  ['9-indoor_160'],
+  'g-indoor':  ['g_shop1','g_shop2','g_shop3'],
+  'g-outdoor': ['g_pharmacy'],
+};
+
+function applyFloorAvailability(avail) {
+  document.querySelectorAll('#floor-btns-hero button[data-floor]').forEach(btn => {
+    const keys = FLOOR_AVAIL_KEYS[btn.getAttribute('data-floor')];
+    // available = no mapping defined, OR at least one key is not false
+    const available = !keys || keys.some(k => avail[k] !== false);
+    btn.style.opacity        = available ? '' : '0.35';
+    btn.style.pointerEvents  = available ? '' : 'none';
+    btn.style.textDecoration = available ? '' : 'line-through';
+    btn.title                = available ? '' : 'Currently unavailable';
+  });
+}
+
+// Subscribe to Firestore settings/availability (waits for firebase-config.js)
+document.addEventListener('DOMContentLoaded', function () {
+  let attempts = 25;
+  const poll = setInterval(() => {
+    if (--attempts <= 0) { clearInterval(poll); return; }
+    if (!window.db) return;
+    clearInterval(poll);
+    window.db.collection('settings').doc('availability')
+      .onSnapshot(snap => {
+        applyFloorAvailability(snap.exists ? snap.data() : {});
+      }, err => console.warn('[office-detail] avail sync err', err));
+  }, 300);
+});
+</script>
 </body>
 </html>

@@ -30,7 +30,11 @@
     <label class="adm-label" for="login-email">Email</label>
     <input class="adm-input" type="email" id="login-email" placeholder="name@example.com" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('login-pass').focus()"/>
     <label class="adm-label" for="login-pass">Password</label>
-    <input class="adm-input" type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <div style="position:relative;">
+      <input class="adm-input" type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" style="padding-right:42px;width:100%;"/>
+      <span onclick="const i=document.getElementById('login-pass');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'🙈';"
+        style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:1rem;user-select:none;">👁</span>
+    </div>
     <button class="btn-login" onclick="doLogin()">Sign In →</button>
     <p class="login-hint">Restricted access. Unauthorised entry is prohibited.</p>
   </div>
@@ -927,63 +931,69 @@ function applyAdminI18n() {
   });
 }
 
-// ── AUTH ──────────────────────────────────────────────────────────────────────
-// Credentials: stored as SHA-256 digest of the password. Client-side auth is
-// not real security — any determined attacker can read this file — but it
-// keeps casual visitors out. For real security, move auth server-side.
-const CREDS = {
-  email: 'omaralrayyan7@gmail.com',
-  // SHA-256 hex digest of the password "1234567"
-  passHash: '8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414'
-};
+// ── AUTH (Firebase Authentication) ────────────────────────────────────────────
+// Uses Firebase Auth Email/Password — credentials verified server-side.
+// Admin account: alrayyantower@gmail.com (set in Firebase Console → Authentication).
 
-async function sha256Hex(str){
-  const enc = new TextEncoder().encode(str);
-  const buf = await crypto.subtle.digest('SHA-256', enc);
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+function _showAdmin(user){
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('admin-screen').classList.add('show');
+  const badge = document.getElementById('adm-user-badge');
+  if (badge) badge.textContent = (user && user.email) ? user.email.split('@')[0] : 'admin';
+  initAdmin();
+}
+function _showLogin(errMsg){
+  document.getElementById('admin-screen').classList.remove('show');
+  document.getElementById('login-screen').classList.remove('hidden');
+  const emailEl = document.getElementById('login-email');
+  if (emailEl) setTimeout(()=>emailEl.focus(), 50);
+  const errEl = document.getElementById('login-error');
+  if (errMsg && errEl){ errEl.textContent = errMsg; errEl.classList.add('show'); }
 }
 
 async function doLogin(){
-  const email = (document.getElementById('login-email').value || '').trim().toLowerCase();
+  const email = (document.getElementById('login-email').value || '').trim();
   const pass  = document.getElementById('login-pass').value;
-  const hash  = await sha256Hex(pass);
-  if(email === CREDS.email && hash === CREDS.passHash){
-    sessionStorage.setItem('arAdminAuth','1');
-    sessionStorage.setItem('arAdminUser', email);
-    document.getElementById('login-screen').classList.add('hidden');
-    document.getElementById('admin-screen').classList.add('show');
-    const badge = document.getElementById('adm-user-badge');
-    if (badge) badge.textContent = email.split('@')[0];
-    initAdmin();
-  } else {
-    document.getElementById('login-error').classList.add('show');
+  const errEl = document.getElementById('login-error');
+  if (errEl) errEl.classList.remove('show');
+  if (!email || !pass) return;
+  const auth = window.auth || (typeof firebase !== 'undefined' && firebase.auth ? firebase.auth() : null);
+  if (!auth){ _showLogin('Auth service unavailable. Refresh and try again.'); return; }
+  try {
+    const cred = await auth.signInWithEmailAndPassword(email, pass);
+    _showAdmin(cred.user);
+  } catch(err){
     document.getElementById('login-pass').value = '';
+    const msg = (err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential')
+      ? 'Invalid credentials. Please try again.'
+      : (err.message || 'Sign-in failed.');
+    if (errEl){ errEl.textContent = msg; errEl.classList.add('show'); }
   }
 }
-function doLogout(){
-  sessionStorage.removeItem('arAdminAuth');
-  sessionStorage.removeItem('arAdminUser');
-  document.getElementById('admin-screen').classList.remove('show');
-  document.getElementById('login-screen').classList.remove('hidden');
-  const emailEl = document.getElementById('login-email'); if(emailEl) emailEl.value='';
+
+async function doLogout(){
+  const auth = window.auth || (typeof firebase !== 'undefined' && firebase.auth ? firebase.auth() : null);
+  if (auth) await auth.signOut().catch(()=>{});
   document.getElementById('login-pass').value = '';
-  document.getElementById('login-error').classList.remove('show');
+  const emailEl = document.getElementById('login-email'); if(emailEl) emailEl.value='';
+  const errEl = document.getElementById('login-error'); if(errEl) errEl.classList.remove('show');
+  _showLogin();
 }
-// Enforce login on page load — no auto-bypass.
+
+// On page load — let Firebase Auth state decide visibility (handles tab persistence).
 document.addEventListener('DOMContentLoaded', ()=>{
-  if (sessionStorage.getItem('arAdminAuth') === '1'){
-    const user = sessionStorage.getItem('arAdminUser') || '';
-    document.getElementById('login-screen').classList.add('hidden');
-    document.getElementById('admin-screen').classList.add('show');
-    const badge = document.getElementById('adm-user-badge');
-    if (badge) badge.textContent = user ? user.split('@')[0] : 'admin';
-    initAdmin();
-  } else {
-    document.getElementById('login-screen').classList.remove('hidden');
-    document.getElementById('admin-screen').classList.remove('show');
-    const emailEl = document.getElementById('login-email');
-    if (emailEl) setTimeout(()=>emailEl.focus(), 50);
-  }
+  // Show login by default while auth resolves.
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('admin-screen').classList.remove('show');
+  // Wait for Firebase to load, then attach auth observer.
+  const attachObserver = () => {
+    const auth = window.auth || (typeof firebase !== 'undefined' && firebase.auth ? firebase.auth() : null);
+    if (!auth){ setTimeout(attachObserver, 150); return; }
+    auth.onAuthStateChanged(user => {
+      if (user){ _showAdmin(user); } else { _showLogin(); }
+    });
+  };
+  attachObserver();
 });
 
 // ── DATA (Firestore via admin_state/{key} docs) ──────────────────────────────
@@ -2408,6 +2418,7 @@ document.addEventListener('keydown',e=>{
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 <script src="js/ar-data.js"></script>
 <script>if(window.ArData)ArData.init();</script>

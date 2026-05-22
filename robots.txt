@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin.html
+Disallow: /seed.html
+
+Sitemap: https://alrayyangroup.online/sitemap.xml

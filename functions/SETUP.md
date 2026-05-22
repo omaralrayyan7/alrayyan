@@ -55,7 +55,7 @@ firebase functions:secrets:set GMAIL_APP_PASSWORD
 # Paste:  abcdefghijklmnop   (the 16-char App Password, no spaces)
 
 firebase functions:secrets:set ADMIN_EMAIL
-# Paste:  omaralrayyan7@gmail.com   (where you want to RECEIVE booking alerts)
+# Paste:  alrayyantower@gmail.com   (where you want to RECEIVE booking alerts)
 ```
 
 ### Step 6 — Deploy
@@ -75,7 +75,7 @@ First deploy takes 2–3 minutes. You'll see:
 ### Test 1 — Admin receives email when visitor submits form
 1. Open the public site (any of `office-detail.html`, `floor-detail.html`, `land-detail.html`).
 2. Fill the **Book a Site Visit** form with a real test email and submit.
-3. Check inbox of `omaralrayyan7@gmail.com`. You should receive within ~10 seconds:
+3. Check inbox of `alrayyantower@gmail.com`. You should receive within ~10 seconds:
    > Subject: **🔔 New Visit Booking — \[Name\] (ARG-XXXXXX)**
 
 4. Open `admin.html` → **Visit Bookings**. The new booking appears with status `pending`.
