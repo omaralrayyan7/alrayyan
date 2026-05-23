@@ -18,8 +18,7 @@
     products: [],
     site_content: {},    // keyed by `key` field
     availability: {},    // { 'b1_1000': true, ... }
-    pricing: {},         // { 'Full Floor': {price, show} }
-    biz_status: {}       // { biz_status_1: 'active'|'inactive', ... }
+    pricing: {}          // { 'Full Floor': {price, show} }
   };
 
   const listeners = {};          // per-collection subscribers
@@ -80,7 +79,6 @@
     onSingleton('site_content/main', 'site_content');
     onSingleton('settings/availability', 'availability');
     onSingleton('settings/pricing', 'pricing');
-    onSingleton('settings/biz_status', 'biz_status');
   }
 
   // ── Synchronous getters (from cache) ───────────────────────────────────────
@@ -94,8 +92,7 @@
     products:      () => cache.products,
     siteContent:   () => cache.site_content,
     availability:  () => cache.availability,
-    pricing:       () => cache.pricing,
-    bizStatus:     () => cache.biz_status
+    pricing:       () => cache.pricing
   };
 
   // ── Writes ─────────────────────────────────────────────────────────────────
@@ -108,10 +105,6 @@
   }
   function setPricing(state){
     return db.doc('settings/pricing').set(state, { merge: false });
-  }
-  function setBizStatus(map){
-    // map: { biz_status_1: 'active'|'inactive', biz_status_2: ..., biz_status_3: ... }
-    return db.doc('settings/biz_status').set(map, { merge: false });
   }
   function setSiteContent(obj){
     return db.doc('site_content/main').set(obj, { merge: true });
@@ -168,7 +161,7 @@
 
   window.ArData = {
     init, subscribe, cache, get,
-    setAvailability, flipAvailability, setPricing, setBizStatus, setSiteContent,
+    setAvailability, flipAvailability, setPricing, setSiteContent,
     addBooking, updateBooking, deleteBooking,
     addVisitor,
     addDoc, updateDoc, setDoc, deleteDoc,

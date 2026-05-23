@@ -1448,8 +1448,7 @@
           document.documentElement.style.setProperty('--biz-logo-scale', (pct / 100).toString());
         }
 
-        // Business card + footer visibility — driven by admin biz status flags.
-        applyBizStatus(c);
+        // (biz status handled separately via settings/biz_status onSnapshot)
       } catch(e) { console.warn('admin site content override skipped', e); }
     }
     // Applies the 3 business enable/disable flags to the flip-cards AND the
@@ -1503,40 +1502,24 @@
         }
       });
     }
-    // Instant same-browser publish (works even when Firestore rules block
-    // site_content writes): read the localStorage signal on load and react to
-    // cross-tab changes — identical approach to the floor-availability chips.
-    function readBizStateLS(){
-      try {
-        const ls = localStorage.getItem('ar_biz_state');
-        if (ls){ const p = JSON.parse(ls); if (p && typeof p === 'object') return p; }
-      } catch(e){}
-      return null;
-    }
-    (function(){
-      const apply = () => applyBizStatus(readBizStateLS());
-      if (document.readyState !== 'loading') apply();
-      else document.addEventListener('DOMContentLoaded', apply);
-      window.addEventListener('storage', function(e){
-        if (e.key === 'ar_biz_state') applyBizStatus(readBizStateLS());
-      });
-    })();
     (function hookSiteContent(){
       const wire = () => ArData.subscribe('site_content', applyAdminSiteContent);
       if (window.ArData){ ArData.init(); wire(); }
       else document.addEventListener('DOMContentLoaded', () => { if (window.ArData){ ArData.init(); wire(); } });
     })();
-    // PRIMARY cross-device channel: settings/biz_status — same proven pattern
-    // as settings/availability which is known to work reliably on the live site.
-    // Fires whenever admin saves, updates all visitors in real-time.
-    (function hookBizStatus(){
-      const wire = () => ArData.subscribe('biz_status', function(map){
-        if (map && typeof map === 'object') applyBizStatus(map);
-      });
-      if (window.ArData){ ArData.init(); wire(); }
-      else document.addEventListener('DOMContentLoaded', function(){
-        if (window.ArData){ ArData.init(); wire(); }
-      });
+    // ── BIZ STATUS SYNC ────────────────────────────────────────────────────────
+    // Single direct onSnapshot on settings/biz_status.
+    // Admin writes here → every device updates in real-time. No ArData, no
+    // localStorage, no site_content. One document, one listener, no failure modes.
+    (function(){
+      function attach(){
+        if (!window.db){ setTimeout(attach, 200); return; }
+        window.db.doc('settings/biz_status').onSnapshot(function(snap){
+          applyBizStatus(snap.exists ? snap.data() : {});
+        }, function(err){ console.warn('[biz_status onSnapshot]', err); });
+      }
+      if (document.readyState !== 'loading') attach();
+      else document.addEventListener('DOMContentLoaded', attach);
     })();
 
     // ── AVAILABILITY SYNC (Firestore settings/availability) ────────────────
