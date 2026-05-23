@@ -1243,18 +1243,19 @@ function bizStatusMap(data){
   return m;
 }
 function saveBiz(data){
-  // 1) localStorage signal — instant, always works, drives same-browser
-  //    public tabs immediately (the channel that does NOT need a Firestore
-  //    rule). This is what guarantees the edit "sticks" and publishes.
+  // 1) localStorage signal — instant, always works, drives same-browser public tabs.
   const statusMap = bizStatusMap(data);
   try { localStorage.setItem('ar_biz_state', JSON.stringify(statusMap)); } catch(e){}
-  // 2) Best-effort persistence to the admin blob.
+  // 2) Persistence to the admin blob.
   adminFsSave('biz', data);
-  // 3) Cross-device publish via site_content. Returned so callers can report
-  //    honest success/failure (this is the write Firestore rules may block).
+  // 3) PRIMARY cross-device channel: settings/biz_status (same proven pattern as
+  //    settings/availability — known to work reliably on the live site).
+  if (window.ArData) ArData.setBizStatus(statusMap).catch(err => {
+    console.warn('[saveBiz] setBizStatus failed', err && err.code, err);
+  });
+  // 4) Secondary cross-device channel via site_content (kept for compatibility).
   if (window.ArData) return ArData.setSiteContent(statusMap).catch(err => {
-    if (err && err.code === 'permission-denied') return;
-    console.warn('[saveBiz] setSiteContent failed', err);
+    console.warn('[saveBiz] setSiteContent failed', err && err.code, err);
   });
   return Promise.resolve();
 }
