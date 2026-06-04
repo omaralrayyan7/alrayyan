@@ -194,9 +194,9 @@
         <div class="fl-name"><span data-i18n="flGIn">G Floor</span><small data-i18n="flGInSub">Indoor Shops · Ground</small></div>
         <div class="fl-size">75 m²</div>
         <div class="fl-units">
-          <span class="unit-chip on" data-avail-key="g_shop1" data-i18n="unitGShop1">25 m² Shop</span>
-          <span class="unit-chip on" data-avail-key="g_shop2" data-i18n="unitGShop2">25 m² Shop</span>
-          <span class="unit-chip on" data-avail-key="g_shop3" data-i18n="unitGShop3">25 m² Shop</span>
+          <span class="unit-chip on" data-avail-key="g_shop1" data-i18n="unitGShop1">25 m²</span>
+          <span class="unit-chip on" data-avail-key="g_shop2" data-i18n="unitGShop2">25 m²</span>
+          <span class="unit-chip on" data-avail-key="g_shop3" data-i18n="unitGShop3">25 m²</span>
         </div>
         <div class="fl-action">
           <button class="btn-book-row" data-avail-btn="g-indoor" onclick="location.href='floor-detail.html?floor=g-indoor'" data-i18n="bookVisit">Book a Visit</button>
@@ -671,6 +671,36 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════════════════════════════════════════════
+       GLIMPSE INSIDE — PER-IMAGE RESIZE & FRAMING
+       To resize/reframe an image: uncomment ONLY that image's line.
+       Values:
+         height px | width % | zoom scale (e.g. 1.2 = 120%)
+         object-position: "center top" | "center bottom" | "center 30%"
+           (lower % shows more of the TOP, higher % shows more of the BOTTOM)
+       ═══════════════════════════════════════════════════════════════
+
+  <style>
+    /* Slide 1 — Executive Hall */
+    /* .img-executive-hall { height: 480px !important; width: 100% !important; transform: scale(1.0); transform-origin: center center; object-fit: cover; object-position: center center; } */
+
+    /* Slide 2 — Open Space */
+    /* .img-open-space { height: 480px !important; width: 100% !important; transform: scale(1.0); transform-origin: center center; object-fit: cover; object-position: center center; } */
+
+    /* Slide 3 — Roof Indoor */
+    /* .img-roof-indoor { height: 480px !important; width: 100% !important; transform: scale(1.0); transform-origin: center center; object-fit: cover; object-position: center center; } */
+
+    /* Slide 4 — Partitions & Offices */
+    /* .img-partitions-offices { height: 480px !important; width: 100% !important; transform: scale(1.0); transform-origin: center center; object-fit: cover; object-position: center center; } */
+
+    /* Slide 5 — Full Space */
+     /*.img-full-space { height: 480px !important; width: 100% !important; transform: scale(1.0); transform-origin: center center; object-fit: contain; object-position: center 60%; } */
+
+    /* Slide 6 — Front View Office */
+    /* .img-front-view-office { height: 480px !important; width: 100% !important; transform: scale(1.0); transform-origin: center center; object-fit: cover; object-position: center center; } */
+  </style>
+-->
+
   <!-- ====== BOOK VISIT MODAL ====== -->
   <div class="bv-modal-overlay" id="bvOverlay" onclick="if(event.target===this)closeBookVisit()">
     <div class="bv-modal">
@@ -935,7 +965,11 @@
           lang:              document.documentElement.lang || 'en',
           first_visit:       new Date(Number(firstVisit)).toISOString(),
           last_visit:        new Date(now).toISOString(),
-          cookie_accepted:   true
+          cookie_accepted:   true,
+          ref:   'CK-' + Math.random().toString(36).toUpperCase().slice(2, 8),
+          name:  localStorage.getItem('ar_user_name')  || '',
+          email: localStorage.getItem('ar_user_email') || '',
+          phone: localStorage.getItem('ar_user_phone') || ''
         };
       }
       function saveToFirestore(profile){
@@ -973,7 +1007,11 @@
               path:              profile.path,
               identifier:        profile.identifier,
               screen_resolution: profile.screen_resolution,
-              first_visit:       profile.first_visit
+              first_visit:       profile.first_visit,
+              ref:   profile.ref,
+              name:  profile.name,
+              email: profile.email,
+              phone: profile.phone
             });
           }).catch(err => console.warn('[ArVisitor] Firestore save failed', err));
         };
@@ -1116,6 +1154,11 @@
       const time  = document.getElementById('bv-time').value;
       const notes = (document.getElementById('bv-notes') ? document.getElementById('bv-notes').value : '').trim();
       const office = document.getElementById('bv-office-select').value;
+      if (fname || email || phone) {
+        if (fname) localStorage.setItem('ar_user_name', (fname + ' ' + lname).trim());
+        if (email) localStorage.setItem('ar_user_email', email);
+        if (phone) localStorage.setItem('ar_user_phone', phone);
+      }
       const ref = 'ARG-' + Date.now().toString(36).toUpperCase().slice(-6);
       const booking = {
         ref, visitor_name: (fname + ' ' + lname).trim(),
@@ -1185,7 +1228,7 @@
         availDesc:'Real-time inventory across Alrayyan Tower — including B1, G floor, and the 9th-floor spaces. Click any row to view details.',
         availColFloor:'Floor', availColSize:'Total Size', availColStatus:'Unit Availability', availColAction:'Action',
         flB1:'B1 Floor', flB1Sub:'Underground · Exception',
-        flGIn:'G Floor', flGInSub:'Indoor Shops · Ground', unitGShop1:'25 m² Shop', unitGShop2:'25 m² Shop', unitGShop3:'25 m² Shop',
+        flGIn:'G Floor', flGInSub:'Indoor Shops · Ground', unitGShop1:'25 m²', unitGShop2:'25 m²', unitGShop3:'25 m²',
         flGOut:'G Floor', flGOutSub:'Outdoor Shop · Ground (6 doors)', unitGPharm:'Outdoor Shop',
         fl1:'1st Floor', fl1Sub:'Fully Occupied',
         fl2:'2nd Floor', fl2Sub:'Fully Occupied',
@@ -1250,7 +1293,7 @@
         availDesc:'المخزون المباشر في برج الريان — بما في ذلك B1 والطابق الأرضي ومساحات الطابق التاسع. انقر على أي صف لعرض التفاصيل.',
         availColFloor:'الطابق', availColSize:'المساحة الإجمالية', availColStatus:'حالة الوحدات', availColAction:'الإجراء',
         flB1:'الطابق B1', flB1Sub:'تحت الأرض · استثناء',
-        flGIn:'الطابق الأرضي', flGInSub:'محلات داخلية · أرضي', unitGShop1:'محل 25 م²', unitGShop2:'محل 25 م²', unitGShop3:'محل 25 م²',
+        flGIn:'الطابق الأرضي', flGInSub:'محلات داخلية · أرضي', unitGShop1:'25 م²', unitGShop2:'25 م²', unitGShop3:'25 م²',
         flGOut:'الطابق الأرضي', flGOutSub:'محل خارجي · أرضي (6 أبواب)', unitGPharm:'محل خارجي',
         fl1:'الطابق الأول', fl1Sub:'مشغول بالكامل',
         fl2:'الطابق الثاني', fl2Sub:'مشغول بالكامل',
@@ -1449,6 +1492,41 @@
         }
 
         // (biz status handled separately via settings/biz_status onSnapshot)
+
+        /* GALLERY RESIZE (disabled) — uncomment to activate
+        if (c.galleryHeight) {
+          document.querySelectorAll('.gs-slide img').forEach(img => img.style.height = c.galleryHeight + 'px');
+        }
+        if (c.galleryWidth) {
+          document.querySelectorAll('.gs-slide').forEach(slide => slide.style.width = c.galleryWidth + '%');
+        }
+        if (c.galleryZoom) {
+          document.querySelectorAll('.gs-slide img').forEach(img => {
+            img.style.transform = 'scale(' + c.galleryZoom + ')';
+            img.style.transformOrigin = 'center center';
+          });
+        }
+        */
+
+        /* GALLERY PER-IMAGE RESIZE (disabled — uncomment to activate)
+        const sc = c;
+        const galleryImgs = [
+          document.querySelector('.img-executive-hall'),
+          document.querySelector('.img-open-space'),
+          document.querySelector('.img-roof-indoor'),
+          document.querySelector('.img-partitions-offices'),
+          document.querySelector('.img-full-space'),
+          document.querySelector('.img-front-view-office'),
+        ];
+        [['gi1h','gi1w','gi1z'],['gi2h','gi2w','gi2z'],['gi3h','gi3w','gi3z'],
+         ['gi4h','gi4w','gi4z'],['gi5h','gi5w','gi5z'],['gi6h','gi6w','gi6z']
+        ].forEach(([hk,wk,zk], i) => {
+          const img = galleryImgs[i]; if (!img) return;
+          if (sc[hk]) img.style.height = sc[hk] + 'px';
+          if (sc[wk]) img.closest('.gs-slide').style.width = sc[wk] + '%';
+          if (sc[zk]) { img.style.transform = 'scale(' + sc[zk] + ')'; img.style.transformOrigin = 'center center'; }
+        });
+        */
       } catch(e) { console.warn('admin site content override skipped', e); }
     }
     // Applies the 3 business enable/disable flags to the flip-cards AND the
@@ -1484,21 +1562,8 @@
         }
         const footerLink = footerSel && document.querySelector(footerSel);
         if (footerLink) {
-          if (isActive) {
-            footerLink.style.opacity = '';
-            footerLink.style.textDecoration = '';
-            footerLink.style.pointerEvents = '';
-            footerLink.style.color = '';
-            footerLink.removeAttribute('aria-disabled');
-            footerLink.removeAttribute('tabindex');
-          } else {
-            footerLink.style.opacity = '0.45';
-            footerLink.style.textDecoration = 'line-through';
-            footerLink.style.pointerEvents = 'none';
-            footerLink.style.color = 'var(--muted)';
-            footerLink.setAttribute('aria-disabled', 'true');
-            footerLink.setAttribute('tabindex', '-1');
-          }
+          const parentLi = footerLink.closest('li');
+          if (parentLi) parentLi.style.display = isActive ? '' : 'none';
         }
       });
     }

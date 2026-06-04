@@ -55,7 +55,10 @@
       <div class="adm-nav-item" onclick="showPanel('offices',this)"><span class="ico">🏢</span> Office Types</div>
       <div class="adm-nav-item" onclick="showPanel('availability',this)"><span class="ico">✅</span> Available Units</div>
       <div class="adm-nav-item" onclick="showPanel('bookings',this)"><span class="ico">📅</span> Visit Bookings</div>
-      <div class="adm-nav-item" onclick="showPanel('cookieAccept',this)"><span class="ico">🍪</span> Cookie Acceptances</div>
+      <div class="adm-nav-item" onclick="showPanel('cookieAccept',this)">
+        <span class="ico">🍪</span> Cookie Acceptances
+        <span id="cookie-count-badge" style="background:var(--gold);color:#111;font-size:.55rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:6px;display:none;">0</span>
+      </div>
       <div class="adm-nav-section" style="font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(212,175,55,.45);padding:14px 22px 6px;">Our Businesses</div>
       <div class="adm-nav-item" onclick="showPanel('products',this)"><span class="ico">👗</span> Alrayyan Fashion</div>
       <div class="adm-nav-item" onclick="showPanel('arts',this)"><span class="ico">🎨</span> Alrayyan Arts</div>
@@ -336,6 +339,173 @@
             </div>
           </div>
         </div>
+        <!-- GALLERY RESIZE (disabled) — uncomment to activate
+        <div class="adm-card" style="margin-top:18px;">
+          <div class="adm-card-head"><h5>A Glimpse Inside — Image Size</h5>
+            <button class="btn-sm-gold" onclick="saveGalleryImgSize()">Save Gallery Image Size</button>
+          </div>
+          <div style="padding:22px">
+            <div class="adm-form-row">
+              <div class="adm-form-group">
+                <label class="adm-form-label">Height (px)</label>
+                <input class="adm-form-control" type="number" id="gallery-img-height" min="200" max="1200" value="480"/>
+              </div>
+              <div class="adm-form-group">
+                <label class="adm-form-label">Width (%)</label>
+                <input class="adm-form-control" type="number" id="gallery-img-width" min="30" max="100" value="100"/>
+              </div>
+            </div>
+            <div class="adm-form-group">
+              <label class="adm-form-label">Zoom (scale) <span id="gallery-img-zoom-val" style="color:var(--gold-light);font-weight:600;">1.00</span></label>
+              <input type="range" id="gallery-img-zoom" min="0.5" max="2.0" step="0.05" value="1.0" oninput="document.getElementById('gallery-img-zoom-val').textContent = parseFloat(this.value).toFixed(2)" style="width:100%;accent-color:var(--gold,#d4af37);cursor:pointer;"/>
+            </div>
+          </div>
+        </div>
+        -->
+        <!-- GALLERY PER-IMAGE RESIZE (disabled — uncomment to activate)
+        <div class="adm-card" style="margin-top:18px;">
+          <div class="adm-card-head"><h5>A Glimpse Inside — Per-Image Resize</h5>
+            <button class="btn-sm-gold" onclick="saveGalleryImgSizes()">Save Gallery Sizes</button>
+          </div>
+          <div style="padding:22px">
+
+            <div style="margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(212,175,55,.15);">
+              <div style="font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;">Slide 1 — Executive Hall</div>
+              <div class="adm-form-row">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Height (px)</label>
+                  <input class="adm-form-control" type="number" id="gi-1-h" min="150" max="1200" value="480"/>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Width (%)</label>
+                  <input class="adm-form-control" type="number" id="gi-1-w" min="20" max="100" value="100"/>
+                </div>
+              </div>
+              <div class="adm-form-group">
+                <label class="adm-form-label">Zoom (scale) <span id="gi-1-z-val" style="color:var(--gold-light);font-weight:600;">1.00</span></label>
+                <input type="range" id="gi-1-z" min="0.5" max="2.0" step="0.05" value="1.0" oninput="document.getElementById('gi-1-z-val').textContent = parseFloat(this.value).toFixed(2)" style="width:100%;accent-color:var(--gold,#d4af37);cursor:pointer;"/>
+              </div>
+            </div>
+
+            <div style="margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(212,175,55,.15);">
+              <div style="font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;">Slide 2 — Open Space</div>
+              <div class="adm-form-row">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Height (px)</label>
+                  <input class="adm-form-control" type="number" id="gi-2-h" min="150" max="1200" value="480"/>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Width (%)</label>
+                  <input class="adm-form-control" type="number" id="gi-2-w" min="20" max="100" value="100"/>
+                </div>
+              </div>
+              <div class="adm-form-group">
+                <label class="adm-form-label">Zoom (scale) <span id="gi-2-z-val" style="color:var(--gold-light);font-weight:600;">1.00</span></label>
+                <input type="range" id="gi-2-z" min="0.5" max="2.0" step="0.05" value="1.0" oninput="document.getElementById('gi-2-z-val').textContent = parseFloat(this.value).toFixed(2)" style="width:100%;accent-color:var(--gold,#d4af37);cursor:pointer;"/>
+              </div>
+            </div>
+
+            <div style="margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(212,175,55,.15);">
+              <div style="font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;">Slide 3 — Roof Indoor</div>
+              <div class="adm-form-row">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Height (px)</label>
+                  <input class="adm-form-control" type="number" id="gi-3-h" min="150" max="1200" value="480"/>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Width (%)</label>
+                  <input class="adm-form-control" type="number" id="gi-3-w" min="20" max="100" value="100"/>
+                </div>
+              </div>
+              <div class="adm-form-group">
+                <label class="adm-form-label">Zoom (scale) <span id="gi-3-z-val" style="color:var(--gold-light);font-weight:600;">1.00</span></label>
+                <input type="range" id="gi-3-z" min="0.5" max="2.0" step="0.05" value="1.0" oninput="document.getElementById('gi-3-z-val').textContent = parseFloat(this.value).toFixed(2)" style="width:100%;accent-color:var(--gold,#d4af37);cursor:pointer;"/>
+              </div>
+            </div>
+
+            <div style="margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(212,175,55,.15);">
+              <div style="font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;">Slide 4 — Partitions & Offices</div>
+              <div class="adm-form-row">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Height (px)</label>
+                  <input class="adm-form-control" type="number" id="gi-4-h" min="150" max="1200" value="480"/>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Width (%)</label>
+                  <input class="adm-form-control" type="number" id="gi-4-w" min="20" max="100" value="100"/>
+                </div>
+              </div>
+              <div class="adm-form-group">
+                <label class="adm-form-label">Zoom (scale) <span id="gi-4-z-val" style="color:var(--gold-light);font-weight:600;">1.00</span></label>
+                <input type="range" id="gi-4-z" min="0.5" max="2.0" step="0.05" value="1.0" oninput="document.getElementById('gi-4-z-val').textContent = parseFloat(this.value).toFixed(2)" style="width:100%;accent-color:var(--gold,#d4af37);cursor:pointer;"/>
+              </div>
+            </div>
+
+            <div style="margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(212,175,55,.15);">
+              <div style="font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;">Slide 5 — Full Space</div>
+              <div class="adm-form-row">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Height (px)</label>
+                  <input class="adm-form-control" type="number" id="gi-5-h" min="150" max="1200" value="480"/>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Width (%)</label>
+                  <input class="adm-form-control" type="number" id="gi-5-w" min="20" max="100" value="100"/>
+                </div>
+              </div>
+              <div class="adm-form-group">
+                <label class="adm-form-label">Zoom (scale) <span id="gi-5-z-val" style="color:var(--gold-light);font-weight:600;">1.00</span></label>
+                <input type="range" id="gi-5-z" min="0.5" max="2.0" step="0.05" value="1.0" oninput="document.getElementById('gi-5-z-val').textContent = parseFloat(this.value).toFixed(2)" style="width:100%;accent-color:var(--gold,#d4af37);cursor:pointer;"/>
+              </div>
+            </div>
+
+            <div style="margin-bottom:6px;">
+              <div style="font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;">Slide 6 — Front View Office</div>
+              <div class="adm-form-row">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Height (px)</label>
+                  <input class="adm-form-control" type="number" id="gi-6-h" min="150" max="1200" value="480"/>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Width (%)</label>
+                  <input class="adm-form-control" type="number" id="gi-6-w" min="20" max="100" value="100"/>
+                </div>
+              </div>
+              <div class="adm-form-group">
+                <label class="adm-form-label">Zoom (scale) <span id="gi-6-z-val" style="color:var(--gold-light);font-weight:600;">1.00</span></label>
+                <input type="range" id="gi-6-z" min="0.5" max="2.0" step="0.05" value="1.0" oninput="document.getElementById('gi-6-z-val').textContent = parseFloat(this.value).toFixed(2)" style="width:100%;accent-color:var(--gold,#d4af37);cursor:pointer;"/>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <script>
+        function saveGalleryImgSizes(){
+          const val = (id, def) => {
+            const el = document.getElementById(id);
+            if (!el) return def;
+            const v = parseFloat(el.value);
+            return isNaN(v) ? def : v;
+          };
+          const payload = {};
+          for (let i = 1; i <= 6; i++){
+            payload['gi'+i+'h'] = val('gi-'+i+'-h', 480);
+            payload['gi'+i+'w'] = val('gi-'+i+'-w', 100);
+            payload['gi'+i+'z'] = val('gi-'+i+'-z', 1.0);
+          }
+          if (window.ArData && ArData.setSiteContent){
+            ArData.setSiteContent(payload).then(() => {
+              alert('Gallery sizes saved.');
+            }).catch(err => {
+              console.error('[admin] saveGalleryImgSizes failed', err);
+              alert('Save failed — see console.');
+            });
+          } else {
+            alert('ArData not ready.');
+          }
+        }
+        </script>
+        -->
       </div>
 
       <!-- ── ARTS ── -->
@@ -398,6 +568,10 @@
             <table class="adm-table">
               <thead><tr>
                 <th data-i18n-key="colWhen">When</th>
+                <th>Ref#</th>
+                <th>Account</th>
+                <th>Email</th>
+                <th>Phone</th>
                 <th>Visitor ID</th>
                 <th data-i18n-key="colIdentifier">Identifier</th>
                 <th data-i18n-key="colLang">Lang</th>
@@ -1097,15 +1271,32 @@ function initBookingsListener(){
 // public site). Subscribes to Firestore so admins see new entries in real time.
 let _FS_COOKIE_ACCEPT = [];
 let _cookieAcceptUnsub = null;
-function initCookieAcceptListener(){
-  if (!window.db || _cookieAcceptUnsub) return;
-  _cookieAcceptUnsub = window.db.collection('cookie_acceptances')
-    .orderBy('accepted_at', 'desc')
-    .limit(200)
-    .onSnapshot(snap => {
-      _FS_COOKIE_ACCEPT = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      try { renderCookieAccept(); } catch(e){}
-    }, err => console.error('[cookie acceptances listener]', err));
+function initCookieAcceptListener() {
+  if (!window.db) { setTimeout(initCookieAcceptListener, 800); return; }
+  if (_cookieAcceptUnsub) return;
+  // Try ordered query first; fall back to unordered if index is missing
+  function startListener(ordered) {
+    let q = window.db.collection('cookie_acceptances').limit(300);
+    if (ordered) q = q.orderBy('accepted_at', 'desc');
+    _cookieAcceptUnsub = q.onSnapshot(function(snap) {
+      _FS_COOKIE_ACCEPT = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+      // Sort client-side in case index is missing
+      _FS_COOKIE_ACCEPT.sort(function(a, b) {
+        const ta = a.accepted_at && a.accepted_at.toMillis ? a.accepted_at.toMillis() : 0;
+        const tb = b.accepted_at && b.accepted_at.toMillis ? b.accepted_at.toMillis() : 0;
+        return tb - ta;
+      });
+      try { renderCookieAccept(); } catch(e) { console.error('[cookieAccept render]', e); }
+    }, function(err) {
+      console.error('[cookie acceptances listener]', err);
+      if (ordered) {
+        console.warn('[ArCookie] Falling back to unordered query');
+        _cookieAcceptUnsub = null;
+        startListener(false);
+      }
+    });
+  }
+  startListener(true);
 }
 function _escHtml(s){
   return String(s == null ? '' : s)
@@ -1113,10 +1304,15 @@ function _escHtml(s){
     .replace(/"/g,'&quot;');
 }
 function renderCookieAccept(){
+  const badge = document.getElementById('cookie-count-badge');
+  if (badge) {
+    badge.textContent = _FS_COOKIE_ACCEPT.length;
+    badge.style.display = _FS_COOKIE_ACCEPT.length ? 'inline' : 'none';
+  }
   const tbody = document.getElementById('cookieAccept-tbody');
   if (!tbody) return;
   if (!_FS_COOKIE_ACCEPT.length){
-    tbody.innerHTML = `<tr><td colspan="13" style="text-align:center;color:var(--muted);padding:24px;font-size:.78rem">${t('noCookies')}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="17" style="text-align:center;color:var(--muted);padding:24px;font-size:.78rem">${t('noCookies')}</td></tr>`;
     return;
   }
   function fmtTs(ts){
@@ -1135,6 +1331,10 @@ function renderCookieAccept(){
     const ref = c.referrer || '';
     return `<tr>
       <td style="color:var(--muted);font-size:.7rem">${_escHtml(fmtTs(c.accepted_at))}</td>
+      <td style="font-family:monospace;font-size:.7rem;color:var(--gold)">${_escHtml(c.ref || '—')}</td>
+      <td style="font-weight:600">${_escHtml(c.name || '—')}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(c.email || '—')}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(c.phone || '—')}</td>
       <td style="font-family:monospace;font-size:.7rem;color:var(--gold)">${_escHtml(shortStr(c.visitor_id, 14))}</td>
       <td style="font-weight:600">${_escHtml(c.identifier || '—')}</td>
       <td style="font-weight:600">${_escHtml((c.lang || '—')).toUpperCase()}</td>
@@ -1430,6 +1630,7 @@ function showPanel(name, el){
   _currentPanelName = name;
   const key = panelTitleKeys[name] || 'dashboard';
   document.getElementById('adm-page-title').textContent = t(key);
+  if (name === 'cookieAccept') initCookieAcceptListener();
 }
 function toggleMobileSidebar(){
   document.getElementById('adm-sidebar').classList.toggle('mobile-open');
@@ -2395,6 +2596,18 @@ function saveSiteContent(){
   if (window.ArData) ArData.setSiteContent(data);
   showToast('Site content saved','success');
 }
+
+/* GALLERY RESIZE (disabled) — uncomment to activate
+function saveGalleryImgSize(){
+  const data = {
+    galleryHeight: parseInt(document.getElementById('gallery-img-height').value, 10) || 480,
+    galleryWidth:  parseInt(document.getElementById('gallery-img-width').value, 10) || 100,
+    galleryZoom:   parseFloat(document.getElementById('gallery-img-zoom').value) || 1.0,
+  };
+  if (window.ArData) ArData.setSiteContent(data);
+  showToast('Gallery image size saved','success');
+}
+*/
 
 // Close modals on overlay click
 ['office-modal','floor-modal','confirm-modal','fd-modal','land-modal','product-modal','art-modal'].forEach(id=>{

@@ -41,7 +41,7 @@ html { color-scheme: only light !important; }
     .lang-btn:hover:not(.active){color:#8aaa4a;border-color:#8aaa4a;}
     html[dir="rtl"] body{font-family:'Cairo','Montserrat',sans-serif;text-align:right;direction:rtl;}
     .nav-back {
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
       color: var(--olive); border: 1px solid rgba(138,170,74,0.35);
       padding: 7px 16px; border-radius: 2px; transition: var(--t);
     }
@@ -373,3 +373,7 @@ html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo
   nav { padding: 0 3%; }
   .nav-brand { font-size: 0.95rem; letter-spacing: 1px; }
 }
+
+/* DISABLE TEXT SELECTION & cursor detection (per user request) */
+body{user-select:none !important;-webkit-user-select:none !important;-moz-user-select:none !important;-ms-user-select:none !important;-webkit-touch-callout:none !important;}
+input,textarea,select,[contenteditable]{user-select:text !important;-webkit-user-select:text !important;}

@@ -284,3 +284,7 @@ html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo
   nav { padding: 0 3%; }
   .nav-brand { font-size: 0.95rem; letter-spacing: 1px; }
 }
+
+/* DISABLE TEXT SELECTION & cursor detection (per user request) */
+body{user-select:none !important;-webkit-user-select:none !important;-moz-user-select:none !important;-ms-user-select:none !important;-webkit-touch-callout:none !important;}
+input,textarea,select,[contenteditable]{user-select:text !important;-webkit-user-select:text !important;}
