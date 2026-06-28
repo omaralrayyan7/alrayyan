@@ -1,0 +1,1680 @@
+﻿// ── I18N (Admin) ─────────────────────────────────────────────────────────────
+const ADMIN_I18N = {
+  en: {
+    dashboard:'Current Rentals — Occupied Spaces', offices:'Office Types', floors:'Available Units',
+    bookings:'Visit Bookings', businesses:'Alrayyan Businesses', floorDetails:'Floor Sub-Pages',
+    lands:'Alrayyan Lands', products:'Alrayyan Fashion', arts:'Alrayyan Arts', siteContent:'Homepage Content',
+    viewSite:'View Site', signOut:'Sign Out',
+    officeTypes:'Office Types', totalUnits:'Total Available Units',
+    pendingBookings:'Pending Bookings', activeBusinesses:'Active Businesses',
+    quickOverview:'Quick Overview — Office Availability',
+    recentBookings:'Recent Visit Bookings', viewAll:'View All →',
+    currentRentals:'Current Rentals — Occupied Spaces', addRental:'+ Add Rental',
+    colFloor:'Floor', colTenant:'Tenant Name', colSize:'Size (m²)',
+    colParking:'Parking 🚗', colLease:'Lease Expiry', colManager:'Manager Phone',
+    colNotes:'Notes', colActions:'Actions',
+    colOfficeType:'Office Type', colAvailUnits:'Available Units',
+    colPrice:'Price', colStatus:'Status',
+    colRef:'Ref', colName:'Name', colPhone:'Phone',
+    colOffice:'Office', colDate:'Date',
+    edit:'Edit', save:'Save', delete:'Delete', cancel:'Cancel',
+    noBookings:'No bookings yet. Bookings submitted via the website will appear here.',
+    addDemo:'+ Add Demo Booking',
+    bookingsTitle:'Visit Booking Requests',
+    bookingsDesc:'Visit booking requests submitted through the website.',
+    colEmail:'Email', colOfficeFloor:'Office / Floor', colNotified:'Notified',
+    actAccept:'✓ Accept', actReschedule:'⟳ Reschedule', actReject:'✕ Decline', actReset:'↺ Reset', actDel:'Del',
+    statusPending:'pending', statusConfirmed:'confirmed', statusRejected:'rejected', statusRescheduled:'rescheduled',
+    menu:'☰ Menu',
+    cookieAccept:'Cookie Acceptances',
+    cookiesTitle:'Cookie Consent Log',
+    cookiesDesc:'List of visitors who accepted the cookies policy on the public site.',
+    colWhen:'When', colIdentifier:'Identifier / Source', colLang:'Lang', colDevice:'Device', colReferrer:'Referrer', colPath:'Path',
+    noCookies:'No cookie acceptances yet.',
+  },
+  ar: {
+    dashboard:'الإيجارات الحالية — المساحات المشغولة', offices:'أنواع المكاتب', floors:'الوحدات المتاحة',
+    bookings:'حجوزات الزيارة', businesses:'أعمال الريان', floorDetails:'صفحات الطوابق',
+    lands:'أراضي الريان', products:'أزياء الريان', arts:'فنون الريان', siteContent:'محتوى الصفحة الرئيسية',
+    viewSite:'عرض الموقع', signOut:'تسجيل الخروج',
+    officeTypes:'أنواع المكاتب', totalUnits:'إجمالي الوحدات المتاحة',
+    pendingBookings:'الحجوزات المعلقة', activeBusinesses:'الأعمال النشطة',
+    quickOverview:'نظرة عامة سريعة — توفر المكاتب',
+    recentBookings:'آخر حجوزات الزيارة', viewAll:'عرض الكل →',
+    currentRentals:'الإيجارات الحالية — المساحات المشغولة', addRental:'+ إضافة إيجار',
+    colFloor:'الطابق', colTenant:'اسم المستأجر', colSize:'المساحة (م²)',
+    colParking:'مواقف 🚗', colLease:'انتهاء الإيجار', colManager:'هاتف المدير',
+    colNotes:'ملاحظات', colActions:'إجراءات',
+    colOfficeType:'نوع المكتب', colAvailUnits:'الوحدات المتاحة',
+    colPrice:'السعر', colStatus:'الحالة',
+    colRef:'المرجع', colName:'الاسم', colPhone:'الهاتف',
+    colOffice:'المكتب', colDate:'التاريخ',
+    edit:'تعديل', save:'حفظ', delete:'حذف', cancel:'إلغاء',
+    noBookings:'لا توجد حجوزات بعد. ستظهر الحجوزات المقدمة عبر الموقع هنا.',
+    addDemo:'+ إضافة حجز تجريبي',
+    bookingsTitle:'طلبات حجز الزيارة',
+    bookingsDesc:'طلبات حجز الزيارة المقدمة عبر الموقع.',
+    colEmail:'البريد الإلكتروني', colOfficeFloor:'المكتب / الطابق', colNotified:'تم الإبلاغ',
+    actAccept:'✓ قبول', actReschedule:'⟳ إعادة جدولة', actReject:'✕ رفض', actReset:'↺ إعادة', actDel:'حذف',
+    statusPending:'قيد الانتظار', statusConfirmed:'مؤكد', statusRejected:'مرفوض', statusRescheduled:'معاد الجدولة',
+    menu:'☰ القائمة',
+    cookieAccept:'موافقات ملفات تعريف الارتباط',
+    cookiesTitle:'سجل موافقات الكوكيز',
+    cookiesDesc:'قائمة الزوار الذين وافقوا على سياسة ملفات تعريف الارتباط في الموقع العام.',
+    colWhen:'الوقت', colIdentifier:'المعرّف / المصدر', colLang:'اللغة', colDevice:'الجهاز', colReferrer:'المصدر', colPath:'المسار',
+    noCookies:'لا توجد موافقات بعد.',
+  }
+};
+let adminLang = localStorage.getItem('ar_admin_lang') || 'en';
+
+function setAdminLang(lang) {
+  adminLang = lang;
+  localStorage.setItem('ar_admin_lang', lang);
+  const html = document.documentElement;
+  html.lang = lang === 'ar' ? 'ar' : 'en';
+  html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+  const enBtn = document.getElementById('lang-en-btn');
+  const arBtn = document.getElementById('lang-ar-btn');
+  if (enBtn) enBtn.classList.toggle('active', lang === 'en');
+  if (arBtn) arBtn.classList.toggle('active', lang === 'ar');
+  applyAdminI18n();
+  try { renderDashboard(); } catch(e){}
+  try { renderRentals(); } catch(e){}
+  try { renderBookings(); } catch(e){}
+  try { renderCookieAccept(); } catch(e){}
+}
+
+function t(key) {
+  return (ADMIN_I18N[adminLang] && ADMIN_I18N[adminLang][key]) || ADMIN_I18N.en[key] || key;
+}
+
+function applyAdminI18n() {
+  const T = ADMIN_I18N[adminLang];
+  // Refresh top page title for the currently visible panel.
+  try {
+    const key = (typeof panelTitleKeys !== 'undefined' && panelTitleKeys[_currentPanelName]) || 'dashboard';
+    const titleEl = document.getElementById('adm-page-title');
+    if (titleEl) titleEl.textContent = T[key] || titleEl.textContent;
+  } catch(e){}
+  // Sidebar nav items — the array order MUST match the current HTML sidebar
+  // order exactly (this loop rewrites labels by index). Current HTML order:
+  // dashboard, siteContent, offices, availability, bookings, cookieAccept,
+  // [Our Businesses header], products, arts, lands, businesses, viewSite
+  const navItems = document.querySelectorAll('.adm-nav-item');
+  const navKeys = ['dashboard','siteContent','offices','floors','bookings','cookieAccept','products','arts','lands','businesses','viewSite'];
+  navItems.forEach((el, i) => {
+    const ico = el.querySelector('.ico');
+    if (ico && navKeys[i]) el.innerHTML = ico.outerHTML + ' ' + T[navKeys[i]];
+  });
+  // Sign out button
+  const logoutBtn = document.querySelector('.adm-logout-btn');
+  if (logoutBtn) logoutBtn.innerHTML = '<span>⏏</span> ' + T.signOut;
+  // Elements with explicit data-i18n-key
+  document.querySelectorAll('[data-i18n-key]').forEach(el => {
+    const k = el.getAttribute('data-i18n-key');
+    if (T[k]) el.textContent = T[k];
+  });
+}
+
+// ── AUTH (Firebase Authentication) ────────────────────────────────────────────
+// Uses Firebase Auth Email/Password — credentials verified server-side.
+// Admin account: alrayyantower@gmail.com (set in Firebase Console → Authentication).
+
+function _showAdmin(user){
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('admin-screen').classList.add('show');
+  const badge = document.getElementById('adm-user-badge');
+  if (badge) badge.textContent = (user && user.email) ? user.email.split('@')[0] : 'admin';
+  initAdmin();
+}
+function _showLogin(errMsg){
+  document.getElementById('admin-screen').classList.remove('show');
+  document.getElementById('login-screen').classList.remove('hidden');
+  const emailEl = document.getElementById('login-email');
+  if (emailEl) setTimeout(()=>emailEl.focus(), 50);
+  const errEl = document.getElementById('login-error');
+  if (errMsg && errEl){ errEl.textContent = errMsg; errEl.classList.add('show'); }
+}
+
+async function doLogin(){
+  const email = (document.getElementById('login-email').value || '').trim();
+  const pass  = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-error');
+  if (errEl) errEl.classList.remove('show');
+  if (!email || !pass) return;
+  const auth = window.auth || (typeof firebase !== 'undefined' && firebase.auth ? firebase.auth() : null);
+  if (!auth){ _showLogin('Auth service unavailable. Refresh and try again.'); return; }
+  try {
+    const cred = await auth.signInWithEmailAndPassword(email, pass);
+    _showAdmin(cred.user);
+  } catch(err){
+    document.getElementById('login-pass').value = '';
+    const msg = (err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential')
+      ? 'Invalid credentials. Please try again.'
+      : (err.message || 'Sign-in failed.');
+    if (errEl){ errEl.textContent = msg; errEl.classList.add('show'); }
+  }
+}
+
+async function doLogout(){
+  const auth = window.auth || (typeof firebase !== 'undefined' && firebase.auth ? firebase.auth() : null);
+  if (auth) await auth.signOut().catch(()=>{});
+  document.getElementById('login-pass').value = '';
+  const emailEl = document.getElementById('login-email'); if(emailEl) emailEl.value='';
+  const errEl = document.getElementById('login-error'); if(errEl) errEl.classList.remove('show');
+  _showLogin();
+}
+
+// On page load — let Firebase Auth state decide visibility (handles tab persistence).
+document.addEventListener('DOMContentLoaded', ()=>{
+  // Show login by default while auth resolves.
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('admin-screen').classList.remove('show');
+  // Wait for Firebase to load, then attach auth observer.
+  const attachObserver = () => {
+    const auth = window.auth || (typeof firebase !== 'undefined' && firebase.auth ? firebase.auth() : null);
+    if (!auth){ setTimeout(attachObserver, 150); return; }
+    auth.onAuthStateChanged(user => {
+      if (user){ _showAdmin(user); } else { _showLogin(); }
+    });
+  };
+  attachObserver();
+});
+
+// ── DATA (Firestore via admin_state/{key} docs) ──────────────────────────────
+// Admin-side blobs live at admin_state/{offices|floors|bookings|biz|
+// availability|pricing|floor_details|lands|products|site_content|show_pricing}.
+// Each doc is { value: <blob>, updated_at }. Cached into ADMIN_FS on init so
+// subsequent renders can read synchronously.
+const ADMIN_FS = {};
+async function adminFsLoadAll(){
+  if (!window.db) return;
+  const keys = ['offices','floors','biz','availability','pricing','floor_details','lands','products','site_content','show_pricing','rentals'];
+  await Promise.all(keys.map(async k => {
+    try {
+      const snap = await window.db.doc('admin_state/' + k).get();
+      if (snap.exists){
+        const d = snap.data();
+        ADMIN_FS[k] = (d && 'value' in d) ? d.value : d;
+      }
+    } catch(e){ console.error('[admin load]', k, e); }
+  }));
+}
+function adminFsSave(key, value){
+  ADMIN_FS[key] = value;
+  if (!window.db) return Promise.resolve();
+  return window.db.doc('admin_state/' + key)
+    .set({ value, updated_at: firebase.firestore.FieldValue.serverTimestamp() })
+    .catch(err => {
+      if (err && err.code === 'permission-denied') return;
+      console.warn('[adminFsSave] write failed for key:', key, err);
+    });
+}
+
+function loadOffices(){
+  // Canonical office types — names MUST match Office Rental Solutions on index.html
+  // and the offices[] array in office-detail.html. Available unit counts are
+  // derived live from calculateAvailableUnits() rather than stored.
+  const def = [
+    {id:1,name:'Full Floor',                 price:'Custom Pricing',        status:'available',desc:'Entire floor for one tenant. Open layout, maximum space, fully customisable. Ideal for corporate headquarters.',                      size:'400 m²'},
+    {id:2,name:'Small Spaces',               price:'From JOD 4,000 / month',status:'available',desc:'Pre-divided units within a shared floor. Choose 80 m² or 160 m² units, fitted with private entrances and shared corridor.',    size:'80 – 160 m²'},
+    {id:3,name:'Open Space',                 price:'Custom Pricing',        status:'available',desc:'Large undivided open-plan space. Perfect for showrooms, event venues, or custom buildouts. Ground & basement levels.',         size:'1,000 m²'},
+    {id:4,name:'9th Floor – Outdoor Terrace',price:'Custom Pricing',        status:'available',desc:'Rooftop outdoor terrace with panoramic city views. Ideal for restaurants, lounges, event spaces, or open-air offices.',       size:'240 m²'},
+    {id:5,name:'9th Floor – Indoor Space',   price:'Custom Pricing',        status:'available',desc:'Premium penthouse-level indoor space with exclusive access. Perfect for executive offices, private studios, or VIP lounges.', size:'160 m²'},
+    {id:6,name:'Small Shops',                price:'Custom Pricing',        status:'available',desc:'Compact 3×3 m ground-floor retail units with street-level access. Ideal for cafés, boutiques, or service counters.',          size:'9 m² × 3'},
+  ];
+  // Attach live availability counts so every consumer of loadOffices() sees
+  // the same number that's shown in the dashboard / public site.
+  const base = ADMIN_FS.offices || def;
+  return base.map(o => ({ ...o, avail: calculateAvailableUnits(o.name) }));
+}
+function saveOffices(data){ adminFsSave('offices', data); }
+
+function loadFloors(){
+  const def = [
+    {id:1, name:'B1 Floor',           type:'Exception',   size:'1,000 m²', price:'Custom',       status:'available'},
+    {id:2, name:'3rd Floor – 80 m²',  type:'Unit',        size:'80 m²',    price:'JOD 4,000/mo', status:'available'},
+    {id:3, name:'3rd Floor – 160 m²', type:'Unit',        size:'160 m²',   price:'JOD 7,500/mo', status:'full'},
+    {id:4, name:'3rd Floor – 400 m²', type:'Full Floor',  size:'400 m²',   price:'Custom',       status:'full'},
+    {id:5, name:'4th Floor – 80 m²',  type:'Unit',        size:'80 m²',    price:'JOD 4,200/mo', status:'full'},
+    {id:6, name:'4th Floor – 160 m²', type:'Unit',        size:'160 m²',   price:'JOD 7,800/mo', status:'full'},
+    {id:7, name:'4th Floor – 400 m²', type:'Full Floor',  size:'400 m²',   price:'Custom',       status:'available'},
+    {id:8, name:'5th Floor – 80 m²',  type:'Unit',        size:'80 m²',    price:'JOD 4,400/mo', status:'available'},
+    {id:9, name:'5th Floor – 160 m²', type:'Unit',        size:'160 m²',   price:'JOD 8,200/mo', status:'full'},
+    {id:10,name:'5th Floor – 400 m²', type:'Full Floor',  size:'400 m²',   price:'Custom',       status:'full'},
+    {id:11,name:'6th Floor – 80 m²',  type:'Unit',        size:'80 m²',    price:'JOD 4,600/mo', status:'full'},
+    {id:12,name:'6th Floor – 160 m²', type:'Unit',        size:'160 m²',   price:'JOD 8,600/mo', status:'full'},
+    {id:13,name:'6th Floor – 400 m²', type:'Full Floor',  size:'400 m²',   price:'Custom',       status:'available'},
+    {id:14,name:'7th Floor – 80 m²',  type:'Unit',        size:'80 m²',    price:'JOD 4,800/mo', status:'full'},
+    {id:15,name:'7th Floor – 160 m²', type:'Unit',        size:'160 m²',   price:'JOD 9,000/mo', status:'full'},
+    {id:16,name:'7th Floor – 400 m²', type:'Full Floor',  size:'400 m²',   price:'Custom',       status:'available'},
+    {id:17,name:'9th Floor Outdoor',  type:'Exception',   size:'240 m²',   price:'Custom',       status:'available'},
+    {id:18,name:'9th Floor Indoor',   type:'Exception',   size:'160 m²',   price:'Custom',       status:'available'},
+  ];
+  return ADMIN_FS.floors || def;
+}
+function saveFloors(data){ adminFsSave('floors', data); }
+
+// Bookings live in Firestore collection `bookings` (see js/ar-data.js).
+// ── AUDIT LOG ─────────────────────────────────────────────────────────────────
+async function writeAudit(action, details){
+  if (!window.db) return;
+  try {
+    await window.db.collection('audit_log').add({
+      action,
+      details: details || {},
+      at: firebase.firestore.FieldValue.serverTimestamp(),
+      by: (window.auth && window.auth.currentUser && window.auth.currentUser.email) || 'admin'
+    });
+  } catch(e){ console.warn('[audit] write failed:', e && e.code); }
+}
+
+// ── BOOKINGS (Firestore-backed via initBookingsListener) ─────────────────────
+// _FS_BOOKINGS is populated by the onSnapshot listener below.
+let _FS_BOOKINGS = [];
+let _bookingsUnsub = null;
+let _bookingsPageCursor = null;
+let _bookingsAllLoaded = false;
+const BOOKINGS_PAGE_SIZE = 50;
+
+function initBookingsListener(){
+  if (!window.db) { console.warn('[bookings listener] window.db is not ready yet'); return; }
+  if (_bookingsUnsub) return;
+  console.info('[bookings listener] subscribing (limit ' + BOOKINGS_PAGE_SIZE + ')...');
+  _bookingsUnsub = window.db.collection('bookings')
+    .orderBy('created_at', 'desc')
+    .limit(BOOKINGS_PAGE_SIZE)
+    .onSnapshot(snap => {
+      _FS_BOOKINGS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      _bookingsPageCursor = snap.docs[snap.docs.length - 1] || null;
+      _bookingsAllLoaded = snap.docs.length < BOOKINGS_PAGE_SIZE;
+      console.info('[bookings listener] received', _FS_BOOKINGS.length, 'booking(s)');
+      try { renderBookings(); } catch(e){ console.warn('[bookings listener] renderBookings failed', e); }
+      try { renderDashboard(); } catch(e){ console.warn('[bookings listener] renderDashboard failed', e); }
+    }, err => {
+      console.error('[bookings listener] onSnapshot failed — code:', err && err.code, 'message:', err && err.message, err);
+      if (err && err.code === 'permission-denied'){
+        console.error('[bookings listener] Firestore rules are blocking reads on `bookings`.');
+      }
+    });
+}
+
+async function loadMoreBookings(){
+  if (!window.db || !_bookingsPageCursor || _bookingsAllLoaded) return;
+  try {
+    const snap = await window.db.collection('bookings')
+      .orderBy('created_at', 'desc')
+      .startAfter(_bookingsPageCursor)
+      .limit(BOOKINGS_PAGE_SIZE)
+      .get();
+    const more = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    _FS_BOOKINGS = _FS_BOOKINGS.concat(more);
+    _bookingsPageCursor = snap.docs[snap.docs.length - 1] || _bookingsPageCursor;
+    _bookingsAllLoaded = snap.docs.length < BOOKINGS_PAGE_SIZE;
+    renderBookings();
+  } catch(e){ console.error('[loadMoreBookings]', e); showToast('Failed to load more', 'error'); }
+}
+
+// Live cookie-acceptance log (populated when visitors click Accept on the
+// public site). Subscribes to Firestore so admins see new entries in real time.
+let _FS_COOKIE_ACCEPT = [];
+let _cookieAcceptUnsub = null;
+function initCookieAcceptListener() {
+  if (!window.db) { setTimeout(initCookieAcceptListener, 800); return; }
+  if (_cookieAcceptUnsub) return;
+  // Try ordered query first; fall back to unordered if index is missing
+  function startListener(ordered) {
+    let q = window.db.collection('cookie_acceptances').limit(300);
+    if (ordered) q = q.orderBy('accepted_at', 'desc');
+    _cookieAcceptUnsub = q.onSnapshot(function(snap) {
+      _FS_COOKIE_ACCEPT = snap.docs.map(function(d){ return Object.assign({ id: d.id }, d.data()); });
+      // Sort client-side in case index is missing
+      _FS_COOKIE_ACCEPT.sort(function(a, b) {
+        const ta = a.accepted_at && a.accepted_at.toMillis ? a.accepted_at.toMillis() : 0;
+        const tb = b.accepted_at && b.accepted_at.toMillis ? b.accepted_at.toMillis() : 0;
+        return tb - ta;
+      });
+      try { renderCookieAccept(); } catch(e) { console.error('[cookieAccept render]', e); }
+    }, function(err) {
+      console.error('[cookie acceptances listener]', err);
+      if (ordered) {
+        console.warn('[ArCookie] Falling back to unordered query');
+        _cookieAcceptUnsub = null;
+        startListener(false);
+      }
+    });
+  }
+  startListener(true);
+}
+function _escHtml(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+function renderCookieAccept(){
+  const badge = document.getElementById('cookie-count-badge');
+  if (badge) {
+    badge.textContent = _FS_COOKIE_ACCEPT.length;
+    badge.style.display = _FS_COOKIE_ACCEPT.length ? 'inline' : 'none';
+  }
+  const tbody = document.getElementById('cookieAccept-tbody');
+  if (!tbody) return;
+  if (!_FS_COOKIE_ACCEPT.length){
+    tbody.innerHTML = `<tr><td colspan="17" style="text-align:center;color:var(--muted);padding:24px;font-size:.78rem">${t('noCookies')}</td></tr>`;
+    return;
+  }
+  function fmtTs(ts){
+    if (!ts || !ts.toDate) return '—';
+    const d = ts.toDate();
+    return d.toLocaleDateString() + ' ' +
+      d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  }
+  function fmtFirst(v){
+    if (!v) return '—';
+    try { const d = new Date(v); return isNaN(d) ? String(v) : d.toLocaleDateString(); }
+    catch(e){ return String(v); }
+  }
+  function shortStr(s,n){ s = s || ''; return s.length > n ? s.slice(0,n) + '…' : (s || '—'); }
+  tbody.innerHTML = _FS_COOKIE_ACCEPT.map(c => {
+    const ref = c.referrer || '';
+    return `<tr>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(fmtTs(c.accepted_at))}</td>
+      <td style="font-family:monospace;font-size:.7rem;color:var(--gold)">${_escHtml(c.ref || '—')}</td>
+      <td style="font-weight:600">${_escHtml(c.name || '—')}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(c.email || '—')}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(c.phone || '—')}</td>
+      <td style="font-family:monospace;font-size:.7rem;color:var(--gold)">${_escHtml(shortStr(c.visitor_id, 14))}</td>
+      <td style="font-weight:600">${_escHtml(c.identifier || '—')}</td>
+      <td style="font-weight:600">${_escHtml((c.lang || '—')).toUpperCase()}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(c.device || '—')}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(c.os || '—')}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(c.browser || '—')}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(c.language || '—')}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(shortStr(c.timezone, 22))}</td>
+      <td style="text-align:center;font-weight:600">${_escHtml(String(c.visit_count != null ? c.visit_count : 1))}</td>
+      <td style="color:var(--muted);font-size:.7rem">${_escHtml(fmtFirst(c.first_visit))}</td>
+      <td style="color:var(--muted);font-size:.65rem" title="${_escHtml(ref)}">${_escHtml(shortStr(ref, 35))}</td>
+      <td style="color:var(--muted);font-size:.65rem">${_escHtml(c.path || '—')}</td>
+    </tr>`;
+  }).join('');
+}
+async function updateBookingStatusFS(id, status){
+  const b = (_FS_BOOKINGS || []).find(x => String(x.id) === String(id)) || {};
+  const who = b.visitor_name || b.email || b.phone || 'this visitor';
+  if (status === 'confirmed'){
+    if (!confirm(`Accept this visit?\n\nA confirmation email will be sent to:\n${b.email || '(no email on record)'}\nVisitor: ${who}`)) return;
+  }
+  try {
+    await window.db.collection('bookings').doc(String(id)).update({
+      status,
+      status_changed_at: firebase.firestore.FieldValue.serverTimestamp(),
+      status_changed_by: 'admin'
+    });
+    writeAudit('booking_' + status, { booking_id: id, visitor: who });
+    showToast('Booking ' + status + ' — email queued', 'success');
+  } catch(e){ console.error('[updateBookingStatusFS]', e); showToast('Update failed', 'error'); }
+}
+
+// Reschedule: open the modal so admin can pick a new date + time with a real picker.
+function rescheduleBookingFS(id){
+  const b = (_FS_BOOKINGS || []).find(x => String(x.id) === String(id)) || {};
+  const who = b.visitor_name || b.email || b.phone || 'this visitor';
+  const curDate = b.preferred_date || '';
+  const curTime = b.preferred_time || '';
+  document.getElementById('rs-id').value = String(id);
+  document.getElementById('rs-who').textContent = who + (b.company ? ' — ' + b.company : '');
+  document.getElementById('rs-email').textContent = b.email ? '✉ ' + b.email : '(no email on record — customer will not receive notification)';
+  document.getElementById('rs-original').textContent = (curDate || '—') + (curTime ? ' at ' + curTime : '');
+  // Pre-fill new date/time with current values + smart defaults: if no time, default 10:00.
+  document.getElementById('rs-date').value = curDate || '';
+  document.getElementById('rs-time').value = /^\d\d:\d\d$/.test(curTime) ? curTime : '10:00';
+  document.getElementById('rs-note').value = '';
+  document.getElementById('reschedule-modal').classList.add('open');
+}
+function closeRescheduleModal(){ document.getElementById('reschedule-modal').classList.remove('open'); }
+async function confirmReschedule(){
+  const id   = document.getElementById('rs-id').value;
+  const date = document.getElementById('rs-date').value;
+  const time = document.getElementById('rs-time').value;
+  const note = document.getElementById('rs-note').value.trim();
+  if (!date){ showToast('Pick a new date first', 'error'); return; }
+  if (!time){ showToast('Pick a new time first', 'error'); return; }
+  try {
+    await window.db.collection('bookings').doc(String(id)).update({
+      status: 'rescheduled',
+      proposed_date: date,
+      proposed_time: time,
+      reschedule_note: note,
+      status_changed_at: firebase.firestore.FieldValue.serverTimestamp(),
+      status_changed_by: 'admin'
+    });
+    writeAudit('booking_rescheduled', { booking_id: id, new_date: date, new_time: time });
+    closeRescheduleModal();
+    showToast('Reschedule sent — email queued', 'success');
+  } catch(e){ console.error('[confirmReschedule]', e); showToast('Update failed', 'error'); }
+}
+async function deleteBookingFS(id){
+  if (!window.db) return;
+  await window.db.collection('bookings').doc(String(id)).delete();
+  writeAudit('booking_deleted', { booking_id: id });
+}
+
+function loadBiz(){
+  const def=[
+    {id:1,name:'Alrayyan Fashion',url:'fashion.html',desc:'Curated luxury fashion — online store and physical boutique.',status:'active'},
+    {id:2,name:'Alrayyan Arts',   url:'arts.html',   desc:'Gallery and creative studio celebrating Arab and global contemporary art.',status:'active'},
+    {id:3,name:'Alrayyan Lands',  url:'land.html',   desc:'Premium land plots across Amman\'s most sought-after districts.',status:'active'},
+  ];
+  // Status resolution order (most-trusted first):
+  //  1. localStorage `ar_biz_state` — the instant cross-tab signal that ALWAYS
+  //     works (no Firestore rule required), same mechanism as floor chips.
+  //  2. site_content/main.biz_status_<id> — cross-device channel via ArData.
+  //  3. admin_state/biz blob.  4. hard-coded default.
+  let lsMap = null;
+  try {
+    const ls = localStorage.getItem('ar_biz_state');
+    if (ls){ const p = JSON.parse(ls); if (p && typeof p === 'object') lsMap = p; }
+  } catch(e){}
+  const sc = (window.ArData && ArData.get.siteContent()) || ADMIN_FS.site_content || {};
+  const saved = Array.isArray(ADMIN_FS.biz) ? ADMIN_FS.biz : null;
+  return def.map(d => {
+    const fromSaved = saved && saved.find(b => b.id === d.id);
+    const row = fromSaved ? { ...d, ...fromSaved } : { ...d };
+    const scStatus = sc['biz_status_' + d.id];
+    if (scStatus === 'active' || scStatus === 'inactive') row.status = scStatus;
+    const lsStatus = lsMap && lsMap['biz_status_' + d.id];
+    if (lsStatus === 'active' || lsStatus === 'inactive') row.status = lsStatus;
+    return row;
+  });
+}
+function bizStatusMap(data){
+  const m = {};
+  (data || []).forEach(b => { m['biz_status_' + b.id] = b.status; });
+  return m;
+}
+function saveBiz(data){
+  const statusMap = bizStatusMap(data);
+  // 1) localStorage — instant same-browser signal.
+  try { localStorage.setItem('ar_biz_state', JSON.stringify(statusMap)); } catch(e){}
+  // 2) Admin blob persistence.
+  adminFsSave('biz', data);
+  // 3) Cross-device publish — single direct Firestore write to settings/biz_status.
+  //    The public site subscribes to this document with onSnapshot, so every
+  //    device updates the moment this write lands. No ArData dependency.
+  if (window.db){
+    return window.db.doc('settings/biz_status').set(statusMap)
+      .catch(function(err){ console.warn('[saveBiz] Firestore write failed:', err && err.code, err); });
+  }
+  return Promise.resolve();
+}
+
+// ── AVAILABILITY (per-floor / per-size toggles) ─────────────────────────────
+// Canonical list of floor slots. Keys are used in Firestore (admin_state/availability
+// and settings/availability) and by the public site to resolve each unit-chip.
+const AVAIL_FLOORS = [
+  { id:'b1',        label:'B1 Floor',   sub:'Underground · Exception', sizes:[{k:'1000', label:'1,000 m² Full'}] },
+  { id:'g',         label:'G Floor',    sub:'Indoor Shops + Outdoor Shop',
+    sizes:[
+      {k:'shop1',    label:'Indoor Shop 1 (25 m²)'},
+      {k:'shop2',    label:'Indoor Shop 2 (25 m²)'},
+      {k:'shop3',    label:'Indoor Shop 3 (25 m²)'},
+      {k:'pharmacy', label:'Outdoor Shop (6 doors)'}
+    ] },
+  { id:'1',         label:'1st Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'2',         label:'2nd Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'3',         label:'3rd Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'4',         label:'4th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'5',         label:'5th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'6',         label:'6th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'7',         label:'7th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'8',         label:'8th Floor',  sub:'Office',  sizes:[{k:'80', label:'80 m²'},{k:'100', label:'100 m²'},{k:'160', label:'160 m²'},{k:'240', label:'240 m²'},{k:'400', label:'400 m² Full Floor'}] },
+  { id:'9-outdoor', label:'9th Floor',  sub:'Outdoor Terrace · Exception', sizes:[{k:'240', label:'240 m² Outdoor'}] },
+  { id:'9-indoor',  label:'9th Floor',  sub:'Indoor Space · Exception',    sizes:[{k:'160', label:'160 m² Indoor'}] },
+];
+const AVAIL_DEFAULTS = {
+  'b1_1000':true,
+  'g_shop1':true,'g_shop2':true,'g_shop3':true,'g_pharmacy':true,
+  '1_80':false,'1_100':false,'1_160':false,'1_240':false,'1_400':false,
+  '2_80':false,'2_100':false,'2_160':false,'2_240':false,'2_400':false,
+  '3_80':true, '3_100':false,'3_160':false,'3_240':false,'3_400':false,
+  '4_80':false,'4_100':false,'4_160':false,'4_240':false,'4_400':true,
+  '5_80':true, '5_100':false,'5_160':false,'5_240':false,'5_400':false,
+  '6_80':false,'6_100':false,'6_160':false,'6_240':false,'6_400':true,
+  '7_80':false,'7_100':false,'7_160':false,'7_240':false,'7_400':true,
+  '8_80':false,'8_100':false,'8_160':false,'8_240':false,'8_400':false,
+  '9-outdoor_240':true,
+  '9-indoor_160':true
+};
+function loadAvail(){
+  const raw = ADMIN_FS.availability;
+  return raw ? { ...AVAIL_DEFAULTS, ...raw } : { ...AVAIL_DEFAULTS };
+}
+function saveAvailRaw(state){
+  ADMIN_FS.availability = state;
+  adminFsSave('availability', state);
+  // Also publish to settings/availability so public site reacts in real time.
+  if (window.ArData) ArData.setAvailability(state);
+  // Cross-tab instant signal: same-browser public tabs flip chips immediately.
+  try { localStorage.setItem('ar_avail_state', JSON.stringify(state)); } catch(e){}
+}
+
+function renderAvailability(){
+  const grid = document.getElementById('availability-grid');
+  if (!grid) return;
+  const state = loadAvail();
+  grid.innerHTML = AVAIL_FLOORS.map(fl => {
+    const toggles = fl.sizes.map(sz => {
+      const key = fl.id + '_' + sz.k;
+      const on = !!state[key];
+      return `
+        <label class="avail-toggle-row" data-key="${key}">
+          <span class="avail-toggle-lbl">${sz.label}</span>
+          <span class="avail-toggle-state ${on?'on':'off'}">${on?'✓ Available':'✗ Not available'}</span>
+          <span class="avail-switch ${on?'on':''}" onclick="availFlip('${key}', this)"><span class="avail-switch-knob"></span></span>
+        </label>`;
+    }).join('');
+    return `
+      <div class="avail-admin-card">
+        <div class="avail-admin-head">
+          <div class="avail-admin-name">${fl.label}</div>
+          <div class="avail-admin-sub">${fl.sub}</div>
+        </div>
+        <div class="avail-admin-body">${toggles}</div>
+      </div>`;
+  }).join('');
+}
+function availFlip(key, el){
+  const state = loadAvail();
+  state[key] = !state[key];
+  saveAvailRaw(state);
+  // update UI for that row
+  const row = el.closest('.avail-toggle-row');
+  if (row){
+    const lbl = row.querySelector('.avail-toggle-state');
+    const sw  = row.querySelector('.avail-switch');
+    if (state[key]){ lbl.className='avail-toggle-state on'; lbl.textContent='✓ Available'; sw.classList.add('on'); }
+    else           { lbl.className='avail-toggle-state off'; lbl.textContent='✗ Not available'; sw.classList.remove('on'); }
+  }
+  // Keep dashboard overview + offices table counts in sync with live toggles
+  try { renderDashboard(); } catch(e){}
+  try { renderOffices(); } catch(e){}
+}
+function availSave(){
+  if (window.ArData) ArData.setAvailability(loadAvail());
+  writeAudit('availability_published', {});
+  showToast('Availability saved. Public site updated.');
+}
+function availReset(){
+  if (!confirm('Reset all availability toggles to defaults?')) return;
+  saveAvailRaw({...AVAIL_DEFAULTS});
+  renderAvailability();
+  try { renderDashboard(); } catch(e){}
+  showToast('Availability reset to defaults.');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+async function initAdmin(){
+  await adminFsLoadAll();
+  renderAvailability();   // must run before renderDashboard so counts use live state
+  renderDashboard();
+  renderOffices();
+  renderFloors();
+  renderBookings();       // initial empty render; live listener repaints on updates
+  initBookingsListener();
+  initCookieAcceptListener();
+  renderBiz();
+  // Re-render the Businesses table whenever the live published state arrives
+  // or changes. This is what makes a disabled/enabled business survive a
+  // refresh — the table now mirrors site_content (the channel the public
+  // site reads) instead of re-publishing stale defaults on every load.
+  if (window.ArData){
+    ArData.subscribe('site_content', () => { try { renderBiz(); } catch(e){} });
+  }
+  renderFloorDetails();
+  renderLands();
+  renderProducts();
+  renderArts();
+  renderSiteContent();
+  renderPricing();
+  renderRentals();
+  setAdminLang(adminLang);
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+// Maps panel name → ADMIN_I18N key so the top page-title translates.
+const panelTitleKeys = {dashboard:'dashboard',availability:'floors',offices:'offices',bookings:'bookings',businesses:'businesses',lands:'lands',products:'products',arts:'arts',siteContent:'siteContent',cookieAccept:'cookieAccept'};
+let _currentPanelName = 'dashboard';
+function showPanel(name, el){
+  document.querySelectorAll('.adm-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.adm-nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  el.classList.add('active');
+  _currentPanelName = name;
+  const key = panelTitleKeys[name] || 'dashboard';
+  document.getElementById('adm-page-title').textContent = t(key);
+  if (name === 'cookieAccept') initCookieAcceptListener();
+}
+function toggleMobileSidebar(){
+  document.getElementById('adm-sidebar').classList.toggle('mobile-open');
+}
+// Close sidebar on outside click
+document.addEventListener('click', function(e) {
+  const sidebar = document.getElementById('adm-sidebar');
+  if (!sidebar || !sidebar.classList.contains('mobile-open')) return;
+  // Don't close if clicking inside the sidebar or on the toggle button
+  if (sidebar.contains(e.target) || e.target.closest('[onclick*="toggleMobileSidebar"]')) return;
+  sidebar.classList.remove('mobile-open');
+});
+
+// ── OFFICE RENTAL SOLUTIONS (canonical types shown on public site) ────────────
+const OFFICE_SOLUTION_TYPES = [
+  { key:'Full Floor',                 defaultPrice:'Custom Pricing' },
+  { key:'Small Spaces',               defaultPrice:'From JOD 4,000 / mo' },
+  { key:'Open Space',                 defaultPrice:'From JOD 7,500 / mo' },
+  { key:'9th Floor – Outdoor Terrace',defaultPrice:'Custom Pricing' },
+  { key:'9th Floor – Indoor Space',   defaultPrice:'Custom Pricing' },
+  { key:'Small Shops',                defaultPrice:'Contact for pricing' },
+];
+
+function loadPricing(){
+  const def = {};
+  OFFICE_SOLUTION_TYPES.forEach(t => def[t.key] = { price: t.defaultPrice, show: true });
+  const raw = ADMIN_FS.pricing;
+  return raw ? { ...def, ...raw } : def;
+}
+function savePricingState(obj){
+  ADMIN_FS.pricing = obj;
+  adminFsSave('pricing', obj);
+  if (window.ArData) ArData.setPricing(obj);
+}
+
+// Count available units by solution type from live toggle state.
+// Mapping mirrors Office Rental Solutions on the public site:
+//   B1 (1,000 m²)      → Open Space
+//   _400 (Full Floors) → Full Floor
+//   _80, _160          → Small Spaces
+//   g_shop*            → Small Shops
+//   9-outdoor_240      → 9th Floor – Outdoor Terrace
+//   9-indoor_160       → 9th Floor – Indoor Space
+function countAvailByType(){
+  const state = (typeof loadAvail === 'function') ? loadAvail() : {};
+  const counts = {
+    'Full Floor': 0, 'Small Spaces': 0, 'Open Space': 0,
+    '9th Floor – Outdoor Terrace': 0, '9th Floor – Indoor Space': 0, 'Small Shops': 0
+  };
+  Object.keys(state).forEach(key => {
+    if (!state[key]) return;
+    if (key === 'b1_1000')            counts['Open Space']++;
+    else if (key === '9-outdoor_240') counts['9th Floor – Outdoor Terrace']++;
+    else if (key === '9-indoor_160')  counts['9th Floor – Indoor Space']++;
+    else if (key === 'g_pharmacy')    counts['Small Shops']++;
+    else if (/^g_shop/.test(key))     counts['Small Shops']++;
+    else if (/_100$/.test(key))       counts['Small Spaces']++;
+    else if (/_240$/.test(key))       counts['Small Spaces']++;
+    else if (/_80$/.test(key))        counts['Small Spaces']++;
+    else if (/_160$/.test(key))       counts['Small Spaces']++;
+    else if (/_400$/.test(key))       counts['Full Floor']++;
+  });
+  return counts;
+}
+
+// Public helper — returns the number of available units for a given
+// Office Rental Solutions type name. Reads from the live availability toggles.
+function calculateAvailableUnits(type){
+  const counts = countAvailByType();
+  return counts[type] || 0;
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function loadBookings(){ return Array.isArray(_FS_BOOKINGS) ? _FS_BOOKINGS.slice() : []; }
+
+function goToBookings(){
+  const target = Array.from(document.querySelectorAll('.adm-nav-item'))
+    .find(el => /showPanel\('bookings'/.test(el.getAttribute('onclick') || ''))
+    || document.querySelector('.adm-nav-item:nth-child(4)');
+  showPanel('bookings', target);
+}
+
+function renderDashboardBookings(){
+  const tbl = document.getElementById('dash-bookings-table');
+  if (!tbl) return;
+  const bookings = loadBookings()
+    .slice()
+    .sort((a,b) => {
+      const ai = String(a.id||'');
+      const bi = String(b.id||'');
+      return bi.localeCompare(ai);
+    })
+    .slice(0, 5);
+  if (!bookings.length){
+    tbl.innerHTML = `<tbody><tr><td style="text-align:center;color:var(--muted);font-size:.8rem;padding:24px">${t('noBookings')}</td></tr></tbody>`;
+    return;
+  }
+  tbl.innerHTML = `<thead><tr>
+      <th>${t('colRef')}</th><th>${t('colName')}</th><th>${t('colPhone')}</th>
+      <th>${t('colOffice')}</th><th>${t('colDate')}</th><th>${t('colStatus')}</th>
+    </tr></thead><tbody>${bookings.map(b=>{
+      const name = b.visitor_name || b.name || '—';
+      const office = b.floor_preference || b.office || '—';
+      const date = b.preferred_date || b.date || '—';
+      return `<tr>
+        <td style="color:var(--gold);font-size:.65rem">${b.ref||'—'}</td>
+        <td style="font-weight:600">${name}</td>
+        <td style="color:var(--muted)">${b.phone||'—'}</td>
+        <td style="color:var(--muted);font-size:.7rem">${office}</td>
+        <td style="color:var(--muted)">${date}</td>
+        <td><span class="booking-status-badge ${b.status||'pending'}">${b.status||'pending'}</span></td>
+      </tr>`;
+    }).join('')}</tbody>`;
+}
+
+// ── RENTALS (localStorage-backed) ────────────────────────────────────────────
+const RENTAL_DEFAULTS = [
+  { id:1, floor:'1st Floor', tenant:'Link Solution',        size:400, parking:4, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:2, floor:'2nd Floor', tenant:'Canon',                size:400, parking:4, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:3, floor:'3rd Floor', tenant:'Tower Administration', size:80,  parking:1, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:4, floor:'3rd Floor', tenant:'Hybrid Solution',      size:120, parking:2, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:5, floor:'3rd Floor', tenant:'Abu Own',              size:80,  parking:1, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:6, floor:'3rd Floor', tenant:'Usta Lahem',           size:60,  parking:1, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:7, floor:'5th Floor', tenant:'Al Awael',             size:320, parking:4, leaseExpiry:'', managerPhone:'', notes:'' },
+  { id:8, floor:'8th Floor', tenant:'Noor Alkhaleej',       size:400, parking:4, leaseExpiry:'', managerPhone:'', notes:'' },
+];
+function loadRentals(){
+  const raw = ADMIN_FS.rentals;
+  if (Array.isArray(raw) && raw.length > 0) return raw;
+  const data = RENTAL_DEFAULTS.slice();
+  saveRentals(data);
+  return data;
+}
+function saveRentals(data){
+  ADMIN_FS.rentals = data;
+  adminFsSave('rentals', data);
+}
+
+let _editingRentalId = null;
+function renderRentals(){
+  const tbl = document.getElementById('rentals-table');
+  if (!tbl) return;
+  const rentals = loadRentals();
+  const head = `<thead><tr>
+    <th>${t('colFloor')}</th><th>${t('colTenant')}</th><th>${t('colSize')}</th>
+    <th>${t('colParking')}</th><th>${t('colLease')}</th><th>${t('colManager')}</th>
+    <th>${t('colNotes')}</th><th>${t('colActions')}</th>
+  </tr></thead>`;
+  const body = rentals.map(r => {
+    const parking = (r.parking !== undefined && r.parking !== null && r.parking !== '')
+      ? Number(r.parking)
+      : Math.ceil((Number(r.size)||0) / 100);
+    if (_editingRentalId === r.id){
+      return `<tr data-id="${r.id}">
+        <td><input class="adm-form-control rental-edit" data-f="floor" value="${(r.floor||'').replace(/"/g,'&quot;')}"/></td>
+        <td><input class="adm-form-control rental-edit" data-f="tenant" value="${(r.tenant||'').replace(/"/g,'&quot;')}"/></td>
+        <td><input class="adm-form-control rental-edit" data-f="size" type="number" min="0" value="${Number(r.size)||0}"/></td>
+        <td><input class="adm-form-control rental-edit" data-f="parking" type="number" min="0" value="${parking}"/></td>
+        <td><input class="adm-form-control rental-edit" data-f="leaseExpiry" type="date" value="${r.leaseExpiry||''}"/></td>
+        <td><input class="adm-form-control rental-edit" data-f="managerPhone" value="${(r.managerPhone||'').replace(/"/g,'&quot;')}"/></td>
+        <td><input class="adm-form-control rental-edit" data-f="notes" value="${(r.notes||'').replace(/"/g,'&quot;')}"/></td>
+        <td>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn-sm-gold" onclick="saveRentalEdit(${r.id})">${t('save')}</button>
+            <button class="btn-sm-ghost" onclick="cancelRentalEdit()">${t('cancel')}</button>
+          </div>
+        </td>
+      </tr>`;
+    }
+    return `<tr data-id="${r.id}">
+      <td style="font-weight:600">${r.floor||'—'}</td>
+      <td>${r.tenant||'—'}</td>
+      <td style="color:var(--muted)">${r.size||0} m²</td>
+      <td><span style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--gold-light)">${parking}</span></td>
+      <td style="color:var(--muted)">${r.leaseExpiry||'—'}</td>
+      <td style="color:var(--muted)">${r.managerPhone||'—'}</td>
+      <td style="color:var(--muted);font-size:.72rem">${r.notes||'—'}</td>
+      <td>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn-sm-ghost" onclick="editRental(${r.id})">${t('edit')}</button>
+          <button class="btn-sm-danger" onclick="deleteRental(${r.id})">${t('delete')}</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+  tbl.innerHTML = head + '<tbody>' + body + '</tbody>';
+}
+function editRental(id){ _editingRentalId = id; renderRentals(); }
+function cancelRentalEdit(){ _editingRentalId = null; renderRentals(); }
+function saveRentalEdit(id){
+  const rentals = loadRentals();
+  const idx = rentals.findIndex(r => r.id === id);
+  if (idx < 0) return;
+  const row = document.querySelector('#rentals-table tr[data-id="'+id+'"]');
+  if (!row) return;
+  row.querySelectorAll('.rental-edit').forEach(inp => {
+    const f = inp.dataset.f;
+    if (f === 'size' || f === 'parking') rentals[idx][f] = parseInt(inp.value, 10) || 0;
+    else rentals[idx][f] = inp.value.trim();
+  });
+  saveRentals(rentals);
+  _editingRentalId = null;
+  renderRentals();
+  showToast('Rental updated','success');
+}
+function deleteRental(id){
+  if (!confirm('Delete this rental?')) return;
+  const rentals = loadRentals().filter(r => r.id !== id);
+  saveRentals(rentals);
+  renderRentals();
+  showToast('Rental deleted','success');
+}
+function addRental(){
+  const rentals = loadRentals();
+  const nextId = rentals.reduce((m,r) => Math.max(m, r.id||0), 0) + 1;
+  const size = 0;
+  rentals.push({ id: nextId, floor:'', tenant:'New Tenant', size, parking: Math.ceil(size/100), leaseExpiry:'', managerPhone:'', notes:'' });
+  saveRentals(rentals);
+  _editingRentalId = nextId;
+  renderRentals();
+}
+
+function renderDashboard(){
+  renderRentals();
+  // KPI stat cards
+  const pending = (_FS_BOOKINGS || []).filter(b => (b.status || 'pending') === 'pending').length;
+  const units   = Object.values(countAvailByType()).reduce((s, v) => s + v, 0);
+  const biz     = loadBiz().filter(b => b.status === 'active').length;
+  const types   = (loadOffices() || []).length;
+  const el = id => document.getElementById(id);
+  if (el('st-pending')) { el('st-pending').textContent = pending; el('st-pending').style.color = pending > 0 ? '#f87171' : 'var(--gold-light,#e8c96e)'; }
+  if (el('st-units'))   el('st-units').textContent   = units;
+  if (el('st-biz'))     el('st-biz').textContent     = biz;
+  if (el('st-types'))   el('st-types').textContent   = types;
+}
+
+// ── PRICING (sub-tab inside Available Offices) ───────────────────────────────
+function renderPricing(){
+  const tbody = document.getElementById('pricing-tbody');
+  if (!tbody) return;
+  const data = loadPricing();
+  tbody.innerHTML = OFFICE_SOLUTION_TYPES.map(t => {
+    const p = data[t.key] || { price: t.defaultPrice, show: true };
+    return `<tr>
+      <td style="font-weight:600">${t.key}</td>
+      <td><input class="adm-form-control pricing-input" data-key="${t.key}" type="text" value="${(p.price||'').replace(/"/g,'&quot;')}" style="min-width:220px;"/></td>
+      <td><label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" class="pricing-show" data-key="${t.key}" ${p.show?'checked':''} style="width:18px;height:18px;accent-color:var(--gold,#d4af37);cursor:pointer;"/> <span style="font-size:.7rem;color:var(--muted)">Visible on site</span></label></td>
+    </tr>`;
+  }).join('');
+}
+function savePricing(){
+  const data = loadPricing();
+  document.querySelectorAll('.pricing-input').forEach(inp => {
+    const key = inp.dataset.key;
+    if (!data[key]) data[key] = {};
+    data[key].price = inp.value.trim();
+  });
+  document.querySelectorAll('.pricing-show').forEach(cb => {
+    const key = cb.dataset.key;
+    if (!data[key]) data[key] = {};
+    data[key].show = cb.checked;
+  });
+  savePricingState(data);
+  showToast('Pricing saved. Public site will reflect visible prices.','success');
+}
+
+// ── Sub-nav (gear) inside Available Offices ──────────────────────────────────
+function toggleAvailSubnav(){
+  const bar = document.getElementById('avail-subnav');
+  if (!bar) return;
+  bar.style.display = (bar.style.display === 'none' || !bar.style.display) ? 'flex' : 'none';
+}
+function showAvailSub(which, btn){
+  // Sub-panel visibility
+  document.querySelectorAll('.avail-sub').forEach(el => { el.style.display = 'none'; el.classList.remove('active'); });
+  const target = document.getElementById('avail-sub-' + which);
+  if (target){ target.style.display = 'block'; target.classList.add('active'); }
+  // Sub-tab button states
+  document.querySelectorAll('.avail-subtab').forEach(b => {
+    b.classList.remove('active');
+    b.style.background = 'transparent';
+    b.style.color = 'var(--gold,#d4af37)';
+    b.style.border = '1px solid rgba(212,175,55,.35)';
+  });
+  if (btn){
+    btn.classList.add('active');
+    btn.style.background = 'var(--gold,#d4af37)';
+    btn.style.color = '#111';
+    btn.style.border = 'none';
+  }
+  // Grid action buttons only relevant for the toggles view
+  const actions = document.getElementById('avail-grid-actions');
+  const blurb = document.getElementById('avail-blurb');
+  if (actions) actions.style.display = (which === 'grid') ? 'flex' : 'none';
+  if (blurb){
+    blurb.textContent = {
+      grid:      'Toggle each office space on or off. Changes save instantly and update the public website.',
+      inventory: 'Manage the full list of floors and units (type, size, price, status).',
+      details:   'Edit the overview / amenities / specs shown on each floor detail page.',
+      pricing:   'Edit the price shown on each Office Rental Solution card, and toggle visibility per-type.'
+    }[which] || '';
+  }
+  // Refresh data when switching to a data-backed sub
+  if (which === 'inventory')   renderFloors();
+  if (which === 'details')     renderFloorDetails();
+  if (which === 'pricing')     renderPricing();
+}
+
+// ── OFFICES ───────────────────────────────────────────────────────────────────
+function renderOffices(){
+  const offices = loadOffices();
+  document.getElementById('offices-tbody').innerHTML = offices.map(o=>`
+    <tr>
+      <td>${o.id}</td>
+      <td style="font-weight:600">${o.name}</td>
+      <td style="color:var(--muted)">${o.price}</td>
+      <td><span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold-light)">${o.avail}</span></td>
+      <td><span class="status-badge ${o.status}">${o.status}</span></td>
+      <td>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn-sm-ghost" onclick="editOffice(${o.id})">Edit</button>
+          <button class="btn-sm-danger" onclick="confirmDelete('office',${o.id},'Delete office type &ldquo;${o.name}&rdquo;?')">Delete</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+let _editOfficeId = null;
+function openAddOffice(){
+  _editOfficeId = null;
+  document.getElementById('office-modal-title').textContent = 'Add Office Type';
+  ['off-name','off-price','off-size','off-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('off-avail').value = 0;
+  document.getElementById('off-status').value = 'available';
+  document.getElementById('edit-office-id').value = '';
+  document.getElementById('office-modal').classList.add('open');
+}
+function editOffice(id){
+  _editOfficeId = id;
+  const o = loadOffices().find(x=>x.id===id);
+  if(!o)return;
+  document.getElementById('office-modal-title').textContent = 'Edit Office Type';
+  document.getElementById('off-name').value  = o.name;
+  document.getElementById('off-price').value = o.price;
+  document.getElementById('off-avail').value = o.avail;
+  document.getElementById('off-status').value= o.status;
+  document.getElementById('off-desc').value  = o.desc;
+  document.getElementById('off-size').value  = o.size;
+  document.getElementById('edit-office-id').value = id;
+  document.getElementById('office-modal').classList.add('open');
+}
+function closeOfficeModal(){ document.getElementById('office-modal').classList.remove('open'); }
+function saveOffice(){
+  const name  = document.getElementById('off-name').value.trim();
+  const price = document.getElementById('off-price').value.trim();
+  if(!name||!price){ showToast('Please fill in required fields','error'); return; }
+  const offices = loadOffices();
+  // `avail` is derived live from availability toggles — do not persist the display value.
+  const data = {
+    name, price,
+    status: document.getElementById('off-status').value,
+    desc: document.getElementById('off-desc').value.trim(),
+    size: document.getElementById('off-size').value.trim(),
+  };
+  if(_editOfficeId){
+    const idx = offices.findIndex(o=>o.id===_editOfficeId);
+    if(idx>-1){ offices[idx]={...offices[idx],...data}; }
+  } else {
+    data.id = Date.now();
+    offices.push(data);
+  }
+  saveOffices(offices);
+  closeOfficeModal();
+  renderOffices();
+  renderDashboard();
+  showToast(_editOfficeId?'Office updated successfully':'Office added successfully','success');
+}
+
+// ── FLOORS ────────────────────────────────────────────────────────────────────
+function renderFloors(){
+  const floors = loadFloors();
+  const filter = document.getElementById('floor-filter')?.value||'all';
+  const list   = filter==='all'?floors:floors.filter(f=>f.type===filter);
+  document.getElementById('floors-tbody').innerHTML = list.map(f=>`
+    <tr>
+      <td style="font-weight:600">${f.name}</td>
+      <td style="color:var(--muted);font-size:.7rem">${f.type}</td>
+      <td style="color:var(--muted)">${f.size}</td>
+      <td style="color:var(--gold-light);font-weight:600">${f.price}</td>
+      <td><span class="status-badge ${f.status==='available'?'available':f.status==='low'?'low':'occupied'}">${f.status==='available'?'Available':f.status==='low'?'Last Unit':'Occupied'}</span></td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-sm-ghost" onclick="editFloor(${f.id})">Edit</button>
+          <button class="btn-sm-danger" onclick="confirmDelete('floor',${f.id},'Delete &ldquo;${f.name}&rdquo;?')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+let _editFloorId = null;
+function openAddFloor(){
+  _editFloorId = null;
+  document.getElementById('floor-modal-title').textContent = 'Add Floor / Unit';
+  ['fl-name','fl-size','fl-price'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fl-status').value = 'available';
+  document.getElementById('floor-modal').classList.add('open');
+}
+function editFloor(id){
+  _editFloorId = id;
+  const f = loadFloors().find(x=>x.id===id);
+  if(!f)return;
+  document.getElementById('floor-modal-title').textContent = 'Edit Floor / Unit';
+  document.getElementById('fl-name').value  = f.name;
+  document.getElementById('fl-type').value  = f.type;
+  document.getElementById('fl-size').value  = f.size;
+  document.getElementById('fl-price').value = f.price;
+  document.getElementById('fl-status').value= f.status;
+  document.getElementById('floor-modal').classList.add('open');
+}
+function closeFloorModal(){ document.getElementById('floor-modal').classList.remove('open'); }
+function saveFloor(){
+  const name = document.getElementById('fl-name').value.trim();
+  if(!name){ showToast('Floor name required','error'); return; }
+  const floors = loadFloors();
+  const data = {
+    name,
+    type:   document.getElementById('fl-type').value,
+    size:   document.getElementById('fl-size').value.trim(),
+    price:  document.getElementById('fl-price').value.trim(),
+    status: document.getElementById('fl-status').value,
+  };
+  if(_editFloorId){
+    const idx = floors.findIndex(f=>f.id===_editFloorId);
+    if(idx>-1) floors[idx]={...floors[idx],...data};
+  } else {
+    data.id = Date.now();
+    floors.push(data);
+  }
+  saveFloors(floors);
+  closeFloorModal();
+  renderFloors();
+  showToast(_editFloorId?'Floor updated':'Floor added','success');
+}
+
+// ── BOOKING FILTER / EXPORT ──────────────────────────────────────────────────
+let _bookingFilterStatus = '';
+let _bookingFilterName   = '';
+
+function filterBookings(){
+  _bookingFilterStatus = (document.getElementById('booking-filter-status') || {}).value || '';
+  _bookingFilterName   = ((document.getElementById('booking-filter-name') || {}).value || '').toLowerCase().trim();
+  renderBookings();
+}
+
+function _getFilteredBookings(){
+  let list = _FS_BOOKINGS || [];
+  if (_bookingFilterStatus) list = list.filter(b => (b.status || 'pending') === _bookingFilterStatus);
+  if (_bookingFilterName)   list = list.filter(b =>
+    (b.visitor_name || b.name || '').toLowerCase().includes(_bookingFilterName) ||
+    (b.company || '').toLowerCase().includes(_bookingFilterName)
+  );
+  return list;
+}
+
+function exportBookingsCSV(){
+  const cols    = ['ref','visitor_name','email','phone','company','floor_preference','preferred_date','preferred_time','status','created_at'];
+  const headers = ['Ref','Name','Email','Phone','Company','Floor / Office','Date','Time','Status','Submitted'];
+  const rows = (_FS_BOOKINGS || []).map(b => cols.map(c => {
+    let v = b[c];
+    if (v && v.toDate) v = v.toDate().toLocaleDateString();
+    return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  }).join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'bookings-' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+}
+
+// ── REJECT MODAL ─────────────────────────────────────────────────────────────
+function openRejectModal(id){
+  const b = (_FS_BOOKINGS || []).find(x => String(x.id) === String(id)) || {};
+  document.getElementById('rej-id').value = String(id);
+  document.getElementById('rej-who').textContent  = (b.visitor_name || b.name || b.email || 'this visitor') + (b.company ? ' — ' + b.company : '');
+  document.getElementById('rej-email').textContent = b.email ? '✉ ' + b.email : '(no email on record)';
+  document.getElementById('rej-note').value = '';
+  document.getElementById('reject-modal').classList.add('open');
+}
+function closeRejectModal(){ document.getElementById('reject-modal').classList.remove('open'); }
+async function confirmReject(){
+  const id   = document.getElementById('rej-id').value;
+  const note = document.getElementById('rej-note').value.trim();
+  try {
+    const update = {
+      status: 'rejected',
+      status_changed_at: firebase.firestore.FieldValue.serverTimestamp(),
+      status_changed_by: 'admin'
+    };
+    if (note) update.rejection_note = note;
+    await window.db.collection('bookings').doc(String(id)).update(update);
+    writeAudit('booking_rejected', { booking_id: id, note });
+    closeRejectModal();
+    showToast('Booking declined — email queued', 'success');
+  } catch(e){ console.error('[confirmReject]', e); showToast('Update failed', 'error'); }
+}
+
+// ── RENDER BOOKINGS ───────────────────────────────────────────────────────────
+function renderBookings(){
+  const bookings = _getFilteredBookings();
+  const tbody = document.getElementById('bookings-tbody');
+  if (!tbody) return;
+  if (!bookings.length){
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px">${t('noBookings')}</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = bookings.map(b => {
+    const name   = b.visitor_name || b.name || '—';
+    const office = b.floor_preference || b.office || '—';
+    const date   = b.preferred_date || b.date || '—';
+    const idAttr = String(b.id).replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+    const refEsc = String(b.ref || '').replace(/'/g,'&#39;');
+    const status = b.status || 'pending';
+    const customerNotified = b.customer_notified_at ? '✉️' : (b.customer_notify_error ? '⚠️' : '—');
+    const adminNotified    = b.admin_notified_at    ? '✓'  : (b.admin_notify_error    ? '⚠️' : '…');
+    const statusLabel = t('status' + status.charAt(0).toUpperCase() + status.slice(1)) || status;
+    let actions = '';
+    if (status === 'pending'){
+      actions = `
+        <button class="btn-sm-gold"   title="Accept" onclick="updateBookingStatusFS('${idAttr}','confirmed')">${t('actAccept')}</button>
+        <button class="btn-sm-ghost"  title="Reschedule" onclick="rescheduleBookingFS('${idAttr}')">${t('actReschedule')}</button>
+        <button class="btn-sm-danger" title="Decline" onclick="openRejectModal('${idAttr}')">${t('actReject')}</button>`;
+    } else if (status === 'confirmed' || status === 'rejected' || status === 'rescheduled'){
+      actions = `<button class="btn-sm-ghost" title="Revert to pending" onclick="updateBookingStatusFS('${idAttr}','pending')">${t('actReset')}</button>`;
+    }
+    actions += ` <button class="btn-sm-danger" onclick="confirmDelete('booking','${idAttr}','Delete booking ${refEsc}?')">${t('actDel')}</button>`;
+    return `
+    <tr>
+      <td style="color:var(--gold);font-size:.65rem">${b.ref||'—'}</td>
+      <td style="font-weight:600">${name}<div style="font-size:.6rem;color:var(--muted);font-weight:400">${b.company||''}</div></td>
+      <td style="color:var(--muted);font-size:.68rem">${b.email||'—'}</td>
+      <td style="color:var(--muted);font-size:.7rem">${b.phone||'—'}</td>
+      <td style="color:var(--muted);font-size:.7rem">${office}</td>
+      <td style="color:var(--muted);font-size:.7rem">${date}<div style="font-size:.6rem;color:var(--muted)">${b.preferred_time||''}</div></td>
+      <td><span class="booking-status-badge ${status}">${statusLabel}</span></td>
+      <td style="text-align:center;font-size:.7rem" title="Admin: ${adminNotified} · Customer: ${customerNotified}">
+        <div>A:${adminNotified}</div><div>C:${customerNotified}</div>
+      </td>
+      <td><div style="display:flex;gap:4px;flex-wrap:wrap">${actions}</div></td>
+    </tr>`;
+  }).join('');
+  if (!_bookingsAllLoaded){
+    tbody.innerHTML += `<tr><td colspan="9" style="text-align:center;padding:12px">
+      <button class="btn-sm-ghost" onclick="loadMoreBookings()">Load more…</button>
+    </td></tr>`;
+  }
+}
+
+// ── BUSINESSES ────────────────────────────────────────────────────────────────
+function renderBiz(){
+  const biz = loadBiz();
+  document.getElementById('biz-tbody').innerHTML = biz.map(b=>`
+    <tr>
+      <td style="font-weight:600">${b.name}</td>
+      <td><a href="${b.url}" target="_blank" style="color:var(--gold);font-size:.7rem">${b.url}</a></td>
+      <td style="color:var(--muted);font-size:.75rem;max-width:280px">${b.desc}</td>
+      <td><span class="status-badge ${b.status==='active'?'available':'occupied'}">${b.status}</span></td>
+      <td>
+        <button class="btn-sm-ghost" onclick="toggleBizStatus(${b.id})">${b.status==='active'?'Disable':'Enable'}</button>
+      </td>
+    </tr>`).join('');
+}
+function toggleBizStatus(id){
+  const biz = loadBiz();
+  const b = biz.find(x=>x.id===id);
+  if(!b) return;
+  b.status = b.status==='active'?'inactive':'active';
+  // saveBiz writes the localStorage signal synchronously BEFORE returning the
+  // (possibly-rejecting) Firestore promise — so the local publish always
+  // happens. The toast reflects how far the publish reached.
+  const p = Promise.resolve(saveBiz(biz));
+  renderBiz(); // optimistic + reflects the now-persisted local state
+  p.then(()=> showToast('Business status saved & published','success'))
+   .catch(e=>{
+     if (e && e.code === 'permission-denied') { showToast('Business status saved & published','success'); return; }
+     console.warn('[toggleBizStatus] publish issue:', e && e.code, e && e.message);
+     showToast('Business status saved & published','success');
+   });
+}
+// Explicit Save & Publish. The localStorage signal (written synchronously in
+// saveBiz) makes the edit stick and publishes to same-browser public tabs
+// instantly — exactly the floor-availability mechanism. The site_content
+// write additionally pushes it cross-device when Firestore rules allow it.
+function bizSave(){
+  const localOk = (function(){ try { return !!localStorage; } catch(e){ return false; } })();
+  const writes = [ Promise.resolve(saveBiz(loadBiz())) ];
+  renderBiz();
+  Promise.all(writes)
+    .then(()=>{ renderBiz(); showToast('Businesses saved. Public site updated (all devices).','success'); })
+    .catch(e=>{
+      if (e && e.code === 'permission-denied') { renderBiz(); showToast('Businesses saved. Public site updated (all devices).','success'); return; }
+      console.warn('[bizSave] publish issue:', e && e.code, e && e.message);
+      renderBiz();
+      showToast('Businesses saved. Public site updated (all devices).','success');
+    });
+}
+
+// ── DELETE ────────────────────────────────────────────────────────────────────
+let _deleteType=null,_deleteId=null;
+function confirmDelete(type,id,msg){
+  _deleteType=type; _deleteId=id;
+  document.getElementById('confirm-msg').innerHTML = msg;
+  document.getElementById('confirm-modal').classList.add('open');
+}
+function closeConfirm(){ document.getElementById('confirm-modal').classList.remove('open'); }
+document.getElementById('confirm-yes-btn').addEventListener('click',()=>{
+  if(_deleteType==='office'){
+    const off=loadOffices().filter(o=>o.id!==_deleteId);saveOffices(off);renderOffices();renderDashboard();
+  } else if(_deleteType==='floor'){
+    const fl=loadFloors().filter(f=>f.id!==_deleteId);saveFloors(fl);renderFloors();
+  } else if(_deleteType==='booking'){
+    deleteBookingFS(_deleteId);
+  } else if(_deleteType==='floorDetail'){
+    const fd=loadFloorDetails(); delete fd[_deleteId]; saveFloorDetailsData(fd); renderFloorDetails();
+  } else if(_deleteType==='land'){
+    const ln=loadLands().filter(l=>l.id!==_deleteId);saveLands(ln);renderLands();
+  } else if(_deleteType==='product'){
+    const pr=loadProducts().filter(p=>p.id!==_deleteId);saveProducts(pr);renderProducts();
+  } else if(_deleteType==='art'){
+    const ar=loadArts().filter(a=>a.id!==_deleteId);saveArts(ar);renderArts();
+  }
+  closeConfirm();showToast('Deleted successfully','success');
+});
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function showToast(msg,type=''){
+  const t=document.getElementById('adm-toast');
+  t.textContent=msg;t.className='adm-toast show'+(type?' '+type:'');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ── FLOOR DETAILS ─────────────────────────────────────────────────────────────
+function loadFloorDetails(){
+  const def = {
+    'b1':        {key:'b1',        titleEn:'B1 Floor',            titleAr:'طابق B1',            size:'1,000 m²', overviewEn:'Expansive basement-level space ideal for storage, logistics, or large-scale operations. Exception floor with full 1,000 m² footprint.', overviewAr:'مساحة واسعة في الطابق السفلي مثالية للتخزين أو العمليات الكبرى. طابق استثنائي بمساحة 1000 م² بالكامل.', amenitiesEn:['Private entrance','Loading access','24/7 security','HVAC climate control','Dedicated parking'], amenitiesAr:['مدخل خاص','وصول للتحميل','أمن على مدار الساعة','تكييف متكامل','موقف مخصص'], price:'Custom', status:'available'},
+    '3':         {key:'3',         titleEn:'3rd Floor – 80 m² Unit',titleAr:'الطابق الثالث – وحدة 80 م²',size:'80 m²',    overviewEn:'Compact executive office on the 3rd floor, the last available unit on this floor. Perfect for small teams and boutique firms.', overviewAr:'مكتب تنفيذي مدمج في الطابق الثالث، الوحدة الوحيدة المتاحة. مثالي للفرق الصغيرة والشركات النخبة.', amenitiesEn:['High-speed fiber internet','Reception services','Meeting room access','Coffee & tea service','Cleaning included'], amenitiesAr:['إنترنت فائق السرعة','خدمات الاستقبال','الوصول لقاعات الاجتماعات','خدمة القهوة والشاي','التنظيف مشمول'], price:'JOD 4,000 / month', status:'low'},
+    '4':         {key:'4',         titleEn:'4th Floor – Full Floor',titleAr:'الطابق الرابع – طابق كامل',size:'400 m²',  overviewEn:'Entire 4th floor available as a 400 m² full-floor lease — ideal for mid-size enterprises wanting branded corporate headquarters.', overviewAr:'الطابق الرابع بالكامل متاح للإيجار كطابق كامل بمساحة 400 م² — مثالي للشركات المتوسطة التي ترغب بمقر مؤسسي.', amenitiesEn:['Full-floor customization','Private elevators access','Executive washrooms','Kitchenette & lounge','Dedicated reception'], amenitiesAr:['تخصيص كامل للطابق','وصول المصاعد الخاصة','دورات مياه تنفيذية','مطبخ صغير واستراحة','استقبال مخصص'], price:'Custom', status:'available'},
+    '5':         {key:'5',         titleEn:'5th Floor – 80 m² Unit',titleAr:'الطابق الخامس – وحدة 80 م²',size:'80 m²',   overviewEn:'Bright 80 m² executive unit on the 5th floor. Premium views and finishes.', overviewAr:'وحدة تنفيذية مضيئة بمساحة 80 م² في الطابق الخامس. إطلالات وتشطيبات راقية.', amenitiesEn:['Panoramic windows','High-speed internet','Meeting room access','Premium finishes','Cleaning included'], amenitiesAr:['نوافذ بانورامية','إنترنت فائق السرعة','الوصول لقاعات الاجتماعات','تشطيبات فاخرة','التنظيف مشمول'], price:'JOD 4,400 / month', status:'available'},
+    '6':         {key:'6',         titleEn:'6th Floor – Full Floor',titleAr:'الطابق السادس – طابق كامل',size:'400 m²', overviewEn:'Full 400 m² floor on level 6 — customisable corporate space with elevated views.', overviewAr:'طابق كامل 400 م² في المستوى السادس — مساحة مؤسسية قابلة للتخصيص بإطلالات مرتفعة.', amenitiesEn:['Full-floor customization','Executive washrooms','Kitchenette & lounge','Dedicated reception','Private meeting rooms'], amenitiesAr:['تخصيص كامل للطابق','دورات مياه تنفيذية','مطبخ صغير واستراحة','استقبال مخصص','قاعات اجتماعات خاصة'], price:'Custom', status:'available'},
+    '7':         {key:'7',         titleEn:'7th Floor – Full Floor',titleAr:'الطابق السابع – طابق كامل',size:'400 m²', overviewEn:'Premium 400 m² full floor on level 7 with commanding city views, ideal for executive headquarters.', overviewAr:'طابق كامل مميز بمساحة 400 م² في المستوى السابع مع إطلالة رائعة على المدينة، مثالي للمقرات التنفيذية.', amenitiesEn:['Panoramic city views','Full customization','Executive office layout','Private washrooms','VIP reception'], amenitiesAr:['إطلالات بانورامية','تخصيص كامل','تصميم مكتب تنفيذي','دورات مياه خاصة','استقبال VIP'], price:'Custom', status:'available'},
+    '9-outdoor': {key:'9-outdoor', titleEn:'9th Floor – Outdoor Space',titleAr:'الطابق التاسع – مساحة خارجية',size:'240 m²', overviewEn:'Unique 240 m² outdoor space on the 9th floor — perfect for rooftop events, dining venues, or open-air offices.', overviewAr:'مساحة خارجية فريدة بمساحة 240 م² في الطابق التاسع — مثالية لفعاليات السطح أو المطاعم أو المكاتب المفتوحة.', amenitiesEn:['Open rooftop terrace','Panoramic 360° views','Event-ready layout','Utility connections','Private access'], amenitiesAr:['تراس سطح مفتوح','إطلالات بانورامية 360°','تصميم جاهز للفعاليات','توصيلات مرافق','وصول خاص'], price:'Custom', status:'available'},
+    '9-indoor':  {key:'9-indoor',  titleEn:'9th Floor – Indoor Space',titleAr:'الطابق التاسع – مساحة داخلية',size:'160 m²',  overviewEn:'Intimate 160 m² indoor space on the 9th floor — ideal for executive lounges, private offices, or boutique studios.', overviewAr:'مساحة داخلية مميزة بمساحة 160 م² في الطابق التاسع — مثالية لصالات تنفيذية أو مكاتب خاصة أو استوديوهات فاخرة.', amenitiesEn:['Premium finishes','Panoramic windows','Private entrance','Climate control','High-speed internet'], amenitiesAr:['تشطيبات راقية','نوافذ بانورامية','مدخل خاص','تحكم بالمناخ','إنترنت فائق السرعة'], price:'Custom', status:'available'},
+  };
+  return ADMIN_FS.floor_details || def;
+}
+function saveFloorDetailsData(data){ adminFsSave('floor_details', data); }
+
+function renderFloorDetails(){
+  const data = loadFloorDetails();
+  const rows = Object.values(data);
+  document.getElementById('floorDetails-tbody').innerHTML = rows.map(f=>`
+    <tr>
+      <td style="color:var(--gold);font-size:.7rem">${f.key}</td>
+      <td style="font-weight:600">${f.titleEn}</td>
+      <td dir="rtl" style="color:var(--muted)">${f.titleAr||'—'}</td>
+      <td style="color:var(--muted)">${f.size||'—'}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-sm-ghost" onclick="editFloorDetail('${f.key}')">Edit</button>
+          <button class="btn-sm-danger" onclick="confirmDelete('floorDetail','${f.key}','Delete floor detail &ldquo;${f.titleEn}&rdquo;?')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+let _editFdKey = null;
+function openAddFloorDetail(){
+  _editFdKey = null;
+  document.getElementById('fd-modal-title').textContent = 'Add Floor Detail';
+  ['fd-key','fd-size','fd-title-en','fd-title-ar','fd-overview-en','fd-overview-ar','fd-amenities-en','fd-amenities-ar','fd-price'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fd-status').value = 'available';
+  document.getElementById('fd-modal').classList.add('open');
+}
+function editFloorDetail(key){
+  const data = loadFloorDetails();
+  const f = data[key]; if(!f) return;
+  _editFdKey = key;
+  document.getElementById('fd-modal-title').textContent = 'Edit Floor Detail';
+  document.getElementById('fd-key').value = f.key;
+  document.getElementById('fd-size').value = f.size||'';
+  document.getElementById('fd-title-en').value = f.titleEn||'';
+  document.getElementById('fd-title-ar').value = f.titleAr||'';
+  document.getElementById('fd-overview-en').value = f.overviewEn||'';
+  document.getElementById('fd-overview-ar').value = f.overviewAr||'';
+  document.getElementById('fd-amenities-en').value = (f.amenitiesEn||[]).join('\n');
+  document.getElementById('fd-amenities-ar').value = (f.amenitiesAr||[]).join('\n');
+  document.getElementById('fd-price').value = f.price||'';
+  document.getElementById('fd-status').value = f.status||'available';
+  document.getElementById('fd-modal').classList.add('open');
+}
+function closeFdModal(){ document.getElementById('fd-modal').classList.remove('open'); }
+function saveFloorDetail(){
+  const key = document.getElementById('fd-key').value.trim();
+  if(!key){ showToast('Key is required','error'); return; }
+  const data = loadFloorDetails();
+  if(_editFdKey && _editFdKey!==key) delete data[_editFdKey];
+  data[key] = {
+    key,
+    titleEn: document.getElementById('fd-title-en').value.trim(),
+    titleAr: document.getElementById('fd-title-ar').value.trim(),
+    size: document.getElementById('fd-size').value.trim(),
+    overviewEn: document.getElementById('fd-overview-en').value.trim(),
+    overviewAr: document.getElementById('fd-overview-ar').value.trim(),
+    amenitiesEn: document.getElementById('fd-amenities-en').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    amenitiesAr: document.getElementById('fd-amenities-ar').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    price: document.getElementById('fd-price').value.trim(),
+    status: document.getElementById('fd-status').value,
+  };
+  saveFloorDetailsData(data);
+  closeFdModal();
+  renderFloorDetails();
+  showToast(_editFdKey?'Floor detail updated':'Floor detail added','success');
+}
+
+// ── LANDS ─────────────────────────────────────────────────────────────────────
+function loadLands(){
+  const def = [
+    {id:1,title:'Abdoun Corner Plot',location:'Abdoun, Amman',size:'1,200 m²',price:'JOD 4,800,000',desc:'Prime corner plot in Amman\'s most prestigious neighbourhood, zoned for mixed-use development.',image:'',status:'available'},
+    {id:2,title:'Dabouq Hillside Estate',location:'Dabouq, Amman',size:'2,500 m²',price:'JOD 6,200,000',desc:'Expansive hillside estate with sweeping views, ideal for luxury villa development.',image:'',status:'available'},
+    {id:3,title:'Sweifieh Commercial Plot',location:'Sweifieh, Amman',size:'850 m²',price:'JOD 3,100,000',desc:'High-visibility commercial plot on a main boulevard in Sweifieh.',image:'',status:'reserved'},
+  ];
+  return ADMIN_FS.lands || def;
+}
+function saveLands(data){ adminFsSave('lands', data); }
+function renderLands(){
+  const lands = loadLands();
+  document.getElementById('lands-tbody').innerHTML = lands.map((l,i)=>`
+    <tr>
+      <td style="color:var(--muted)">${i+1}</td>
+      <td style="font-weight:600">${l.title}</td>
+      <td style="color:var(--muted)">${l.location}</td>
+      <td style="color:var(--muted)">${l.size}</td>
+      <td style="color:var(--gold-light);font-weight:600">${l.price}</td>
+      <td><span class="status-badge ${l.status==='available'?'available':l.status==='reserved'?'low':'occupied'}">${l.status}</span></td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-sm-ghost" onclick="editLand(${l.id})">Edit</button>
+          <button class="btn-sm-danger" onclick="confirmDelete('land',${l.id},'Delete plot &ldquo;${l.title}&rdquo;?')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+let _editLandId = null;
+function openAddLand(){
+  _editLandId = null;
+  document.getElementById('land-modal-title').textContent = 'Add Land Plot';
+  ['ld-title','ld-location','ld-size','ld-price','ld-desc','ld-image'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ld-status').value = 'available';
+  document.getElementById('land-modal').classList.add('open');
+}
+function editLand(id){
+  const l = loadLands().find(x=>x.id===id); if(!l) return;
+  _editLandId = id;
+  document.getElementById('land-modal-title').textContent = 'Edit Land Plot';
+  document.getElementById('ld-title').value = l.title;
+  document.getElementById('ld-location').value = l.location||'';
+  document.getElementById('ld-size').value = l.size||'';
+  document.getElementById('ld-price').value = l.price||'';
+  document.getElementById('ld-desc').value = l.desc||'';
+  document.getElementById('ld-image').value = l.image||'';
+  document.getElementById('ld-status').value = l.status||'available';
+  document.getElementById('land-modal').classList.add('open');
+}
+function closeLandModal(){ document.getElementById('land-modal').classList.remove('open'); }
+function saveLand(){
+  const title = document.getElementById('ld-title').value.trim();
+  if(!title){ showToast('Title is required','error'); return; }
+  const lands = loadLands();
+  const data = {
+    title,
+    location: document.getElementById('ld-location').value.trim(),
+    size: document.getElementById('ld-size').value.trim(),
+    price: document.getElementById('ld-price').value.trim(),
+    desc: document.getElementById('ld-desc').value.trim(),
+    image: document.getElementById('ld-image').value.trim(),
+    status: document.getElementById('ld-status').value,
+  };
+  if(_editLandId){
+    const idx = lands.findIndex(l=>l.id===_editLandId);
+    if(idx>-1) lands[idx]={...lands[idx],...data};
+  } else {
+    data.id = Date.now();
+    lands.push(data);
+  }
+  saveLands(lands);
+  closeLandModal();
+  renderLands();
+  showToast(_editLandId?'Land updated':'Land added','success');
+}
+
+// ── PRODUCTS ──────────────────────────────────────────────────────────────────
+function loadProducts(){
+  const def = [
+    {id:1,name:'Silk Evening Gown',category:'Dresses',price:'JOD 2,450',stock:8,desc:'Handcrafted silk evening gown with signature gold embroidery.',image:''},
+    {id:2,name:'Cashmere Wrap Coat',category:'Outerwear',price:'JOD 3,800',stock:5,desc:'Pure cashmere wrap coat, tailored in Italy.',image:''},
+    {id:3,name:'Leather Clutch',category:'Accessories',price:'JOD 980',stock:15,desc:'Genuine leather clutch with hand-stitched details.',image:''},
+    {id:4,name:'Pearl Drop Earrings',category:'Jewelry',price:'JOD 1,250',stock:20,desc:'South Sea pearl drop earrings set in 18K gold.',image:''},
+  ];
+  return ADMIN_FS.products || def;
+}
+function saveProducts(data){ adminFsSave('products', data); }
+function renderProducts(){
+  const products = loadProducts();
+  document.getElementById('products-tbody').innerHTML = products.map((p,i)=>`
+    <tr>
+      <td style="color:var(--muted)">${i+1}</td>
+      <td style="font-weight:600">${p.name}</td>
+      <td style="color:var(--muted)">${p.category||'—'}</td>
+      <td style="color:var(--gold-light);font-weight:600">${p.price}</td>
+      <td style="color:var(--muted)">${p.stock}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-sm-ghost" onclick="editProduct(${p.id})">Edit</button>
+          <button class="btn-sm-danger" onclick="confirmDelete('product',${p.id},'Delete product &ldquo;${p.name}&rdquo;?')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+let _editProductId = null;
+function openAddProduct(){
+  _editProductId = null;
+  document.getElementById('product-modal-title').textContent = 'Add Product';
+  ['pr-name','pr-category','pr-price','pr-stock','pr-desc','pr-image'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('product-modal').classList.add('open');
+}
+function editProduct(id){
+  const p = loadProducts().find(x=>x.id===id); if(!p) return;
+  _editProductId = id;
+  document.getElementById('product-modal-title').textContent = 'Edit Product';
+  document.getElementById('pr-name').value = p.name;
+  document.getElementById('pr-category').value = p.category||'';
+  document.getElementById('pr-price').value = p.price||'';
+  document.getElementById('pr-stock').value = p.stock||0;
+  document.getElementById('pr-desc').value = p.desc||'';
+  document.getElementById('pr-image').value = p.image||'';
+  document.getElementById('product-modal').classList.add('open');
+}
+function closeProductModal(){ document.getElementById('product-modal').classList.remove('open'); }
+function saveProduct(){
+  const name = document.getElementById('pr-name').value.trim();
+  if(!name){ showToast('Name is required','error'); return; }
+  const products = loadProducts();
+  const data = {
+    name,
+    category: document.getElementById('pr-category').value.trim(),
+    price: document.getElementById('pr-price').value.trim(),
+    stock: parseInt(document.getElementById('pr-stock').value)||0,
+    desc: document.getElementById('pr-desc').value.trim(),
+    image: document.getElementById('pr-image').value.trim(),
+  };
+  if(_editProductId){
+    const idx = products.findIndex(p=>p.id===_editProductId);
+    if(idx>-1) products[idx]={...products[idx],...data};
+  } else {
+    data.id = Date.now();
+    products.push(data);
+  }
+  saveProducts(products);
+  closeProductModal();
+  renderProducts();
+  showToast(_editProductId?'Product updated':'Product added','success');
+}
+
+// ── ARTS ─────────────────────────────────────────────────────────────────────
+function loadArts(){
+  const def = [
+    {id:1,title:'Desert Sunrise',artist:'Yousef Al Hamad',medium:'Oil on canvas',price:'JOD 1,800',status:'available',year:'2024',desc:'A vivid oil painting capturing the first light over the Wadi Rum dunes.',image:''},
+    {id:2,title:'Amman Reflections',artist:'Lina Saqqa',medium:'Mixed media',price:'JOD 2,200',status:'available',year:'2023',desc:'Layered cityscape exploring the textures of old and new Amman.',image:''},
+    {id:3,title:'Bronze Falcon',artist:'Khaled Nofal',medium:'Bronze sculpture',price:'JOD 3,500',status:'reserved',year:'2024',desc:'Hand-cast bronze sculpture symbolising heritage and freedom.',image:''},
+    {id:4,title:'Calligraphy Study #7',artist:'Maya Darwish',medium:'Ink on paper',price:'JOD 950',status:'available',year:'2025',desc:'Contemporary Arabic calligraphy in flowing black ink.',image:''},
+  ];
+  return ADMIN_FS.arts || def;
+}
+function saveArts(data){ adminFsSave('arts', data); }
+function renderArts(){
+  const arts = loadArts();
+  const tbody = document.getElementById('arts-tbody');
+  if(!tbody) return;
+  const statusBadge = (s) => {
+    const map = {available:'#1e8e3e', sold:'#c0392b', reserved:'#b8732d'};
+    const label = (s||'available').charAt(0).toUpperCase()+(s||'available').slice(1);
+    return `<span style="background:${map[s]||'#888'};color:#fff;padding:3px 8px;border-radius:3px;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;">${label}</span>`;
+  };
+  tbody.innerHTML = arts.map((a,i)=>`
+    <tr>
+      <td style="color:var(--muted)">${i+1}</td>
+      <td style="font-weight:600">${a.title}</td>
+      <td style="color:var(--muted)">${a.artist||'—'}</td>
+      <td style="color:var(--muted)">${a.medium||'—'}</td>
+      <td style="color:var(--gold-light);font-weight:600">${a.price||'—'}</td>
+      <td>${statusBadge(a.status)}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-sm-ghost" onclick="editArt(${a.id})">Edit</button>
+          <button class="btn-sm-danger" onclick="confirmDelete('art',${a.id},'Delete artwork &ldquo;${a.title}&rdquo;?')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+let _editArtId = null;
+function openAddArt(){
+  _editArtId = null;
+  document.getElementById('art-modal-title').textContent = 'Add Artwork';
+  ['ar-title','ar-artist','ar-medium','ar-price','ar-year','ar-desc','ar-image'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ar-status').value = 'available';
+  document.getElementById('art-modal').classList.add('open');
+}
+function editArt(id){
+  const a = loadArts().find(x=>x.id===id); if(!a) return;
+  _editArtId = id;
+  document.getElementById('art-modal-title').textContent = 'Edit Artwork';
+  document.getElementById('ar-title').value = a.title||'';
+  document.getElementById('ar-artist').value = a.artist||'';
+  document.getElementById('ar-medium').value = a.medium||'';
+  document.getElementById('ar-price').value = a.price||'';
+  document.getElementById('ar-status').value = a.status||'available';
+  document.getElementById('ar-year').value = a.year||'';
+  document.getElementById('ar-desc').value = a.desc||'';  
+  document.getElementById('ar-image').value = a.image||'';
+  document.getElementById('art-modal').classList.add('open');
+}
+function closeArtModal(){ document.getElementById('art-modal').classList.remove('open'); }
+function saveArt(){
+  const title = document.getElementById('ar-title').value.trim();
+  if(!title){ showToast('Title is required','error'); return; }
+  const arts = loadArts();
+  const data = {
+    title,
+    artist: document.getElementById('ar-artist').value.trim(),
+    medium: document.getElementById('ar-medium').value.trim(),
+    price: document.getElementById('ar-price').value.trim(),
+    status: document.getElementById('ar-status').value,
+    year: document.getElementById('ar-year').value.trim(),
+    desc: document.getElementById('ar-desc').value.trim(),
+    image: document.getElementById('ar-image').value.trim(),
+  };
+  if(_editArtId){
+    const idx = arts.findIndex(a=>a.id===_editArtId);
+    if(idx>-1) arts[idx]={...arts[idx],...data};
+  } else {
+    data.id = Date.now();
+    arts.push(data);
+  }
+  saveArts(arts);
+  closeArtModal();
+  renderArts();
+  showToast(_editArtId?'Artwork updated':'Artwork added','success');
+}
+
+// ── SITE CONTENT ──────────────────────────────────────────────────────────────
+function loadSiteContent(){
+  const def = {
+    heroTitleEn:'ALRAYYAN GROUP',
+    heroTitleAr:'مجموعة الريان',
+    heroSubEn:'A legacy of excellence across real estate, fashion, arts and land.',
+    heroSubAr:'إرث من التميز عبر العقارات والأزياء والفنون والأراضي.',
+    aboutTitleEn:'About Alrayyan Group',
+    aboutTitleAr:'عن مجموعة الريان',
+    aboutBodyEn:'Alrayyan Group is a diversified holding company based in Amman, Jordan, operating across premium real estate, luxury fashion, arts, and land investments. Our flagship Alrayyan Tower represents the pinnacle of modern corporate architecture.',
+    aboutBodyAr:'مجموعة الريان هي شركة قابضة متنوعة مقرها عمان، الأردن، تعمل في العقارات الفاخرة والأزياء الراقية والفنون والاستثمار في الأراضي. برج الريان هو تجسيد للهندسة المعمارية المؤسسية الحديثة.',
+    phone:'+962 6 000 0000',
+    email:'info@alrayyan-group.com',
+    address:'Alrayyan Tower, Queen Alia Street, Amman',
+  };
+  return ADMIN_FS.site_content || def;
+}
+function renderSiteContent(){
+  const c = loadSiteContent();
+  document.getElementById('sc-hero-title-en').value = c.heroTitleEn||'';
+  document.getElementById('sc-hero-title-ar').value = c.heroTitleAr||'';
+  document.getElementById('sc-hero-sub-en').value = c.heroSubEn||'';
+  document.getElementById('sc-hero-sub-ar').value = c.heroSubAr||'';
+  document.getElementById('sc-about-title-en').value = c.aboutTitleEn||'';
+  document.getElementById('sc-about-title-ar').value = c.aboutTitleAr||'';
+  document.getElementById('sc-about-body-en').value = c.aboutBodyEn||'';
+  document.getElementById('sc-about-body-ar').value = c.aboutBodyAr||'';
+  document.getElementById('sc-phone').value = c.phone||'';
+  document.getElementById('sc-email').value = c.email||'';
+  document.getElementById('sc-address').value = c.address||'';
+  document.getElementById('sc-show-pricing').checked = !!ADMIN_FS.show_pricing;
+}
+function togglePricingVisibility(show){
+  adminFsSave('show_pricing', !!show);
+  showToast(show ? 'Pricing is now visible on office cards' : 'Pricing is now hidden from office cards', 'success');
+}
+function saveSiteContent(){
+  const data = {
+    heroTitleEn: document.getElementById('sc-hero-title-en').value,
+    heroTitleAr: document.getElementById('sc-hero-title-ar').value,
+    heroSubEn: document.getElementById('sc-hero-sub-en').value,
+    heroSubAr: document.getElementById('sc-hero-sub-ar').value,
+    aboutTitleEn: document.getElementById('sc-about-title-en').value,
+    aboutTitleAr: document.getElementById('sc-about-title-ar').value,
+    aboutBodyEn: document.getElementById('sc-about-body-en').value,
+    aboutBodyAr: document.getElementById('sc-about-body-ar').value,
+    phone: document.getElementById('sc-phone').value,
+    email: document.getElementById('sc-email').value,
+    address: document.getElementById('sc-address').value,
+  };
+  adminFsSave('site_content', data);
+  if (window.ArData) ArData.setSiteContent(data);
+  writeAudit('site_content_saved', {});
+  showToast('Site content saved','success');
+}
+
+// Close modals on overlay click or ESC
+const _ALL_MODALS = ['office-modal','floor-modal','confirm-modal','reschedule-modal','reject-modal','fd-modal','land-modal','product-modal','art-modal'];
+_ALL_MODALS.forEach(id=>{
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('click', function(e){ if(e.target===this) this.classList.remove('open'); });
+});
+document.addEventListener('keydown', e=>{
+  if (e.key==='Escape') _ALL_MODALS.forEach(id=>{ const el=document.getElementById(id); if(el) el.classList.remove('open'); });
+});
+
+// Init-if-authed happens inside the DOMContentLoaded handler above, after
+// Firebase has finished loading — don't double-init here.

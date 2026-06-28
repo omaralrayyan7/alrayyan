@@ -78,7 +78,7 @@ First deploy takes 2–3 minutes. You'll see:
 3. Check inbox of `alrayyantower@gmail.com`. You should receive within ~10 seconds:
    > Subject: **🔔 New Visit Booking — \[Name\] (ARG-XXXXXX)**
 
-4. Open `admin.html` → **Visit Bookings**. The new booking appears with status `pending`.
+4. Open `mgmt-panel.html` → **Visit Bookings**. The new booking appears with status `pending`.
 
 ### Test 2 — Customer receives confirmation email on Accept
 1. In the admin panel, click **✓ Accept** next to the pending booking.

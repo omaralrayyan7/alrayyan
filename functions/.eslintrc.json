@@ -1,0 +1,18 @@
+{
+  "extends": ["eslint:recommended", "google"],
+  "parserOptions": {
+    "ecmaVersion": 2022
+  },
+  "env": {
+    "es2022": true,
+    "node": true
+  },
+  "rules": {
+    "max-len": ["warn", { "code": 120 }],
+    "require-jsdoc": "off",
+    "valid-jsdoc": "off",
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "quotes": ["error", "single"],
+    "indent": ["error", 2]
+  }
+}

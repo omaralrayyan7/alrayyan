@@ -8,15 +8,13 @@
  *   2) onBookingStatusChanged — fires when a booking's `status` field changes.
  *                          If new status is 'confirmed' → sends approval email
  *                          to the customer. If 'rejected' → sends polite
- *                          decline email. WhatsApp hook is wired but only
- *                          activates once Meta WhatsApp Business API approves.
+ *                          decline email (with optional reason). If
+ *                          'rescheduled' → sends new-slot proposal.
  *
  * Secrets (set via `firebase functions:secrets:set`):
  *   - GMAIL_EMAIL         The Gmail address that sends mail.
  *   - GMAIL_APP_PASSWORD  Gmail App Password (NOT your normal password).
  *   - ADMIN_EMAIL         Where the "new booking" notification is sent.
- *
- * Local dev: copy `.env.example` to `.env` and fill values.
  */
 
 const { onDocumentCreated, onDocumentUpdated } = require('firebase-functions/v2/firestore');
@@ -45,39 +43,59 @@ function buildTransporter(){
 }
 
 // ────────────────────────────────────────────────────────────────────────────
+// HTML escape — prevents XSS when embedding user-supplied text in HTML emails.
+// ────────────────────────────────────────────────────────────────────────────
+
+function esc(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 // Email templates
 // ────────────────────────────────────────────────────────────────────────────
 
 function fmtField(label, value){
   if (!value) return '';
-  return `<tr><td style="padding:6px 14px;color:#888;font-size:13px;border-bottom:1px solid #eee">${label}</td>
-              <td style="padding:6px 14px;color:#111;font-size:14px;font-weight:600;border-bottom:1px solid #eee">${value}</td></tr>`;
+  return `<tr>
+    <td style="padding:6px 14px;color:#888;font-size:13px;border-bottom:1px solid #eee">${label}</td>
+    <td style="padding:6px 14px;color:#111;font-size:14px;font-weight:600;border-bottom:1px solid #eee">${esc(value)}</td>
+  </tr>`;
+}
+
+function emailHeader(subtitle){
+  return `<div style="background:#0a0a0a;padding:20px 24px;border-radius:8px 8px 0 0;text-align:center">
+    <img src="https://alrayyangroup.online/images/logo/logo.png" alt="Alrayyan Group" width="64" height="64" style="display:block;margin:0 auto 12px;border-radius:4px" />
+    <h2 style="margin:0;font-size:20px;letter-spacing:1px;color:#d4af37">ALRAYYAN GROUP</h2>
+    <p style="margin:4px 0 0;color:#bbb;font-size:13px">${subtitle}</p>
+  </div>`;
 }
 
 function adminEmailHtml(b){
   const rows = [
-    fmtField('Reference',     b.ref),
-    fmtField('Name',          b.visitor_name),
+    fmtField('Reference',        b.ref),
+    fmtField('Name',             b.visitor_name),
     fmtField('Phone / WhatsApp', b.phone),
-    fmtField('Email',         b.email),
-    fmtField('Company',       b.company),
-    fmtField('Floor / Office', b.floor_preference || b.office),
-    fmtField('Preferred Date', b.preferred_date),
-    fmtField('Preferred Time', b.preferred_time),
-    fmtField('Purpose',       b.purpose),
-    fmtField('Notes',         b.notes),
-    fmtField('Source',        b.source)
+    fmtField('Email',            b.email),
+    fmtField('Company',          b.company),
+    fmtField('Floor / Office',   b.floor_preference || b.office),
+    fmtField('Preferred Date',   b.preferred_date),
+    fmtField('Preferred Time',   b.preferred_time),
+    fmtField('Purpose',          b.purpose),
+    fmtField('Notes',            b.notes),
+    fmtField('Source',           b.source)
   ].filter(Boolean).join('');
   return `
   <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;background:#fafafa;padding:24px">
-    <div style="background:#0a0a0a;color:#d4af37;padding:20px 24px;border-radius:8px 8px 0 0">
-      <h2 style="margin:0;font-size:20px;letter-spacing:1px">ALRAYYAN GROUP</h2>
-      <p style="margin:4px 0 0;color:#bbb;font-size:13px">New Visit Booking Request</p>
-    </div>
+    ${emailHeader('New Visit Booking Request')}
     <div style="background:#fff;border:1px solid #eee;border-top:none;border-radius:0 0 8px 8px;padding:20px 0">
       <table style="width:100%;border-collapse:collapse">${rows}</table>
       <div style="text-align:center;padding:24px">
-        <a href="https://alrayyangroup.online/admin.html#panel-bookings"
+        <a href="https://alrayyangroup.online/mgmt-panel.html#panel-bookings"
            style="background:#d4af37;color:#0a0a0a;text-decoration:none;font-weight:700;
                   padding:12px 28px;border-radius:6px;display:inline-block;font-size:14px">
           Review in Admin Panel →
@@ -94,12 +112,9 @@ function adminEmailHtml(b){
 function customerApprovedHtml(b){
   return `
   <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;background:#fafafa;padding:24px">
-    <div style="background:#0a0a0a;color:#d4af37;padding:20px 24px;border-radius:8px 8px 0 0">
-      <h2 style="margin:0;font-size:20px;letter-spacing:1px">ALRAYYAN GROUP</h2>
-      <p style="margin:4px 0 0;color:#bbb;font-size:13px">Your visit has been confirmed</p>
-    </div>
+    ${emailHeader('Your visit has been confirmed')}
     <div style="background:#fff;border:1px solid #eee;border-top:none;border-radius:0 0 8px 8px;padding:28px 28px">
-      <p style="font-size:15px;color:#111">Dear ${b.visitor_name || 'guest'},</p>
+      <p style="font-size:15px;color:#111">Dear ${esc(b.visitor_name || 'guest')},</p>
       <p style="font-size:14px;color:#444;line-height:1.6">
         Thank you for your interest in <strong>Alrayyan Tower</strong>.
         Your site visit request has been <strong style="color:#1a8a3a">confirmed</strong>.
@@ -134,27 +149,24 @@ function customerApprovedHtml(b){
 
 function customerRescheduledHtml(b){
   const note = b.reschedule_note
-    ? `<p style="font-size:14px;color:#444;line-height:1.6;background:#fffaf0;border-left:3px solid #d4af37;padding:10px 14px;border-radius:4px">${b.reschedule_note}</p>`
+    ? `<p style="font-size:14px;color:#444;line-height:1.6;background:#fffaf0;border-left:3px solid #d4af37;padding:10px 14px;border-radius:4px">${esc(b.reschedule_note)}</p>`
     : '';
   return `
   <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;background:#fafafa;padding:24px">
-    <div style="background:#0a0a0a;color:#d4af37;padding:20px 24px;border-radius:8px 8px 0 0">
-      <h2 style="margin:0;font-size:20px;letter-spacing:1px">ALRAYYAN GROUP</h2>
-      <p style="margin:4px 0 0;color:#bbb;font-size:13px">Visit reschedule — new proposed time</p>
-    </div>
+    ${emailHeader('Visit reschedule — new proposed time')}
     <div style="background:#fff;border:1px solid #eee;border-top:none;border-radius:0 0 8px 8px;padding:28px">
-      <p style="font-size:15px;color:#111">Dear ${b.visitor_name || 'guest'},</p>
+      <p style="font-size:15px;color:#111">Dear ${esc(b.visitor_name || 'guest')},</p>
       <p style="font-size:14px;color:#444;line-height:1.6">
         Thank you for your interest in <strong>Alrayyan Tower</strong>.
         Unfortunately your originally requested slot is not available, and we
         would like to propose a new time for your site visit:
       </p>
       <table style="width:100%;border-collapse:collapse;margin:18px 0;background:#fafafa;border-radius:6px">
-        ${fmtField('Reference',          b.ref)}
+        ${fmtField('Reference',            b.ref)}
         ${fmtField('Originally requested', (b.preferred_date||'—') + ' ' + (b.preferred_time||''))}
-        ${fmtField('New proposed date',  b.proposed_date)}
-        ${fmtField('New proposed time',  b.proposed_time || 'To be confirmed')}
-        ${fmtField('Location',           b.floor_preference || b.office || 'Alrayyan Tower, Queen Alia St, Amman')}
+        ${fmtField('New proposed date',    b.proposed_date)}
+        ${fmtField('New proposed time',    b.proposed_time || 'To be confirmed')}
+        ${fmtField('Location',             b.floor_preference || b.office || 'Alrayyan Tower, Queen Alia St, Amman')}
       </table>
       ${note}
       <p style="font-size:14px;color:#444;line-height:1.6">
@@ -169,21 +181,24 @@ function customerRescheduledHtml(b){
 }
 
 function customerRejectedHtml(b){
+  const reasonBlock = b.rejection_note
+    ? `<p style="font-size:14px;color:#444;line-height:1.6;background:#fff8f8;border-left:3px solid #c0392b;padding:10px 14px;border-radius:4px;margin-top:12px">${esc(b.rejection_note)}</p>`
+    : '';
   return `
   <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;background:#fafafa;padding:24px">
-    <div style="background:#0a0a0a;color:#d4af37;padding:20px 24px;border-radius:8px 8px 0 0">
-      <h2 style="margin:0;font-size:20px">ALRAYYAN GROUP</h2>
-      <p style="margin:4px 0 0;color:#bbb;font-size:13px">Visit Request Update</p>
-    </div>
+    ${emailHeader('Visit Request Update')}
     <div style="background:#fff;border:1px solid #eee;border-top:none;border-radius:0 0 8px 8px;padding:28px">
-      <p style="font-size:15px;color:#111">Dear ${b.visitor_name || 'guest'},</p>
+      <p style="font-size:15px;color:#111">Dear ${esc(b.visitor_name || 'guest')},</p>
       <p style="font-size:14px;color:#444;line-height:1.6">
         Thank you for your interest in Alrayyan Tower. Unfortunately we are
-        unable to accommodate your requested time slot. Please reply to this
-        email or call us to arrange an alternative.
+        unable to accommodate your requested time slot.
+      </p>
+      ${reasonBlock}
+      <p style="font-size:14px;color:#444;line-height:1.6;margin-top:12px">
+        Please reply to this email or call us to arrange an alternative visit.
       </p>
       <p style="font-size:14px;color:#444;line-height:1.6">
-        Reference: <strong>${b.ref || '—'}</strong>
+        Reference: <strong>${esc(b.ref || '—')}</strong>
       </p>
       <p style="color:#999;font-size:12px;text-align:center;margin-top:24px">
         Warm regards,<br/>The Alrayyan Group Team
@@ -202,17 +217,26 @@ function customerRejectedHtml(b){
  * Once Meta WhatsApp Business API is approved:
  *   - Add WHATSAPP_TOKEN and WHATSAPP_PHONE_ID as Firebase secrets.
  *   - Implement the real call here (graph.facebook.com endpoint).
+ *
+ * TODO (activation checklist):
+ *   1. firebase functions:secrets:set WHATSAPP_TOKEN
+ *   2. firebase functions:secrets:set WHATSAPP_PHONE_ID
+ *   3. Uncomment the implementation below.
+ *   4. firebase deploy --only functions
  */
 async function sendWhatsApp(toPhone, templateName, params){
-  // TODO: implement once Meta approves the Business account.
-  // const token = process.env.WHATSAPP_TOKEN;
+  // NOT YET ACTIVE — Meta Business API approval pending.
+  // const token   = process.env.WHATSAPP_TOKEN;
   // const phoneId = process.env.WHATSAPP_PHONE_ID;
   // const url = `https://graph.facebook.com/v20.0/${phoneId}/messages`;
-  // await fetch(url, { method:'POST', headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},
-  //   body: JSON.stringify({ messaging_product:'whatsapp', to: toPhone,
-  //     type:'template', template:{ name: templateName, language:{code:'en'},
-  //     components:[{ type:'body', parameters: params.map(p=>({type:'text',text:String(p)})) }] }})});
-  logger.info('[whatsapp:stub] would send', { toPhone, templateName, params });
+  // await fetch(url, { method:'POST',
+  //   headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
+  //   body: JSON.stringify({ messaging_product:'whatsapp', to: toPhone, type:'template',
+  //     template:{ name: templateName, language:{code:'en'},
+  //       components:[{ type:'body', parameters: params.map(p=>({type:'text',text:String(p)})) }] }
+  //   })
+  // });
+  logger.warn('[whatsapp] NOT CONFIGURED — Meta approval pending. Would send:', { toPhone, templateName, params });
   return { ok: false, reason: 'whatsapp_not_configured_yet' };
 }
 
@@ -243,10 +267,6 @@ exports.onBookingCreated = onDocumentCreated(
       });
       logger.info('[booking:created] admin email sent', { id });
 
-      // WhatsApp to admin (stub for now — activates after Meta approval).
-      // Admin phone configured separately as ADMIN_WHATSAPP secret in future.
-      // await sendWhatsApp(ADMIN_WHATSAPP, 'new_booking', [booking.ref, booking.visitor_name, booking.preferred_date]);
-
       await snap.ref.update({
         admin_notified_at: admin.firestore.FieldValue.serverTimestamp(),
         admin_notified_via: 'email'
@@ -274,8 +294,6 @@ exports.onBookingStatusChanged = onDocumentUpdated(
     const before = event.data.before.data() || {};
     const after  = event.data.after.data()  || {};
     const statusChanged = before.status !== after.status;
-    // Treat a reschedule edit (new proposed_date/time while status stays 'rescheduled')
-    // as worth re-emailing the customer.
     const rescheduleEdited = after.status === 'rescheduled'
       && (before.proposed_date !== after.proposed_date || before.proposed_time !== after.proposed_time);
     if (!statusChanged && !rescheduleEdited) return;
@@ -308,10 +326,6 @@ exports.onBookingStatusChanged = onDocumentUpdated(
         html
       });
       logger.info('[booking:status] customer email sent', { id, status: after.status });
-
-      // WhatsApp customer notify (stub — activates after Meta approval).
-      // await sendWhatsApp(after.phone, isApproved ? 'visit_confirmed' : 'visit_declined',
-      //   [after.visitor_name, after.preferred_date, after.preferred_time || '—']);
 
       await event.data.after.ref.update({
         customer_notified_at: admin.firestore.FieldValue.serverTimestamp(),

@@ -3,7 +3,8 @@
   "description": "Cloud Functions for Alrayyan Tower booking notifications (Email + WhatsApp)",
   "version": "1.0.0",
   "scripts": {
-    "lint": "echo 'no linter configured'",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
@@ -18,6 +19,10 @@
     "firebase-admin": "^13.10.0",
     "firebase-functions": "^7.2.5",
     "nodemailer": "^8.0.7"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-google": "^0.14.0"
   },
   "private": true
 }

@@ -795,9 +795,6 @@
       filter: none !important;
       background: #080808;
       border-bottom: 1px solid rgba(184,115,51,0.08);
-      transform: scale(var(--biz-logo-scale, 1));
-      transform-origin: center;
-      transition: transform 0.3s ease;
     }
     .biz-card-wrap:hover .biz-front-img { filter: none !important; }
     .biz-front-body {
@@ -1100,14 +1097,14 @@
     .mobile-menu a:hover { color: var(--gold); }
 
     /* ===== RESPONSIVE ===== */
-    /* Keep nav items on one line; allow middle links to shrink before wrapping. */
-    nav { gap: 1rem; flex-wrap: nowrap; }
-    .nav-logo { flex: 0 1 auto; min-width: 0; }
-    .nav-links { flex: 1 1 auto; justify-content: center; min-width: 0; }
+    /* Nav layout: logo never shrinks; links section fills the center. */
+    nav { gap: 1rem; flex-wrap: nowrap; overflow: hidden; }
+    .nav-logo { flex: 0 0 auto; }
+    .nav-links { flex: 1 1 auto; justify-content: center; min-width: 0; overflow: hidden; }
     .lang-sw { flex: 0 0 auto; }
 
-    /* Navbar shrink for medium widths (769-1200px) — prevents link overflow */
-    @media (min-width: 769px) and (max-width: 1200px) {
+    /* Navbar shrink for medium widths (961-1400px) — keeps all items on one line */
+    @media (min-width: 961px) and (max-width: 1400px) {
       nav { padding: 0 3%; gap: 0.75rem; }
       .nav-links { gap: 1rem; flex-wrap: nowrap; }
       .nav-links a { font-size: 0.68rem; letter-spacing: 0.8px; white-space: nowrap; }
@@ -1117,23 +1114,14 @@
       .nav-logo-text .name { font-size: 0.95rem; letter-spacing: 1px; }
       .nav-logo-text .tagline { font-size: 0.5rem; letter-spacing: 1.5px; }
     }
+    /* Hamburger range: compact nav styling (link bar is hidden via the block below) */
     @media (min-width: 769px) and (max-width: 960px) {
       nav { gap: 0.5rem; padding: 0 2.5%; }
-      .nav-links { gap: 0.65rem; }
-      .nav-links a { font-size: 0.6rem; letter-spacing: 0.3px; padding-bottom: 2px; }
-      .nav-links a#nav-avail-link { font-size: 0.65rem; }
       .nav-logo-text .tagline { display: none; }
       .nav-logo-text .name { font-size: 0.85rem; letter-spacing: 0.8px; }
       .nav-logo img { height: 36px; }
-      .nav-cta { padding: 5px 9px; font-size: 0.6rem; letter-spacing: 0.5px; }
       .lang-sw { margin-left: 4px; }
       .lang-btn { padding: 4px 6px; font-size: 0.52rem; }
-    }
-    @media (min-width: 769px) and (max-width: 840px) {
-      .nav-links { gap: 0.5rem; }
-      .nav-links a { font-size: 0.55rem; }
-      .nav-links a#nav-avail-link { font-size: 0.58rem; }
-      .nav-cta { padding: 4px 8px; font-size: 0.55rem; }
     }
     @media (max-width: 1024px) {
       .about-wrap, .features-wrap { grid-template-columns: 1fr; }

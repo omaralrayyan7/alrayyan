@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"/>
   <link rel="stylesheet" href="css/floor-detail.css">
 </head>
 <body>
@@ -70,7 +70,6 @@
 
     <!-- SPACE OVERVIEW -->
     <div class="fade-in">
-      <img alt="" id="avail-img" class="avail-img" style="display:none" decoding="async" loading="lazy">
       <p class="sec-eye" data-i18n="secOvEye">Space Overview</p>
       <h2 class="sec-title"><span data-i18n="secOvTitleA">About This</span> <em data-i18n="secOvTitleB">Space</em></h2>
       <div class="gold-line"></div>
@@ -234,7 +233,7 @@
   <div class="f-copy" data-i18n="footCopy">© 2025 Alrayyan Group. All rights reserved.</div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmYP+ZWkRY1yPefHsXixujzYSLV" crossorigin="anonymous" defer></script>
 <script>
 // ── FLOOR DATA ──────────────────────────────────────────────────────────────
 const FLOORS = {
@@ -617,6 +616,8 @@ const floorImageConfig = {
 const renderTotal = IMAGINARY_COUNTS[floorId] || 0;
 let renderIndex = 0;
 let renderInterval = null;
+// Real-gallery slider state — must be here (before init IIFE) to avoid TDZ.
+const _grState = {};
 
 function renderFloor() {
   const L = currentLang;
@@ -666,24 +667,6 @@ function renderFloor() {
       heroEl.style.backgroundImage = 'linear-gradient(135deg, rgba(5,5,5,0.7), rgba(10,8,4,0.95))';
     }
   }
-  const availEl = document.getElementById('avail-img');
-  // Clean up any previously-injected placeholder so language switches don't stack.
-  if (availEl && availEl.previousElementSibling && availEl.previousElementSibling.dataset && availEl.previousElementSibling.dataset.availPlaceholder === '1') {
-    availEl.previousElementSibling.remove();
-  }
-  if (availEl) {
-    // Always start hidden + empty — only show for floors that have a real avail image.
-    availEl.style.display = 'none';
-    availEl.src = '';
-    const NO_AVAIL = ['3', 'g-indoor', 'g-outdoor', '1', '2', '8'];
-    if (!NO_AVAIL.includes(fl.id)) {
-      availEl.style.display = '';
-      availEl.onerror = () => { availEl.style.display = 'none'; };
-      availEl.src = 'images/floors/floor-' + folderId + '/' + (FL_LABEL[folderId] || FL_LABEL[fl.id]) + '-avail.webp';
-      availEl.className = 'avail-img avail-' + fl.id;
-    }
-  }
-
   // specs
   const specsEl = document.getElementById('specs-grid');
   specsEl.innerHTML = '';
@@ -815,60 +798,98 @@ function openMaps() {
   window.open('https://www.google.com/maps/search/Alrayyan+Tower+Amman','_blank');
 }
 
-// ── SECTION A: FLOOR IMAGES GALLERY ────────────────────────────────────────
+// ── SECTION A: FLOOR IMAGES GALLERY (slider) ────────────────────────────────
 // Named function — called from renderFloor() so it rebuilds on every language switch.
-// Always renders (no display:none). If cfg.real === 0 or all images fail, shows placeholders.
-// Builds the gallery HTML for a given sub-id (used in 9-floor combined view too).
-function buildGalleryHTML(subId, headingHTML){
+// Renders as a carousel matching the imaginary slider structure (.fr-carousel/.fr-track).
+// Per-section state is stored in _grState[subId] so the 9th floor can have two
+// independent sliders (outdoor + indoor) without conflicting with the imaginary slider.
+
+function _grUpdatePos(subId) {
+  const s = _grState[subId];
+  if (!s) return;
+  const track = document.getElementById('gr-track-' + subId);
+  if (track) track.style.transform = 'translateX(-' + (s.idx * 100) + '%)';
+  document.querySelectorAll('#gr-dots-' + subId + ' .fr-dot')
+    .forEach((d, i) => d.classList.toggle('active', i === s.idx));
+}
+function _grGoTo(subId, i) {
+  const s = _grState[subId];
+  if (!s) return;
+  s.idx = i;
+  _grUpdatePos(subId);
+}
+function _grSlide(subId, dir) {
+  const s = _grState[subId];
+  if (!s || s.total < 2) return;
+  s.idx = (s.idx + dir + s.total) % s.total;
+  _grUpdatePos(subId);
+}
+function _grAutoSlide(subId) {
+  const s = _grState[subId];
+  if (!s || s.total < 2) return;
+  s.idx = (s.idx + 1) % s.total;
+  _grUpdatePos(subId);
+}
+function _grInit(subId) {
+  if (!_grState[subId]) _grState[subId] = { idx: 0, total: 0, interval: null };
+  const s = _grState[subId];
+  if (s.interval) { clearInterval(s.interval); s.interval = null; }
+  s.idx = 0;
+  const track = document.getElementById('gr-track-' + subId);
+  s.total = track ? track.children.length : 0;
+  _grUpdatePos(subId);
+  if (s.total > 1) {
+    s.interval = setInterval(() => _grAutoSlide(subId), 5000);
+    const carousel = document.getElementById('gr-carousel-' + subId);
+    if (carousel) {
+      carousel.addEventListener('mouseenter', () => { if (s.interval) { clearInterval(s.interval); s.interval = null; } });
+      carousel.addEventListener('mouseleave', () => { if (!s.interval) s.interval = setInterval(() => _grAutoSlide(subId), 5000); });
+    }
+  }
+}
+
+function buildGalleryHTML(subId, headingHTML) {
   const cfg = floorImageConfig[subId];
-  const t = I18N[currentLang] || I18N.en;
   if (cfg && cfg.hideGallery === true) return '';
   const placeholderHTML = () => `
     ${headingHTML}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:16px;">
-      ${[1,2,3,4].map(()=>`
+      ${[1,2,3,4].map(() => `
         <div style="width:100%;height:280px;background:#111;border:1px solid rgba(184,115,51,0.15);
           border-radius:3px;display:flex;align-items:center;justify-content:center;
           color:rgba(184,115,51,0.3);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;">
           Image Coming Soon
         </div>`).join('')}
     </div>`;
-  if (!cfg || cfg.placeholder === true || (cfg.real|0) === 0) {
-    return placeholderHTML();
-  }
-  const imgExt = cfg.ext || 'webp';
+  if (!cfg || cfg.placeholder === true || (cfg.real | 0) === 0) return placeholderHTML();
+
+  const imgExt  = cfg.ext    || 'webp';
   const imageId = cfg.imageId || subId;
   const basePath = 'images/floors/floor-' + imageId + '/real/';
-  const errH = `onerror="this.onerror=null;this.closest('.fg-simple, .fg-mains')?.style && (this.style.opacity='0')"`;
+  const errH = `onerror="this.onerror=null;this.style.opacity='0'"`;
   const fileName = (i) => cfg.customRealNames && cfg.customRealNames[i - 1]
     ? `${cfg.customRealNames[i - 1]}.${imgExt}`
     : `${imageId}-real-img-${i}.${imgExt}`;
+  const total = cfg.real;
+
   let html = headingHTML;
-  if (cfg.mains > 0) {
-    const mainCols = cfg.mains === 2 ? 'cols-2' : 'cols-3';
-    html += `<div class="fg-mains ${mainCols}" id="fg-mains-${subId}">`;
-    for (let i = 1; i <= cfg.mains; i++) {
-      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${subId} image ${i}" id="fg-img-${subId}-${i}" class="fg-img fg-${subId}-${i}" loading="eager" ${errH} decoding="sync"/>`;
-    }
-    html += `</div>`;
-    if (cfg.real > cfg.mains) {
-      html += `<div class="fg-thumbs-wrap"><div class="fg-thumbs" id="fg-thumbs-${subId}">`;
-      for (let i = 1; i <= cfg.real; i++) {
-        const isMain = i <= cfg.mains;
-        html += `<img src="${basePath}${fileName(i)}" alt="Floor ${subId} image ${i}" id="fg-img-${subId}-${i}-thumb" class="fg-img fg-${subId}-${i}-thumb ${isMain ? 'active' : ''}" onclick="swapMainImage(this, ${i})" loading="eager" ${errH} decoding="async"/>`;
-      }
-      html += `</div>
-        <div class="fg-arrows">
-          <button class="fg-arrow" id="fg-left-${subId}" onclick="scrollThumbs(-1, '${subId}')">←</button>
-          <button class="fg-arrow" id="fg-right-${subId}" onclick="scrollThumbs(1, '${subId}')">→</button>
-        </div></div>`;
-    }
-  } else {
-    const gridCols = cfg.real === 1 ? '' : cfg.real === 2 ? 'cols-2' : 'cols-3';
-    html += `<div class="fg-simple ${gridCols}">`;
-    for (let i = 1; i <= cfg.real; i++) {
-      const decodeAttr = i <= 3 ? 'sync' : 'async';
-      html += `<img src="${basePath}${fileName(i)}" alt="Floor ${subId} image ${i}" id="fg-img-${subId}-${i}" class="fg-img fg-${subId}-${i}" loading="eager" ${errH} decoding="${decodeAttr}"/>`;
+  html += `<div class="fr-carousel" id="gr-carousel-${subId}">
+    <div class="fr-track" id="gr-track-${subId}" style="direction:ltr">`;
+  for (let i = 1; i <= total; i++) {
+    html += `<img src="${basePath}${fileName(i)}" alt="Floor ${subId} image ${i}" id="fg-img-${subId}-${i}" class="fg-img fg-${subId}-${i}" loading="lazy" ${errH} decoding="async"/>`;
+  }
+  html += `</div>`;
+  if (total > 1) {
+    html += `<div class="fr-arrows">
+      <button class="fg-arrow" onclick="_grSlide('${subId}', -1)">←</button>
+      <button class="fg-arrow" onclick="_grSlide('${subId}', 1)">→</button>
+    </div>`;
+  }
+  html += `</div>`;
+  if (total > 1) {
+    html += `<div class="fr-dots" id="gr-dots-${subId}">`;
+    for (let i = 0; i < total; i++) {
+      html += `<button class="fr-dot${i === 0 ? ' active' : ''}" onclick="_grGoTo('${subId}', ${i})"></button>`;
     }
     html += `</div>`;
   }
@@ -892,19 +913,20 @@ function renderFloorGallery() {
     const eyeOut = currentLang === 'ar' ? 'تراس خارجي' : 'Outdoor Terrace';
     const eyeIn  = currentLang === 'ar' ? 'مساحة داخلية' : 'Indoor Space';
     const headOutHTML = `<p class="sec-eye">${eyeOut}</p>
-      <h2 class="sec-title">${currentLang==='ar'
-        ? `<span>صور</span> <em>التراس الخارجي</em>`
-        : `<span>Outdoor Terrace</span> <em>Images</em>`}</h2>
+      <h2 class="sec-title">${currentLang === 'ar'
+        ? '<span>صور</span> <em>التراس الخارجي</em>'
+        : '<span>Outdoor Terrace</span> <em>Images</em>'}</h2>
       <div class="gold-line"></div>`;
     const headInHTML = `<p class="sec-eye" style="margin-top:36px">${eyeIn}</p>
-      <h2 class="sec-title">${currentLang==='ar'
-        ? `<span>صور</span> <em>المساحة الداخلية</em>`
-        : `<span>Indoor Space</span> <em>Images</em>`}</h2>
+      <h2 class="sec-title">${currentLang === 'ar'
+        ? '<span>صور</span> <em>المساحة الداخلية</em>'
+        : '<span>Indoor Space</span> <em>Images</em>'}</h2>
       <div class="gold-line"></div>`;
     container.innerHTML =
       buildGalleryHTML('9-outdoor', headOutHTML) +
       buildGalleryHTML('9-indoor',  headInHTML);
-    updateThumbArrows();
+    _grInit('9-outdoor');
+    _grInit('9-indoor');
     return;
   }
 
@@ -916,7 +938,7 @@ function renderFloorGallery() {
     <h2 class="sec-title">${galleryTitle}</h2>
     <div class="gold-line"></div>`;
   container.innerHTML = buildGalleryHTML(floorId, headingHTML);
-  updateThumbArrows();
+  _grInit(floorId);
 }
 
 function swapMainImage(thumbEl, imgIndex) {

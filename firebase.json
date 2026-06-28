@@ -9,7 +9,22 @@
       "seed.html"
     ],
     "cleanUrls": true,
-    "errorPage": "404.html"
+    "errorPage": "404.html",
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          { "key": "X-Frame-Options",        "value": "DENY" },
+          { "key": "X-Content-Type-Options",  "value": "nosniff" },
+          { "key": "Referrer-Policy",          "value": "strict-origin-when-cross-origin" },
+          { "key": "Permissions-Policy",       "value": "camera=(), microphone=(), geolocation=(self)" },
+          {
+            "key": "Content-Security-Policy",
+            "value": "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net www.gstatic.com cdn-cgi browser.sentry-cdn.com; style-src 'self' 'unsafe-inline' cdn.jsdelivr.net fonts.googleapis.com; font-src 'self' fonts.gstatic.com data:; img-src 'self' data: blob: *.googleapis.com *.gstatic.com; connect-src 'self' *.googleapis.com *.firebaseio.com firestore.googleapis.com identitytoolkit.googleapis.com securetoken.googleapis.com *.cloudfunctions.net *.sentry.io o0.ingest.sentry.io; worker-src blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests;"
+          }
+        ]
+      }
+    ]
   },
   "functions": [
     {
@@ -23,7 +38,8 @@
         "*.local",
         ".env",
         ".env.*"
-      ]
+      ],
+      "predeploy": ["npm --prefix functions run lint"]
     }
   ],
   "emulators": {
