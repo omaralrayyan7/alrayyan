@@ -897,12 +897,12 @@
           <li><a href="#contact"    data-i18n="mContact">Contact</a></li>
         </ul>
       </div>
-      <div class="footer-col">
+      <div class="footer-col" id="footer-biz-col">
         <h4 data-i18n="footOB">Our Businesses</h4>
         <ul>
-          <li><a href="fashion.html" data-i18n="bizFashBack">Alrayyan Fashion</a></li>
-          <li><a href="arts.html"    data-i18n="bizArtsBack">Alrayyan Arts</a></li>
-          <li><a href="land.html"    data-i18n="bizLandBack">Alrayyan Lands</a></li>
+          <li id="footer-biz-1"><a href="fashion.html" data-i18n="bizFashBack">Alrayyan Fashion</a></li>
+          <li id="footer-biz-2"><a href="arts.html"    data-i18n="bizArtsBack">Alrayyan Arts</a></li>
+          <li id="footer-biz-3"><a href="land.html"    data-i18n="bizLandBack">Alrayyan Lands</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -916,7 +916,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span data-i18n="footCopy">© 2025 Alrayyan Group. All rights reserved.</span>
+      <span data-i18n="footCopy">© 2026 Alrayyan Group. All rights reserved.</span>
       <span data-i18n="footTag">Premium Office Rentals · Amman, Jordan</span>
       <span><a href="privacy.html" style="color:var(--gold);text-decoration:none;" data-i18n="cookiePolicy">Privacy &amp; Cookies Policy</a></span>
     </div>
@@ -1260,7 +1260,7 @@
         footBrand:'ALRAYYAN GROUP',
         footDesc:'Your first choice for premium office rentals and diversified business ventures — where ambition finds its address.',
         footQL:'Quick Links', footOB:'Our Businesses', footCon:'Contact',
-        footCopy:'© 2025 Alrayyan Group. All rights reserved.', footTag:'Premium Office Rentals · Amman, Jordan',
+        footCopy:'© 2026 Alrayyan Group. All rights reserved.', footTag:'Premium Office Rentals · Amman, Jordan',
         mHome:'Home', mAbout:'About', mOffices:'Offices', mBiz:'Our Businesses', mGallery:'Gallery', mContact:'Contact',
         cookieMsg:'We use cookies to make Alrayyan Tower work, remember your language preference and analyse anonymous traffic. By accepting you agree to our Privacy & Cookies Policy.',
         cookiePolicy:'Privacy & Cookies Policy',
@@ -1325,7 +1325,7 @@
         footBrand:'مجموعة الريان',
         footDesc:'خيارك الأول لتأجير المكاتب الفاخرة والمشاريع التجارية المتنوعة — حيث يجد الطموح عنوانه.',
         footQL:'روابط سريعة', footOB:'أعمالنا', footCon:'تواصل',
-        footCopy:'© 2025 مجموعة الريان. جميع الحقوق محفوظة.', footTag:'تأجير مكاتب فاخرة · الأردن',
+        footCopy:'© 2026 مجموعة الريان. جميع الحقوق محفوظة.', footTag:'تأجير مكاتب فاخرة · الأردن',
         mHome:'الرئيسية', mAbout:'من نحن', mOffices:'المكاتب', mBiz:'أعمالنا', mGallery:'المعرض', mContact:'تواصل',
         cookieMsg:'نستخدم ملفات تعريف الارتباط لتشغيل برج الريان وحفظ تفضيلات اللغة وتحليل الزيارات لتحسين الموقع. بالموافقة فأنت توافق على سياسة الخصوصية وملفات تعريف الارتباط.',
         cookiePolicy:'سياسة الخصوصية وملفات تعريف الارتباط',
@@ -1571,37 +1571,35 @@
     // (instant, same browser — the same mechanism the floor chips use).
     function applyBizStatus(map){
       if (!map) return;
-      [
-        { key: 'biz_status_1', wrapSel: '.biz-card-wrap:nth-child(1)', footerSel: 'footer a[href="fashion.html"]' },
-        { key: 'biz_status_2', wrapSel: '.biz-card-wrap:nth-child(2)', footerSel: 'footer a[href="arts.html"]' },
-        { key: 'biz_status_3', wrapSel: '.biz-card-wrap:nth-child(3)', footerSel: 'footer a[href="land.html"]' },
-      ].forEach(({ key, wrapSel, footerSel }) => {
+      const BIZ = [
+        { key: 'biz_status_1', wrapSel: '.biz-card-wrap:nth-child(1)', footerLiId: 'footer-biz-1' },
+        { key: 'biz_status_2', wrapSel: '.biz-card-wrap:nth-child(2)', footerLiId: 'footer-biz-2' },
+        { key: 'biz_status_3', wrapSel: '.biz-card-wrap:nth-child(3)', footerLiId: 'footer-biz-3' },
+      ];
+      let activeCount = 0;
+      BIZ.forEach(({ key, wrapSel, footerLiId }) => {
         const status = map[key];
-        if (!status) return; // not yet published — leave HTML default alone
+        if (!status) { activeCount++; return; }
         const isActive = status === 'active';
+        if (isActive) activeCount++;
+        // Card section: fade when inactive (keep visible but disabled)
         const wrap = document.querySelector(wrapSel);
         if (wrap) {
           wrap.style.opacity = isActive ? '' : '0.35';
           wrap.style.pointerEvents = isActive ? '' : 'none';
           const visitBtn = wrap.querySelector('.biz-back-btn');
           if (visitBtn) {
-            if (isActive) {
-              visitBtn.removeAttribute('aria-disabled');
-              visitBtn.style.opacity = '';
-              visitBtn.style.pointerEvents = '';
-            } else {
-              visitBtn.setAttribute('aria-disabled', 'true');
-              visitBtn.style.opacity = '0.4';
-              visitBtn.style.pointerEvents = 'none';
-            }
+            if (isActive) { visitBtn.removeAttribute('aria-disabled'); visitBtn.style.opacity = ''; visitBtn.style.pointerEvents = ''; }
+            else { visitBtn.setAttribute('aria-disabled', 'true'); visitBtn.style.opacity = '0.4'; visitBtn.style.pointerEvents = 'none'; }
           }
         }
-        const footerLink = footerSel && document.querySelector(footerSel);
-        if (footerLink) {
-          const parentLi = footerLink.closest('li');
-          if (parentLi) parentLi.style.display = isActive ? '' : 'none';
-        }
+        // Footer: disappear when inactive
+        const li = document.getElementById(footerLiId);
+        if (li) li.style.display = isActive ? '' : 'none';
       });
+      // Hide entire footer "Our Businesses" column if all are inactive
+      const col = document.getElementById('footer-biz-col');
+      if (col) col.style.display = activeCount === 0 ? 'none' : '';
     }
     (function hookSiteContent(){
       const wire = () => ArData.subscribe('site_content', applyAdminSiteContent);

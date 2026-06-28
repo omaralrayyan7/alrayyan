@@ -17,14 +17,14 @@
  *   - ADMIN_EMAIL         Where the "new booking" notification is sent.
  */
 
-const { onDocumentCreated, onDocumentUpdated } = require('firebase-functions/v2/firestore');
-const { defineSecret } = require('firebase-functions/params');
-const { setGlobalOptions, logger } = require('firebase-functions/v2');
+const {onDocumentCreated, onDocumentUpdated} = require('firebase-functions/v2/firestore');
+const {defineSecret} = require('firebase-functions/params');
+const {setGlobalOptions, logger} = require('firebase-functions/v2');
 const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
 
 admin.initializeApp();
-setGlobalOptions({ region: 'europe-west1', maxInstances: 10 });
+setGlobalOptions({region: 'europe-west1', maxInstances: 10});
 
 // Secrets — referenced by name, injected at runtime.
 const GMAIL_EMAIL = defineSecret('GMAIL_EMAIL');
@@ -32,13 +32,13 @@ const GMAIL_APP_PASSWORD = defineSecret('GMAIL_APP_PASSWORD');
 const ADMIN_EMAIL = defineSecret('ADMIN_EMAIL');
 
 // Build a Nodemailer transporter using Gmail SMTP + App Password.
-function buildTransporter(){
+function buildTransporter() {
   return nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: GMAIL_EMAIL.value(),
-      pass: GMAIL_APP_PASSWORD.value()
-    }
+      pass: GMAIL_APP_PASSWORD.value(),
+    },
   });
 }
 
@@ -46,7 +46,7 @@ function buildTransporter(){
 // HTML escape — prevents XSS when embedding user-supplied text in HTML emails.
 // ────────────────────────────────────────────────────────────────────────────
 
-function esc(s){
+function esc(s) {
   return String(s == null ? '' : s)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -59,7 +59,7 @@ function esc(s){
 // Email templates
 // ────────────────────────────────────────────────────────────────────────────
 
-function fmtField(label, value){
+function fmtField(label, value) {
   if (!value) return '';
   return `<tr>
     <td style="padding:6px 14px;color:#888;font-size:13px;border-bottom:1px solid #eee">${label}</td>
@@ -67,7 +67,7 @@ function fmtField(label, value){
   </tr>`;
 }
 
-function emailHeader(subtitle){
+function emailHeader(subtitle) {
   return `<div style="background:#0a0a0a;padding:20px 24px;border-radius:8px 8px 0 0;text-align:center">
     <img src="https://alrayyangroup.online/images/logo/logo.png" alt="Alrayyan Group" width="64" height="64" style="display:block;margin:0 auto 12px;border-radius:4px" />
     <h2 style="margin:0;font-size:20px;letter-spacing:1px;color:#d4af37">ALRAYYAN GROUP</h2>
@@ -75,19 +75,19 @@ function emailHeader(subtitle){
   </div>`;
 }
 
-function adminEmailHtml(b){
+function adminEmailHtml(b) {
   const rows = [
-    fmtField('Reference',        b.ref),
-    fmtField('Name',             b.visitor_name),
+    fmtField('Reference', b.ref),
+    fmtField('Name', b.visitor_name),
     fmtField('Phone / WhatsApp', b.phone),
-    fmtField('Email',            b.email),
-    fmtField('Company',          b.company),
-    fmtField('Floor / Office',   b.floor_preference || b.office),
-    fmtField('Preferred Date',   b.preferred_date),
-    fmtField('Preferred Time',   b.preferred_time),
-    fmtField('Purpose',          b.purpose),
-    fmtField('Notes',            b.notes),
-    fmtField('Source',           b.source)
+    fmtField('Email', b.email),
+    fmtField('Company', b.company),
+    fmtField('Floor / Office', b.floor_preference || b.office),
+    fmtField('Preferred Date', b.preferred_date),
+    fmtField('Preferred Time', b.preferred_time),
+    fmtField('Purpose', b.purpose),
+    fmtField('Notes', b.notes),
+    fmtField('Source', b.source),
   ].filter(Boolean).join('');
   return `
   <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;background:#fafafa;padding:24px">
@@ -109,7 +109,7 @@ function adminEmailHtml(b){
   </div>`;
 }
 
-function customerApprovedHtml(b){
+function customerApprovedHtml(b) {
   return `
   <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;background:#fafafa;padding:24px">
     ${emailHeader('Your visit has been confirmed')}
@@ -120,10 +120,10 @@ function customerApprovedHtml(b){
         Your site visit request has been <strong style="color:#1a8a3a">confirmed</strong>.
       </p>
       <table style="width:100%;border-collapse:collapse;margin:18px 0;background:#fafafa;border-radius:6px">
-        ${fmtField('Reference',  b.ref)}
-        ${fmtField('Date',       b.preferred_date)}
-        ${fmtField('Time',       b.preferred_time || 'To be confirmed')}
-        ${fmtField('Location',   b.floor_preference || b.office || 'Alrayyan Tower, Queen Alia St, Amman')}
+        ${fmtField('Reference', b.ref)}
+        ${fmtField('Date', b.preferred_date)}
+        ${fmtField('Time', b.preferred_time || 'To be confirmed')}
+        ${fmtField('Location', b.floor_preference || b.office || 'Alrayyan Tower, Queen Alia St, Amman')}
       </table>
       <p style="font-size:14px;color:#444;line-height:1.6">
         Our team will meet you on the agreed date.
@@ -147,10 +147,10 @@ function customerApprovedHtml(b){
   </div>`;
 }
 
-function customerRescheduledHtml(b){
-  const note = b.reschedule_note
-    ? `<p style="font-size:14px;color:#444;line-height:1.6;background:#fffaf0;border-left:3px solid #d4af37;padding:10px 14px;border-radius:4px">${esc(b.reschedule_note)}</p>`
-    : '';
+function customerRescheduledHtml(b) {
+  const note = b.reschedule_note ?
+    `<p style="font-size:14px;color:#444;line-height:1.6;background:#fffaf0;border-left:3px solid #d4af37;padding:10px 14px;border-radius:4px">${esc(b.reschedule_note)}</p>` :
+    '';
   return `
   <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;background:#fafafa;padding:24px">
     ${emailHeader('Visit reschedule — new proposed time')}
@@ -162,11 +162,11 @@ function customerRescheduledHtml(b){
         would like to propose a new time for your site visit:
       </p>
       <table style="width:100%;border-collapse:collapse;margin:18px 0;background:#fafafa;border-radius:6px">
-        ${fmtField('Reference',            b.ref)}
+        ${fmtField('Reference', b.ref)}
         ${fmtField('Originally requested', (b.preferred_date||'—') + ' ' + (b.preferred_time||''))}
-        ${fmtField('New proposed date',    b.proposed_date)}
-        ${fmtField('New proposed time',    b.proposed_time || 'To be confirmed')}
-        ${fmtField('Location',             b.floor_preference || b.office || 'Alrayyan Tower, Queen Alia St, Amman')}
+        ${fmtField('New proposed date', b.proposed_date)}
+        ${fmtField('New proposed time', b.proposed_time || 'To be confirmed')}
+        ${fmtField('Location', b.floor_preference || b.office || 'Alrayyan Tower, Queen Alia St, Amman')}
       </table>
       ${note}
       <p style="font-size:14px;color:#444;line-height:1.6">
@@ -180,10 +180,10 @@ function customerRescheduledHtml(b){
   </div>`;
 }
 
-function customerRejectedHtml(b){
-  const reasonBlock = b.rejection_note
-    ? `<p style="font-size:14px;color:#444;line-height:1.6;background:#fff8f8;border-left:3px solid #c0392b;padding:10px 14px;border-radius:4px;margin-top:12px">${esc(b.rejection_note)}</p>`
-    : '';
+function customerRejectedHtml(b) {
+  const reasonBlock = b.rejection_note ?
+    `<p style="font-size:14px;color:#444;line-height:1.6;background:#fff8f8;border-left:3px solid #c0392b;padding:10px 14px;border-radius:4px;margin-top:12px">${esc(b.rejection_note)}</p>` :
+    '';
   return `
   <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;background:#fafafa;padding:24px">
     ${emailHeader('Visit Request Update')}
@@ -224,7 +224,7 @@ function customerRejectedHtml(b){
  *   3. Uncomment the implementation below.
  *   4. firebase deploy --only functions
  */
-async function sendWhatsApp(toPhone, templateName, params){
+async function sendWhatsApp(toPhone, templateName, params) {
   // NOT YET ACTIVE — Meta Business API approval pending.
   // const token   = process.env.WHATSAPP_TOKEN;
   // const phoneId = process.env.WHATSAPP_PHONE_ID;
@@ -236,8 +236,8 @@ async function sendWhatsApp(toPhone, templateName, params){
   //       components:[{ type:'body', parameters: params.map(p=>({type:'text',text:String(p)})) }] }
   //   })
   // });
-  logger.warn('[whatsapp] NOT CONFIGURED — Meta approval pending. Would send:', { toPhone, templateName, params });
-  return { ok: false, reason: 'whatsapp_not_configured_yet' };
+  logger.warn('[whatsapp] NOT CONFIGURED — Meta approval pending. Would send:', {toPhone, templateName, params});
+  return {ok: false, reason: 'whatsapp_not_configured_yet'};
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -247,14 +247,16 @@ async function sendWhatsApp(toPhone, templateName, params){
 exports.onBookingCreated = onDocumentCreated(
   {
     document: 'bookings/{bookingId}',
-    secrets: [GMAIL_EMAIL, GMAIL_APP_PASSWORD, ADMIN_EMAIL]
+    secrets: [GMAIL_EMAIL, GMAIL_APP_PASSWORD, ADMIN_EMAIL],
   },
   async (event) => {
     const snap = event.data;
-    if (!snap) { logger.warn('no snapshot'); return; }
+    if (!snap) {
+      logger.warn('no snapshot'); return;
+    }
     const booking = snap.data();
     const id = event.params.bookingId;
-    logger.info('[booking:created]', { id, ref: booking.ref, name: booking.visitor_name });
+    logger.info('[booking:created]', {id, ref: booking.ref, name: booking.visitor_name});
 
     try {
       const transporter = buildTransporter();
@@ -263,22 +265,22 @@ exports.onBookingCreated = onDocumentCreated(
         to: ADMIN_EMAIL.value(),
         subject: `🔔 New Visit Booking — ${booking.visitor_name || 'Unknown'} (${booking.ref || id})`,
         html: adminEmailHtml(booking),
-        replyTo: booking.email || GMAIL_EMAIL.value()
+        replyTo: booking.email || GMAIL_EMAIL.value(),
       });
-      logger.info('[booking:created] admin email sent', { id });
+      logger.info('[booking:created] admin email sent', {id});
 
       await snap.ref.update({
         admin_notified_at: admin.firestore.FieldValue.serverTimestamp(),
-        admin_notified_via: 'email'
+        admin_notified_via: 'email',
       });
-    } catch (err){
+    } catch (err) {
       logger.error('[booking:created] admin notify failed', err);
       await snap.ref.update({
         admin_notify_error: String(err && err.message || err),
-        admin_notify_error_at: admin.firestore.FieldValue.serverTimestamp()
+        admin_notify_error_at: admin.firestore.FieldValue.serverTimestamp(),
       }).catch(()=>{});
     }
-  }
+  },
 );
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -288,31 +290,31 @@ exports.onBookingCreated = onDocumentCreated(
 exports.onBookingStatusChanged = onDocumentUpdated(
   {
     document: 'bookings/{bookingId}',
-    secrets: [GMAIL_EMAIL, GMAIL_APP_PASSWORD]
+    secrets: [GMAIL_EMAIL, GMAIL_APP_PASSWORD],
   },
   async (event) => {
     const before = event.data.before.data() || {};
-    const after  = event.data.after.data()  || {};
+    const after = event.data.after.data() || {};
     const statusChanged = before.status !== after.status;
-    const rescheduleEdited = after.status === 'rescheduled'
-      && (before.proposed_date !== after.proposed_date || before.proposed_time !== after.proposed_time);
+    const rescheduleEdited = after.status === 'rescheduled' &&
+      (before.proposed_date !== after.proposed_date || before.proposed_time !== after.proposed_time);
     if (!statusChanged && !rescheduleEdited) return;
-    if (!['confirmed','rejected','rescheduled'].includes(after.status)) return;
+    if (!['confirmed', 'rejected', 'rescheduled'].includes(after.status)) return;
     if (!after.email) {
-      logger.warn('[booking:status] no customer email on record', { id: event.params.bookingId });
+      logger.warn('[booking:status] no customer email on record', {id: event.params.bookingId});
       return;
     }
 
     const id = event.params.bookingId;
-    logger.info('[booking:status]', { id, status: after.status });
+    logger.info('[booking:status]', {id, status: after.status});
 
     try {
       const transporter = buildTransporter();
-      let subject, html;
-      if (after.status === 'confirmed'){
+      let subject; let html;
+      if (after.status === 'confirmed') {
         subject = `✅ Your visit to Alrayyan Tower is confirmed — ${after.ref || id}`;
         html = customerApprovedHtml(after);
-      } else if (after.status === 'rescheduled'){
+      } else if (after.status === 'rescheduled') {
         subject = `🗓 Alrayyan Tower — Proposed new visit time — ${after.ref || id}`;
         html = customerRescheduledHtml(after);
       } else {
@@ -323,20 +325,20 @@ exports.onBookingStatusChanged = onDocumentUpdated(
         from: `"Alrayyan Group" <${GMAIL_EMAIL.value()}>`,
         to: after.email,
         subject,
-        html
+        html,
       });
-      logger.info('[booking:status] customer email sent', { id, status: after.status });
+      logger.info('[booking:status] customer email sent', {id, status: after.status});
 
       await event.data.after.ref.update({
         customer_notified_at: admin.firestore.FieldValue.serverTimestamp(),
-        customer_notified_via: 'email'
+        customer_notified_via: 'email',
       });
-    } catch (err){
+    } catch (err) {
       logger.error('[booking:status] customer notify failed', err);
       await event.data.after.ref.update({
         customer_notify_error: String(err && err.message || err),
-        customer_notify_error_at: admin.firestore.FieldValue.serverTimestamp()
+        customer_notify_error_at: admin.firestore.FieldValue.serverTimestamp(),
       }).catch(()=>{});
     }
-  }
+  },
 );
