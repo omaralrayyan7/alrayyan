@@ -1,12 +1,23 @@
-# What is Alrayyan Project
+# Alrayyan Group Website
 
-## Overview
+**Live site:** [alrayyangroup.online](https://alrayyangroup.online)
 
-Alrayyan is a **Firebase-hosted multi-section business website** for Alrayyan Tower — a commercial real estate complex in Amman, Jordan. It presents four business verticals: **office spaces** (floor listings), **arts** (paintings & sculptures), **fashion**, and **land** (investment plots). The site includes a public-facing storefront, a booking/visit-request system, and a protected admin panel for reviewing and approving bookings.
+A bilingual (English/Arabic), Firebase-hosted business website for **Alrayyan Tower** — a commercial real estate complex in Amman, Jordan. The site presents four business verticals — **office spaces** (floor listings), **arts** (paintings & sculptures), **fashion**, and **land** (investment plots) — with a public storefront, a Firestore-backed visit/booking system, and a protected admin panel for reviewing and approving bookings.
 
-**Tech stack:** Vanilla HTML/CSS/JS · Firebase Hosting · Firestore (database) · Firebase Cloud Functions (Node.js) · Nodemailer (Gmail SMTP)
+![screenshot placeholder](docs/screenshot.png)
+<!-- Replace docs/screenshot.png with an actual screenshot of the homepage -->
 
----
+## Key Features
+
+- **Bilingual EN/AR** — full site content and layout in English and Arabic
+- **Firestore booking system** — visitors submit visit requests per listing, stored and managed in real time via Cloud Firestore
+- **Admin panel** — protected dashboard (`mgmt-panel.html`) for reviewing, approving, or rejecting bookings
+- **Four business verticals** — office floors, arts, fashion, and land listings, each with dedicated detail pages
+- **Automated email notifications** — Firebase Cloud Functions + Nodemailer send booking confirmations and status updates
+
+## Tech Stack
+
+Vanilla HTML/CSS/JS · Firebase Hosting · Cloud Firestore · Firebase Cloud Functions (Node.js) · Nodemailer (Gmail SMTP)
 
 ## Key Code Segments
 
@@ -50,3 +61,23 @@ exports.onBookingStatusChanged = onDocumentUpdated("bookings/{bookingId}", async
 });
 ```
 
+## Setup / Run
+
+```bash
+git clone https://github.com/omaralrayyan7/alrayyan.git
+cd alrayyan
+
+# Serve statically (no build step)
+npx serve .
+
+# Cloud Functions (optional, requires Firebase CLI + your own Firebase project)
+cd functions
+npm install
+firebase deploy --only functions
+```
+
+You'll need your own Firebase project config in `js/firebase-config.js` and Firestore security rules from `firestore.rules` to run the booking/admin features end-to-end.
+
+## Live Link
+
+[alrayyangroup.online](https://alrayyangroup.online)
