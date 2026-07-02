@@ -1,64 +1,49 @@
 # Alrayyan Group Website
 
-**Live site:** [alrayyangroup.online](https://alrayyangroup.online)
+[![Live](https://img.shields.io/badge/Live-alrayyangroup.online-brightgreen)](https://alrayyangroup.online)
+[![Firebase](https://img.shields.io/badge/Firebase-Hosting-FFCA28?logo=firebase)](https://firebase.google.com/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-A bilingual (English/Arabic), Firebase-hosted business website for **Alrayyan Tower** — a commercial real estate complex in Amman, Jordan. The site presents four business verticals — **office spaces** (floor listings), **arts** (paintings & sculptures), **fashion**, and **land** (investment plots) — with a public storefront, a Firestore-backed visit/booking system, and a protected admin panel for reviewing and approving bookings.
+Bilingual (English / Arabic) Firebase-hosted business website for **Alrayyan Tower** — a commercial real estate complex in Amman, Jordan. Presents four business verticals with a public storefront, a Firestore-backed booking system, and a protected admin panel.
 
-![screenshot placeholder](docs/screenshot.png)
-<!-- Replace docs/screenshot.png with an actual screenshot of the homepage -->
+**🌐 Live:** [alrayyangroup.online](https://alrayyangroup.online)
+
+## Screenshots
+
+![Homepage](docs/screenshot.png)
+
+> Visit [alrayyangroup.online](https://alrayyangroup.online) for the live experience.
 
 ## Key Features
 
-- **Bilingual EN/AR** — full site content and layout in English and Arabic
-- **Firestore booking system** — visitors submit visit requests per listing, stored and managed in real time via Cloud Firestore
-- **Admin panel** — protected dashboard (`mgmt-panel.html`) for reviewing, approving, or rejecting bookings
-- **Four business verticals** — office floors, arts, fashion, and land listings, each with dedicated detail pages
-- **Automated email notifications** — Firebase Cloud Functions + Nodemailer send booking confirmations and status updates
+- **Bilingual EN / AR** — full site content and layout in both languages
+- **Firestore Booking System** — visitors submit visit requests per listing, managed in real time
+- **Admin Panel** — protected dashboard for reviewing, approving, or rejecting bookings
+- **Four Business Verticals** — office floors, arts, fashion, and land listings
+- **Automated Email Notifications** — Firebase Cloud Functions + Nodemailer send confirmations and status updates
 
 ## Tech Stack
 
-Vanilla HTML/CSS/JS · Firebase Hosting · Cloud Firestore · Firebase Cloud Functions (Node.js) · Nodemailer (Gmail SMTP)
+Vanilla HTML / CSS / JS · Firebase Hosting · Cloud Firestore · Firebase Cloud Functions (Node.js) · Nodemailer (Gmail SMTP)
 
-## Key Code Segments
+## Business Verticals
 
-### Firebase Initialisation (`js/firebase-config.js`)
-Sets up the Firestore client and exposes `window.db` for all pages to use.
+| Section | Description |
+|---|---|
+| Office Spaces | Floor listings with availability and booking |
+| Arts | Paintings & sculptures gallery |
+| Fashion | Clothing and accessories |
+| Land | Investment plots for sale |
 
-```js
-firebase.initializeApp(firebaseConfig);
-window.db = firebase.firestore();
-window.auth = firebase.auth();
-window.ADMIN_WHATSAPP = '962799880066';
+## Architecture
+
 ```
-
-### Cloud Function — New Booking Notification (`functions/index.js`)
-Triggered on every new Firestore booking document; sends an admin email with a link to the admin panel.
-
-```js
-exports.onBookingCreated = onDocumentCreated("bookings/{bookingId}", async (event) => {
-  const b = event.data.data();
-  const transporter = buildTransporter();
-  await transporter.sendMail({
-    from: GMAIL_EMAIL.value(),
-    to: ADMIN_EMAIL.value(),
-    subject: `New Booking – ${b.visitor_name}`,
-    html: adminEmailHtml(b),
-  });
-});
-```
-
-### Cloud Function — Booking Status Change (`functions/index.js`)
-Sends approval or rejection email to the customer when the admin updates a booking's status.
-
-```js
-exports.onBookingStatusChanged = onDocumentUpdated("bookings/{bookingId}", async (event) => {
-  const after = event.data.after.data();
-  if (after.status === "confirmed") {
-    await transporter.sendMail({ to: after.email, html: customerApprovedHtml(after) });
-  } else if (after.status === "rejected") {
-    await transporter.sendMail({ to: after.email, html: customerRejectedHtml(after) });
-  }
-});
+Firebase Hosting (static files)
+├── HTML/CSS/JS pages (bilingual)
+├── js/firebase-config.js     → Firestore + Auth init
+└── Cloud Functions (Node.js)
+    ├── onBookingCreated      → email admin on new booking
+    └── onBookingStatusChanged→ email customer on approve/reject
 ```
 
 ## Setup / Run
@@ -66,18 +51,15 @@ exports.onBookingStatusChanged = onDocumentUpdated("bookings/{bookingId}", async
 ```bash
 git clone https://github.com/omaralrayyan7/alrayyan.git
 cd alrayyan
+npx serve .   # static preview (no Firebase features)
 
-# Serve statically (no build step)
-npx serve .
-
-# Cloud Functions (optional, requires Firebase CLI + your own Firebase project)
-cd functions
-npm install
+# Full setup with Firebase features:
+cd functions && npm install
 firebase deploy --only functions
 ```
 
-You'll need your own Firebase project config in `js/firebase-config.js` and Firestore security rules from `firestore.rules` to run the booking/admin features end-to-end.
+You'll need your own Firebase project config in `js/firebase-config.js`.
 
-## Live Link
+## License
 
-[alrayyangroup.online](https://alrayyangroup.online)
+[MIT](LICENSE)
