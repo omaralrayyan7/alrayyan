@@ -1,124 +1,148 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Privacy & Cookies Policy — Alrayyan Group</title>
-  <meta name="description" content="Privacy, cookies and intellectual-property policy for Alrayyan Group — Alrayyan Tower, Amman."/>
-  <link rel="icon" href="favicon.ico"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy &amp; Cookies Policy — Alrayyan Group</title>
+  <meta name="description" content="Privacy, cookies and intellectual-property policy for Alrayyan Group — Alrayyan Tower, Amman." />
+  <link rel="icon" href="images/logo/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..500&family=Hanken+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Markazi+Text:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=13" />
   <style>
-    :root{--black:#050505;--dark:#0a0a0a;--gold:#d4af37;--gold-light:#e6c759;--off-white:#f5f0e6;--muted:#888;}
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{background:var(--black);color:var(--off-white);font-family:'Montserrat',sans-serif;line-height:1.7;font-size:.88rem;}
-    .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 6%;border-bottom:1px solid rgba(212,175,55,.18);position:sticky;top:0;background:rgba(5,5,5,.92);backdrop-filter:blur(8px);z-index:10;}
-    .brand{font-family:'Cinzel',serif;font-size:1.15rem;letter-spacing:3px;color:var(--gold);}
-    .brand em{font-style:italic;color:var(--gold-light);}
-    .back{color:var(--off-white);text-decoration:none;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;}
-    .back:hover{color:var(--gold);}
-    main{max-width:880px;margin:0 auto;padding:60px 6% 90px;}
-    h1{font-family:'Cinzel',serif;font-size:2rem;letter-spacing:3px;color:var(--gold);margin-bottom:10px;text-transform:uppercase;}
-    .eye{font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);margin-bottom:8px;}
-    .gold-line{width:60px;height:2px;background:var(--gold);margin:14px 0 36px;}
-    h2{font-family:'Cinzel',serif;font-size:1.05rem;letter-spacing:2px;color:var(--gold);margin:34px 0 12px;text-transform:uppercase;}
-    p{margin-bottom:14px;color:#cfcfcf;}
-    ul{margin:0 0 16px 22px;color:#cfcfcf;}
-    ul li{margin-bottom:7px;}
-    a{color:var(--gold);}
-    .updated{font-size:.7rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:24px;}
-    .notice{background:rgba(212,175,55,.06);border-left:3px solid var(--gold);padding:14px 18px;border-radius:3px;margin:18px 0;font-size:.82rem;}
-    footer{text-align:center;padding:26px 6%;border-top:1px solid rgba(212,175,55,.15);font-size:.7rem;color:var(--muted);letter-spacing:1px;}
+    .legal { max-width: 900px; margin: 0 auto; padding: clamp(90px, 12vh, 140px) var(--gutter) 90px; }
+    .legal h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3rem); color: var(--white); font-weight: 400; letter-spacing: -.01em; }
+    .legal .updated { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 14px 0 30px; }
+    .legal .notice { background: var(--ink-2); border: 1px solid var(--line); border-left: 3px solid var(--gold); padding: 18px 22px; border-radius: var(--radius); margin: 22px 0 40px; color: var(--sand); font-size: .92rem; }
+    .legal h2 { font-family: var(--serif); font-size: 1.4rem; color: var(--gold-soft); font-weight: 500; margin: 42px 0 14px; }
+    .legal p { color: var(--sand); margin-bottom: 14px; line-height: 1.8; }
+    .legal ul { margin: 0 0 18px 20px; color: var(--sand); }
+    .legal li { margin-bottom: 9px; line-height: 1.7; }
+    .legal a { color: var(--gold-soft); }
+    .legal strong { color: var(--cream); }
   </style>
 </head>
 <body>
+  <nav class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="index.html" class="brand" aria-label="Alrayyan Group home">
+        <img class="brand__logo" src="images/logo/logo.png" alt="" />
+        <span class="brand__name">Alrayyan<small>Group · Amman</small></span>
+      </a>
+      <div class="nav__actions">
+        <a href="index.html" class="link-underline nav__back">← Back to Site</a>
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle light / dark mode"><span class="moon">☾</span><span class="sun">☀</span></button>
+      </div>
+    </div>
+  </nav>
 
-<div class="nav">
-  <a href="index.html" class="brand">ALRAYYAN <em>GROUP</em></a>
-  <a href="index.html" class="back">← Back to Site</a>
-</div>
+  <main class="legal">
+    <span class="eyebrow">Legal</span>
+    <h1 style="margin-top:12px">Privacy &amp; Cookies Policy</h1>
+    <div class="gold-line"></div>
+    <p class="updated">Last updated: May 2026</p>
 
-<main>
-  <p class="eye">Legal</p>
-  <h1>Privacy &amp; Cookies Policy</h1>
-  <div class="gold-line"></div>
-  <p class="updated">Last updated: May 2026</p>
+    <div class="notice">
+      This page tells you what information Alrayyan Group collects when you use our website, how we use it, and what your rights are. By using <strong>alrayyangroup.online</strong> you agree to the terms below.
+    </div>
 
-  <div class="notice">
-    This page tells you what information Alrayyan Group collects when you use our website, how we use it, and what your rights are. By using <strong>alrayyangroup.online</strong> you agree to the terms below.
-  </div>
+    <h2>1. Who We Are</h2>
+    <p>Alrayyan Group operates Alrayyan Tower — a premium office, retail and land rental business located on Queen Alia Street, Amman, Jordan. References to "we", "us" and "our" mean Alrayyan Group.</p>
 
-  <h2>1. Who We Are</h2>
-  <p>Alrayyan Group operates Alrayyan Tower — a premium office, retail and land rental business located on Queen Alia Street, Amman, Jordan. References to "we", "us" and "our" mean Alrayyan Group.</p>
+    <h2>2. Information We Collect</h2>
+    <p>When you submit a visit-booking form or contact us, we collect the details you give us, which may include:</p>
+    <ul>
+      <li>Your name, company, phone number, email address and WhatsApp number.</li>
+      <li>The space you are interested in (floor / office / land / unit) and your preferred date and time.</li>
+      <li>Any notes or messages you choose to send us.</li>
+    </ul>
+    <p>We also automatically collect minimal technical information through our hosting and analytics providers (Cloudflare, Google Firebase) — IP address, device type, browser, and page-view timestamps. This is used only to keep the site secure and improve performance.</p>
 
-  <h2>2. Information We Collect</h2>
-  <p>When you submit a visit-booking form or contact us, we collect the details you give us, which may include:</p>
-  <ul>
-    <li>Your name, company, phone number, email address and WhatsApp number.</li>
-    <li>The space you are interested in (floor / office / land / unit) and your preferred date and time.</li>
-    <li>Any notes or messages you choose to send us.</li>
-  </ul>
-  <p>We also automatically collect minimal technical information through our hosting and analytics providers (Cloudflare, Google Firebase) — IP address, device type, browser, and page-view timestamps. This is used only to keep the site secure and improve performance.</p>
+    <h2>3. How We Use Your Information</h2>
+    <ul>
+      <li>To respond to your visit-booking request and arrange the appointment.</li>
+      <li>To send you confirmation, reschedule or follow-up communications by email or WhatsApp.</li>
+      <li>To improve our website, our spaces and the services we offer.</li>
+      <li>To comply with our legal and tax obligations.</li>
+    </ul>
+    <p>We do not sell your data, and we do not share it with advertisers.</p>
 
-  <h2>3. How We Use Your Information</h2>
-  <ul>
-    <li>To respond to your visit-booking request and arrange the appointment.</li>
-    <li>To send you confirmation, reschedule or follow-up communications by email or WhatsApp.</li>
-    <li>To improve our website, our spaces and the services we offer.</li>
-    <li>To comply with our legal and tax obligations.</li>
-  </ul>
-  <p>We do not sell your data, and we do not share it with advertisers.</p>
+    <h2>4. Cookies</h2>
+    <p>A cookie is a small text file stored in your browser. We use only the cookies we need:</p>
+    <ul>
+      <li><strong>Essential cookies</strong> — remember your language preference (English / Arabic) and keep the booking form working.</li>
+      <li><strong>Anonymous analytics</strong> — count page views so we can see which spaces visitors are most interested in. These cannot identify you personally.</li>
+    </ul>
+    <p>When you first visit the site we show a banner asking you to accept or decline. If you decline you will be redirected away from the site, because the site cannot function without its essential cookies.</p>
 
-  <h2>4. Cookies</h2>
-  <p>A cookie is a small text file stored in your browser. We use only the cookies we need:</p>
-  <ul>
-    <li><strong>Essential cookies</strong> — remember your language preference (English / Arabic) and keep the booking form working.</li>
-    <li><strong>Anonymous analytics</strong> — count page views so we can see which spaces visitors are most interested in. These cannot identify you personally.</li>
-  </ul>
-  <p>When you first visit the site we show a banner asking you to accept or decline. If you decline you will be redirected away from the site, because the site cannot function without its essential cookies.</p>
+    <h2>5. Data Retention</h2>
+    <p>We keep booking records for as long as needed to manage the visit and for up to <strong>24 months</strong> afterwards for legitimate business follow-up. You may request earlier deletion by emailing us at <a href="mailto:alrayyantower@gmail.com">alrayyantower@gmail.com</a>.</p>
 
-  <h2>5. Data Retention</h2>
-  <p>We keep booking records for as long as needed to manage the visit and for up to <strong>24 months</strong> afterwards for legitimate business follow-up. You may request earlier deletion by emailing us at <a href="mailto:alrayyantower@gmail.com">alrayyantower@gmail.com</a>.</p>
+    <h2>6. Your Rights</h2>
+    <p>You have the right to ask us to:</p>
+    <ul>
+      <li>Confirm what personal information we hold about you.</li>
+      <li>Correct anything that is wrong.</li>
+      <li>Delete your information (subject to any legal record-keeping duty we have).</li>
+      <li>Withdraw your consent to marketing communications at any time.</li>
+    </ul>
+    <p>Send any request to <a href="mailto:alrayyantower@gmail.com">alrayyantower@gmail.com</a> and we will respond within 30 days.</p>
 
-  <h2>6. Your Rights</h2>
-  <p>You have the right to ask us to:</p>
-  <ul>
-    <li>Confirm what personal information we hold about you.</li>
-    <li>Correct anything that is wrong.</li>
-    <li>Delete your information (subject to any legal record-keeping duty we have).</li>
-    <li>Withdraw your consent to marketing communications at any time.</li>
-  </ul>
-  <p>Send any request to <a href="mailto:alrayyantower@gmail.com">alrayyantower@gmail.com</a> and we will respond within 30 days.</p>
+    <h2>7. Intellectual Property — Site Content</h2>
+    <p>All content on this website — including but not limited to floor plans, photography, renderings, text, logos, the "Alrayyan Group" and "Alrayyan Tower" names and the gold-and-dark visual identity — is the exclusive property of Alrayyan Group and is protected by Jordanian and international copyright, trademark and unfair-competition laws.</p>
+    <p>You may <strong>not</strong>, without our prior written permission:</p>
+    <ul>
+      <li>Copy, reproduce, mirror, scrape, screenshot for commercial use, or otherwise duplicate any part of this site.</li>
+      <li>Re-use our floor renderings, interior photography or brand assets on another website, social-media account, marketing material or AI training dataset.</li>
+      <li>Imitate the look, layout, naming, or visual identity of Alrayyan Tower or Alrayyan Group for any competing commercial real-estate, retail or leasing business.</li>
+      <li>Use automated tools (bots, scrapers, crawlers other than well-behaved search-engine indexers) to collect content from this site.</li>
+    </ul>
+    <p>Unauthorised copying, redistribution or imitation will be pursued under Jordanian Copyright Law No. 22 of 1992 (and its amendments) and applicable trademark and competition statutes.</p>
 
-  <h2>7. Intellectual Property — Site Content</h2>
-  <p>All content on this website — including but not limited to floor plans, photography, renderings, text, logos, the "Alrayyan Group" and "Alrayyan Tower" names and the gold-and-dark visual identity — is the exclusive property of Alrayyan Group and is protected by Jordanian and international copyright, trademark and unfair-competition laws.</p>
-  <p>You may <strong>not</strong>, without our prior written permission:</p>
-  <ul>
-    <li>Copy, reproduce, mirror, scrape, screenshot for commercial use, or otherwise duplicate any part of this site.</li>
-    <li>Re-use our floor renderings, interior photography or brand assets on another website, social-media account, marketing material or AI training dataset.</li>
-    <li>Imitate the look, layout, naming, or visual identity of Alrayyan Tower or Alrayyan Group for any competing commercial real-estate, retail or leasing business.</li>
-    <li>Use automated tools (bots, scrapers, crawlers other than well-behaved search-engine indexers) to collect content from this site.</li>
-  </ul>
-  <p>Unauthorised copying, redistribution or imitation will be pursued under Jordanian Copyright Law No. 22 of 1992 (and its amendments) and applicable trademark and competition statutes.</p>
+    <h2>8. Booking-Form Disclosures</h2>
+    <p>When you submit a booking, the information you enter is transmitted securely over HTTPS, stored in our Google Firebase database (which is hosted in the European Union region <em>europe-west1</em>), and delivered to our admin team by email. Only authorised Alrayyan Group staff can read it.</p>
 
-  <h2>8. Booking-Form Disclosures</h2>
-  <p>When you submit a booking, the information you enter is transmitted securely over HTTPS, stored in our Google Firebase database (which is hosted in the European Union region <em>europe-west1</em>), and delivered to our admin team by email. Only authorised Alrayyan Group staff can read it.</p>
+    <h2>9. Children</h2>
+    <p>Our site is intended for business and adult visitors. We do not knowingly collect information from anyone under 16. If you believe we have, please contact us and we will delete it.</p>
 
-  <h2>9. Children</h2>
-  <p>Our site is intended for business and adult visitors. We do not knowingly collect information from anyone under 16. If you believe we have, please contact us and we will delete it.</p>
+    <h2>10. Changes to This Policy</h2>
+    <p>We may update this policy from time to time. The "Last updated" date at the top of this page tells you when it was last revised. Continued use of the site after a change means you accept the revised policy.</p>
 
-  <h2>10. Changes to This Policy</h2>
-  <p>We may update this policy from time to time. The "Last updated" date at the top of this page tells you when it was last revised. Continued use of the site after a change means you accept the revised policy.</p>
+    <h2>11. Contact</h2>
+    <p>
+      Alrayyan Group<br />
+      Alrayyan Tower, Queen Alia Street, Amman, Jordan<br />
+      Email: <a href="mailto:alrayyantower@gmail.com">alrayyantower@gmail.com</a><br />
+      Phone / WhatsApp: <a href="tel:+962799880066">+962 79 988 0066</a><br />
+      Tel: <a href="tel:+96265654872">+962 6 565 4872</a><br />
+      Fax: <a href="tel:+96265654871">+962 6 565 4871</a>
+    </p>
+  </main>
 
-  <h2>11. Contact</h2>
-  <p>
-    Alrayyan Group<br/>
-    Alrayyan Tower, Queen Alia Street, Amman, Jordan<br/>
-    Email: <a href="mailto:alrayyantower@gmail.com">alrayyantower@gmail.com</a><br/>
-    Phone / WhatsApp: <a href="tel:+962799880066">+962 79 988 0066</a>
-  </p>
-</main>
+  <footer class="footer">
+    <div class="container footer__bottom" style="border-top:none">
+      <span>© <span id="year"></span> Alrayyan Group. All rights reserved.</span>
+      <a href="index.html" class="link-underline">Back to Home</a>
+    </div>
+  </footer>
 
-<footer>© 2025 Alrayyan Group. All rights reserved.</footer>
-
+  <script>
+    (function () {
+      var t = 'dark';
+      try { t = localStorage.getItem('arg_theme') || 'dark'; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', t);
+      document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('year').textContent = new Date().getFullYear();
+        var nav = document.getElementById('nav');
+        window.addEventListener('scroll', function () { nav.classList.toggle('scrolled', window.scrollY > 30); }, { passive: true });
+        document.getElementById('themeBtn').addEventListener('click', function () {
+          var n = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', n);
+          try { localStorage.setItem('arg_theme', n); } catch (e) {}
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

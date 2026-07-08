@@ -69,13 +69,12 @@
   function init(){
     if (started) return;
     started = true;
-    onCollection('offices', 'order');
-    onCollection('floors', 'order');
-    onKeyedCollection('floor_details');
-    onCollection('bookings', 'created_at');
-    onCollection('businesses');
-    onCollection('lands');
-    onCollection('products');
+    // NOTE: The public site reads published content from `site_content` and
+    // `settings/*` (below). The admin panel persists offices/floors/floor_details/
+    // lands/products/etc. into `admin_state/*`, NOT into their own top-level
+    // collections. Those collections have no Firestore read rule and are never
+    // populated, so subscribing to them only produced `permission-denied`
+    // console errors on every public page load. They are intentionally omitted.
     onSingleton('site_content/main', 'site_content');
     onSingleton('settings/availability', 'availability');
     onSingleton('settings/pricing', 'pricing');

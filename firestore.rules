@@ -28,6 +28,9 @@ service cloud.firestore {
     function validBooking() {
       let d = request.resource.data;
       return d.keys().size() <= 25
+          // Public submissions are always 'pending' — only the admin can move a
+          // booking to confirmed/rejected/rescheduled (which triggers customer email).
+          && (!('status' in d) || d.status == 'pending')
           && d.visitor_name is string && d.visitor_name.size() >= 2  && d.visitor_name.size() <= 150
           && d.phone        is string && d.phone.size()        >= 5  && d.phone.size()        <= 30
           && strOpt('email',            150)
@@ -74,9 +77,12 @@ service cloud.firestore {
     }
 
     // ── Anonymous visitor profiles ───────────────────────────────────────────
+    //   Public: CREATE only (the site never updates an existing visitor doc).
+    //   Allowing public UPDATE previously let anyone overwrite ANY visitor
+    //   record — removed. Updates/deletes are admin-only now.
     match /visitors/{id} {
-      allow create, update: if validVisitor();
-      allow read, delete:   if isAdmin();
+      allow create:              if validVisitor();
+      allow read, update, delete: if isAdmin();
     }
 
     // ── Availability settings ────────────────────────────────────────────────
@@ -92,8 +98,13 @@ service cloud.firestore {
     }
 
     // ── Admin state blobs ────────────────────────────────────────────────────
+    //   Most admin_state docs are published site content the public site needs
+    //   to read (offices, floors, pricing, site_content, …). BUT `rentals`
+    //   holds confidential tenant data (names, manager phones, lease dates), so
+    //   it is excluded from public read — admin-only. Firestore rules are OR-ed
+    //   across matches, so the exclusion must live inside this single broad rule.
     match /admin_state/{doc} {
-      allow read:  if true;
+      allow read:  if doc != 'rentals' || isAdmin();
       allow write: if isAdmin();
     }
 

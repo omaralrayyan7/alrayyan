@@ -1,0 +1,166 @@
+/* ============================================================================
+   ALRAYYAN — Floor detail page (redesign)
+   Complements style.css (tokens, nav, buttons, footer). Floor-specific layout,
+   specs, amenities, booking card, and the responsive "Glimpse Inside" slider.
+   ========================================================================== */
+
+/* ---- Floor hero ---------------------------------------------------------- */
+.fl-hero {
+  position: relative; min-height: 72vh; display: flex; align-items: flex-end;
+  padding-bottom: clamp(40px, 6vw, 76px); overflow: hidden; isolation: isolate;
+}
+.fl-hero__bg { position: absolute; inset: 0; z-index: -2; }
+.fl-hero__bg img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); animation: heroZoom 16s var(--ease-out) forwards; }
+.fl-hero::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(11,10,8,.5) 0%, rgba(11,10,8,.4) 40%, rgba(11,10,8,.95) 100%);
+}
+/* Breadcrumb, hero title, size tag and the hero's own ghost button all sit on
+   the ALWAYS-dark fl-hero photo (unlike style.css elements, this file loads
+   after style.css, so it must own its own fixed "on-photo" colors rather than
+   theme tokens — otherwise light mode washes them out against the photo). */
+.fl-breadcrumb { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: .74rem; letter-spacing: .06em; color: rgba(255,255,255,.62); margin-bottom: 22px; }
+.fl-breadcrumb a { color: rgba(255,255,255,.62); transition: color .3s; }
+.fl-breadcrumb a:hover { color: #e9cf85; }
+.fl-breadcrumb .sep { color: rgba(255,255,255,.4); }
+.fl-breadcrumb .cur { color: #e9cf85; }
+.fl-hero__eyebrow { margin-bottom: 16px; color: #fff; }
+.fl-hero h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(2.4rem, 6vw, 4.4rem); line-height: 1; color: #fff; letter-spacing: -.01em; }
+.fl-hero__sub { margin-top: 14px; color: rgba(255,255,255,.8); font-size: clamp(1rem, 1.7vw, 1.2rem); font-weight: 300; max-width: 52ch; }
+.fl-size-tag {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 22px;
+  padding: 11px 20px; border: 1px solid rgba(255,255,255,.28); border-radius: 100px;
+  background: rgba(255,255,255,.08); color: #e9cf85;
+  font-size: .82rem; font-weight: 600; letter-spacing: .05em;
+}
+.fl-size-tag::before { content: "▪"; color: var(--gold); }
+.fl-hero .btn--ghost { color: #fff; border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.06); }
+.fl-hero .btn--ghost:hover { border-color: var(--gold); color: var(--gold-soft); }
+
+/* "Available in" floor-link pills (space detail pages) */
+.fl-floor-links { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 20px; }
+.fl-floor-links__label { font-size: .62rem; letter-spacing: .22em; text-transform: uppercase; color: #e9cf85; width: 100%; }
+.fl-floor-pill { display: inline-flex; padding: 9px 18px; border: 1px solid rgba(255,255,255,.3); border-radius: 100px; font-size: .78rem; font-weight: 600; color: #fff; background: rgba(255,255,255,.06); transition: all .3s; }
+.fl-floor-pill:hover { background: var(--gold); color: #17130a; border-color: var(--gold); }
+
+/* ---- Detail layout ------------------------------------------------------- */
+.detail { padding-block: clamp(48px, 7vw, 96px); }
+.detail__grid { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: clamp(32px, 5vw, 68px); align-items: start; }
+/* minmax(0,…) + min-width:0 let the info column shrink so the flex slider never
+   forces horizontal overflow. */
+.detail__info { min-width: 0; }
+
+.block { margin-bottom: clamp(46px, 6vw, 78px); }
+.block:last-child { margin-bottom: 0; }
+.sec-eye { font-size: .7rem; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; color: var(--gold-soft); }
+.sec-title { font-family: var(--serif); font-weight: 500; font-size: clamp(1.7rem, 3.2vw, 2.5rem); color: var(--white); margin-top: 10px; line-height: 1.1; }
+.sec-title em { font-style: italic; color: var(--gold-soft); }
+.gold-line { width: 54px; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); margin: 16px 0 26px; }
+[dir="rtl"] .gold-line { background: linear-gradient(-90deg, var(--gold), transparent); }
+.overview-desc p { color: var(--sand); font-weight: 300; margin-bottom: 16px; line-height: 1.75; }
+
+/* ---- Specs --------------------------------------------------------------- */
+.specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); border-radius: var(--radius); overflow: hidden; margin-top: 28px; }
+.spec { background: var(--ink); padding: 20px 22px; transition: background .35s; }
+.spec:hover { background: var(--ink-3); }
+.spec__k { font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.spec__v { font-family: var(--serif); font-size: 1.25rem; color: var(--gold-soft); margin-top: 8px; line-height: 1.2; }
+.spec__v.sm { font-size: .96rem; font-family: var(--sans); color: var(--cream); font-weight: 500; }
+
+/* ---- Glimpse Inside slider ---------------------------------------------- */
+.slider { position: relative; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--line-soft); background: var(--ink-2); }
+.slider__viewport { overflow: hidden; }
+.slider__track { display: flex; direction: ltr; transition: transform .6s var(--ease-out); will-change: transform; }
+.slider__slide { position: relative; min-width: 100%; aspect-ratio: 16 / 10; background: var(--ink-3); }
+.slider__slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.slider__slide .ph { position: absolute; inset: 0; display: grid; place-content: center; color: var(--muted); font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; }
+
+.slider__arrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+  width: 50px; height: 50px; border-radius: 50%; display: grid; place-content: center;
+  background: rgba(11,10,8,.55); border: 1px solid var(--line); color: var(--cream);
+  font-size: 1.1rem; backdrop-filter: blur(6px); transition: all .3s; cursor: pointer;
+}
+.slider__arrow:hover { background: var(--gold); color: #17130a; border-color: var(--gold); }
+/* Arrows keep fixed positions (prev=left, next=right) to match the LTR track
+   on both LTR and RTL pages. */
+.slider__arrow--prev { left: 16px; } .slider__arrow--next { right: 16px; }
+
+.slider__counter { position: absolute; top: 16px; right: 16px; z-index: 3; direction: ltr; font-size: .72rem; letter-spacing: .1em; color: var(--cream); background: rgba(11,10,8,.55); border: 1px solid var(--line-soft); padding: 6px 12px; border-radius: 100px; backdrop-filter: blur(6px); }
+[dir="rtl"] .slider__counter { right: auto; left: 16px; }
+
+.slider__dots { display: flex; justify-content: center; gap: 8px; padding: 16px; }
+.slider__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); cursor: pointer; transition: all .3s; padding: 0; }
+.slider__dot.active { background: var(--gold); width: 26px; border-radius: 100px; }
+
+.slider__thumbs { display: flex; gap: 8px; padding: 0 16px 16px; overflow-x: auto; scrollbar-width: thin; }
+.slider__thumbs::-webkit-scrollbar { height: 4px; }
+.slider__thumbs::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+.slider__thumb { flex: 0 0 78px; height: 54px; border-radius: 8px; overflow: hidden; opacity: .5; border: 1px solid transparent; transition: all .3s; cursor: pointer; }
+.slider__thumb.active { opacity: 1; border-color: var(--gold); }
+.slider__thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---- Amenities ----------------------------------------------------------- */
+.amenities { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.amenity { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid var(--line-soft); border-radius: 12px; background: linear-gradient(180deg, rgba(255,255,255,.02), transparent); font-size: .86rem; color: var(--sand); transition: border-color .3s, transform .3s; }
+.amenity:hover { border-color: var(--line); transform: translateX(3px); }
+[dir="rtl"] .amenity:hover { transform: translateX(-3px); }
+.amenity::before { content: "✓"; color: var(--gold-soft); font-weight: 700; flex: none; }
+
+/* ---- Find us ------------------------------------------------------------- */
+.find-us { border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
+.find-us iframe { width: 100%; height: 300px; border: 0; filter: grayscale(.4) invert(.9) contrast(.85); display: block; }
+.find-us__bar { display: flex; align-items: center; gap: 14px; padding: 18px 22px; background: var(--ink-2); }
+.find-us__bar .pin { font-size: 1.3rem; }
+.find-us__bar .addr { font-size: .9rem; color: var(--cream); }
+.find-us__bar .go { margin-inline-start: auto; font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gold-soft); white-space: nowrap; }
+
+/* ---- Booking card (sticky) ---------------------------------------------- */
+.book-col { position: sticky; top: 92px; }
+.book-card { background: var(--ink-2); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 26px; box-shadow: var(--shadow-sm); }
+.book-card__head h3 { font-family: var(--serif); font-size: 1.5rem; color: var(--white); font-weight: 500; }
+.book-card__head p { color: var(--muted); font-size: .82rem; margin-top: 4px; }
+.book-form { margin-top: 20px; display: grid; gap: 13px; }
+.bf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+.bf-field { display: grid; gap: 6px; }
+.bf-field label { font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.bf-field input, .bf-field select, .bf-field textarea { font: inherit; font-size: .88rem; color: var(--cream); background: var(--ink); border: 1px solid var(--line-soft); border-radius: 10px; padding: 11px 13px; width: 100%; transition: border-color .3s, background .3s; }
+.bf-field textarea { resize: vertical; min-height: 68px; }
+.bf-field input:focus, .bf-field select:focus, .bf-field textarea:focus { border-color: var(--gold); background: var(--ink-3); outline: none; }
+.bf-field select { appearance: none; }
+.book-note { font-size: .68rem; color: var(--muted); text-align: center; margin-top: 2px; }
+.book-success { text-align: center; padding: 18px 0; display: none; }
+.book-success.show { display: block; }
+.book-success .tick { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 16px; display: grid; place-content: center; font-size: 1.7rem; background: rgba(126,224,160,.12); border: 1px solid rgba(126,224,160,.4); color: #7ee0a0; }
+.book-success h4 { font-family: var(--serif); font-size: 1.4rem; color: var(--white); }
+.book-success p { color: var(--sand); font-size: .86rem; margin-top: 8px; }
+.book-success .ref { display: inline-block; margin-top: 12px; font-family: var(--serif); font-size: 1.2rem; color: var(--gold-soft); }
+
+.quick-contact { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+.q-chip { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 14px 8px; border: 1px solid var(--line-soft); border-radius: 12px; text-align: center; transition: all .3s; }
+.q-chip:hover { border-color: var(--gold); background: rgba(201,162,75,.05); transform: translateY(-2px); }
+.q-chip .ico { font-size: 1.1rem; }
+.q-chip .l { font-size: .64rem; color: var(--muted); letter-spacing: .06em; }
+
+/* ---- Floating WhatsApp --------------------------------------------------- */
+.wa-float { position: fixed; bottom: 22px; right: 22px; z-index: 90; width: 56px; height: 56px; border-radius: 50%; background: #25d366; display: grid; place-content: center; box-shadow: 0 10px 30px -8px rgba(37,211,102,.6); transition: transform .3s; }
+.wa-float:hover { transform: translateY(-3px) scale(1.05); }
+[dir="rtl"] .wa-float { right: auto; left: 22px; }
+
+/* ---- Responsive ---------------------------------------------------------- */
+@media (max-width: 940px) {
+  .detail__grid { grid-template-columns: minmax(0, 1fr); }
+  .book-col { position: static; order: -1; }
+  .specs { grid-template-columns: repeat(2, 1fr); }
+}
+/* On mobile the burger menu + breadcrumb cover navigation, so hide the
+   inline back-link to keep the top bar uncluttered. */
+@media (max-width: 860px) { .nav__back { display: none; } }
+@media (max-width: 620px) {
+  .fl-hero { min-height: 62vh; }
+  .amenities { grid-template-columns: 1fr; }
+  .specs { grid-template-columns: 1fr 1fr; }
+  .bf-row { grid-template-columns: 1fr; }
+  .slider__arrow { width: 42px; height: 42px; }
+  .slider__slide { aspect-ratio: 4 / 3; }
+}
