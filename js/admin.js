@@ -30,7 +30,10 @@
       kpiPending: 'Pending Bookings', kpiUnits: 'Available Units', kpiCookies: 'Cookie Acceptances', kpiTotal: 'Total Bookings',
       recentBookings: 'Recent Bookings', bookingsTitle: 'Visit Booking Requests', fAll: 'All statuses',
       cookiesTitle: 'Cookie Consent Log', cookiesSub: 'Visitors who accepted the cookies policy on the public site.',
-      availTitle: 'Availability Toggles', availSub: 'Switch each unit on/off. Changes publish to the public site.',
+      availTitle: 'Availability Toggles', availSub: 'Switch each unit on/off, or take a whole floor offline. Changes publish to the public site.',
+      floorStatus: 'Floor Status', floorOffNote: 'Floor is off — hidden from availability, space pages and its own page.',
+      floorForcedNote: 'Forced visible on the homepage only — every unit size is off, so it still won’t appear as bookable on space pages or its own page.',
+      floorModeAuto: 'Auto', floorModeForced: 'Forced on', floorModeOff: 'Off',
       bizTitle: 'Alrayyan Businesses', bizSub: 'Enable or disable a venture — disabled businesses are hidden from the public site.',
       colWhen: 'When', colRef: 'Ref', colName: 'Name', colEmail: 'Email', colPhone: 'Phone', colSpace: 'Space', colDate: 'Date',
       colStatus: 'Status', colActions: 'Actions', colLang: 'Lang', colDevice: 'Device', colBrowser: 'Browser', colPath: 'Path',
@@ -46,7 +49,10 @@
       kpiPending: 'حجوزات معلقة', kpiUnits: 'وحدات متاحة', kpiCookies: 'موافقات الكوكيز', kpiTotal: 'إجمالي الحجوزات',
       recentBookings: 'أحدث الحجوزات', bookingsTitle: 'طلبات حجز الزيارة', fAll: 'كل الحالات',
       cookiesTitle: 'سجل موافقات الكوكيز', cookiesSub: 'الزوار الذين وافقوا على سياسة الكوكيز في الموقع العام.',
-      availTitle: 'مفاتيح التوفر', availSub: 'فعّل أو أوقف كل وحدة. تُنشر التغييرات على الموقع العام.',
+      availTitle: 'مفاتيح التوفر', availSub: 'فعّل أو أوقف كل وحدة، أو أوقف الطابق بأكمله. تُنشر التغييرات على الموقع العام.',
+      floorStatus: 'حالة الطابق', floorOffNote: 'الطابق متوقف — مخفي من التوفر وصفحات المساحات وصفحته الخاصة.',
+      floorForcedNote: 'ظاهر إجبارياً في الصفحة الرئيسية فقط — كل الوحدات متوقفة، لذلك لن يظهر كوحدة قابلة للحجز في صفحات المساحات أو صفحته الخاصة.',
+      floorModeAuto: 'تلقائي', floorModeForced: 'مفعّل إجبارياً', floorModeOff: 'متوقف',
       bizTitle: 'أعمال الريان', bizSub: 'فعّل أو عطّل أي عمل — الأعمال المعطّلة تُخفى عن الموقع العام.',
       colWhen: 'الوقت', colRef: 'المرجع', colName: 'الاسم', colEmail: 'البريد', colPhone: 'الهاتف', colSpace: 'المساحة', colDate: 'التاريخ',
       colStatus: 'الحالة', colActions: 'إجراءات', colLang: 'اللغة', colDevice: 'الجهاز', colBrowser: 'المتصفح', colPath: 'المسار',
@@ -84,11 +90,14 @@
   var AVAIL_FLOORS = [
     { id: 'b1', label: 'B1 Floor', sub: 'Underground · Exception', sizes: [{ k: '1000', label: '1,000 m² Full' }] },
     { id: 'g', label: 'G Floor', sub: 'Retail Shops', sizes: [{ k: 'shop1', label: 'Shop 1 (25 m²)' }, { k: 'shop2', label: 'Shop 2 (25 m²)' }, { k: 'shop3', label: 'Shop 3 (25 m²)' }] },
-    { id: '3', label: '3rd Floor', sub: 'Office', sizes: [{ k: '80', label: '80 m²' }, { k: '160', label: '160 m²' }, { k: '400', label: '400 m² Full' }] },
-    { id: '4', label: '4th Floor', sub: 'Office', sizes: [{ k: '80', label: '80 m²' }, { k: '160', label: '160 m²' }, { k: '400', label: '400 m² Full' }] },
-    { id: '5', label: '5th Floor', sub: 'Office', sizes: [{ k: '80', label: '80 m²' }, { k: '160', label: '160 m²' }, { k: '400', label: '400 m² Full' }] },
-    { id: '6', label: '6th Floor', sub: 'Office', sizes: [{ k: '80', label: '80 m²' }, { k: '160', label: '160 m²' }, { k: '400', label: '400 m² Full' }] },
-    { id: '7', label: '7th Floor', sub: 'Office', sizes: [{ k: '80', label: '80 m²' }, { k: '160', label: '160 m²' }, { k: '400', label: '400 m² Full' }] },
+    { id: '1', label: '1st Floor', sub: 'Office · Fully occupied', sizes: [{ k: '80', label: '80 m²' }, { k: '160', label: '160 m²' }, { k: '240', label: '240 m²' }, { k: '400', label: '400 m² Full' }] },
+    { id: '2', label: '2nd Floor', sub: 'Office · Fully occupied', sizes: [{ k: '80', label: '80 m²' }, { k: '160', label: '160 m²' }, { k: '240', label: '240 m²' }, { k: '400', label: '400 m² Full' }] },
+    { id: '3', label: '3rd Floor', sub: 'Office', sizes: [{ k: '80', label: '80 m²' }, { k: '160', label: '160 m²' }, { k: '240', label: '240 m²' }, { k: '400', label: '400 m² Full' }] },
+    { id: '4', label: '4th Floor', sub: 'Office', sizes: [{ k: '80', label: '80 m²' }, { k: '160', label: '160 m²' }, { k: '240', label: '240 m²' }, { k: '400', label: '400 m² Full' }] },
+    { id: '5', label: '5th Floor', sub: 'Office', sizes: [{ k: '80', label: '80 m²' }, { k: '160', label: '160 m²' }, { k: '240', label: '240 m²' }, { k: '400', label: '400 m² Full' }] },
+    { id: '6', label: '6th Floor', sub: 'Office', sizes: [{ k: '80', label: '80 m²' }, { k: '160', label: '160 m²' }, { k: '240', label: '240 m²' }, { k: '400', label: '400 m² Full' }] },
+    { id: '7', label: '7th Floor', sub: 'Office', sizes: [{ k: '80', label: '80 m²' }, { k: '160', label: '160 m²' }, { k: '240', label: '240 m²' }, { k: '400', label: '400 m² Full' }] },
+    { id: '8', label: '8th Floor', sub: 'Office · Fully occupied', sizes: [{ k: '80', label: '80 m²' }, { k: '160', label: '160 m²' }, { k: '240', label: '240 m²' }, { k: '400', label: '400 m² Full' }] },
     { id: '9-outdoor', label: '9th Floor', sub: 'Outdoor Terrace', sizes: [{ k: '240', label: '240 m² Outdoor' }] },
     { id: '9-indoor', label: '9th Floor', sub: 'Indoor Space', sizes: [{ k: '160', label: '160 m² Indoor' }] }
   ];
@@ -103,7 +112,7 @@
   ];
 
   /* ---------- state ------------------------------------------------------- */
-  var bookings = [], cookies = [], availability = {}, bizStatus = {};
+  var bookings = [], cookies = [], availability = {}, bizStatus = {}, floorStatus = {};
   var bkStatus = '', bkName = '';
   var current = 'dashboard';
   var unsub = [];
@@ -155,6 +164,9 @@
     unsub.push(window.db.doc('settings/biz_status')
       .onSnapshot(function (d) { bizStatus = d.exists ? (d.data() || {}) : {}; render(); },
         function (e) { console.warn('[biz_status]', e && e.code); }));
+    unsub.push(window.db.doc('settings/floor_status')
+      .onSnapshot(function (d) { floorStatus = d.exists ? (d.data() || {}) : {}; render(); },
+        function (e) { console.warn('[floor_status]', e && e.code); }));
   }
   function startCookies(ordered) {
     var q = window.db.collection('cookie_acceptances').limit(300);
@@ -189,6 +201,22 @@
     var patch = {}; patch[key] = on;
     window.db.doc('settings/availability').set(patch, { merge: true })
       .then(function () { toast('Availability updated'); }).catch(function () { toast('Update failed', true); });
+  }
+  // Three real states, cycled by each click: unset ("Auto" — homepage
+  // listing follows real per-size occupancy) -> 'active' (forced to list
+  // on the homepage even fully occupied) -> 'inactive' (hidden everywhere)
+  // -> back to unset. Kept as three distinct states, not a plain on/off,
+  // because "auto" and "forced on" look identical on the public site right
+  // up until a floor sells out — that ambiguity is what caused floors 1/2/8
+  // to silently stay hidden while floor 3 didn't.
+  function nextFloorState(cur) { return cur === undefined ? 'active' : (cur === 'active' ? 'inactive' : undefined); }
+  function toggleFloor(id) {
+    var key = 'floor_' + id;
+    var next = nextFloorState(floorStatus[key]);
+    var patch = {}; patch[key] = next === undefined ? firebase.firestore.FieldValue.delete() : next;
+    window.db.doc('settings/floor_status').set(patch, { merge: true })
+      .then(function () { toast('Floor status: ' + (next || 'auto')); })
+      .catch(function () { toast('Update failed', true); });
   }
   function toggleBiz(id) {
     var key = 'biz_status_' + id;
@@ -293,16 +321,36 @@
   function renderAvail() {
     var grid = $('#availGrid'); grid.textContent = '';
     AVAIL_FLOORS.forEach(function (fl) {
+      var override = floorStatus['floor_' + fl.id]; // 'active' | 'inactive' | undefined ("auto")
+      var floorOn = override !== 'inactive';
+      // Click cycles auto -> forced on -> off -> auto; the live Firestore
+      // listener re-renders with the real state, so this doesn't guess.
+      var modeCls = override === 'active' ? 'forced' : (override === 'inactive' ? 'off' : 'auto');
+      var modeLbl = override === 'active' ? t('floorModeForced') : (override === 'inactive' ? t('floorModeOff') : t('floorModeAuto'));
+      var floorSw = el('button', { class: 'adm-switch' + (floorOn ? ' on' : ''), 'aria-label': t('floorStatus') + ' — ' + fl.label + ' (' + modeLbl + ')' });
+      floorSw.addEventListener('click', function () { toggleFloor(fl.id); });
+      var floorToggle = el('div', { class: 'adm-toggle adm-toggle--master' }, [
+        el('span', { class: 'adm-toggle__l', text: t('floorStatus') }),
+        el('span', { class: 'adm-status floor-' + modeCls, text: modeLbl }),
+        floorSw
+      ]);
+
+      var anySizeOn = false;
       var toggles = fl.sizes.map(function (sz) {
         var key = fl.id + '_' + sz.k, on = !!availability[key];
+        if (on) anySizeOn = true;
         var sw = el('button', { class: 'adm-switch' + (on ? ' on' : ''), 'aria-label': sz.label });
         sw.addEventListener('click', function () { var now = !sw.classList.contains('on'); sw.classList.toggle('on', now); flipAvail(key, now); });
         return el('div', { class: 'adm-toggle' }, [el('span', { class: 'adm-toggle__l', text: sz.label }), sw]);
       });
-      grid.appendChild(el('div', { class: 'adm-avail__card' }, [
+      var card = el('div', { class: 'adm-avail__card' + (floorOn ? '' : ' adm-avail__card--off') }, [
         el('div', { class: 'adm-avail__name', text: fl.label }),
-        el('div', { class: 'adm-avail__sub', text: fl.sub })
-      ].concat(toggles)));
+        el('div', { class: 'adm-avail__sub', text: fl.sub }),
+        floorToggle
+      ].concat(toggles));
+      if (!floorOn) card.appendChild(el('div', { class: 'adm-avail__note', text: t('floorOffNote') }));
+      else if (override === 'active' && !anySizeOn) card.appendChild(el('div', { class: 'adm-avail__note', text: t('floorForcedNote') }));
+      grid.appendChild(card);
     });
   }
 

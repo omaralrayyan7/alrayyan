@@ -3,8 +3,33 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="darkreader-lock">
-  <meta name="color-scheme" content="only light">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="color-scheme" content="dark"/>
+  <meta name="theme-color" content="#080a06"/>
+  <script>
+    (function(){
+      try {
+        var t = localStorage.getItem('al_theme');
+        if (t !== 'light' && t !== 'dark') t = 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e){}
+    })();
+    function applyThemeMeta(theme) {
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'light' ? '#fdfbf3' : '#080a06');
+    }
+    function setTheme(theme) {
+      theme = theme === 'light' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      try { localStorage.setItem('al_theme', theme); } catch(e){}
+      applyThemeMeta(theme);
+      document.querySelectorAll('.theme-toggle-btn').forEach(function(btn){ btn.classList.toggle('is-light', theme === 'light'); });
+    }
+    function toggleTheme() {
+      var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      setTheme(current === 'light' ? 'dark' : 'light');
+    }
+  </script>
   <title>Alrayyan Lands – Prime Land in Amman, Jordan</title>
   <meta name="robots" content="index, follow"/>
   <link rel="icon" type="image/png" sizes="32x32" href="images/logo/favicon.png"/>
@@ -350,7 +375,7 @@
       <div class="f-brand-l">ALRAYYAN <em>LANDS</em></div>
       <div class="f-parent-l">Part of <a href="index.html">Alrayyan Group</a></div>
     </div>
-    <div class="f-copy-l">© 2025 Alrayyan Lands. All rights reserved.</div>
+    <div class="f-copy-l">© 2026 Alrayyan Lands. All rights reserved.</div>
   </footer>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
@@ -380,6 +405,15 @@
     sw.style.cssText = 'direction:ltr;display:inline-flex;';
     sw.innerHTML = '<button class="lang-btn active" onclick="setLang(\'en\')" style="min-width:36px;">EN</button><button class="lang-btn" onclick="setLang(\'ar\')" style="min-width:36px;">AR</button>';
     navBack.parentNode.insertBefore(sw, navBack);
+    const tb = document.createElement('button');
+    tb.className = 'theme-toggle-btn';
+    tb.id = 'themeToggleBtn';
+    tb.setAttribute('aria-label','Toggle light / dark mode');
+    tb.setAttribute('title','Toggle light / dark mode');
+    tb.onclick = toggleTheme;
+    tb.innerHTML = '<span class="theme-icon-sun">☀</span><span class="theme-icon-moon">☾</span>';
+    navBack.parentNode.insertBefore(tb, navBack);
+    setTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
   }
 })();
 
@@ -398,7 +432,7 @@ const li18n = {
     conEye:'Get in Touch', conDesc:'Interested in a plot? Schedule a site visit or get a full land brief from our team.',
     conLoc:'Location', conLocV:'Amman, Jordan', conPhone:'Phone', conEmail:'Email', conHours:'Hours', conHoursV:'Sat–Thu: 9am–6pm',
     conWA:'WhatsApp Us', conMail:'Send Email',
-    fCopy:'© 2025 Alrayyan Lands. All rights reserved.',
+    fCopy:'© 2026 Alrayyan Lands. All rights reserved.',
   },
   ar: {
     navSub:'من مجموعة الريان', navBack:'المجموعة ←',
@@ -414,7 +448,7 @@ const li18n = {
     conEye:'تواصل معنا', conDesc:'مهتم بقطعة أرض؟ حدد موعد زيارة ميدانية أو احصل على ملف كامل من فريقنا.',
     conLoc:'الموقع', conLocV:'عمّان، الأردن', conPhone:'الهاتف', conEmail:'البريد', conHours:'ساعات العمل', conHoursV:'سبت–خميس: ٩ص–٦م',
     conWA:'واتساب', conMail:'أرسل بريداً',
-    fCopy:'© 2025 أراضي الريان. جميع الحقوق محفوظة.',
+    fCopy:'© 2026 أراضي الريان. جميع الحقوق محفوظة.',
   }
 };
 

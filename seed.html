@@ -3,25 +3,46 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="darkreader-lock">
-  <meta name="color-scheme" content="only light">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="color-scheme" content="dark"/>
   <meta name="robots" content="noindex,nofollow"/>
+  <script>
+    (function(){
+      try {
+        var t = localStorage.getItem('al_theme');
+        if (t !== 'light' && t !== 'dark') t = 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e){}
+    })();
+  </script>
   <title>Seed Firestore – Alrayyan Group</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico"/>
   <style>
-    html { color-scheme: only light !important; }
-    body{font-family:system-ui,sans-serif;background:#0a0806;color:#eee;min-height:100vh;margin:0;display:flex;align-items:center;justify-content:center;padding:24px;}
-    .card{max-width:560px;width:100%;background:#141210;border:1px solid #2a2724;border-radius:14px;padding:32px;box-shadow:0 12px 40px rgba(0,0,0,0.5);}
+    :root{color-scheme:dark;--bg:#0a0806;--card:#141210;--border:#2a2724;--text:#eee;--muted:#b8b1a8;--log-text:#c9c1b4;--gold:#caa567;}
+    html[data-theme="light"]{color-scheme:light;--bg:#fdfaf3;--card:#ffffff;--border:#e5ddc8;--text:#1f1b10;--muted:#5c5648;--log-text:#3a3428;--gold:#8f6c2e;}
+    body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;margin:0;display:flex;align-items:center;justify-content:center;padding:24px;}
+    .card{max-width:560px;width:100%;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:32px;box-shadow:0 12px 40px rgba(0,0,0,0.25);}
     h1{margin:0 0 8px;font-size:22px;letter-spacing:0.02em;}
-    p{color:#b8b1a8;font-size:14px;line-height:1.55;margin:0 0 18px;}
+    p{color:var(--muted);font-size:14px;line-height:1.55;margin:0 0 18px;}
     button{background:linear-gradient(180deg,#caa567,#8f6c2e);border:0;color:#1a1410;font-weight:700;padding:12px 22px;border-radius:10px;cursor:pointer;font-size:14px;letter-spacing:0.04em;}
     button:disabled{opacity:0.5;cursor:not-allowed;}
-    #log{margin-top:18px;background:#0a0806;border:1px solid #2a2724;border-radius:8px;padding:14px;font-family:ui-monospace,monospace;font-size:12px;min-height:120px;max-height:320px;overflow:auto;white-space:pre-wrap;color:#c9c1b4;}
+    #log{margin-top:18px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;font-family:ui-monospace,monospace;font-size:12px;min-height:120px;max-height:320px;overflow:auto;white-space:pre-wrap;color:var(--log-text);}
     .ok{color:#7bd88f;} .err{color:#ff6b6b;} .warn{color:#e6c27a;}
-    a.back{display:inline-block;margin-top:14px;color:#caa567;text-decoration:none;font-size:13px;}
+    a.back{display:inline-block;margin-top:14px;color:var(--gold);text-decoration:none;font-size:13px;}
+    .theme-toggle-btn{position:fixed;top:20px;right:20px;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:none;border:1px solid var(--border);border-radius:50%;color:var(--gold);cursor:pointer;overflow:hidden;transition:.3s;}
+    .theme-toggle-btn:hover{border-color:var(--gold);}
+    .theme-toggle-btn .theme-icon-sun,.theme-toggle-btn .theme-icon-moon{position:absolute;font-size:.9rem;line-height:1;transition:.3s;}
+    .theme-toggle-btn .theme-icon-sun{opacity:0;transform:scale(.4) rotate(-90deg);}
+    .theme-toggle-btn .theme-icon-moon{opacity:1;transform:scale(1) rotate(0deg);}
+    .theme-toggle-btn.is-light .theme-icon-sun{opacity:1;transform:scale(1) rotate(0deg);}
+    .theme-toggle-btn.is-light .theme-icon-moon{opacity:0;transform:scale(.4) rotate(90deg);}
   </style>
 </head>
 <body>
+  <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" aria-label="Toggle light / dark mode" title="Toggle light / dark mode">
+    <span class="theme-icon-sun">☀</span>
+    <span class="theme-icon-moon">☾</span>
+  </button>
   <div class="card">
     <h1>Seed Firestore Database</h1>
     <p>This populates Firestore with the current Alrayyan Tower inventory (floors, units, offices, businesses, lands, products, site content, pricing, and availability). Run once after deploying the Firebase project. Safe to run again — existing docs with the same IDs are overwritten.</p>
@@ -29,6 +50,19 @@
     <div id="log">Ready.</div>
     <a class="back" href="mgmt-panel.html">← Back to admin</a>
   </div>
+  <script>
+    function setTheme(theme) {
+      theme = theme === 'light' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      try { localStorage.setItem('al_theme', theme); } catch(e){}
+      document.querySelectorAll('.theme-toggle-btn').forEach(function(btn){ btn.classList.toggle('is-light', theme === 'light'); });
+    }
+    function toggleTheme() {
+      var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      setTheme(current === 'light' ? 'dark' : 'light');
+    }
+    setTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+  </script>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>

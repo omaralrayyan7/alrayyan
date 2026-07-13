@@ -3,8 +3,33 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="darkreader-lock">
-  <meta name="color-scheme" content="only light">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="color-scheme" content="dark"/>
+  <meta name="theme-color" content="#0a0608"/>
+  <script>
+    (function(){
+      try {
+        var t = localStorage.getItem('al_theme');
+        if (t !== 'light' && t !== 'dark') t = 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e){}
+    })();
+    function applyThemeMeta(theme) {
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'light' ? '#fdf8f6' : '#0a0608');
+    }
+    function setTheme(theme) {
+      theme = theme === 'light' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      try { localStorage.setItem('al_theme', theme); } catch(e){}
+      applyThemeMeta(theme);
+      document.querySelectorAll('.theme-toggle-btn').forEach(function(btn){ btn.classList.toggle('is-light', theme === 'light'); });
+    }
+    function toggleTheme() {
+      var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      setTheme(current === 'light' ? 'dark' : 'light');
+    }
+  </script>
   <title>Product – Alrayyan Fashion</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico"/>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
@@ -48,8 +73,13 @@
       <button class="lang-btn-fp active" onclick="setPageLang('en')" style="min-width:36px;">EN</button>
       <button class="lang-btn-fp" onclick="setPageLang('ar')" style="min-width:36px;">AR</button>
     </div>
+    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" aria-label="Toggle light / dark mode" title="Toggle light / dark mode">
+      <span class="theme-icon-sun">☀</span>
+      <span class="theme-icon-moon">☾</span>
+    </button>
   </div>
 </nav>
+<script>setTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');</script>
 
 <div class="breadcrumb" id="breadcrumb">
   <a href="index.html">Alrayyan Group</a>
@@ -195,7 +225,7 @@
 
 <footer>
   <div><div class="f-brand">ALRAYYAN <span>FASHION</span></div></div>
-  <div class="f-copy">© 2025 Alrayyan Fashion. All rights reserved.</div>
+  <div class="f-copy">© 2026 Alrayyan Fashion. All rights reserved.</div>
 </footer>
 
 <div class="toast" id="toast"></div>

@@ -27,7 +27,6 @@
   var FLOORS = {
     'b1': {
       name: { en: 'B1 Floor', ar: 'الطابق B1' },
-      sub: { en: 'Underground Level · Exception', ar: 'الطابق السفلي · استثناء' },
       sizeLbl: { en: '1,000 m² · Full Floor', ar: '1,000 م² · طابق كامل' },
       desc: {
         en: '<p>The B1 floor is a spacious 1,000 m² underground level, fully licensed for sports-club use. Its large open area also suits a celebration hall or event space for gatherings, corporate meetings and private functions.</p><p>Its generous size and flexible layout make it one of the most versatile spaces in the tower — ready to be configured to match your vision.</p>',
@@ -38,13 +37,44 @@
         { k: { en: 'Capacity', ar: 'السعة' }, v: { en: '120 – 250 persons', ar: '120 – 250 شخصاً' } },
         { k: { en: 'Level', ar: 'المستوى' }, v: { en: 'Basement (B1)', ar: 'القبو (B1)' } },
         { k: { en: 'Lease', ar: 'الإيجار' }, v: { en: 'Annual', ar: 'سنوي' } },
-        { k: { en: 'Setup', ar: 'التجهيز' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
+        { k: { en: 'Handover', ar: 'التسليم' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
         { k: { en: 'Status', ar: 'الحالة' }, v: { en: 'Available', ar: 'متاح' } }
+      ]
+    },
+    '1': {
+      name: { en: '1st Floor', ar: 'الطابق الأول' },
+      sizeLbl: { en: 'Fully Occupied', ar: 'مؤجّر بالكامل' },
+      desc: {
+        en: '<p>The 1st floor is currently fully leased and not available. Like the tower\'s other office floors, it offers flexible options from 80 m² up to the full 400 m² once a unit is freed up.</p><p>Contact our leasing team to be notified as soon as space opens up on this floor.</p>',
+        ar: '<p>الطابق الأول مؤجّر بالكامل حالياً وغير متاح. كباقي طوابق البرج المكتبية، يوفر خيارات مرنة من 80 م² حتى 400 م² كاملة عند توفر وحدة.</p><p>تواصل مع فريق التأجير لدينا لإعلامك فور توفر مساحة في هذا الطابق.</p>'
+      },
+      specs: [
+        { k: { en: 'Size', ar: 'المساحة' }, v: { en: '80 – 400 m²', ar: '80 – 400 م²' } },
+        { k: { en: 'Capacity', ar: 'السعة' }, v: { en: '8 – 60 persons', ar: '8 – 60 شخصاً' } },
+        { k: { en: 'Level', ar: 'المستوى' }, v: { en: 'Floors 1 – 8', ar: 'الطوابق 1 – 8' } },
+        { k: { en: 'Lease', ar: 'الإيجار' }, v: { en: 'Annual', ar: 'سنوي' } },
+        { k: { en: 'Handover', ar: 'التسليم' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
+        { k: { en: 'Status', ar: 'الحالة' }, v: { en: 'Fully occupied', ar: 'مؤجّر بالكامل' } }
+      ]
+    },
+    '2': {
+      name: { en: '2nd Floor', ar: 'الطابق الثاني' },
+      sizeLbl: { en: 'Fully Occupied', ar: 'مؤجّر بالكامل' },
+      desc: {
+        en: '<p>The 2nd floor is currently fully leased and not available. Like the tower\'s other office floors, it offers flexible options from 80 m² up to the full 400 m² once a unit is freed up.</p><p>Contact our leasing team to be notified as soon as space opens up on this floor.</p>',
+        ar: '<p>الطابق الثاني مؤجّر بالكامل حالياً وغير متاح. كباقي طوابق البرج المكتبية، يوفر خيارات مرنة من 80 م² حتى 400 م² كاملة عند توفر وحدة.</p><p>تواصل مع فريق التأجير لدينا لإعلامك فور توفر مساحة في هذا الطابق.</p>'
+      },
+      specs: [
+        { k: { en: 'Size', ar: 'المساحة' }, v: { en: '80 – 400 m²', ar: '80 – 400 م²' } },
+        { k: { en: 'Capacity', ar: 'السعة' }, v: { en: '8 – 60 persons', ar: '8 – 60 شخصاً' } },
+        { k: { en: 'Level', ar: 'المستوى' }, v: { en: 'Floors 1 – 8', ar: 'الطوابق 1 – 8' } },
+        { k: { en: 'Lease', ar: 'الإيجار' }, v: { en: 'Annual', ar: 'سنوي' } },
+        { k: { en: 'Handover', ar: 'التسليم' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
+        { k: { en: 'Status', ar: 'الحالة' }, v: { en: 'Fully occupied', ar: 'مؤجّر بالكامل' } }
       ]
     },
     '3': {
       name: { en: '3rd Floor', ar: 'الطابق الثالث' },
-      sub: { en: 'Mid Level · 80 m² Unit Available', ar: 'طابق متوسط · وحدة 80 م² متاحة' },
       sizeLbl: { en: '80 m² Unit · 1 Available', ar: 'وحدة 80 م² · 1 متاح' },
       desc: {
         en: '<p>The 3rd floor offers small office spaces with an available 80 m² unit — ideal for small teams or individual businesses wanting a professional workspace without a large footprint.</p><p>A practical, well-located unit: clean, ready, and sized to keep your overheads lean while your business grows.</p>',
@@ -55,30 +85,28 @@
         { k: { en: 'Capacity', ar: 'السعة' }, v: { en: '8 – 10 persons', ar: '8 – 10 أشخاص' } },
         { k: { en: 'Level', ar: 'المستوى' }, v: { en: 'Floors 1 – 8', ar: 'الطوابق 1 – 8' } },
         { k: { en: 'Lease', ar: 'الإيجار' }, v: { en: 'Annual', ar: 'سنوي' } },
-        { k: { en: 'Setup', ar: 'التجهيز' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
+        { k: { en: 'Handover', ar: 'التسليم' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
         { k: { en: 'Status', ar: 'الحالة' }, v: { en: 'Last unit', ar: 'آخر وحدة' } }
       ]
     },
     '4': {
       name: { en: '4th Floor', ar: 'الطابق الرابع' },
-      sub: { en: 'Full Floor · 400 m² Available', ar: 'طابق كامل · 400 م² متاح' },
       sizeLbl: { en: '400 m² · Full Floor', ar: '400 م² · طابق كامل' },
       desc: {
-        en: '<p>The 4th floor is a fully open space with flexible options from 80 m² up to the full 400 m². Whether a small startup or a growing company, lease exactly the space you need and expand as you grow.</p><p>The open layout gives complete freedom to design and configure — from private offices to collaborative work environments.</p>',
-        ar: '<p>الطابق الرابع مساحة مفتوحة بالكامل بخيارات مرنة من 80 م² حتى 400 م² كاملة. سواء كنت شركة ناشئة أو مؤسسة متنامية، استأجر المساحة التي تحتاجها وتوسّع بحسب نموّك.</p><p>يمنحك التخطيط المفتوح حرية كاملة في التصميم والتهيئة — من مكاتب خاصة إلى بيئات عمل تشاركية.</p>'
+        en: '<p>The 4th floor is a fully open space with flexible options from <strong>80 m² up to the full 400 m²</strong>. Whether a small startup or a growing company, lease exactly the space you need and expand as you grow.</p><p>The open layout gives complete freedom to design and configure — from private offices to collaborative work environments.</p>',
+        ar: '<p>الطابق الرابع مساحة مفتوحة بالكامل بخيارات مرنة من <strong>80 م² حتى 400 م² كاملة</strong>. سواء كنت شركة ناشئة أو مؤسسة متنامية، استأجر المساحة التي تحتاجها وتوسّع بحسب نموّك.</p><p>يمنحك التخطيط المفتوح حرية كاملة في التصميم والتهيئة — من مكاتب خاصة إلى بيئات عمل تشاركية.</p>'
       },
       specs: [
         { k: { en: 'Size', ar: 'المساحة' }, v: '400 m²' },
         { k: { en: 'Capacity', ar: 'السعة' }, v: { en: '40 – 60 persons', ar: '40 – 60 شخصاً' } },
         { k: { en: 'Level', ar: 'المستوى' }, v: { en: 'Floors 1 – 8', ar: 'الطوابق 1 – 8' } },
         { k: { en: 'Lease', ar: 'الإيجار' }, v: { en: 'Annual', ar: 'سنوي' } },
-        { k: { en: 'Setup', ar: 'التجهيز' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
+        { k: { en: 'Handover', ar: 'التسليم' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
         { k: { en: 'Status', ar: 'الحالة' }, v: { en: 'Available', ar: 'متاح' } }
       ]
     },
     '5': {
       name: { en: '5th Floor', ar: 'الطابق الخامس' },
-      sub: { en: 'Mid Level · 80 m² Unit Available', ar: 'طابق متوسط · وحدة 80 م² متاحة' },
       sizeLbl: { en: '80 m² Unit · 1 Available', ar: 'وحدة 80 م² · 1 متاح' },
       desc: {
         en: '<p>The 5th floor offers a well-proportioned 80 m² office unit — ideal for small firms, consultancies, or any team that needs room to work comfortably without taking a full floor.</p><p>Well-finished and ready to move in: the right balance of size, quality and value at a mid-level position in the tower.</p>',
@@ -89,47 +117,60 @@
         { k: { en: 'Capacity', ar: 'السعة' }, v: { en: '8 – 12 persons', ar: '8 – 12 شخصاً' } },
         { k: { en: 'Level', ar: 'المستوى' }, v: { en: 'Floors 1 – 8', ar: 'الطوابق 1 – 8' } },
         { k: { en: 'Lease', ar: 'الإيجار' }, v: { en: 'Annual', ar: 'سنوي' } },
-        { k: { en: 'Setup', ar: 'التجهيز' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
+        { k: { en: 'Handover', ar: 'التسليم' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
         { k: { en: 'Status', ar: 'الحالة' }, v: { en: 'Available', ar: 'متاح' } }
       ]
     },
     '6': {
       name: { en: '6th Floor', ar: 'الطابق السادس' },
-      sub: { en: 'Full Floor · 400 m² Available', ar: 'طابق كامل · 400 م² متاح' },
       sizeLbl: { en: '400 m² · Full Floor', ar: '400 م² · طابق كامل' },
       desc: {
-        en: '<p>The 6th floor is a fully open space with flexible sizes from 80 m² up to 400 m². High-floor positioning brings excellent natural light and wide views, while the adaptable layout lets you configure the space to your exact requirements.</p><p>Whether a single office or a full floor, the 6th floor can be shaped to fit — the right amount of space at the right cost.</p>',
-        ar: '<p>الطابق السادس مساحة مفتوحة بالكامل بأحجام مرنة من 80 م² حتى 400 م². يوفر الموقع المرتفع إضاءة طبيعية ممتازة وإطلالات واسعة، فيما يتيح التخطيط المرن تهيئة المساحة وفق متطلباتك.</p><p>سواء احتجت مكتبًا واحدًا أو طابقًا كاملاً، يمكن تشكيل الطابق السادس ليناسبك — المساحة المناسبة بالتكلفة المناسبة.</p>'
+        en: '<p>The 6th floor is a fully open space with flexible sizes from <strong>80 m² up to 400 m²</strong>. High-floor positioning brings excellent natural light and wide views, while the adaptable layout lets you configure the space to your exact requirements.</p><p>Whether a single office or a full floor, the 6th floor can be shaped to fit — the right amount of space at the right cost.</p>',
+        ar: '<p>الطابق السادس مساحة مفتوحة بالكامل بأحجام مرنة من <strong>80 م² حتى 400 م²</strong>. يوفر الموقع المرتفع إضاءة طبيعية ممتازة وإطلالات واسعة، فيما يتيح التخطيط المرن تهيئة المساحة وفق متطلباتك.</p><p>سواء احتجت مكتبًا واحدًا أو طابقًا كاملاً، يمكن تشكيل الطابق السادس ليناسبك — المساحة المناسبة بالتكلفة المناسبة.</p>'
       },
       specs: [
         { k: { en: 'Size', ar: 'المساحة' }, v: '400 m²' },
         { k: { en: 'Capacity', ar: 'السعة' }, v: { en: '40 – 60 persons', ar: '40 – 60 شخصاً' } },
         { k: { en: 'Level', ar: 'المستوى' }, v: { en: 'Floors 1 – 8', ar: 'الطوابق 1 – 8' } },
         { k: { en: 'Lease', ar: 'الإيجار' }, v: { en: 'Annual', ar: 'سنوي' } },
-        { k: { en: 'Setup', ar: 'التجهيز' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
+        { k: { en: 'Handover', ar: 'التسليم' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
         { k: { en: 'Status', ar: 'الحالة' }, v: { en: 'Available', ar: 'متاح' } }
       ]
     },
     '7': {
       name: { en: '7th Floor', ar: 'الطابق السابع' },
-      sub: { en: 'Full Floor · 400 m² Available', ar: 'طابق كامل · 400 م² متاح' },
       sizeLbl: { en: '400 m² · Full Floor', ar: '400 م² · طابق كامل' },
       desc: {
-        en: '<p>The 7th floor offers a premium open space from 80 m² up to the full 400 m². Positioned high in the tower, it is ideal for companies seeking a commanding presence with unobstructed views and a fully adaptable layout.</p><p>Take a single office or the entire floor — the open plan gives you full control to design a workspace that reflects your business.</p>',
-        ar: '<p>يوفر الطابق السابع مساحة مفتوحة فاخرة من 80 م² حتى 400 م² كاملة. يقع في الجزء العلوي من البرج، وهو مثالي للشركات الباحثة عن حضور مميز مع إطلالات واسعة وتخطيط قابل للتكيف.</p><p>احجز مكتبًا واحدًا أو الطابق بأكمله — يمنحك التصميم المفتوح حرية كاملة في إنشاء بيئة عمل تعكس هوية مؤسستك.</p>'
+        en: '<p>The 7th floor offers a premium open space from <strong>80 m² up to the full 400 m²</strong>. Positioned high in the tower, it is ideal for companies seeking a commanding presence with unobstructed views and a fully adaptable layout.</p><p>Take a single office or the entire floor — the open plan gives you full control to design a workspace that reflects your business.</p>',
+        ar: '<p>يوفر الطابق السابع مساحة مفتوحة فاخرة من <strong>80 م² حتى 400 م² كاملة</strong>. يقع في الجزء العلوي من البرج، وهو مثالي للشركات الباحثة عن حضور مميز مع إطلالات واسعة وتخطيط قابل للتكيف.</p><p>احجز مكتبًا واحدًا أو الطابق بأكمله — يمنحك التصميم المفتوح حرية كاملة في إنشاء بيئة عمل تعكس هوية مؤسستك.</p>'
       },
       specs: [
         { k: { en: 'Size', ar: 'المساحة' }, v: '400 m²' },
         { k: { en: 'Capacity', ar: 'السعة' }, v: { en: '40 – 60 persons', ar: '40 – 60 شخصاً' } },
         { k: { en: 'Level', ar: 'المستوى' }, v: { en: 'Floors 1 – 8', ar: 'الطوابق 1 – 8' } },
         { k: { en: 'Lease', ar: 'الإيجار' }, v: { en: 'Annual', ar: 'سنوي' } },
-        { k: { en: 'Setup', ar: 'التجهيز' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
+        { k: { en: 'Handover', ar: 'التسليم' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
         { k: { en: 'Status', ar: 'الحالة' }, v: { en: 'Available', ar: 'متاح' } }
+      ]
+    },
+    '8': {
+      name: { en: '8th Floor', ar: 'الطابق الثامن' },
+      sizeLbl: { en: 'Fully Occupied', ar: 'مؤجّر بالكامل' },
+      desc: {
+        en: '<p>The 8th floor is currently fully leased and not available. Like the tower\'s other office floors, it offers flexible options from 80 m² up to the full 400 m² once a unit is freed up.</p><p>Contact our leasing team to be notified as soon as space opens up on this floor.</p>',
+        ar: '<p>الطابق الثامن مؤجّر بالكامل حالياً وغير متاح. كباقي طوابق البرج المكتبية، يوفر خيارات مرنة من 80 م² حتى 400 م² كاملة عند توفر وحدة.</p><p>تواصل مع فريق التأجير لدينا لإعلامك فور توفر مساحة في هذا الطابق.</p>'
+      },
+      specs: [
+        { k: { en: 'Size', ar: 'المساحة' }, v: { en: '80 – 400 m²', ar: '80 – 400 م²' } },
+        { k: { en: 'Capacity', ar: 'السعة' }, v: { en: '8 – 60 persons', ar: '8 – 60 شخصاً' } },
+        { k: { en: 'Level', ar: 'المستوى' }, v: { en: 'Floors 1 – 8', ar: 'الطوابق 1 – 8' } },
+        { k: { en: 'Lease', ar: 'الإيجار' }, v: { en: 'Annual', ar: 'سنوي' } },
+        { k: { en: 'Handover', ar: 'التسليم' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
+        { k: { en: 'Status', ar: 'الحالة' }, v: { en: 'Fully occupied', ar: 'مؤجّر بالكامل' } }
       ]
     },
     '9-outdoor': {
       name: { en: '9th Floor — Outdoor Terrace', ar: 'الطابق التاسع — التراس الخارجي' },
-      sub: { en: 'Rooftop Terrace · 300 m² Available', ar: 'تراس على السطح · 300 م² متاح' },
       sizeLbl: { en: '300 m² · Outdoor Terrace', ar: '300 م² · تراس خارجي' },
       desc: {
         en: '<p>The 9th-floor outdoor terrace is a stunning panoramic space ideal for a rooftop restaurant or coffee house. Sweeping city views and open skies make it the perfect setting for an outdoor dining experience or a signature café concept.</p><p>A rare venue at the top of the tower — one that turns an ordinary visit into something truly memorable.</p>',
@@ -140,13 +181,12 @@
         { k: { en: 'Capacity', ar: 'السعة' }, v: { en: 'Up to 160 guests', ar: 'حتى 160 ضيفاً' } },
         { k: { en: 'Level', ar: 'المستوى' }, v: { en: '9th (Outdoor)', ar: 'التاسع (خارجي)' } },
         { k: { en: 'Lease', ar: 'الإيجار' }, v: { en: 'Annual', ar: 'سنوي' } },
-        { k: { en: 'Setup', ar: 'التجهيز' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
+        { k: { en: 'Handover', ar: 'التسليم' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
         { k: { en: 'Status', ar: 'الحالة' }, v: { en: 'Available', ar: 'متاح' } }
       ]
     },
     '9-indoor': {
       name: { en: '9th Floor — Indoor Space', ar: 'الطابق التاسع — المساحة الداخلية' },
-      sub: { en: 'Premium Space · 100 m² Available', ar: 'مساحة فاخرة · 100 م² متاح' },
       sizeLbl: { en: '100 m² · Indoor Space', ar: '100 م² · مساحة داخلية' },
       desc: {
         en: '<p>The 9th-floor indoor space is a licensed, climate-controlled area perfectly suited to a restaurant or premium dining concept. Adjacent to the outdoor terrace, it offers high-end finishes for an upscale food-and-beverage operation.</p><p>Run it as a standalone restaurant or pair it with the terrace — this space delivers the quality and ambience a premium concept deserves.</p>',
@@ -157,7 +197,7 @@
         { k: { en: 'Capacity', ar: 'السعة' }, v: { en: 'Up to 60 guests', ar: 'حتى 60 ضيفاً' } },
         { k: { en: 'Level', ar: 'المستوى' }, v: { en: '9th (Indoor)', ar: 'التاسع (داخلي)' } },
         { k: { en: 'Lease', ar: 'الإيجار' }, v: { en: 'Annual', ar: 'سنوي' } },
-        { k: { en: 'Setup', ar: 'التجهيز' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
+        { k: { en: 'Handover', ar: 'التسليم' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
         { k: { en: 'Status', ar: 'الحالة' }, v: { en: 'Available', ar: 'متاح' } }
       ]
     },
@@ -166,7 +206,6 @@
     // cards keep the two 9th-floor types as separate pages (unchanged).
     '9': {
       name: { en: '9th Floor — Outdoor Terrace & Indoor Space', ar: 'الطابق التاسع — التراس الخارجي والمساحة الداخلية' },
-      sub: { en: 'Rooftop + Premium Indoor · 400 m² Combined', ar: 'سطح + مساحة داخلية فاخرة · 400 م² إجمالي' },
       sizeLbl: { en: '400 m² · Outdoor + Indoor', ar: '400 م² · خارجي + داخلي' },
       desc: {
         en: '<p>The 9th floor combines a 300 m² panoramic outdoor terrace with a 100 m² licensed, climate-controlled indoor space — together forming the tower\'s most striking venue. Sweeping city views outside meet high-end, upscale finishes inside.</p><p>Lease the terrace, the indoor space, or both together as one 400 m² destination for a rooftop restaurant, café or premium dining concept.</p>',
@@ -177,13 +216,12 @@
         { k: { en: 'Capacity', ar: 'السعة' }, v: { en: 'Up to 220 guests combined', ar: 'حتى 220 ضيفاً مجتمعين' } },
         { k: { en: 'Level', ar: 'المستوى' }, v: { en: '9th (Outdoor + Indoor)', ar: 'التاسع (خارجي وداخلي)' } },
         { k: { en: 'Lease', ar: 'الإيجار' }, v: { en: 'Annual', ar: 'سنوي' } },
-        { k: { en: 'Setup', ar: 'التجهيز' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
+        { k: { en: 'Handover', ar: 'التسليم' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
         { k: { en: 'Status', ar: 'الحالة' }, v: { en: 'Available', ar: 'متاح' } }
       ]
     },
     'g': {
       name: { en: 'Ground Floor — Retail Shops', ar: 'الطابق الأرضي — محلات تجارية' },
-      sub: { en: 'Street Level · 3 Shops Available', ar: 'مستوى الشارع · 3 محلات متاحة' },
       sizeLbl: { en: '3 × 25 m² Shops', ar: '3 × 25 م² محلات' },
       desc: {
         en: '<p>The ground floor hosts commercial shops in a mix of sizes, each with its own street-level entrance and a dedicated reception office anchoring the tower\'s main entrance. Inside and out, the floor offers excellent visibility and direct foot traffic.</p><p>A prime commercial level at the heart of the tower — the right address for any retail or service business looking to make an impression.</p>',
@@ -194,7 +232,7 @@
         { k: { en: 'Capacity', ar: 'السعة' }, v: { en: '2 – 3 staff', ar: '2 – 3 موظفين' } },
         { k: { en: 'Level', ar: 'المستوى' }, v: { en: 'Ground', ar: 'أرضي' } },
         { k: { en: 'Lease', ar: 'الإيجار' }, v: { en: 'Annual', ar: 'سنوي' } },
-        { k: { en: 'Setup', ar: 'التجهيز' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
+        { k: { en: 'Handover', ar: 'التسليم' }, v: { en: 'Same day', ar: 'نفس اليوم' } },
         { k: { en: 'Status', ar: 'الحالة' }, v: { en: 'Available', ar: 'متاح' } }
       ]
     }
@@ -407,7 +445,6 @@
     document.title = fl.name[L] + ' — Alrayyan Tower';
     $('#bcName').textContent = fl.name[L];
     $('#flTitle').textContent = fl.name[L];
-    $('#flSub').textContent = fl.sub[L];
     $('#flSize').textContent = fl.sizeLbl[L];
 
     // hero banner (combined 9th floor reuses the outdoor terrace banner —
@@ -522,6 +559,40 @@
     });
   }
 
+  /* ---------- Floor status (admin can take a whole floor offline) --------- */
+  // A floor page is only reachable if it actually has something to book.
+  // Unlike the homepage's "Fully Occupied" listing, Floor Status 'active'
+  // does NOT force this page open on a floor with nothing available — only
+  // 'inactive' is an override, blocking the page even if a size is on.
+  // Combined 9th floor page is reachable as long as either its outdoor or
+  // indoor half still has an available size.
+  // `availLoaded` is false when settings/availability has never been seeded —
+  // in that case we don't know real occupancy, so fail open instead of
+  // treating "no data" the same as "everything off".
+  function floorActive(fs, avail, availLoaded, id) {
+    if (fs['floor_' + id] === 'inactive') return false;
+    if (id === '9') return floorActive(fs, avail, availLoaded, '9-outdoor') || floorActive(fs, avail, availLoaded, '9-indoor');
+    if (!availLoaded) return true;
+    var prefix = id + '_';
+    return Object.keys(avail).some(function (k) { return k.indexOf(prefix) === 0 && avail[k]; });
+  }
+  // Someone can always type ?floor=3 directly, bypassing the availability
+  // list/space pills — so this page must independently refuse to render a
+  // floor the admin disabled, not just rely on being unlinked elsewhere.
+  function checkFloorStatus(cb) {
+    if (!window.db) { cb(); return; }
+    Promise.all([
+      window.db.doc('settings/floor_status').get(),
+      window.db.doc('settings/availability').get()
+    ]).then(function (docs) {
+      var fs = docs[0].exists ? (docs[0].data() || {}) : {};
+      var avail = docs[1].exists ? (docs[1].data() || {}) : {};
+      var availLoaded = docs[1].exists;
+      if (!floorActive(fs, avail, availLoaded, floorId)) { window.location.replace('index.html'); return; }
+      cb();
+    }).catch(function () { cb(); }); // offline/error: fail open rather than blank the page
+  }
+
   /* ---------- Boot -------------------------------------------------------- */
   // Every floor link is a fresh navigation (?floor=<id> query param), so the
   // page must always land at the top rather than restore a prior scroll
@@ -532,8 +603,10 @@
     $('#year').textContent = new Date().getFullYear();
     initTheme();
     snapshotEN();
-    initNav();
-    initBooking();
-    setLang(lang);   // also calls renderFloor()
+    checkFloorStatus(function () {
+      initNav();
+      initBooking();
+      setLang(lang);   // also calls renderFloor()
+    });
   });
 })();

@@ -1,6 +1,5 @@
-html { color-scheme: only light !important; }
-
     :root{
+      color-scheme: dark;
       /* Alrayyan Arts — Black + Gold theme */
       --primary:#0a0a0a;   /* dominant black */
       --accent:#C9A84C;    /* gold highlight */
@@ -10,6 +9,14 @@ html { color-scheme: only light !important; }
       --teal-dim:#8a6f28;   /* legacy alias → dark gold */
       --parchment:#f5efe0;--off-white:#efe7d4;
       --muted:#8b8576;--t:0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    html[data-theme="light"]{
+      color-scheme: light;
+      --primary:#fbf8ee;
+      --ink:#fbf8ee;--deep:#f0ead8;
+      --teal-light:#8a6f28;--teal-dim:#e6c971;
+      --parchment:#241f10;--off-white:#2e2818;
+      --muted:#6b6555;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
@@ -234,8 +241,19 @@ html { color-scheme: only light !important; }
 .lang-btn{background:none;border:1px solid rgba(63,168,154,0.25);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.58rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 8px;cursor:pointer;transition:var(--t);}
 .lang-btn:first-child{border-radius:2px 0 0 2px;border-right:none;}
 .lang-btn:last-child{border-radius:0 2px 2px 0;}
-.lang-btn.active{background:var(--teal);color:var(--ink);border-color:var(--teal);}
+.lang-btn.active{background:var(--teal);color:#0a0a0a;border-color:var(--teal);}
 .lang-btn:hover:not(.active){color:var(--teal-light);border-color:var(--teal);}
+
+/* THEME TOGGLE */
+.theme-toggle-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;margin-right:10px;
+  background:none;border:1px solid rgba(201,168,76,0.3);border-radius:50%;color:var(--accent);cursor:pointer;
+  position:relative;overflow:hidden;transition:var(--t);flex:0 0 auto;}
+.theme-toggle-btn:hover{border-color:var(--accent);background:rgba(201,168,76,0.08);}
+.theme-toggle-btn .theme-icon-sun,.theme-toggle-btn .theme-icon-moon{position:absolute;font-size:.85rem;line-height:1;transition:var(--t);}
+.theme-toggle-btn .theme-icon-sun{opacity:0;transform:scale(.4) rotate(-90deg);}
+.theme-toggle-btn .theme-icon-moon{opacity:1;transform:scale(1) rotate(0deg);}
+.theme-toggle-btn.is-light .theme-icon-sun{opacity:1;transform:scale(1) rotate(0deg);}
+.theme-toggle-btn.is-light .theme-icon-moon{opacity:0;transform:scale(.4) rotate(90deg);}
 html[dir="rtl"] body{direction:rtl;text-align:right;}
 html[dir="rtl"] .teal-line{background:linear-gradient(270deg,var(--teal),transparent);}
 html[dir="rtl"] .hero-eyebrow::before{display:none;}
@@ -278,12 +296,34 @@ html.dark img[src*="logo/logo.png"], html[data-theme="dark"] img[src*="logo/logo
 }
 
 /* ── Mobile navbar row-safe ── */
-#navbar { background: rgba(5,5,5,0.98) !important; }
+#navbar { background: var(--ink) !important; }
+html[data-theme="light"] #navbar { background: rgba(251,248,238,0.98) !important; }
 .nav-brand { display: inline-flex; align-items: center; white-space: nowrap; min-width: 0; }
 @media (max-width: 480px) {
   nav { padding: 0 3%; }
   .nav-brand { font-size: 0.95rem; letter-spacing: 1px; }
 }
+
+/* =========================================================================
+   LIGHT THEME — keeps the black+gold Arts sub-brand accent.
+   ========================================================================= */
+html[data-theme="light"] body { background: var(--ink); }
+html[data-theme="light"] ::-webkit-scrollbar-track { background: var(--ink); }
+html[data-theme="light"] nav { background: rgba(251,248,238,0.96); border-bottom-color: rgba(138,111,40,0.14); }
+html[data-theme="light"] .hero-bg-overlay { background: linear-gradient(to top, rgba(251,248,238,0.97) 35%, rgba(251,248,238,0.55) 70%, rgba(251,248,238,0.28) 100%); }
+html[data-theme="light"] .c-chip-a { background: rgba(138,111,40,0.05); }
+html[data-theme="light"] footer { background: #f5efe0; border-top-color: rgba(138,111,40,0.1); }
+html[data-theme="light"] .f-copy { color: rgba(36,31,16,0.55); }
+html[data-theme="light"] .modal { background: #ffffff; border-color: rgba(138,111,40,0.2); }
+html[data-theme="light"] .form-group input { background: rgba(138,111,40,0.05); border-color: rgba(138,111,40,0.18); }
+/* Text-on-gold-accent must stay dark in both themes (the accent bg itself
+   doesn't invert), so pin it rather than letting it follow --ink. */
+html[data-theme="light"] .cart-badge,
+html[data-theme="light"] .btn-teal,
+html[data-theme="light"] .quick-add-btn,
+html[data-theme="light"] .prod-plus-btn:hover,
+html[data-theme="light"] .prod-info-add:hover,
+html[data-theme="light"] .qty-btn:hover { color: #0a0a0a; }
 
 /* DISABLE TEXT SELECTION & cursor detection (per user request) */
 body{user-select:none !important;-webkit-user-select:none !important;-moz-user-select:none !important;-ms-user-select:none !important;-webkit-touch-callout:none !important;}

@@ -68,7 +68,7 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  var SPECK = { size: { en: 'Size', ar: 'المساحة' }, cap: { en: 'Capacity', ar: 'السعة' }, lvl: { en: 'Level', ar: 'المستوى' }, lease: { en: 'Lease', ar: 'الإيجار' }, setup: { en: 'Setup', ar: 'التجهيز' }, avail: { en: 'Availability', ar: 'التوفر' } };
+  var SPECK = { size: { en: 'Size', ar: 'المساحة' }, cap: { en: 'Capacity', ar: 'السعة' }, lvl: { en: 'Level', ar: 'المستوى' }, lease: { en: 'Lease', ar: 'الإيجار' }, setup: { en: 'Handover', ar: 'التسليم' }, avail: { en: 'Availability', ar: 'التوفر' } };
   var ANNUAL = { en: 'Annual', ar: 'سنوي' }, SAMEDAY = { en: 'Same day', ar: 'نفس اليوم' };
 
   // Which floor sub-pages carry this office-solution type — rendered as
@@ -87,13 +87,12 @@
   var SPACES = {
     'full-floor': {
       name: { en: 'Full Floor', ar: 'طابق كامل' },
-      sub: { en: 'Signature · 400 m² for a single tenant', ar: 'مميّز · 400 م² لمستأجر واحد' },
       sizeLbl: { en: '400 m² · Full Floor', ar: '400 م² · طابق كامل' },
       banner: 'full-floor-inside-banner.webp',
       gallery: ['full-floor-inside-banner.webp', 'full-floor-outside.webp'],
       desc: {
-        en: '<p>Alrayyan Tower\'s full-floor offices are fully open spaces offering flexible options from 80 m² up to the entire 400 m². Whether a small startup or a growing company, you lease exactly the space you need and expand as your business grows. High-floor positioning delivers excellent natural light and wide views.</p><p>The open layout gives you complete freedom to design and configure — from private offices to collaborative work environments. Take a single office or the whole floor and shape a workspace that reflects your business.</p>',
-        ar: '<p>طوابق برج الريان الكاملة مساحات مفتوحة بالكامل بخيارات مرنة من 80 م² حتى 400 م² بأكملها. سواء كنت شركة ناشئة أو مؤسسة متنامية، تستأجر المساحة التي تحتاجها وتتوسّع بحسب نموّك. يوفر الموقع المرتفع إضاءة طبيعية ممتازة وإطلالات واسعة.</p><p>يمنحك التخطيط المفتوح حرية كاملة في التصميم والتهيئة — من مكاتب خاصة إلى بيئات عمل تشاركية. احجز مكتبًا واحدًا أو الطابق بأكمله وصمّم بيئة تعكس هوية مؤسستك.</p>'
+        en: '<p>Alrayyan Tower\'s full-floor offices are fully open spaces offering flexible options from <strong>80 m² up to the entire 400 m²</strong>. Whether a small startup or a growing company, you lease exactly the space you need and expand as your business grows. High-floor positioning delivers excellent natural light and wide views.</p><p>The open layout gives you complete freedom to design and configure — from private offices to collaborative work environments. Take a single office or the whole floor and shape a workspace that reflects your business.</p>',
+        ar: '<p>طوابق برج الريان الكاملة مساحات مفتوحة بالكامل بخيارات مرنة من <strong>80 م² حتى 400 م² بأكملها</strong>. سواء كنت شركة ناشئة أو مؤسسة متنامية، تستأجر المساحة التي تحتاجها وتتوسّع بحسب نموّك. يوفر الموقع المرتفع إضاءة طبيعية ممتازة وإطلالات واسعة.</p><p>يمنحك التخطيط المفتوح حرية كاملة في التصميم والتهيئة — من مكاتب خاصة إلى بيئات عمل تشاركية. احجز مكتبًا واحدًا أو الطابق بأكمله وصمّم بيئة تعكس هوية مؤسستك.</p>'
       },
       specs: [
         { k: SPECK.size, v: '400 m²' },
@@ -105,7 +104,6 @@
     },
     'small-spaces': {
       name: { en: 'Small Spaces', ar: 'مساحات صغيرة' },
-      sub: { en: 'Popular · 80 – 160 m² units', ar: 'شائع · وحدات 80 – 160 م²' },
       sizeLbl: { en: '80 – 160 m² · Units', ar: '80 – 160 م² · وحدات' },
       banner: 'small-spaces-inside-banner.webp',
       gallery: ['small-spaces-inside-banner.webp', 'small-spaces-outside.webp'],
@@ -123,7 +121,6 @@
     },
     'open-space': {
       name: { en: 'Open Space', ar: 'مساحة مفتوحة' },
-      sub: { en: 'Flexible · 1,000 m² undivided', ar: 'مرن · 1,000 م² غير مقسّم' },
       sizeLbl: { en: '1,000 m² · Open Space', ar: '1,000 م² · مساحة مفتوحة' },
       banner: 'open-space-inside-banner.webp',
       gallery: ['open-space-inside-banner.webp', 'open-space-outside.webp', 'open-space.webp'],
@@ -141,7 +138,6 @@
     },
     '9th-outdoor': {
       name: { en: '9th Floor — Outdoor Terrace', ar: 'الطابق التاسع — التراس الخارجي' },
-      sub: { en: 'Rooftop · 300 m² panoramic terrace', ar: 'سطح · تراس بانورامي 300 م²' },
       sizeLbl: { en: '300 m² · Outdoor Terrace', ar: '300 م² · تراس خارجي' },
       banner: '9th-floor-outdoor-inside-banner.webp',
       gallery: ['9th-floor-outdoor-inside-banner.webp', '9th-floor-outdoor-outside.webp'],
@@ -159,7 +155,6 @@
     },
     '9th-indoor': {
       name: { en: '9th Floor — Indoor Space', ar: 'الطابق التاسع — المساحة الداخلية' },
-      sub: { en: 'Penthouse · premium indoor space', ar: 'بنتهاوس · مساحة داخلية فاخرة' },
       sizeLbl: { en: '100 m² · Indoor Space', ar: '100 م² · مساحة داخلية' },
       banner: '9th-floor-indoor-inside-banner.webp',
       gallery: ['9th-floor-indoor-inside-banner.webp', '9th-floor-indoor-outside.webp', 'roof-indoor.webp'],
@@ -177,7 +172,6 @@
     },
     'small-shops': {
       name: { en: 'Small Shops', ar: 'محلات صغيرة' },
-      sub: { en: 'Retail · ground-floor units', ar: 'تجزئة · وحدات بالطابق الأرضي' },
       sizeLbl: { en: '25 m² · Retail Units', ar: '25 م² · وحدات تجارية' },
       banner: 'small-shops-inside-banner.webp',
       gallery: ['small-shops-inside-banner.webp', 'small-shops-outside.webp'],
@@ -272,12 +266,47 @@
   var lang = 'en';
   try { lang = localStorage.getItem('arg_lang') || 'en'; } catch (e) {}
 
+  // Populated live from settings/floor_status (explicit master switch) and
+  // settings/availability (the existing per-unit-size switches). Unlike the
+  // homepage's "Fully Occupied" listing, a pill here is a promise you can
+  // actually click into and book — so 'active' does NOT force one to
+  // appear on a floor with nothing available; only 'inactive' overrides
+  // anything, hiding a pill even if a size happens to be on.
+  var floorStatus = {}, availability = {}, availabilityLoaded = false;
+  // True once Firestore has actually answered at least once (regardless of
+  // whether either doc exists) — separate from availabilityLoaded, which
+  // only governs the fail-open default *inside* isFloorActive. This one
+  // gates whether the pills render at all, so visitors never see a pill
+  // for an occupied floor flash on screen and then vanish a second later.
+  var floorDataResponded = false;
+  function isFloorActive(id) {
+    if (floorStatus['floor_' + id] === 'inactive') return false;
+    if (!availabilityLoaded) return true; // no data yet — fail open rather than hide every pill
+    var prefix = id + '_';
+    return Object.keys(availability).some(function (k) { return k.indexOf(prefix) === 0 && availability[k]; });
+  }
+  function initFloorStatus() {
+    if (!window.db) { floorDataResponded = true; renderSpace(); return; }
+    var floorStatusIn = false, availabilityIn = false;
+    function checkResponded() { if (floorStatusIn && availabilityIn) floorDataResponded = true; }
+    window.db.doc('settings/floor_status').onSnapshot(function (doc) {
+      floorStatus = doc.exists ? (doc.data() || {}) : {};
+      floorStatusIn = true; checkResponded();
+      renderSpace();
+    }, function (e) { console.warn('[floor_status]', e && e.code); floorStatusIn = true; checkResponded(); renderSpace(); });
+    window.db.doc('settings/availability').onSnapshot(function (doc) {
+      availability = doc.exists ? (doc.data() || {}) : {};
+      availabilityLoaded = doc.exists;
+      availabilityIn = true; checkResponded();
+      renderSpace();
+    }, function (e) { console.warn('[availability]', e && e.code); availabilityIn = true; checkResponded(); renderSpace(); });
+  }
+
   function renderSpace() {
     var L = lang;
     document.title = sp.name[L] + ' — Alrayyan Tower';
     $('#bcName').textContent = sp.name[L];
     $('#flTitle').textContent = sp.name[L];
-    $('#flSub').textContent = sp.sub[L];
     $('#flSize').textContent = sp.sizeLbl[L];
 
     var img = $('#flHeroImg');
@@ -300,10 +329,13 @@
     AMENITIES[L].forEach(function (a) { am.appendChild(el('div', { class: 'amenity', text: a })); });
 
     // "Available in" floor pills — links to the matching floor sub-page(s).
+    // Held back entirely until Firestore has actually answered, so a floor
+    // that's really occupied never flashes up as a clickable pill for a
+    // moment before disappearing.
     var linksWrap = $('#flFloorLinks');
     if (linksWrap) {
       linksWrap.textContent = '';
-      var links = FLOOR_LINKS[typeId] || [];
+      var links = floorDataResponded ? (FLOOR_LINKS[typeId] || []).filter(function (lk) { return isFloorActive(lk.id); }) : [];
       if (links.length) {
         linksWrap.appendChild(el('span', { class: 'fl-floor-links__label', text: (I18N[L] && I18N[L].availIn) || 'Available In' }));
         links.forEach(function (lk) {
@@ -402,5 +434,6 @@
     initNav();
     initBooking();
     setLang(lang);
+    initFloorStatus();
   });
 })();

@@ -3,10 +3,33 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="darkreader-lock">
-  <meta name="color-scheme" content="only light">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="color-scheme" content="dark"/>
-  <meta name="theme-color" content="#050505"/>
+  <meta name="theme-color" content="#0a0608"/>
+  <script>
+    (function(){
+      try {
+        var t = localStorage.getItem('al_theme');
+        if (t !== 'light' && t !== 'dark') t = 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e){}
+    })();
+    function applyThemeMeta(theme) {
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'light' ? '#fdf8f6' : '#0a0608');
+    }
+    function setTheme(theme) {
+      theme = theme === 'light' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      try { localStorage.setItem('al_theme', theme); } catch(e){}
+      applyThemeMeta(theme);
+      document.querySelectorAll('.theme-toggle-btn').forEach(function(btn){ btn.classList.toggle('is-light', theme === 'light'); });
+    }
+    function toggleTheme() {
+      var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      setTheme(current === 'light' ? 'dark' : 'light');
+    }
+  </script>
   <title>Alrayyan Fashion – Shop</title>
   <meta name="robots" content="index, follow"/>
   <link rel="icon" type="image/png" sizes="32x32" href="images/logo/favicon.png"/>
@@ -165,7 +188,7 @@
 
 <footer>
   <div><div class="f-brand">ALRAYYAN <span>FASHION</span></div><div class="f-parent">Part of <a href="index.html">Alrayyan Group</a></div></div>
-  <div class="f-copy">© 2025 Alrayyan Fashion. All rights reserved.</div>
+  <div class="f-copy">© 2026 Alrayyan Fashion. All rights reserved.</div>
 </footer>
 
 <!-- CART DRAWER -->
@@ -583,6 +606,15 @@ document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
     sw.style.cssText = 'direction:ltr;display:inline-flex;';
     sw.innerHTML = '<button class="lang-btn active" onclick="setLang(\'en\')" style="min-width:36px;">EN</button><button class="lang-btn" onclick="setLang(\'ar\')" style="min-width:36px;">AR</button>';
     navRight.insertBefore(sw, navRight.firstChild);
+    const tb = document.createElement('button');
+    tb.className = 'theme-toggle-btn';
+    tb.id = 'themeToggleBtn';
+    tb.setAttribute('aria-label','Toggle light / dark mode');
+    tb.setAttribute('title','Toggle light / dark mode');
+    tb.onclick = toggleTheme;
+    tb.innerHTML = '<span class="theme-icon-sun">☀</span><span class="theme-icon-moon">☾</span>';
+    navRight.insertBefore(tb, navRight.firstChild);
+    setTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
   }
 })();
 
@@ -597,7 +629,7 @@ const fi18n = {
     conEye:'Visit Us', conTitle:'ALRAYYAN <em>FASHION</em>',
     conLoc:'Location', conLocV:'Amman, Jordan', conPhone:'Phone', conEmail:'Email', conHours:'Hours', conHoursV:'Sat–Thu 10–8pm',
     conWA:'WhatsApp', conMail:'Email Us',
-    fCopy:'© 2025 Alrayyan Fashion. All rights reserved.',
+    fCopy:'© 2026 Alrayyan Fashion. All rights reserved.',
     cartTitle:'Your Cart', cartCheckout:'Proceed to Checkout',
   },
   ar: {
@@ -610,7 +642,7 @@ const fi18n = {
     conEye:'زورونا', conTitle:'أزياء <em>الريان</em>',
     conLoc:'الموقع', conLocV:'عمّان، الأردن', conPhone:'الهاتف', conEmail:'البريد', conHours:'ساعات العمل', conHoursV:'سبت–خميس ١٠ص–٨م',
     conWA:'واتساب', conMail:'راسلنا',
-    fCopy:'© 2025 أزياء الريان. جميع الحقوق محفوظة.',
+    fCopy:'© 2026 أزياء الريان. جميع الحقوق محفوظة.',
     cartTitle:'سلة التسوق', cartCheckout:'إتمام الشراء',
   }
 };

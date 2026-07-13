@@ -105,6 +105,13 @@
 .adm-switch.on { background: var(--gold); }
 .adm-switch.on::after { transform: translateX(18px); }
 [dir="rtl"] .adm-switch.on::after { transform: translateX(-18px); }
+.adm-toggle--master { border-bottom: 1px solid var(--line-soft); margin-bottom: 4px; gap: 8px; }
+.adm-toggle--master .adm-toggle__l { font-weight: 700; color: var(--white); }
+.adm-status.floor-auto { background: rgba(255,255,255,.08); color: var(--muted); }
+.adm-status.floor-forced { background: rgba(224,197,129,.16); color: var(--gold-soft); }
+.adm-status.floor-off { background: rgba(220,80,70,.16); color: #f28b82; }
+.adm-avail__card--off { opacity: .6; }
+.adm-avail__note { font-size: .66rem; color: #f28b82; margin-top: 8px; line-height: 1.4; }
 
 /* ---- RTL ------------------------------------------------------------------
    These headings set font-family: var(--serif) directly, which loads after

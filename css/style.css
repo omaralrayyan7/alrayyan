@@ -83,6 +83,24 @@ body::before {
 .section { position: relative; z-index: 1; padding-block: var(--section-y); }
 .section--tight { padding-block: clamp(48px, 7vw, 96px); }
 
+/* ---- Section splitter ----------------------------------------------------- */
+.section-splitter {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: center; gap: 18px;
+  max-width: 420px; margin: 0 auto; padding-block: clamp(8px, 2vw, 16px);
+}
+.section-splitter::before, .section-splitter::after {
+  content: ""; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line) 50%, transparent);
+}
+.section-splitter::before { background: linear-gradient(90deg, transparent, var(--gold)); }
+.section-splitter::after { background: linear-gradient(90deg, var(--gold), transparent); }
+.section-splitter__mark {
+  width: 9px; height: 9px; flex: none;
+  background: var(--gold-soft); transform: rotate(45deg);
+  box-shadow: 0 0 0 5px rgba(201,162,75,.12);
+}
+
 .eyebrow {
   display: inline-flex; align-items: center; gap: 12px;
   font-family: var(--sans); font-size: .72rem; font-weight: 600;
@@ -224,14 +242,6 @@ body::before {
 .hero__wordmark em { font-style: normal; color: #e2c581; }
 .hero__tagline { margin-top: 14px; font-size: clamp(.92rem, 1.5vw, 1.1rem); letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.72); font-weight: 300; }
 
-.hero__stats {
-  position: absolute; z-index: 2; left: var(--gutter); right: var(--gutter); bottom: 40px;
-  display: flex; flex-wrap: wrap; gap: clamp(24px, 5vw, 68px);
-  padding-top: 26px; border-top: 1px solid var(--line-soft);
-}
-.hero__stat .n { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.1rem); color: var(--gold-soft); line-height: 1; }
-.hero__stat .l { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
-
 .scroll-cue { position: absolute; z-index: 2; right: var(--gutter); top: 50%; writing-mode: vertical-rl; font-size: .64rem; letter-spacing: .35em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 14px; }
 .scroll-cue::after { content: ""; width: 1px; height: 60px; background: linear-gradient(var(--gold), transparent); animation: cue 2.4s var(--ease) infinite; }
 @keyframes cue { 0%,100% { transform: scaleY(.4); opacity:.4; transform-origin: top; } 50% { transform: scaleY(1); opacity:1; } }
@@ -275,7 +285,7 @@ body::before {
 .avail { background: var(--ink-2); border-block: 1px solid var(--line-soft); }
 .avail__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
 .avail-row {
-  display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 20px;
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 20px;
   padding: 22px 26px; border: 1px solid var(--line-soft); border-radius: 14px;
   background: linear-gradient(180deg, rgba(255,255,255,.02), transparent);
   transition: border-color .35s, transform .35s var(--ease), background .35s;
@@ -283,12 +293,19 @@ body::before {
 .avail-row:hover { border-color: var(--line); transform: translateY(-2px); background: rgba(201,162,75,.04); }
 .avail-row__floor { font-family: var(--serif); font-size: 1.5rem; color: var(--gold-soft); min-width: 62px; }
 .avail-row__meta .t { font-weight: 600; font-size: .96rem; color: var(--white); }
-.avail-row__meta .s { font-size: .74rem; color: var(--muted); letter-spacing: .04em; margin-top: 2px; }
-.pill { font-size: .62rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; }
-.pill--open { color: #7ee0a0; background: rgba(126,224,160,.12); border: 1px solid rgba(126,224,160,.3); }
-.pill--last { color: var(--gold-soft); background: rgba(201,162,75,.12); border: 1px solid rgba(201,162,75,.35); }
+.avail-row__sizes { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 4px; }
+.size-tag { font-size: .74rem; font-weight: 600; letter-spacing: .03em; }
+.size-tag--on { color: #7ee0a0; }
+.size-tag--off { color: var(--muted); opacity: .55; text-decoration: line-through; }
 .avail-row__book { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-soft); border: 1px solid var(--line); padding: 9px 16px; border-radius: 100px; transition: all .3s; white-space: nowrap; }
 .avail-row__book:hover { background: var(--gold); color: #17130a; border-color: var(--gold); }
+
+/* Floors with no available size at all render as a plain (non-clickable)
+   div instead of <a> — style it as visibly inert rather than a dead link. */
+.avail-row--disabled { cursor: default; }
+.avail-row--disabled:hover { border-color: var(--line-soft); transform: none; background: linear-gradient(180deg, rgba(255,255,255,.02), transparent); }
+.avail-row--disabled .avail-row__book { color: var(--muted); border-color: var(--line-soft); }
+.avail-row--disabled .avail-row__book:hover { background: none; color: var(--muted); border-color: var(--line-soft); }
 
 /* ---- Features — individual glowing cards (not a joined table/list) ------- */
 .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 2vw, 22px); }
@@ -476,11 +493,20 @@ body::before {
   font-family: "Markazi Text", "Fraunces", serif;
 }
 [dir="rtl"] .eyebrow::before { background: linear-gradient(-90deg, var(--gold), transparent); }
+/* Arabic is a cursive/joining script — the wide letter-spacing used all over
+   this site for its English small-caps look (eyebrows, pills, nav links,
+   buttons, footer headings…) breaks the joining between Arabic letters,
+   making words render as disconnected/"dashed" glyphs. Force it off for
+   every element once the page is in RTL — !important is deliberate here,
+   since dozens of individual rules set their own tracking and all of them
+   must lose to this once the script changes. */
+[dir="rtl"] * { letter-spacing: normal !important; }
 [dir="rtl"] .scroll-cue { left: var(--gutter); right: auto; font-size: .8rem; }
 [dir="rtl"] .btn:hover .arrow { transform: translateX(-4px); }
 /* Arabic reads a touch small at the same rem sizes as the Latin nav — nudge
    the top bar links up slightly for comfortable legibility. */
 [dir="rtl"] .nav__links a { font-size: .9rem; }
+[dir="rtl"] .hero__eyebrow { font-size: .85rem; }
 /* ‹ › are Unicode bidi-mirrored characters — inside an RTL document the
    browser auto-flips their glyph, making "next" look like "prev" and vice
    versa. Force LTR rendering context on the arrow buttons so the glyph
@@ -524,7 +550,7 @@ body::before {
 .card h3, .venture__body h3,
 .cta-band .display { color: #fff; }
 .hero__tagline, .card p, .venture__body p { color: rgba(255,255,255,.82); }
-.hero__stat .l, .scroll-cue { color: rgba(255,255,255,.62); }
+.scroll-cue { color: rgba(255,255,255,.62); }
 .card__tag, .glimpse__cap, .venture__body .num { color: #e2c581; }
 .card__price { color: rgba(255,255,255,.6); }
 .hero__cta .btn--ghost { color: #fff; border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.06); }
@@ -666,8 +692,6 @@ body::before {
   .avail-row__floor { min-width: 0; font-size: 1.3rem; }
   .avail-row__book { grid-column: 1 / -1; justify-self: stretch; text-align: center; margin-top: 6px; }
   .hero { min-height: auto; flex-direction: column; align-items: stretch; justify-content: flex-start; }
-  .hero__inner { padding-top: 130px; padding-bottom: 10px; }
-  .hero__stats { position: static; left: auto; right: auto; bottom: auto; margin-top: 30px; padding-bottom: 20px; gap: 22px 34px; }
-  .hero__stat .n { font-size: 2rem; }
+  .hero__inner { padding-top: 130px; padding-bottom: 30px; }
   .scroll-cue { display: none; }
 }

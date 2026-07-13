@@ -30,7 +30,7 @@
 
   /* ---------- Content data (bilingual; would come from Firestore in prod) - */
   const SPACES = [
-    { slug: 'full-floor', tag: { en: 'Signature', ar: 'مميّز' }, title: { en: 'Full Floor', ar: 'طابق كامل' }, img: 'images/main/full-floor-outside.webp', price: { en: 'Contact for pricing', ar: 'تواصل للتسعير' }, desc: { en: 'An entire 400 m² floor for a single tenant. Open layout, maximum space, fully customisable — ideal for corporate headquarters.', ar: 'طابق كامل بمساحة 400 م² لمستأجر واحد. تخطيط مفتوح، أقصى مساحة، وقابل للتخصيص بالكامل — مثالي لمقرات الشركات.' } },
+    { slug: 'full-floor', tag: { en: 'Signature', ar: 'مميّز' }, title: { en: 'Full Floor', ar: 'طابق كامل' }, img: 'images/main/full-floor-outside.webp', price: { en: 'Contact for pricing', ar: 'تواصل للتسعير' }, desc: { en: 'An entire 400 m² floor. Open layout, maximum space, fully customisable — ideal for corporate headquarters.', ar: 'طابق كامل بمساحة 400 م². تخطيط مفتوح، أقصى مساحة، وقابل للتخصيص بالكامل — مثالي لمقرات الشركات.' } },
     { slug: 'small-spaces', tag: { en: 'Popular', ar: 'شائع' }, title: { en: 'Small Spaces', ar: 'مساحات صغيرة' }, img: 'images/main/small-spaces-outside.webp', price: { en: 'Contact for pricing', ar: 'تواصل للتسعير' }, desc: { en: 'Pre-divided 80–160 m² units within a shared floor, each with a private entrance and shared corridor.', ar: 'وحدات مقسّمة مسبقاً بمساحة 80–160 م² ضمن طابق مشترك، لكل منها مدخل خاص وممر مشترك.' } },
     { slug: 'open-space', tag: { en: 'Flexible', ar: 'مرن' }, title: { en: 'Open Space', ar: 'مساحة مفتوحة' }, img: 'images/main/open-space-outside.webp', price: { en: 'Contact for pricing', ar: 'تواصل للتسعير' }, desc: { en: 'A large, undivided open-plan space. Perfect for showrooms, event venues or custom build-outs on ground and basement levels.', ar: 'مساحة كبيرة مفتوحة غير مقسّمة. مثالية للمعارض وقاعات المناسبات أو التصاميم المخصصة في الطوابق الأرضية والسفلية.' } },
     { slug: '9th-outdoor', tag: { en: 'Rooftop', ar: 'سطح' }, title: { en: '9th Floor — Outdoor Terrace', ar: 'الطابق التاسع — التراس الخارجي' }, img: 'images/main/9th-floor-outdoor-outside.webp', price: { en: 'Contact for pricing', ar: 'تواصل للتسعير' }, desc: { en: 'A rooftop terrace with panoramic city views — restaurants, lounges, events or open-air offices.', ar: 'تراس على السطح بإطلالات بانورامية على المدينة — مطاعم، صالات، مناسبات، أو مكاتب في الهواء الطلق.' } },
@@ -40,19 +40,41 @@
 
   // Source of truth: real available inventory at Alrayyan Tower.
   // `id` maps each row to its floor sub-page (floor.html?floor=<id>).
-  const ENTIRE_SPACE = { en: '80 m² – 400 m² · entire space', ar: '80 م² – 400 م² · مساحة كاملة' };
+  // Each `sizes[].key` is the exact Firestore key the admin panel's
+  // Availability Toggles write to (settings/availability, "<floorId>_<sizeKey>"),
+  // so toggling a unit there is reflected live here — no key, no live update.
+  const OFFICE_SIZES = [
+    { k: '80', label: { en: '80 m²', ar: '80 م²' } },
+    { k: '160', label: { en: '160 m²', ar: '160 م²' } },
+    { k: '240', label: { en: '240 m²', ar: '240 م²' } },
+    { k: '400', label: { en: '400 m²', ar: '400 م²' } }
+  ];
+  function officeSizes(floorId) {
+    return OFFICE_SIZES.map(function (s) { return { key: floorId + '_' + s.k, label: s.label }; });
+  }
   const AVAILABILITY = [
-    { id: 'b1', floor: 'B1', title: { en: 'Open Space', ar: 'مساحة مفتوحة' }, sub: { en: '1,000 m² · undivided', ar: '1,000 م² · غير مقسّم' }, status: 'open' },
-    { id: 'g', floor: 'G', title: { en: 'Retail Shops', ar: 'محلات تجارية' }, sub: { en: '3 × 25 m² · street level', ar: '3 × 25 م² · مستوى الشارع' }, status: 'open' },
-    { id: '3', floor: '3', title: { en: 'Office Unit', ar: 'وحدة مكتبية' }, sub: { en: '80 m² · shared floor', ar: '80 م² · طابق مشترك' }, status: 'last' },
-    { id: '4', floor: '4', title: { en: 'Full Floor', ar: 'طابق كامل' }, sub: ENTIRE_SPACE, status: 'open' },
-    { id: '5', floor: '5', title: { en: 'Office Unit', ar: 'وحدة مكتبية' }, sub: { en: '80 m² · shared floor', ar: '80 م² · طابق مشترك' }, status: 'open' },
-    { id: '6', floor: '6', title: { en: 'Full Floor', ar: 'طابق كامل' }, sub: ENTIRE_SPACE, status: 'open' },
-    { id: '7', floor: '7', title: { en: 'Full Floor', ar: 'طابق كامل' }, sub: ENTIRE_SPACE, status: 'open' },
+    { id: 'b1', floor: 'B1', title: { en: 'Open Space', ar: 'مساحة مفتوحة' }, sizes: [{ key: 'b1_1000', label: { en: '1,000 m²', ar: '1,000 م²' } }] },
+    { id: 'g', floor: 'G', title: { en: 'Retail Shops', ar: 'محلات تجارية' }, sizes: [
+      { key: 'g_shop1', label: { en: 'Shop 1', ar: 'محل 1' } },
+      { key: 'g_shop2', label: { en: 'Shop 2', ar: 'محل 2' } },
+      { key: 'g_shop3', label: { en: 'Shop 3', ar: 'محل 3' } }
+    ] },
+    { id: '1', floor: '1', title: { en: 'Office Unit', ar: 'وحدة مكتبية' }, sizes: officeSizes('1') },
+    { id: '2', floor: '2', title: { en: 'Office Unit', ar: 'وحدة مكتبية' }, sizes: officeSizes('2') },
+    { id: '3', floor: '3', title: { en: 'Office Unit', ar: 'وحدة مكتبية' }, sizes: officeSizes('3') },
+    { id: '4', floor: '4', title: { en: 'Full Floor', ar: 'طابق كامل' }, sizes: officeSizes('4') },
+    { id: '5', floor: '5', title: { en: 'Office Unit', ar: 'وحدة مكتبية' }, sizes: officeSizes('5') },
+    { id: '6', floor: '6', title: { en: 'Full Floor', ar: 'طابق كامل' }, sizes: officeSizes('6') },
+    { id: '7', floor: '7', title: { en: 'Full Floor', ar: 'طابق كامل' }, sizes: officeSizes('7') },
+    { id: '8', floor: '8', title: { en: 'Office Unit', ar: 'وحدة مكتبية' }, sizes: officeSizes('8') },
     // 9th floor combined (outdoor terrace + indoor space) into one row — links
     // to the combined floor.html?floor=9 page. Office Rental Solutions cards
-    // keep the two 9th-floor types separate (unchanged).
-    { id: '9', floor: '9', title: { en: 'Outdoor + Indoor', ar: 'خارجي + داخلي' }, sub: ENTIRE_SPACE, status: 'open' }
+    // keep the two 9th-floor types separate (unchanged). Keys match the
+    // admin panel's separate '9-outdoor' / '9-indoor' floor entries.
+    { id: '9', floor: '9', title: { en: 'Outdoor + Indoor', ar: 'خارجي + داخلي' }, sizes: [
+      { key: '9-outdoor_240', label: { en: '240 m² Outdoor', ar: '240 م² خارجي' } },
+      { key: '9-indoor_160', label: { en: '160 m² Indoor', ar: '160 م² داخلي' } }
+    ] }
   ];
 
   const FEATURES = [
@@ -73,7 +95,8 @@
   ];
 
   const GALLERY = [
-    { img: 'images/main/executive-hall.webp', cap: { en: 'Executive Hall', ar: 'الطابق السابع' } },
+    { img: 'images/main/executive-hall.webp', cap: { en: 'Alrayyan Tower', ar: 'برج الريان' } },
+    { img: 'images/main/7th-floor-hall.webp', cap: { en: '7th Floor Hall', ar: 'ردهة الطابق السابع' } },
     { img: 'images/main/open-space.webp', cap: { en: 'Open Plan', ar: 'مساحة مفتوحة' } },
     { img: 'images/main/partitions-offices.webp', cap: { en: 'Fitted Suites', ar: 'الطابق السادس' } },
     { img: 'images/main/roof-indoor.webp', cap: { en: '9th Floor Indoor', ar: 'الطابق التاسع الداخلي' } },
@@ -85,6 +108,33 @@
 
   var currentLang = 'en';
   var bizStatus = {}; // populated from settings/biz_status via Firestore, id -> 'active'|'inactive'
+  var availability = {}; // populated from settings/availability via Firestore, "<floorId>_<sizeKey>" -> boolean
+  var availabilityLoaded = false; // true once settings/availability has been confirmed to exist — see isFloorActive
+  var floorStatus = {}; // populated from settings/floor_status via Firestore, 'floor_<id>' -> 'active'|'inactive'
+  // True once both settings/floor_status and settings/availability have
+  // actually answered — gates rendering the Availability grid at all, so a
+  // floor that's really occupied never flashes up as "Available" for a
+  // moment before disappearing once the real data arrives.
+  var floorDataResponded = false;
+
+  // The master switch is authoritative once the admin has explicitly set it:
+  // 'inactive' always hides the floor, 'active' always shows it (e.g. to
+  // keep advertising a floor that's technically fully booked). Only while
+  // it's untouched does the floor fall back to the real per-size data below.
+  // Combined 9th-floor row is active as long as either its outdoor or indoor
+  // half still has an available size (or is explicitly forced). While
+  // settings/availability hasn't loaded yet (or is offline), we don't know
+  // real occupancy — fail open and show the floor rather than hiding
+  // everything during that window.
+  function isFloorActive(id) {
+    var fs = floorStatus['floor_' + id];
+    if (fs === 'inactive') return false;
+    if (fs === 'active') return true;
+    if (id === '9') return isFloorActive('9-outdoor') || isFloorActive('9-indoor');
+    if (!availabilityLoaded) return true;
+    var prefix = id + '_';
+    return Object.keys(availability).some(function (k) { return k.indexOf(prefix) === 0 && availability[k]; });
+  }
 
   /* ---------- Render sections ---------------------------------------------
      Re-run on every language switch so office-type names, statuses etc.
@@ -124,19 +174,28 @@
     wrap.textContent = '';
     const L = currentLang;
     const revealCls = 'avail-row reveal' + (isRerender ? ' in' : '');
-    const openLbl = L === 'ar' ? 'متاح' : 'Available', lastLbl = L === 'ar' ? 'آخر وحدة' : 'Last Unit', viewLbl = L === 'ar' ? 'عرض ←' : 'View →';
-    AVAILABILITY.forEach(function (a, i) {
-      const isOpen = a.status === 'open';
-      const href = 'floor.html?floor=' + encodeURIComponent(a.id);
-      const row = el('a', { class: revealCls, href: href, 'data-d': String(i % 2) }, [
+    const viewLbl = L === 'ar' ? 'عرض ←' : 'View →';
+    const occupiedLbl = L === 'ar' ? 'مؤجّر بالكامل' : 'Fully Occupied';
+    (floorDataResponded ? AVAILABILITY.filter(function (a) { return isFloorActive(a.id); }) : []).forEach(function (a, i) {
+      const anyOn = a.sizes.some(function (sz) { return !!availability[sz.key]; });
+      const sizeEls = a.sizes.map(function (sz) {
+        const on = !!availability[sz.key];
+        return el('span', { class: 'size-tag ' + (on ? 'size-tag--on' : 'size-tag--off'), text: sz.label[L] });
+      });
+      const kids = [
         el('div', { class: 'avail-row__floor', text: a.floor }),
         el('div', { class: 'avail-row__meta' }, [
           el('div', { class: 't', text: a.title[L] }),
-          el('div', { class: 's', text: a.sub[L] })
+          el('div', { class: 'avail-row__sizes' }, sizeEls)
         ]),
-        el('span', { class: 'pill ' + (isOpen ? 'pill--open' : 'pill--last'), text: isOpen ? openLbl : lastLbl }),
-        el('span', { class: 'avail-row__book', text: viewLbl })
-      ]);
+        el('span', { class: 'avail-row__book', text: anyOn ? viewLbl : occupiedLbl })
+      ];
+      // Rows with no available size at all aren't linked to the floor
+      // sub-page — nothing to view, so a plain (non-clickable) div instead of <a>.
+      const rowCls = revealCls + (anyOn ? '' : ' avail-row--disabled');
+      const row = anyOn
+        ? el('a', { class: rowCls, href: 'floor.html?floor=' + encodeURIComponent(a.id), 'data-d': String(i % 2) }, kids)
+        : el('div', { class: rowCls, 'data-d': String(i % 2), 'aria-disabled': 'true' }, kids);
       wrap.appendChild(row);
     });
   }
@@ -205,6 +264,29 @@
       bizStatus = { 1: d.biz_status_1, 2: d.biz_status_2, 3: d.biz_status_3 };
       renderVentures(true); // live update — content is already on screen, skip reveal
     }, function (e) { console.warn('[biz_status]', e && e.code); });
+  }
+
+  /* ---------- Availability (admin panel toggles) --------------------------- */
+  var _availResponded = false, _floorStatusResponded = false;
+  function _checkFloorDataResponded() { if (_availResponded && _floorStatusResponded) floorDataResponded = true; }
+  function initAvailability() {
+    if (!window.db) { _availResponded = true; _checkFloorDataResponded(); return; }
+    window.db.doc('settings/availability').onSnapshot(function (doc) {
+      availability = doc.exists ? (doc.data() || {}) : {};
+      availabilityLoaded = doc.exists;
+      _availResponded = true; _checkFloorDataResponded();
+      renderAvailability(true); // live update — content is already on screen, skip reveal
+    }, function (e) { console.warn('[availability]', e && e.code); _availResponded = true; _checkFloorDataResponded(); renderAvailability(true); });
+  }
+
+  /* ---------- Floor status (admin enable/disable a whole floor) ----------- */
+  function initFloorStatus() {
+    if (!window.db) { _floorStatusResponded = true; _checkFloorDataResponded(); return; }
+    window.db.doc('settings/floor_status').onSnapshot(function (doc) {
+      floorStatus = doc.exists ? (doc.data() || {}) : {};
+      _floorStatusResponded = true; _checkFloorDataResponded();
+      renderAvailability(true); // live update — content is already on screen, skip reveal
+    }, function (e) { console.warn('[floor_status]', e && e.code); _floorStatusResponded = true; _checkFloorDataResponded(); renderAvailability(true); });
   }
 
   // Full-width cinematic slider: caption overlay + dots + subtle arrows,
@@ -297,28 +379,6 @@
     $$('#navMobile a').forEach(function (a) {
       a.addEventListener('click', function () { mobile.classList.remove('open'); burger.classList.remove('open'); nav.classList.remove('mobile-open'); document.body.style.overflow = ''; });
     });
-  }
-
-  /* ---------- Animated counters ------------------------------------------ */
-  function initCounters() {
-    const nums = $$('[data-count]');
-    const run = function (node) {
-      const target = parseInt(node.getAttribute('data-count'), 10) || 0;
-      const suffix = node.getAttribute('data-suffix') || '';
-      const dur = 1400; const start = performance.now();
-      const step = function (now) {
-        const t = Math.min((now - start) / dur, 1);
-        const eased = 1 - Math.pow(1 - t, 3);
-        node.textContent = Math.round(target * eased) + suffix;
-        if (t < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    };
-    if (!('IntersectionObserver' in window)) { nums.forEach(run); return; }
-    const io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) { run(e.target); io.unobserve(e.target); } });
-    }, { threshold: 0.6 });
-    nums.forEach(function (n) { io.observe(n); });
   }
 
   /* ---------- Booking modal ---------------------------------------------- */
@@ -432,7 +492,7 @@
   const I18N = {
     ar: {
       navAbout: 'من نحن', navSpaces: 'المساحات', navAvail: 'المتاح', navVentures: 'أعمالنا', navGallery: 'المعرض', navContact: 'اتصل بنا', navBook: 'احجز زيارة',
-      heroEye: 'برج الريان · شارع الملكة علياء',
+      heroEye: 'برج الريان، شارع الملكة علياء، عمّان، الأردن',
       heroTagline: 'حيث تلتقي المكانة بالإنتاجية',
       heroCta1: 'استكشف المساحات', heroCta2: 'احجز زيارة خاصة', scroll: 'مرّر',
       stat1: 'طوابق للإيجار', stat2: 'عاماً من الثقة', stat3: 'مساحات متاحة', stat4: 'شامل الخدمات',
@@ -495,7 +555,7 @@
     window.scrollTo(0, 0);
     $('#year').textContent = new Date().getFullYear();
     renderSpaces(); renderAvailability(); renderFeatures(); renderVentures(); renderGallery();
-    initTheme(); initReveal(); initNav(); initCounters(); initBookingForm(); initCookie(); initLang();
-    initHeroSlideshow(); initBizStatus();
+    initTheme(); initReveal(); initNav(); initBookingForm(); initCookie(); initLang();
+    initHeroSlideshow(); initBizStatus(); initAvailability(); initFloorStatus();
   });
 })();

@@ -3,10 +3,33 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="darkreader-lock">
-  <meta name="color-scheme" content="only light">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="color-scheme" content="dark"/>
-  <meta name="theme-color" content="#050505"/>
+  <meta name="theme-color" content="#0a0a0a"/>
+  <script>
+    (function(){
+      try {
+        var t = localStorage.getItem('al_theme');
+        if (t !== 'light' && t !== 'dark') t = 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e){}
+    })();
+    function applyThemeMeta(theme) {
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'light' ? '#fbf8ee' : '#0a0a0a');
+    }
+    function setTheme(theme) {
+      theme = theme === 'light' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      try { localStorage.setItem('al_theme', theme); } catch(e){}
+      applyThemeMeta(theme);
+      document.querySelectorAll('.theme-toggle-btn').forEach(function(btn){ btn.classList.toggle('is-light', theme === 'light'); });
+    }
+    function toggleTheme() {
+      var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      setTheme(current === 'light' ? 'dark' : 'light');
+    }
+  </script>
   <title>Artwork Detail – Alrayyan Arts</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico"/>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
@@ -42,9 +65,14 @@
       <button class="lang-btn active" onclick="setLang('en')" style="min-width:36px;">EN</button>
       <button class="lang-btn" onclick="setLang('ar')" style="min-width:36px;">AR</button>
     </div>
+    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" aria-label="Toggle light / dark mode" title="Toggle light / dark mode">
+      <span class="theme-icon-sun">☀</span>
+      <span class="theme-icon-moon">☾</span>
+    </button>
     <a href="arts.html#shop" class="nav-back" id="nav-back-btn">← Back to Gallery</a>
   </div>
 </nav>
+<script>setTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');</script>
 
 <div class="breadcrumb">
   <a href="index.html" data-i18n="bcHome">Home</a>
@@ -58,7 +86,7 @@
 
 <footer>
   <div class="f-brand">Alrayyan <em>Arts</em></div>
-  <div class="f-copy">© 2025 Alrayyan Calligraphy Arts. All rights reserved.</div>
+  <div class="f-copy">© 2026 Alrayyan Calligraphy Arts. All rights reserved.</div>
 </footer>
 
 <script>
