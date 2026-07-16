@@ -613,7 +613,9 @@ body::before {
   50%     { box-shadow: 0 0 0 14px rgba(37,211,102,0), 0 12px 36px -6px rgba(37,211,102,.9); }
 }
 [dir="rtl"] .wa-pill { right: auto; left: 24px; }
-@media (max-width: 560px) { .wa-pill { padding: 13px; bottom: 16px; right: 16px; } .wa-pill .wa-lbl { display: none; } [dir="rtl"] .wa-pill { left: 16px; } }
+.wa-pill--second { bottom: 88px; }
+[dir="rtl"] .wa-pill--second { right: auto; left: 24px; }
+@media (max-width: 560px) { .wa-pill { padding: 13px; bottom: 16px; right: 16px; } .wa-pill .wa-lbl { display: none; } [dir="rtl"] .wa-pill { left: 16px; } .wa-pill--second { bottom: 72px; } }
 
 /* ---- Back-to-top arrow (mobile only) — appears once the user nears the
    bottom of the page, sits opposite the WhatsApp pill so they never overlap. */
