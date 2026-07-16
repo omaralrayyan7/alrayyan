@@ -370,10 +370,6 @@
   /* ---------- Nav / theme / booking -------------------------------------- */
   function initNav() {
     var nav = $('#nav'), burger = $('#burger'), mobile = $('#navMobile');
-    window.addEventListener('scroll', function () {
-      var h = document.documentElement;
-      $('#progress').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
-    }, { passive: true });
     burger.addEventListener('click', function () {
       var open = mobile.classList.toggle('open');
       burger.classList.toggle('open', open);

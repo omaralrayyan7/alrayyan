@@ -62,6 +62,11 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  user-select: none !important; -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important;
+  -webkit-touch-callout: none !important;
+}
+input, textarea, select, [contenteditable] {
+  user-select: text !important; -webkit-user-select: text !important;
 }
 img, picture, svg { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
@@ -269,9 +274,8 @@ body::before {
   display: flex; flex-direction: column; justify-content: flex-end;
   isolation: isolate; border: 1px solid var(--line-soft);
 }
-.card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .9s var(--ease-out); }
+.card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
 .card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(11,10,8,.1) 30%, rgba(11,10,8,.55) 60%, rgba(11,10,8,.95) 100%); transition: background .5s; }
-.card:hover img { transform: scale(1.07); }
 .card__body { padding: 28px; transform: translateY(8px); transition: transform .5s var(--ease); }
 .card:hover .card__body { transform: translateY(0); }
 .card__tag { font-size: .64rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-soft); }
@@ -480,7 +484,6 @@ body::before {
 .reveal[data-d="4"] { transition-delay: .32s; }
 
 /* ---- Progress bar -------------------------------------------------------- */
-.progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; z-index: 300; background: linear-gradient(90deg, var(--gold-deep), var(--gold-soft)); }
 
 /* ---- RTL ----------------------------------------------------------------- */
 /* Body/UI copy → IBM Plex Sans Arabic (clean, professional). Display headings
@@ -612,6 +615,21 @@ body::before {
 [dir="rtl"] .wa-pill { right: auto; left: 24px; }
 @media (max-width: 560px) { .wa-pill { padding: 13px; bottom: 16px; right: 16px; } .wa-pill .wa-lbl { display: none; } [dir="rtl"] .wa-pill { left: 16px; } }
 
+/* ---- Back-to-top arrow (mobile only) — appears once the user nears the
+   bottom of the page, sits opposite the WhatsApp pill so they never overlap. */
+.to-top {
+  display: none; position: fixed; bottom: 24px; left: 24px; z-index: 95;
+  width: 44px; height: 44px; border-radius: 50%; align-items: center; justify-content: center;
+  font-size: 1.15rem; background: var(--gold); color: #17130a; box-shadow: 0 10px 26px -8px rgba(0,0,0,.55);
+  opacity: 0; transform: translateY(12px); transition: opacity .35s, transform .35s; pointer-events: none;
+}
+[dir="rtl"] .to-top { left: auto; right: 24px; }
+@media (max-width: 860px) {
+  .to-top { display: inline-flex; }
+  .to-top.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+}
+@media (max-width: 560px) { .to-top { width: 40px; height: 40px; bottom: 16px; left: 16px; } [dir="rtl"] .to-top { left: auto; right: 16px; } }
+
 /* ---- Compact ventures (smaller cards) ----------------------------------- */
 .ventures.ventures--compact { grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .ventures--compact .venture { min-height: 300px; border-radius: var(--radius); }
@@ -647,6 +665,10 @@ body::before {
   .footer__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
 }
 @media (max-width: 860px) {
+  /* Disable the double-tap-to-zoom gesture on mobile (page + mobile dropdown
+     nav both showed it) while still allowing normal pinch-zoom and scroll. */
+  html, body { touch-action: manipulation; }
+  .nav__mobile, .nav__mobile a, .nav__mobile button { touch-action: manipulation; }
   .nav__links { display: none; }
   /* Keep language + theme reachable on phones; drop the redundant Book
      button to make room. The floor/space back-link collapses to a compact
@@ -671,6 +693,16 @@ body::before {
   .about__grid, .contact__grid { grid-template-columns: 1fr; }
   .avail__grid { grid-template-columns: 1fr; }
   .about__media img { min-height: 340px; }
+  /* Contact info as compact boxes (2-up) instead of a long bordered list —
+     cuts the section's height considerably to shorten the page scroll. */
+  .contact__list { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 24px; }
+  .contact-item {
+    flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px;
+    border: 1px solid var(--line-soft); border-radius: 12px; background: rgba(255,255,255,.02);
+  }
+  .contact-item__ico { width: 32px; height: 32px; font-size: .82rem; border-radius: 9px; }
+  .contact-item .k { font-size: .58rem; }
+  .contact-item .v { font-size: .8rem; margin-top: 2px; word-break: break-word; }
 }
 @media (max-width: 440px) {
   .brand__sub { display: none; }
@@ -683,7 +715,21 @@ body::before {
   .nav__burger { width: 38px; height: 38px; }
 }
 @media (max-width: 620px) {
-  .cards, .features, .ventures { grid-template-columns: 1fr; }
+  /* "A standard above / the rest" — drop the forced line break so the
+     heading flows instead of stacking, shortening the section's height. */
+  #why .section-title br { display: none; }
+  .features, .ventures { grid-template-columns: 1fr; }
+  /* Office Rental Solutions cards: stay 2-up (not full-width stacked) and
+     shrink considerably so the section doesn't dominate the mobile scroll. */
+  .cards { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .card { min-height: 190px; border-radius: 12px; }
+  .card__body { padding: 12px; }
+  .card__tag { font-size: .56rem; letter-spacing: .14em; }
+  .card h3 { font-size: 1rem; margin-top: 4px; line-height: 1.2; }
+  .card p { display: none; }
+  .card__foot { margin-top: 8px; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .card__price { font-size: .66rem; }
+  .card .link-underline { font-size: .74rem; }
   .gallery { columns: 1; }
   .footer__grid { grid-template-columns: 1fr; }
   .form__row { grid-template-columns: 1fr; }

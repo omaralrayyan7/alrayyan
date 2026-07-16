@@ -353,14 +353,24 @@
     items.forEach(function (i) { io.observe(i); });
   }
 
+  /* ---------- Back-to-top arrow (mobile only) ----------------------------- */
+  window.scrollToTop = function () { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  function initToTop() {
+    const btn = $('#toTop'); if (!btn) return;
+    const onScroll = function () {
+      const h = document.documentElement;
+      const distFromBottom = h.scrollHeight - h.clientHeight - h.scrollTop;
+      btn.classList.toggle('show', distFromBottom < 240);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
   /* ---------- Nav behaviour ---------------------------------------------- */
   function initNav() {
     const nav = $('#nav');
     const onScroll = function () {
       nav.classList.toggle('scrolled', window.scrollY > 40);
-      const h = document.documentElement;
-      const p = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
-      $('#progress').style.width = p + '%';
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
@@ -555,7 +565,7 @@
     window.scrollTo(0, 0);
     $('#year').textContent = new Date().getFullYear();
     renderSpaces(); renderAvailability(); renderFeatures(); renderVentures(); renderGallery();
-    initTheme(); initReveal(); initNav(); initBookingForm(); initCookie(); initLang();
+    initTheme(); initReveal(); initNav(); initBookingForm(); initCookie(); initLang(); initToTop();
     initHeroSlideshow(); initBizStatus(); initAvailability(); initFloorStatus();
   });
 })();
