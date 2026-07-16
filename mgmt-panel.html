@@ -102,12 +102,37 @@
 
         <!-- Cookie logs -->
         <section class="adm-panel" id="panel-cookies">
+          <div class="adm-kpis adm-kpis--5">
+            <div class="adm-kpi"><span class="adm-kpi__n" id="ckTotalVisitors">—</span><span class="adm-kpi__l" data-i18n="kpiCkVisitors">Total Visitors</span></div>
+            <div class="adm-kpi"><span class="adm-kpi__n" id="ckAccepted">—</span><span class="adm-kpi__l" data-i18n="kpiCkAccepted">Accepted</span></div>
+            <div class="adm-kpi"><span class="adm-kpi__n" id="ckRejected">—</span><span class="adm-kpi__l" data-i18n="kpiCkRejected">Rejected</span></div>
+            <div class="adm-kpi"><span class="adm-kpi__n" id="ckCustomized">—</span><span class="adm-kpi__l" data-i18n="kpiCkCustomized">Customized</span></div>
+            <div class="adm-kpi"><span class="adm-kpi__n" id="ckRate">—</span><span class="adm-kpi__l" data-i18n="kpiCkRate">Acceptance Rate</span></div>
+          </div>
           <div class="adm-card">
             <div class="adm-card__head">
               <h3 data-i18n="cookiesTitle">Cookie Consent Log</h3>
-              <p class="adm-card__sub" data-i18n="cookiesSub">Visitors who accepted the cookies policy on the public site.</p>
+              <p class="adm-card__sub" data-i18n="cookiesSub">Every consent decision made on the public site — accepted, rejected or customized. Records are never overwritten.</p>
+              <div class="adm-filters">
+                <input id="ckSearch" class="adm-input" placeholder="Search visitor / consent ID…" />
+                <select id="ckFilterStatus" class="adm-input">
+                  <option value="" data-i18n="fAll">All statuses</option>
+                  <option value="accepted" data-i18n="statusAccepted">Accepted</option>
+                  <option value="rejected" data-i18n="statusRejected">Rejected</option>
+                  <option value="customized" data-i18n="statusCustomized">Customized</option>
+                </select>
+                <select id="ckFilterVersion" class="adm-input">
+                  <option value="" data-i18n="fAllVersions">All policy versions</option>
+                </select>
+              </div>
+              <div class="adm-filters">
+                <button class="adm-btn adm-btn--ghost" id="ckExportCsv" data-i18n="exportCsv">Export CSV</button>
+                <button class="adm-btn adm-btn--ghost" id="ckExportExcel" data-i18n="exportExcel">Export Excel</button>
+                <button class="adm-btn adm-btn--ghost" id="ckExportJson" data-i18n="exportJson">Export JSON</button>
+              </div>
             </div>
             <div class="adm-tablewrap"><table class="adm-table" id="cookiesTable"></table></div>
+            <div class="adm-pagination" id="ckPagination"></div>
           </div>
         </section>
 

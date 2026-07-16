@@ -443,48 +443,11 @@
     });
   }
 
-  /* ---------- Cookie bar -------------------------------------------------- */
-  // Writes a doc to `cookie_acceptances` (read live by the admin panel) —
-  // matches the Firestore rules' validCookieAccept() field/size limits.
-  function logCookieAcceptance() {
-    if (!window.db) return;
-    let visitorId = null;
-    try {
-      visitorId = localStorage.getItem('arg_visitor_id');
-      if (!visitorId) { visitorId = 'v_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); localStorage.setItem('arg_visitor_id', visitorId); }
-    } catch (e) {}
-    const ua = navigator.userAgent || '';
-    const device = /Mobi|Android/i.test(ua) ? 'Mobile' : 'Desktop';
-    const browser = /Edg\//.test(ua) ? 'Edge' : /Chrome\//.test(ua) ? 'Chrome' : /Firefox\//.test(ua) ? 'Firefox' : /Safari\//.test(ua) ? 'Safari' : 'Other';
-    window.db.collection('cookie_acceptances').add({
-      visitor_id: (visitorId || '').slice(0, 64),
-      lang: currentLang.slice(0, 10),
-      device: device.slice(0, 60),
-      browser: browser.slice(0, 80),
-      os: (navigator.platform || '').slice(0, 60),
-      timezone: (Intl.DateTimeFormat().resolvedOptions().timeZone || '').slice(0, 60),
-      referrer: (document.referrer || '').slice(0, 200),
-      path: (location.pathname || '').slice(0, 200),
-      accepted_at: firebase.firestore.FieldValue.serverTimestamp()
-    }).catch(function (e) { console.warn('[cookie log] write failed', e && e.code); });
-  }
-  window.acceptCookies = function () {
-    try { localStorage.setItem('arg_cookie_ok', '1'); } catch (e) {}
-    $('#cookie').classList.remove('show');
-    logCookieAcceptance();
-  };
-  // Reject → visitor declines cookies and leaves the site.
-  window.rejectCookies = function () {
-    try { localStorage.setItem('arg_cookie_ok', 'rejected'); } catch (e) {}
-    $('#cookie').classList.remove('show');
-    window.open('', '_self'); window.close();
-    setTimeout(function () { window.location.href = 'https://www.google.com'; }, 120);
-  };
-  function initCookie() {
-    let ok = null;
-    try { ok = localStorage.getItem('arg_cookie_ok'); } catch (e) {}
-    if (!ok) setTimeout(function () { $('#cookie').classList.add('show'); }, 1400);
-  }
+  /* ---------- Cookie bar --------------------------------------------------
+     Moved to /cookie-consent/{cookie-utils,cookie-api,cookie-banner}.js —
+     those files own showing/hiding #cookie, the Accept All / Reject /
+     Customize handlers, and the Firestore write to `cookie_acceptances`.
+     They're loaded before this file and self-initialize on DOMContentLoaded. */
 
   /* ---------- Theme (dark / light) --------------------------------------- */
   window.toggleTheme = function () {
@@ -512,7 +475,7 @@
       aboutBadge: 'عاماً من الثقة', aboutCta: 'عرض المتاح', aboutLink: 'تحدّث مع فريقنا',
       spacesEye: 'محفظتنا', spacesTitle: 'حلول تأجير المكاتب', spacesSub: 'ست طرق لتأسيس عملك في برج الريان — كلٌّ مجهّز وجاهز للانتقال.',
       availEye: 'المتاح حالياً', availTitle: 'متاح الآن', availSub: 'ثماني مساحات جاهزة للإيجار اليوم. احجز جولة خاصة لأي وحدة أدناه.',
-      whyEye: 'لماذا نحن', whyTitle: 'مستوى يتفوّق<br/>على البقية',
+      whyEye: 'لماذا نحن', whyTitle: 'مستوى يتفوّق <br/>على البقية',
       ventEye: 'عالم الريان', ventTitle: 'أعمالنا', ventSub: 'أبعد من العقارات — ثلاث علامات تحت اسم واحد.',
       galEye: 'داخل البرج', galTitle: 'لمحة من الداخل', cardDetails: 'عرض التفاصيل →',
       mapAddr: 'برج الريان، شارع الملكة علياء، عمّان', mapGo: 'انقر للفتح في خرائط جوجل →',
@@ -527,7 +490,8 @@
       bkDate: 'التاريخ المفضّل', bkTime: 'الوقت المفضّل', bkNotes: 'ملاحظات', bkSubmit: 'اطلب زيارة',
       bkNote: 'بإرسالك توافق على أن نتواصل معك بخصوص زيارتك. بلا إزعاج إطلاقاً.',
       bkDoneTitle: 'تم استلام الطلب', bkDoneSub: 'شكراً لك — سيؤكّد فريقنا زيارتك قريباً. رقمك المرجعي:', bkDoneClose: 'إغلاق',
-      cookie: 'نستخدم ملفات تعريف الارتباط لتحسين تجربتك. <a href="privacy.html">اعرف المزيد</a>.', cookieBtn: 'موافق', cookieReject: 'رفض'
+      cookie: 'نستخدم ملفات تعريف الارتباط لتحسين تجربتك. <a href="privacy.html">اعرف المزيد</a>.', cookieBtn: 'قبول الكل', cookieReject: 'رفض غير الضروري',
+      footCookieSettings: 'إعدادات الكوكيز'
     }
   };
   // Snapshot the original English strings so we can toggle back.
@@ -565,7 +529,7 @@
     window.scrollTo(0, 0);
     $('#year').textContent = new Date().getFullYear();
     renderSpaces(); renderAvailability(); renderFeatures(); renderVentures(); renderGallery();
-    initTheme(); initReveal(); initNav(); initBookingForm(); initCookie(); initLang(); initToTop();
+    initTheme(); initReveal(); initNav(); initBookingForm(); initLang(); initToTop();
     initHeroSlideshow(); initBizStatus(); initAvailability(); initFloorStatus();
   });
 })();

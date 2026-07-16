@@ -29,7 +29,7 @@
       navDash: 'Dashboard', navBookings: 'Bookings', navCookies: 'Cookie Logs', navAvail: 'Availability', navBiz: 'Businesses',
       kpiPending: 'Pending Bookings', kpiUnits: 'Available Units', kpiCookies: 'Cookie Acceptances', kpiTotal: 'Total Bookings',
       recentBookings: 'Recent Bookings', bookingsTitle: 'Visit Booking Requests', fAll: 'All statuses',
-      cookiesTitle: 'Cookie Consent Log', cookiesSub: 'Visitors who accepted the cookies policy on the public site.',
+      cookiesTitle: 'Cookie Consent Log', cookiesSub: 'Every consent decision made on the public site — accepted, rejected or customized. Records are never overwritten.',
       availTitle: 'Availability Toggles', availSub: 'Switch each unit on/off, or take a whole floor offline. Changes publish to the public site.',
       floorStatus: 'Floor Status', floorOffNote: 'Floor is off — hidden from availability, space pages and its own page.',
       floorForcedNote: 'Forced visible on the homepage only — every unit size is off, so it still won’t appear as bookable on space pages or its own page.',
@@ -38,7 +38,12 @@
       colWhen: 'When', colRef: 'Ref', colName: 'Name', colEmail: 'Email', colPhone: 'Phone', colSpace: 'Space', colDate: 'Date',
       colStatus: 'Status', colActions: 'Actions', colLang: 'Lang', colDevice: 'Device', colBrowser: 'Browser', colPath: 'Path',
       colBiz: 'Business', colBizStatus: 'Status',
-      noBookings: 'No bookings yet.', noCookies: 'No cookie acceptances yet.',
+      colConsentId: 'Consent ID', colVisitorUuid: 'Visitor UUID', colCategories: 'Categories', colOS: 'OS', colPolicyVer: 'Policy Ver.',
+      kpiCkVisitors: 'Total Visitors', kpiCkAccepted: 'Accepted', kpiCkRejected: 'Rejected', kpiCkCustomized: 'Customized', kpiCkRate: 'Acceptance Rate',
+      statusAccepted: 'Accepted', statusRejected: 'Rejected', statusCustomized: 'Customized',
+      fAllVersions: 'All policy versions', exportCsv: 'Export CSV', exportExcel: 'Export Excel', exportJson: 'Export JSON',
+      prevPage: '← Prev', nextPage: 'Next →',
+      noBookings: 'No bookings yet.', noCookies: 'No cookie consent records yet.',
       accept: 'Accept', reject: 'Decline', reset: 'Reset', del: 'Delete', enable: 'Enable', disable: 'Disable',
       active: 'Active', inactive: 'Disabled'
     },
@@ -48,7 +53,7 @@
       navDash: 'لوحة التحكم', navBookings: 'الحجوزات', navCookies: 'سجل الكوكيز', navAvail: 'التوفر', navBiz: 'الأعمال',
       kpiPending: 'حجوزات معلقة', kpiUnits: 'وحدات متاحة', kpiCookies: 'موافقات الكوكيز', kpiTotal: 'إجمالي الحجوزات',
       recentBookings: 'أحدث الحجوزات', bookingsTitle: 'طلبات حجز الزيارة', fAll: 'كل الحالات',
-      cookiesTitle: 'سجل موافقات الكوكيز', cookiesSub: 'الزوار الذين وافقوا على سياسة الكوكيز في الموقع العام.',
+      cookiesTitle: 'سجل موافقات الكوكيز', cookiesSub: 'كل قرار موافقة على الموقع العام — قبول أو رفض أو تخصيص. لا يُعاد كتابة السجلات أبداً.',
       availTitle: 'مفاتيح التوفر', availSub: 'فعّل أو أوقف كل وحدة، أو أوقف الطابق بأكمله. تُنشر التغييرات على الموقع العام.',
       floorStatus: 'حالة الطابق', floorOffNote: 'الطابق متوقف — مخفي من التوفر وصفحات المساحات وصفحته الخاصة.',
       floorForcedNote: 'ظاهر إجبارياً في الصفحة الرئيسية فقط — كل الوحدات متوقفة، لذلك لن يظهر كوحدة قابلة للحجز في صفحات المساحات أو صفحته الخاصة.',
@@ -57,7 +62,12 @@
       colWhen: 'الوقت', colRef: 'المرجع', colName: 'الاسم', colEmail: 'البريد', colPhone: 'الهاتف', colSpace: 'المساحة', colDate: 'التاريخ',
       colStatus: 'الحالة', colActions: 'إجراءات', colLang: 'اللغة', colDevice: 'الجهاز', colBrowser: 'المتصفح', colPath: 'المسار',
       colBiz: 'العمل', colBizStatus: 'الحالة',
-      noBookings: 'لا توجد حجوزات بعد.', noCookies: 'لا توجد موافقات بعد.',
+      colConsentId: 'رقم الموافقة', colVisitorUuid: 'معرّف الزائر', colCategories: 'الفئات', colOS: 'نظام التشغيل', colPolicyVer: 'إصدار السياسة',
+      kpiCkVisitors: 'إجمالي الزوار', kpiCkAccepted: 'قبلوا', kpiCkRejected: 'رفضوا', kpiCkCustomized: 'خصّصوا', kpiCkRate: 'نسبة القبول',
+      statusAccepted: 'مقبول', statusRejected: 'مرفوض', statusCustomized: 'مخصّص',
+      fAllVersions: 'كل إصدارات السياسة', exportCsv: 'تصدير CSV', exportExcel: 'تصدير Excel', exportJson: 'تصدير JSON',
+      prevPage: '→ السابق', nextPage: 'التالي ←',
+      noBookings: 'لا توجد حجوزات بعد.', noCookies: 'لا توجد سجلات موافقة بعد.',
       accept: 'قبول', reject: 'رفض', reset: 'إعادة', del: 'حذف', enable: 'تفعيل', disable: 'تعطيل',
       active: 'مفعّل', inactive: 'معطّل'
     }
@@ -114,6 +124,8 @@
   /* ---------- state ------------------------------------------------------- */
   var bookings = [], cookies = [], availability = {}, bizStatus = {}, floorStatus = {};
   var bkStatus = '', bkName = '';
+  var ckStatus = '', ckVersion = '', ckSearch = '', ckPage = 1;
+  var CK_PAGE_SIZE = 20;
   var current = 'dashboard';
   var unsub = [];
 
@@ -298,24 +310,149 @@
     tbl.appendChild(body);
   }
 
+  // Legacy pre-categories docs have no `status` field at all — they were
+  // written by the old accept-only banner, so treat them as 'accepted'.
+  function ckStatusOf(c) { return c.status || 'accepted'; }
+  function ckVersionOf(c) { return c.policy_version || '—'; }
+
+  function filteredCookies() {
+    var list = cookies;
+    if (ckStatus) list = list.filter(function (c) { return ckStatusOf(c) === ckStatus; });
+    if (ckVersion) list = list.filter(function (c) { return ckVersionOf(c) === ckVersion; });
+    if (ckSearch) list = list.filter(function (c) {
+      return ((c.visitor_id || '') + ' ' + (c.id || '')).toLowerCase().indexOf(ckSearch) > -1;
+    });
+    return list;
+  }
+
+  function renderCookieStats() {
+    var total = cookies.length;
+    var visitors = {}; cookies.forEach(function (c) { if (c.visitor_id) visitors[c.visitor_id] = true; });
+    var accepted = cookies.filter(function (c) { return ckStatusOf(c) === 'accepted'; }).length;
+    var rejected = cookies.filter(function (c) { return ckStatusOf(c) === 'rejected'; }).length;
+    var customized = cookies.filter(function (c) { return ckStatusOf(c) === 'customized'; }).length;
+    var rate = total ? Math.round((accepted / total) * 100) : 0;
+    if ($('#ckTotalVisitors')) $('#ckTotalVisitors').textContent = Object.keys(visitors).length;
+    if ($('#ckAccepted')) $('#ckAccepted').textContent = accepted;
+    if ($('#ckRejected')) $('#ckRejected').textContent = rejected;
+    if ($('#ckCustomized')) $('#ckCustomized').textContent = customized;
+    if ($('#ckRate')) $('#ckRate').textContent = rate + '%';
+  }
+
+  // Version filter options are built from whatever versions actually appear
+  // in the data — no versions to hardcode/maintain by hand.
+  function renderCookieVersionOptions() {
+    var sel = $('#ckFilterVersion'); if (!sel) return;
+    var versions = {}; cookies.forEach(function (c) { if (c.policy_version) versions[c.policy_version] = true; });
+    var current = sel.value;
+    sel.textContent = '';
+    sel.appendChild(el('option', { value: '', text: t('fAllVersions') }));
+    Object.keys(versions).sort().forEach(function (v) { sel.appendChild(el('option', { value: v, text: v })); });
+    sel.value = versions[current] ? current : '';
+  }
+
+  function categoryChips(c) {
+    var cats = c.categories || {};
+    var defs = [['necessary', 'N'], ['analytics', 'A'], ['marketing', 'M'], ['preferences', 'P']];
+    return el('div', { class: 'adm-cats' }, defs.map(function (d) {
+      var on = d[0] === 'necessary' ? true : !!cats[d[0]];
+      return el('span', { class: 'adm-cat-chip' + (on ? ' on' : ''), title: d[0], text: d[1] });
+    }));
+  }
+
   function renderCookies() {
+    renderCookieVersionOptions();
+    renderCookieStats();
+
+    var list = filteredCookies();
+    var pageCount = Math.max(1, Math.ceil(list.length / CK_PAGE_SIZE));
+    if (ckPage > pageCount) ckPage = pageCount;
+    var pageItems = list.slice((ckPage - 1) * CK_PAGE_SIZE, ckPage * CK_PAGE_SIZE);
+
     var tbl = $('#cookiesTable'); tbl.textContent = '';
-    tbl.appendChild(el('thead', {}, [headRow(['colWhen', 'colName', 'colEmail', 'colPhone', 'colLang', 'colDevice', 'colBrowser', 'colPath'])]));
+    tbl.appendChild(el('thead', {}, [headRow(['colWhen', 'colConsentId', 'colVisitorUuid', 'colStatus', 'colCategories', 'colDevice', 'colBrowser', 'colOS', 'colPolicyVer'])]));
     var body = el('tbody');
-    if (!cookies.length) { body.appendChild(el('tr', {}, [el('td', { class: 'adm-empty', colspan: '8', text: t('noCookies') })])); tbl.appendChild(body); return; }
-    cookies.forEach(function (c) {
+    if (!list.length) { body.appendChild(el('tr', {}, [el('td', { class: 'adm-empty', colspan: '9', text: t('noCookies') })])); tbl.appendChild(body); renderCookiePagination(0, 1); return; }
+    pageItems.forEach(function (c) {
+      var status = ckStatusOf(c);
       body.appendChild(el('tr', {}, [
         el('td', { class: 'muted', text: fmtTs(c.accepted_at) }),
-        el('td', { class: 'em', text: c.name || c.identifier || '—' }),
-        el('td', { class: 'muted', text: c.email || '—' }),
-        el('td', { class: 'muted', text: c.phone || '—' }),
-        el('td', { text: (c.lang || '—').toString().toUpperCase() }),
+        el('td', { class: 'ref', text: (c.id || '').slice(0, 10) }),
+        el('td', { class: 'ref', text: (c.visitor_id || '—').slice(0, 18) }),
+        el('td', {}, [el('span', { class: 'adm-status ' + status, text: t('status' + status.charAt(0).toUpperCase() + status.slice(1)) })]),
+        el('td', {}, [categoryChips(c)]),
         el('td', { class: 'muted', text: c.device || '—' }),
         el('td', { class: 'muted', text: c.browser || '—' }),
-        el('td', { class: 'muted', text: c.path || '—' })
+        el('td', { class: 'muted', text: c.os || '—' }),
+        el('td', { class: 'muted', text: ckVersionOf(c) })
       ]));
     });
     tbl.appendChild(body);
+    renderCookiePagination(list.length, pageCount);
+  }
+
+  function renderCookiePagination(total, pageCount) {
+    var box = $('#ckPagination'); if (!box) return;
+    box.textContent = '';
+    if (!total) return;
+    var prev = el('button', { text: t('prevPage'), onclick: function () { if (ckPage > 1) { ckPage--; renderCookies(); } } });
+    prev.disabled = ckPage <= 1;
+    var next = el('button', { text: t('nextPage'), onclick: function () { if (ckPage < pageCount) { ckPage++; renderCookies(); } } });
+    next.disabled = ckPage >= pageCount;
+    box.appendChild(prev);
+    box.appendChild(el('span', { text: ckPage + ' / ' + pageCount + ' (' + total + ')' }));
+    box.appendChild(next);
+  }
+
+  /* ---------- Cookie consent export --------------------------------------- */
+  function ckExportRows() {
+    return filteredCookies().map(function (c) {
+      var cats = c.categories || {};
+      return {
+        consent_id: c.id || '', visitor_uuid: c.visitor_id || '', status: ckStatusOf(c),
+        analytics: !!cats.analytics, marketing: !!cats.marketing, preferences: !!cats.preferences,
+        policy_version: ckVersionOf(c), device: c.device || '', browser: c.browser || '', os: c.os || '',
+        lang: c.lang || '', referrer: c.referrer || '', path: c.path || '', url: c.url || '',
+        user_agent: c.user_agent || '', timestamp: fmtTs(c.accepted_at)
+      };
+    });
+  }
+  function csvCell(v) {
+    var s = String(v == null ? '' : v);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+  function downloadBlob(content, mime, filename) {
+    var blob = new Blob([content], { type: mime });
+    var url = URL.createObjectURL(blob);
+    var a = el('a', { href: url, download: filename });
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+  function exportCookiesCsv() {
+    var rows = ckExportRows(); if (!rows.length) { toast('Nothing to export', true); return; }
+    var cols = Object.keys(rows[0]);
+    var lines = [cols.join(',')].concat(rows.map(function (r) { return cols.map(function (k) { return csvCell(r[k]); }).join(','); }));
+    downloadBlob('﻿' + lines.join('\r\n'), 'text/csv;charset=utf-8;', 'cookie-consent-log.csv');
+  }
+  function exportCookiesExcel() {
+    // Dependency-free "Excel" export: a real HTML <table> served with the
+    // Excel MIME type. Excel opens this natively as a worksheet — no xlsx
+    // library needed for a static-site admin panel.
+    var rows = ckExportRows(); if (!rows.length) { toast('Nothing to export', true); return; }
+    var cols = Object.keys(rows[0]);
+    var head = '<tr>' + cols.map(function (k) { return '<th>' + k + '</th>'; }).join('') + '</tr>';
+    var body = rows.map(function (r) {
+      return '<tr>' + cols.map(function (k) {
+        var v = String(r[k] == null ? '' : r[k]).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return '<td>' + v + '</td>';
+      }).join('') + '</tr>';
+    }).join('');
+    var html = '<html><head><meta charset="UTF-8"></head><body><table>' + head + body + '</table></body></html>';
+    downloadBlob(html, 'application/vnd.ms-excel;charset=utf-8;', 'cookie-consent-log.xls');
+  }
+  function exportCookiesJson() {
+    var rows = ckExportRows(); if (!rows.length) { toast('Nothing to export', true); return; }
+    downloadBlob(JSON.stringify(rows, null, 2), 'application/json;charset=utf-8;', 'cookie-consent-log.json');
   }
 
   function renderAvail() {
@@ -397,5 +534,11 @@
     $('#admScrim').addEventListener('click', closeSidebar);
     $('#bkFilterStatus').addEventListener('change', function () { bkStatus = this.value; renderBookings(); });
     $('#bkFilterName').addEventListener('input', function () { bkName = this.value.toLowerCase().trim(); renderBookings(); });
+    $('#ckFilterStatus').addEventListener('change', function () { ckStatus = this.value; ckPage = 1; renderCookies(); });
+    $('#ckFilterVersion').addEventListener('change', function () { ckVersion = this.value; ckPage = 1; renderCookies(); });
+    $('#ckSearch').addEventListener('input', function () { ckSearch = this.value.toLowerCase().trim(); ckPage = 1; renderCookies(); });
+    $('#ckExportCsv').addEventListener('click', exportCookiesCsv);
+    $('#ckExportExcel').addEventListener('click', exportCookiesExcel);
+    $('#ckExportJson').addEventListener('click', exportCookiesJson);
   });
 })();

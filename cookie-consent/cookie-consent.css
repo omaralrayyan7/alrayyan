@@ -1,0 +1,20 @@
+/* ============================================================================
+   Cookie Consent — banner layout tweaks
+   The base banner box (.cookie, .cookie__actions, .cookie-reject, positioning,
+   slide-in animation) already lives in css/style.css — unchanged. This file
+   only centers the two-button message layout and resets the footer reset
+   link's button chrome, reusing the same design tokens.
+   ========================================================================== */
+
+.cookie { flex-direction: column; align-items: stretch; max-width: 420px; }
+.cookie__msg { display: flex; flex-direction: column; gap: 14px; align-items: center; text-align: center; }
+.cookie__msg .cookie__actions { flex-wrap: wrap; justify-content: center; }
+
+/* Footer "Cookie Settings" reset link — reuses .footer__privacy's look but
+   is a <button> (it has no href), so the browser's default button chrome
+   needs resetting to match the plain-text <a> next to it. Deliberately does
+   NOT reset font-size/color/text-decoration via a `font: inherit` shorthand
+   — that would inherit from the parent .footer__bottom (a different, larger
+   size) instead of picking up .footer__privacy's own .78rem, which is what
+   actually needs to match. */
+.footer__cookieBtn { background: none; border: none; padding: 0; margin: 0; cursor: pointer; font-family: inherit; line-height: inherit; }

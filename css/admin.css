@@ -60,6 +60,9 @@
 
 /* ---- KPIs / cards -------------------------------------------------------- */
 .adm-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 22px; }
+.adm-kpis--5 { grid-template-columns: repeat(5, 1fr); }
+@media (max-width: 900px) { .adm-kpis--5 { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 520px) { .adm-kpis--5 { grid-template-columns: repeat(2, 1fr); } }
 .adm-kpi { background: var(--ink-2); border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 22px; display: flex; flex-direction: column; gap: 6px; }
 .adm-kpi__n { font-family: var(--serif); font-size: 2.4rem; font-weight: 500; color: var(--gold-soft); line-height: 1; }
 .adm-kpi__l { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
@@ -83,9 +86,18 @@
 
 .adm-status { display: inline-block; font-size: .64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 3px 10px; border-radius: 100px; }
 .adm-status.pending { background: rgba(224,197,129,.16); color: var(--gold-soft); }
-.adm-status.confirmed { background: rgba(70,180,90,.16); color: #6fd08a; }
+.adm-status.confirmed, .adm-status.accepted { background: rgba(70,180,90,.16); color: #6fd08a; }
 .adm-status.rejected { background: rgba(220,80,70,.16); color: #f28b82; }
-.adm-status.rescheduled { background: rgba(90,150,230,.16); color: #8ab4f8; }
+.adm-status.rescheduled, .adm-status.customized { background: rgba(90,150,230,.16); color: #8ab4f8; }
+
+/* ---- Cookie consent — category chips + pagination ------------------------ */
+.adm-cats { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+.adm-cat-chip { font-size: .6rem; font-weight: 700; letter-spacing: .04em; padding: 2px 7px; border-radius: 6px; background: var(--ink-3); color: var(--muted); border: 1px solid var(--line-soft); }
+.adm-cat-chip.on { background: rgba(201,162,75,.16); color: var(--gold-soft); border-color: transparent; }
+.adm-pagination { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 16px 22px; border-top: 1px solid var(--line-soft); font-size: .78rem; color: var(--muted); }
+.adm-pagination button { font: inherit; font-size: .74rem; font-weight: 700; padding: 7px 14px; border-radius: 8px; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--sand); transition: all .2s; }
+.adm-pagination button:hover:not(:disabled) { border-color: var(--gold); color: var(--gold-soft); }
+.adm-pagination button:disabled { opacity: .4; cursor: not-allowed; }
 
 .adm-act { display: inline-flex; gap: 5px; flex-wrap: wrap; }
 .adm-act button { font: inherit; font-size: .68rem; font-weight: 700; padding: 5px 10px; border-radius: 8px; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--sand); transition: all .2s; }
