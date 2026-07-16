@@ -721,8 +721,8 @@ body::before {
   .features, .ventures { grid-template-columns: 1fr; }
   /* Office Rental Solutions cards: stay 2-up (not full-width stacked) and
      shrink considerably so the section doesn't dominate the mobile scroll. */
-  .cards { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .card { min-height: 190px; border-radius: 12px; }
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .card { min-height: 190px; border-radius: 12px; min-width: 0; }
   .card__body { padding: 12px; }
   .card__tag { font-size: .56rem; letter-spacing: .14em; }
   .card h3 { font-size: 1rem; margin-top: 4px; line-height: 1.2; }
@@ -740,4 +740,15 @@ body::before {
   .hero { min-height: auto; flex-direction: column; align-items: stretch; justify-content: flex-start; }
   .hero__inner { padding-top: 130px; padding-bottom: 30px; }
   .scroll-cue { display: none; }
+}
+/* Smallest phones (Galaxy Fold/older iPhones down to ~280px): keep the cards
+   2-up at any width by shrinking gap/padding further instead of overflowing. */
+@media (max-width: 360px) {
+  .cards { gap: 6px; }
+  .card { min-height: 168px; }
+  .card__body { padding: 8px; }
+  .card__tag { font-size: .52rem; letter-spacing: .1em; }
+  .card h3 { font-size: .86rem; }
+  .card__price { font-size: .6rem; }
+  .card .link-underline { font-size: .66rem; }
 }
