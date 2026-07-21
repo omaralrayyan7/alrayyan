@@ -4,4 +4,4 @@ Allow: /
 Disallow: /mgmt-panel.html
 Disallow: /seed.html
 
-Sitemap: https://alrayyangroup.online/sitemap.xml
+Sitemap: https://alrayyanjo.com/sitemap.xml

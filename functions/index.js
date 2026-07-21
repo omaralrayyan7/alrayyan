@@ -69,7 +69,7 @@ function fmtField(label, value) {
 
 function emailHeader(subtitle) {
   return `<div style="background:#0a0a0a;padding:20px 24px;border-radius:8px 8px 0 0;text-align:center">
-    <img src="https://alrayyangroup.online/images/logo/logo.png" alt="Alrayyan Group" width="64" height="64" style="display:block;margin:0 auto 12px;border-radius:4px" />
+    <img src="https://alrayyanjo.com/images/logo/logo.png" alt="Alrayyan Group" width="64" height="64" style="display:block;margin:0 auto 12px;border-radius:4px" />
     <h2 style="margin:0;font-size:20px;letter-spacing:1px;color:#d4af37">ALRAYYAN GROUP</h2>
     <p style="margin:4px 0 0;color:#bbb;font-size:13px">${subtitle}</p>
   </div>`;
@@ -95,7 +95,7 @@ function adminEmailHtml(b) {
     <div style="background:#fff;border:1px solid #eee;border-top:none;border-radius:0 0 8px 8px;padding:20px 0">
       <table style="width:100%;border-collapse:collapse">${rows}</table>
       <div style="text-align:center;padding:24px">
-        <a href="https://alrayyangroup.online/mgmt-panel.html#panel-bookings"
+        <a href="https://alrayyanjo.com/mgmt-panel.html#panel-bookings"
            style="background:#d4af37;color:#0a0a0a;text-decoration:none;font-weight:700;
                   padding:12px 28px;border-radius:6px;display:inline-block;font-size:14px">
           Review in Admin Panel →

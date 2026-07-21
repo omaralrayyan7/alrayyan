@@ -1,12 +1,12 @@
 # Alrayyan Group Website
 
-[![Live](https://img.shields.io/badge/Live-alrayyangroup.online-brightgreen)](https://alrayyangroup.online)
+[![Live](https://img.shields.io/badge/Live-alrayyanjo.com-brightgreen)](https://alrayyanjo.com)
 [![Firebase](https://img.shields.io/badge/Firebase-Hosting-FFCA28?logo=firebase)](https://firebase.google.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
 Bilingual (English / Arabic) Firebase-hosted business website for **Alrayyan Tower** — a commercial real estate complex in Amman, Jordan. Presents four business verticals with a public storefront, a Firestore-backed booking system, and a protected admin panel.
 
-**🌐 Live:** [alrayyangroup.online](https://alrayyangroup.online)
+**🌐 Live:** [alrayyanjo.com](https://alrayyanjo.com)
 
 ## Screenshots
 
@@ -25,7 +25,7 @@ Bilingual (English / Arabic) Firebase-hosted business website for **Alrayyan Tow
 ### Location Map
 ![Location Map](docs/location-map.png)
 
-> Visit [alrayyangroup.online](https://alrayyangroup.online) for the live experience.
+> Visit [alrayyanjo.com](https://alrayyanjo.com) for the live experience.
 
 ## Key Features
 

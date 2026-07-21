@@ -61,7 +61,7 @@ This deploys:
 ---
 
 ## STEP 6 — Verify
-1. Open https://alrayyangroup.online/mgmt-panel.html
+1. Open https://alrayyanjo.com/mgmt-panel.html
 2. Sign in with: alrayyantower@gmail.com / tower@1969
 3. Submit a test booking from the public site
 4. Check alrayyantower@gmail.com inbox — you should get the notification email within ~10 seconds
