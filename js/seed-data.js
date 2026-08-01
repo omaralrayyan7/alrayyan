@@ -45,8 +45,8 @@
     aboutTitleAr: 'عن مجموعة الريان',
     aboutBodyEn: 'Alrayyan Group is a diversified holding company based in Amman, Jordan, operating across premium real estate, luxury fashion, arts, and land investments.',
     aboutBodyAr: 'مجموعة الريان هي شركة قابضة متنوعة مقرها عمان، الأردن، تعمل في العقارات الفاخرة والأزياء الراقية والفنون والاستثمار في الأراضي.',
-    phone: '+962 79 988 0066',
-    email: 'alrayyantower@gmail.com',
+    phone: '+962 79 680 6100',
+    email: 'info@alrayyanjo.com',
     address: 'Alrayyan Tower, Queen Alia Street, Amman',
     show_pricing: true
   };
@@ -147,9 +147,9 @@
   ];
 
   const BUSINESSES = [
-    {id:'fashion', name:'Alrayyan Fashion', url:'fashion.html', description:'Curated luxury fashion — online store and physical boutique.', status:'active'},
-    {id:'arts',    name:'Alrayyan Arts',    url:'arts.html',    description:'Gallery and creative studio celebrating Arab and global contemporary art.', status:'active'},
-    {id:'lands',   name:'Alrayyan Lands',   url:'land.html',    description:"Premium land plots across Amman's most sought-after districts.", status:'active'}
+    {id:'fashion', name:'Alrayyan Fashion', url:'fashion', description:'Curated luxury fashion — online store and physical boutique.', status:'active'},
+    {id:'arts',    name:'Alrayyan Arts',    url:'arts',    description:'Gallery and creative studio celebrating Arab and global contemporary art.', status:'active'},
+    {id:'lands',   name:'Alrayyan Lands',   url:'land',    description:"Premium land plots across Amman's most sought-after districts.", status:'active'}
   ];
 
   const LANDS = [

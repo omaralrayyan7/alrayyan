@@ -4,7 +4,7 @@ rules_version = '2';
 // Alrayyan Tower — Firestore Security Rules (Production)
 //
 // isAdmin() restricts ALL sensitive reads/writes to the specific admin
-// account (alrayyantower@gmail.com).  Public users can only CREATE
+// account (info@alrayyanjo.com).  Public users can only CREATE
 // documents in a handful of collections, and every public write is
 // validated for field types and sizes to block spam/flooding.
 // ────────────────────────────────────────────────────────────────────────────
@@ -16,7 +16,7 @@ service cloud.firestore {
 
     function isAdmin() {
       return request.auth != null
-          && request.auth.token.email == 'alrayyantower@gmail.com';
+          && request.auth.token.email == 'info@alrayyanjo.com';
     }
 
     function strOpt(field, maxLen) {
@@ -44,39 +44,6 @@ service cloud.firestore {
           && strOpt('ref',               30);
     }
 
-    // Cookie category selection — optional map; if present, every key that
-    // exists must be a boolean (no nested junk / oversized payloads).
-    function validCategories() {
-      let d = request.resource.data;
-      return !('categories' in d)
-          || (d.categories is map
-              && (!('necessary'   in d.categories) || d.categories.necessary   is bool)
-              && (!('analytics'   in d.categories) || d.categories.analytics   is bool)
-              && (!('marketing'   in d.categories) || d.categories.marketing   is bool)
-              && (!('preferences' in d.categories) || d.categories.preferences is bool));
-    }
-
-    function validCookieAccept() {
-      let d = request.resource.data;
-      return d.keys().size() <= 30
-          && strOpt('visitor_id',      64)
-          && strOpt('identifier',     120)
-          // 'accepted' | 'rejected' | 'customized' — the three decisions the
-          // public banner can log; anything else is rejected outright.
-          && (!('status' in d) || d.status in ['accepted', 'rejected', 'customized'])
-          && validCategories()
-          && strOpt('policy_version',  20)
-          && strOpt('lang',            10)
-          && strOpt('device',          60)
-          && strOpt('browser',         80)
-          && strOpt('os',              60)
-          && strOpt('user_agent',     300)
-          && strOpt('timezone',        60)
-          && strOpt('referrer',       200)
-          && strOpt('path',           200)
-          && strOpt('url',            300);
-    }
-
     function validVisitor() {
       return request.resource.data.keys().size() <= 20;
     }
@@ -87,12 +54,6 @@ service cloud.firestore {
     match /bookings/{id} {
       allow create: if validBooking();
       allow read, update, delete: if isAdmin();
-    }
-
-    // ── Cookie acceptance log ────────────────────────────────────────────────
-    match /cookie_acceptances/{id} {
-      allow create: if validCookieAccept();
-      allow read, delete: if isAdmin();
     }
 
     // ── Anonymous visitor profiles ───────────────────────────────────────────

@@ -240,7 +240,7 @@
 
   // Image inventory (exact on-disk counts).
   var REAL = { 'b1': 3, '3': 1, '4': 7, '5': 3, '6': 7, '7': 6, '9-outdoor': 6, '9-indoor': 3, 'g': 3 };
-  var IMAG = { 'b1': 4, '3': 1, '4': 6, '5': 2, '6': 5, '7': 5, '9-outdoor': 3, '9-indoor': 3, 'g': 3 };
+  var IMAG = { 'b1': 4, '3': 1, '4': 6, '5': 2, '6': 5, '7': 5, '9-outdoor': 4, '9-indoor': 3, 'g': 3 };
   var LABEL = { 'b1': 'b1-floor', '3': '3rd-floor', '4': '4th-floor', '5': '5th-floor', '6': '6th-floor', '7': '7th-floor', '9-outdoor': '9th-floor-outdoor', '9-indoor': '9th-floor-indoor', 'g': 'g-floor' };
   // Floors whose real photos are NOT named "{id}-real-img-{i}" get an explicit list.
   var REAL_CUSTOM = { 'g': ['g-indoor-real-img-1', 'g-real-img-2', 'g-real-img-3'] };
@@ -262,7 +262,7 @@
       fuEye: 'الموقع', fuTitleA: 'ابحث', fuTitleB: 'عنا',
       locAddr: 'برج الريان، شارع الملكة علياء، عمّان', locGo: 'انقر للفتح في خرائط جوجل →',
       bkHead: 'اطلب زيارة', bkSub: 'يؤكّد فريقنا خلال 24 ساعة',
-      lblFirst: 'الاسم الأول *', lblLast: 'اسم العائلة', lblPhone: 'الهاتف / واتساب *', lblEmail: 'البريد',
+      lblFirst: 'الاسم الأول *', lblLast: 'اسم العائلة', lblPhone: 'الهاتف / واتساب *', lblEmail: 'البريد *',
       lblDate: 'التاريخ المفضّل', lblTime: 'الوقت المفضّل', lblNotes: 'ملاحظات', phNotes: 'أي أسئلة أو متطلبات…',
       btnConfirm: 'تأكيد الزيارة →', bkNote: 'مجاناً · بدون التزام · سبت–خميس 9ص–6م',
       sxTitle: 'تم طلب الزيارة!', sxBody: 'سيتصل بك فريقنا خلال 24 ساعة لتأكيد موعدك.',
@@ -533,8 +533,10 @@
     var d = $('#bf-date'); if (d) d.min = new Date().toISOString().split('T')[0];
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      var bfEmail = $('#bf-email').value.trim();
       if (!$('#bf-fname').value.trim()) { $('#bf-fname').focus(); return; }
       if (!$('#bf-phone').value.trim()) { $('#bf-phone').focus(); return; }
+      if (!bfEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bfEmail)) { $('#bf-email').focus(); return; }
       var ref = 'ARG-' + Date.now().toString(36).toUpperCase().slice(-6);
       // Admin panel renders these with textContent (XSS-safe) — see js/admin.js.
       if (window.db) {
@@ -542,7 +544,7 @@
           ref: ref,
           visitor_name: ($('#bf-fname').value.trim() + ' ' + $('#bf-lname').value.trim()).trim(),
           phone: $('#bf-phone').value.trim(),
-          email: $('#bf-email').value.trim(),
+          email: bfEmail,
           floor_preference: fl.name.en,
           preferred_date: $('#bf-date').value,
           preferred_time: $('#bf-time').value,
@@ -587,7 +589,7 @@
       var fs = docs[0].exists ? (docs[0].data() || {}) : {};
       var avail = docs[1].exists ? (docs[1].data() || {}) : {};
       var availLoaded = docs[1].exists;
-      if (!floorActive(fs, avail, availLoaded, floorId)) { window.location.replace('index.html'); return; }
+      if (!floorActive(fs, avail, availLoaded, floorId)) { window.location.replace('/'); return; }
       cb();
     }).catch(function () { cb(); }); // offline/error: fail open rather than blank the page
   }

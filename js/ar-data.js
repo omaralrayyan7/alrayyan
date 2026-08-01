@@ -1,5 +1,5 @@
 // Alrayyan data layer — Firestore-backed with an in-memory cache so existing
-// synchronous render code in admin.html keeps working. Call ArData.init() once
+// synchronous render code in mgmt-panel.html keeps working. Call ArData.init() once
 // per page; it sets up onSnapshot listeners that keep the cache fresh.
 (function(){
   if (typeof firebase === 'undefined' || !window.db){

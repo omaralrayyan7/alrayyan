@@ -23,5 +23,5 @@
   }
 
   // Admin WhatsApp notification number. Format: full international number without +, dashes, or spaces.
-  window.ADMIN_WHATSAPP = '962799880066';
+  window.ADMIN_WHATSAPP = '962796806100';
 })();

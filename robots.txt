@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 
+Disallow: /mgmt-panel
 Disallow: /mgmt-panel.html
 Disallow: /seed.html
 

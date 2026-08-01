@@ -8,7 +8,7 @@ Run these in PowerShell from your project folder (alrayyan tower).
 Do this ONCE in the Firebase Console:
 1. Go to: https://console.firebase.google.com/project/alrayyan-group/authentication/users
 2. Click **Add user**
-3. Email:    alrayyantower@gmail.com
+3. Email:    info@alrayyanjo.com
 4. Password: tower@1969
 5. Click **Add user**
 
@@ -25,16 +25,20 @@ Do this ONCE in the Firebase Console:
 Open PowerShell in the project folder and run each line separately.
 When prompted, paste the value and press Enter.
 
-```powershell
-firebase functions:secrets:set GMAIL_EMAIL
-# Paste: omaralrayyan7@gmail.com
+First make sure `info@alrayyanjo.com` is added as a **Send As** alias on the
+`zaid@alrayyanjo.com` Outlook account (see `functions/SETUP.md` Step 1) —
+otherwise Outlook will reject these emails as spoofing.
 
-firebase functions:secrets:set GMAIL_APP_PASSWORD
-# Paste: your 16-character App Password (from myaccount.google.com/apppasswords)
+```powershell
+firebase functions:secrets:set SMTP_EMAIL
+# Paste: zaid@alrayyanjo.com
+
+firebase functions:secrets:set SMTP_PASSWORD
+# Paste: your Outlook App Password (from account.microsoft.com/security)
 # DO NOT share this with anyone — paste it only in YOUR terminal
 
 firebase functions:secrets:set ADMIN_EMAIL
-# Paste: alrayyantower@gmail.com
+# Paste: info@alrayyanjo.com
 ```
 
 ---
@@ -61,10 +65,10 @@ This deploys:
 ---
 
 ## STEP 6 — Verify
-1. Open https://alrayyanjo.com/mgmt-panel.html
-2. Sign in with: alrayyantower@gmail.com / tower@1969
+1. Open https://alrayyanjo.com/mgmt-panel
+2. Sign in with: info@alrayyanjo.com / tower@1969
 3. Submit a test booking from the public site
-4. Check alrayyantower@gmail.com inbox — you should get the notification email within ~10 seconds
+4. Check info@alrayyanjo.com inbox — you should get the notification email within ~10 seconds
 5. Accept the booking in admin — customer gets confirmation email
 
 ---

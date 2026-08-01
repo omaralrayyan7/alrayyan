@@ -11,10 +11,18 @@
  *                          decline email (with optional reason). If
  *                          'rescheduled' → sends new-slot proposal.
  *
+ * Mail is relayed through zaid@alrayyanjo.com's Outlook/Microsoft 365
+ * mailbox (info@alrayyanjo.com is a forwarding alias, not a real inbox, so
+ * it can't authenticate SMTP on its own). Every message is sent with
+ * `from: info@alrayyanjo.com` — for that to be accepted by Microsoft's
+ * SMTP relay (rather than rejected as spoofing), info@alrayyanjo.com must
+ * be added as a "Send As" alias on the zaid@alrayyanjo.com account. See
+ * functions/SETUP.md for the exact steps.
+ *
  * Secrets (set via `firebase functions:secrets:set`):
- *   - GMAIL_EMAIL         The Gmail address that sends mail.
- *   - GMAIL_APP_PASSWORD  Gmail App Password (NOT your normal password).
- *   - ADMIN_EMAIL         Where the "new booking" notification is sent.
+ *   - SMTP_EMAIL     The Outlook mailbox that authenticates (zaid@alrayyanjo.com).
+ *   - SMTP_PASSWORD  App password for that mailbox (NOT the normal login password).
+ *   - ADMIN_EMAIL    Where the "new booking" notification is sent (info@alrayyanjo.com).
  */
 
 const {onDocumentCreated, onDocumentUpdated} = require('firebase-functions/v2/firestore');
@@ -27,17 +35,24 @@ admin.initializeApp();
 setGlobalOptions({region: 'europe-west1', maxInstances: 10});
 
 // Secrets — referenced by name, injected at runtime.
-const GMAIL_EMAIL = defineSecret('GMAIL_EMAIL');
-const GMAIL_APP_PASSWORD = defineSecret('GMAIL_APP_PASSWORD');
+const SMTP_EMAIL = defineSecret('SMTP_EMAIL');
+const SMTP_PASSWORD = defineSecret('SMTP_PASSWORD');
 const ADMIN_EMAIL = defineSecret('ADMIN_EMAIL');
 
-// Build a Nodemailer transporter using Gmail SMTP + App Password.
+// The address every outgoing email shows as sender/reply-to. Requires
+// SMTP_EMAIL's mailbox to have info@alrayyanjo.com set up as a "Send As"
+// alias — otherwise Outlook will reject the send (see SETUP.md).
+const FROM_EMAIL = 'info@alrayyanjo.com';
+
+// Build a Nodemailer transporter using Outlook/Microsoft 365 SMTP + App Password.
 function buildTransporter() {
   return nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.office365.com',
+    port: 587,
+    secure: false, // STARTTLS, upgraded automatically on port 587
     auth: {
-      user: GMAIL_EMAIL.value(),
-      pass: GMAIL_APP_PASSWORD.value(),
+      user: SMTP_EMAIL.value(),
+      pass: SMTP_PASSWORD.value(),
     },
   });
 }
@@ -95,7 +110,7 @@ function adminEmailHtml(b) {
     <div style="background:#fff;border:1px solid #eee;border-top:none;border-radius:0 0 8px 8px;padding:20px 0">
       <table style="width:100%;border-collapse:collapse">${rows}</table>
       <div style="text-align:center;padding:24px">
-        <a href="https://alrayyanjo.com/mgmt-panel.html#panel-bookings"
+        <a href="https://alrayyanjo.com/mgmt-panel#panel-bookings"
            style="background:#d4af37;color:#0a0a0a;text-decoration:none;font-weight:700;
                   padding:12px 28px;border-radius:6px;display:inline-block;font-size:14px">
           Review in Admin Panel →
@@ -247,7 +262,7 @@ async function sendWhatsApp(toPhone, templateName, params) {
 exports.onBookingCreated = onDocumentCreated(
   {
     document: 'bookings/{bookingId}',
-    secrets: [GMAIL_EMAIL, GMAIL_APP_PASSWORD, ADMIN_EMAIL],
+    secrets: [SMTP_EMAIL, SMTP_PASSWORD, ADMIN_EMAIL],
   },
   async (event) => {
     const snap = event.data;
@@ -261,11 +276,11 @@ exports.onBookingCreated = onDocumentCreated(
     try {
       const transporter = buildTransporter();
       await transporter.sendMail({
-        from: `"Alrayyan Group Bookings" <${GMAIL_EMAIL.value()}>`,
+        from: `"Alrayyan Group Bookings" <${FROM_EMAIL}>`,
         to: ADMIN_EMAIL.value(),
         subject: `🔔 New Visit Booking — ${booking.visitor_name || 'Unknown'} (${booking.ref || id})`,
         html: adminEmailHtml(booking),
-        replyTo: booking.email || GMAIL_EMAIL.value(),
+        replyTo: booking.email || FROM_EMAIL,
       });
       logger.info('[booking:created] admin email sent', {id});
 
@@ -290,7 +305,7 @@ exports.onBookingCreated = onDocumentCreated(
 exports.onBookingStatusChanged = onDocumentUpdated(
   {
     document: 'bookings/{bookingId}',
-    secrets: [GMAIL_EMAIL, GMAIL_APP_PASSWORD],
+    secrets: [SMTP_EMAIL, SMTP_PASSWORD],
   },
   async (event) => {
     const before = event.data.before.data() || {};
@@ -322,8 +337,9 @@ exports.onBookingStatusChanged = onDocumentUpdated(
         html = customerRejectedHtml(after);
       }
       await transporter.sendMail({
-        from: `"Alrayyan Group" <${GMAIL_EMAIL.value()}>`,
+        from: `"Alrayyan Group" <${FROM_EMAIL}>`,
         to: after.email,
+        replyTo: FROM_EMAIL,
         subject,
         html,
       });

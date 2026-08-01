@@ -89,9 +89,9 @@
   // biz id 1/2/3 matches the admin panel + settings/biz_status Firestore doc
   // keys ("biz_status_1" etc.) so the enable/disable toggle there is live.
   const VENTURES = [
-    { id: 1, num: '01', title: { en: 'Alrayyan Fashion', ar: 'أزياء الريان' }, img: 'images/main/biz-fashion.webp', href: 'fashion.html', desc: { en: 'Curated luxury fashion — an online store and physical boutique of refined everyday and evening wear.', ar: 'أزياء فاخرة منتقاة — متجر إلكتروني وبوتيك فعلي لملابس يومية وسهرة راقية.' } },
-    { id: 2, num: '02', title: { en: 'Alrayyan Arts', ar: 'فنون الريان' }, img: 'images/main/biz-arts.webp', href: 'arts.html', desc: { en: 'A gallery and creative studio celebrating Arab and global contemporary art.', ar: 'معرض واستوديو إبداعي يحتفي بالفن العربي والعالمي المعاصر.' } },
-    { id: 3, num: '03', title: { en: 'Alrayyan Lands', ar: 'أراضي الريان' }, img: 'images/main/biz-land.webp', href: 'land.html', desc: { en: 'Premium land plots across Amman\'s most sought-after districts — Abdoun, Dabouq, Khalda and beyond.', ar: 'قطع أراضٍ مميزة في أرقى أحياء عمّان — عبدون ودابوق وخلدا وما بعدها.' } }
+    { id: 1, num: '01', title: { en: 'Alrayyan Fashion', ar: 'أزياء الريان' }, img: 'images/main/biz-fashion.webp', href: 'fashion', desc: { en: 'Curated luxury fashion — an online store and physical boutique of refined everyday and evening wear.', ar: 'أزياء فاخرة منتقاة — متجر إلكتروني وبوتيك فعلي لملابس يومية وسهرة راقية.' } },
+    { id: 2, num: '02', title: { en: 'Alrayyan Arts', ar: 'فنون الريان' }, img: 'images/main/biz-arts.webp', href: 'arts', desc: { en: 'A gallery and creative studio celebrating Arab and global contemporary art.', ar: 'معرض واستوديو إبداعي يحتفي بالفن العربي والعالمي المعاصر.' } },
+    { id: 3, num: '03', title: { en: 'Alrayyan Lands', ar: 'أراضي الريان' }, img: 'images/main/biz-land.webp', href: 'land', desc: { en: 'Premium land plots across Amman\'s most sought-after districts — Abdoun, Dabouq, Khalda and beyond.', ar: 'قطع أراضٍ مميزة في أرقى أحياء عمّان — عبدون ودابوق وخلدا وما بعدها.' } }
   ];
 
   const GALLERY = [
@@ -414,8 +414,10 @@
       e.preventDefault();
       const fname = $('#bk-fname').value.trim();
       const phone = $('#bk-phone').value.trim();
+      const email = $('#bk-email').value.trim();
       if (!fname) { $('#bk-fname').focus(); return; }
       if (!phone) { $('#bk-phone').focus(); return; }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { $('#bk-email').focus(); return; }
       const ref = 'ARG-' + Date.now().toString(36).toUpperCase().slice(-6);
 
       // The admin panel renders these values with textContent / the el()
@@ -424,7 +426,7 @@
         ref: ref,
         visitor_name: (fname + ' ' + $('#bk-lname').value.trim()).trim(),
         phone: phone,
-        email: $('#bk-email').value.trim(),
+        email: email,
         floor_preference: $('#bk-office').value,
         preferred_date: $('#bk-date').value,
         preferred_time: $('#bk-time').value,
@@ -444,10 +446,10 @@
   }
 
   /* ---------- Cookie bar --------------------------------------------------
-     Moved to /cookie-consent/{cookie-utils,cookie-api,cookie-banner}.js —
-     those files own showing/hiding #cookie, the Accept All / Reject /
-     Customize handlers, and the Firestore write to `cookie_acceptances`.
-     They're loaded before this file and self-initialize on DOMContentLoaded. */
+     Moved to /cookie-consent/{cookie-utils,cookie-banner}.js — those files
+     own showing/hiding #cookie and the Accept All / Reject handlers, storing
+     the choice locally only (no server-side log). They're loaded before this
+     file and self-initialize on DOMContentLoaded. */
 
   /* ---------- Theme (dark / light) --------------------------------------- */
   window.toggleTheme = function () {
@@ -486,11 +488,11 @@
       footAbout: 'مكاتب ومساحات واستثمارات راقية في عمّان، الأردن. عنوان أعمال مرموق مبنيّ على عقدين من الثقة.',
       footExplore: 'استكشف', footVentures: 'أعمالنا', footContact: 'اتصل', footTag: 'تأجير مكاتب راقية · حيث تلتقي المكانة بالإنتاجية', footPrivacy: 'سياسة الخصوصية',
       bkEye: 'زيارة خاصة', bkTitle: 'احجز جولة', bkSub: 'أخبرنا بما تحتاجه ومتى. سنؤكّد موعدك عبر البريد.',
-      bkFirst: 'الاسم الأول *', bkLast: 'اسم العائلة', bkPhone: 'هاتف / واتساب *', bkEmail: 'البريد', bkSpace: 'المساحة المطلوبة',
+      bkFirst: 'الاسم الأول *', bkLast: 'اسم العائلة', bkPhone: 'هاتف / واتساب *', bkEmail: 'البريد *', bkSpace: 'المساحة المطلوبة',
       bkDate: 'التاريخ المفضّل', bkTime: 'الوقت المفضّل', bkNotes: 'ملاحظات', bkSubmit: 'اطلب زيارة',
       bkNote: 'بإرسالك توافق على أن نتواصل معك بخصوص زيارتك. بلا إزعاج إطلاقاً.',
       bkDoneTitle: 'تم استلام الطلب', bkDoneSub: 'شكراً لك — سيؤكّد فريقنا زيارتك قريباً. رقمك المرجعي:', bkDoneClose: 'إغلاق',
-      cookie: 'نستخدم ملفات تعريف الارتباط لتحسين تجربتك. <a href="privacy.html">اعرف المزيد</a>.', cookieBtn: 'قبول الكل', cookieReject: 'رفض غير الضروري',
+      cookie: 'نستخدم ملفات تعريف الارتباط لتحسين تجربتك. <a href="privacy">اعرف المزيد</a>.', cookieBtn: 'قبول الكل', cookieReject: 'رفض غير الضروري',
       footCookieSettings: 'إعدادات الكوكيز'
     }
   };

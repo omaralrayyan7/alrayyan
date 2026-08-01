@@ -4,13 +4,14 @@
    pattern from before) so it keeps working with the site's existing i18n
    snapshot system (js/app.js reads data-i18n text straight out of the DOM
    at boot). This file only wires show/hide + button handlers, and reads /
-   writes consent via CookieConsentUtils + CookieConsentApi.
+   writes consent via CookieConsentUtils — stored locally (localStorage)
+   only, never logged to a server.
 
    Two decisions only — no separate category-picker panel:
      Accept All            -> every category on
      Reject Non-Essential  -> only 'necessary' on
 
-   Requires cookie-utils.js and cookie-api.js loaded first.
+   Requires cookie-utils.js loaded first.
    ========================================================================== */
 (function (global, document) {
   'use strict';
@@ -28,7 +29,6 @@
 
   function decide(status, categories) {
     global.CookieConsentUtils.saveConsent(status, categories);
-    global.CookieConsentApi.logConsent(status, categories);
     hideBanner();
   }
 
