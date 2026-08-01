@@ -37,7 +37,7 @@ Bilingual (English / Arabic) Firebase-hosted business website for **Alrayyan Tow
 
 ## Tech Stack
 
-Vanilla HTML / CSS / JS · Firebase Hosting · Cloud Firestore · Firebase Cloud Functions (Node.js) · Nodemailer (Gmail SMTP)
+Vanilla HTML / CSS / JS · Firebase Hosting · Cloud Firestore · Firebase Cloud Functions (Node.js) · Nodemailer (Outlook/Microsoft 365 SMTP)
 
 ## Business Verticals
 

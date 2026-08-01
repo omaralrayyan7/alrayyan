@@ -6,6 +6,12 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "8765"],
       "port": 8765
+    },
+    {
+      "name": "alrayyan-hosting",
+      "runtimeExecutable": "firebase",
+      "runtimeArgs": ["serve", "--only", "hosting", "--port", "5050"],
+      "port": 5050
     }
   ]
 }

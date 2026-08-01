@@ -205,7 +205,7 @@
       fuEye: 'الموقع', fuTitleA: 'ابحث', fuTitleB: 'عنا',
       locAddr: 'برج الريان، شارع الملكة علياء، عمّان', locGo: 'انقر للفتح في خرائط جوجل →',
       bkHead: 'اطلب زيارة', bkSub: 'يؤكّد فريقنا خلال 24 ساعة',
-      lblFirst: 'الاسم الأول *', lblLast: 'اسم العائلة', lblPhone: 'الهاتف / واتساب *', lblEmail: 'البريد',
+      lblFirst: 'الاسم الأول *', lblLast: 'اسم العائلة', lblPhone: 'الهاتف / واتساب *', lblEmail: 'البريد *',
       lblDate: 'التاريخ المفضّل', lblTime: 'الوقت المفضّل', lblNotes: 'ملاحظات', phNotes: 'أي أسئلة أو متطلبات…',
       btnConfirm: 'تأكيد الزيارة →', bkNote: 'مجاناً · بدون التزام · سبت–خميس 9ص–6م',
       sxTitle: 'تم طلب الزيارة!', sxBody: 'سيتصل بك فريقنا خلال 24 ساعة لتأكيد موعدك.',
@@ -339,7 +339,7 @@
       if (links.length) {
         linksWrap.appendChild(el('span', { class: 'fl-floor-links__label', text: (I18N[L] && I18N[L].availIn) || 'Available In' }));
         links.forEach(function (lk) {
-          linksWrap.appendChild(el('a', { class: 'fl-floor-pill', href: 'floor.html?floor=' + lk.id, text: lk.label[L] }));
+          linksWrap.appendChild(el('a', { class: 'fl-floor-pill', href: 'floor?floor=' + lk.id, text: lk.label[L] }));
         });
       }
     }
@@ -396,15 +396,17 @@
     var d = $('#bf-date'); if (d) d.min = new Date().toISOString().split('T')[0];
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      var bfEmail = $('#bf-email').value.trim();
       if (!$('#bf-fname').value.trim()) { $('#bf-fname').focus(); return; }
       if (!$('#bf-phone').value.trim()) { $('#bf-phone').focus(); return; }
+      if (!bfEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bfEmail)) { $('#bf-email').focus(); return; }
       var ref = 'ARG-' + Date.now().toString(36).toUpperCase().slice(-6);
       if (window.db) {
         window.db.collection('bookings').add({
           ref: ref,
           visitor_name: ($('#bf-fname').value.trim() + ' ' + $('#bf-lname').value.trim()).trim(),
           phone: $('#bf-phone').value.trim(),
-          email: $('#bf-email').value.trim(),
+          email: bfEmail,
           floor_preference: sp.name.en,
           preferred_date: $('#bf-date').value,
           preferred_time: $('#bf-time').value,

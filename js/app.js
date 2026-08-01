@@ -39,7 +39,7 @@
   ];
 
   // Source of truth: real available inventory at Alrayyan Tower.
-  // `id` maps each row to its floor sub-page (floor.html?floor=<id>).
+  // `id` maps each row to its floor sub-page (floor?floor=<id>).
   // Each `sizes[].key` is the exact Firestore key the admin panel's
   // Availability Toggles write to (settings/availability, "<floorId>_<sizeKey>"),
   // so toggling a unit there is reflected live here — no key, no live update.
@@ -68,7 +68,7 @@
     { id: '7', floor: '7', title: { en: 'Full Floor', ar: 'طابق كامل' }, sizes: officeSizes('7') },
     { id: '8', floor: '8', title: { en: 'Office Unit', ar: 'وحدة مكتبية' }, sizes: officeSizes('8') },
     // 9th floor combined (outdoor terrace + indoor space) into one row — links
-    // to the combined floor.html?floor=9 page. Office Rental Solutions cards
+    // to the combined floor?floor=9 page. Office Rental Solutions cards
     // keep the two 9th-floor types separate (unchanged). Keys match the
     // admin panel's separate '9-outdoor' / '9-indoor' floor entries.
     { id: '9', floor: '9', title: { en: 'Outdoor + Indoor', ar: 'خارجي + داخلي' }, sizes: [
@@ -89,9 +89,9 @@
   // biz id 1/2/3 matches the admin panel + settings/biz_status Firestore doc
   // keys ("biz_status_1" etc.) so the enable/disable toggle there is live.
   const VENTURES = [
-    { id: 1, num: '01', title: { en: 'Alrayyan Fashion', ar: 'أزياء الريان' }, img: 'images/main/biz-fashion.webp', href: 'fashion.html', desc: { en: 'Curated luxury fashion — an online store and physical boutique of refined everyday and evening wear.', ar: 'أزياء فاخرة منتقاة — متجر إلكتروني وبوتيك فعلي لملابس يومية وسهرة راقية.' } },
-    { id: 2, num: '02', title: { en: 'Alrayyan Arts', ar: 'فنون الريان' }, img: 'images/main/biz-arts.webp', href: 'arts.html', desc: { en: 'A gallery and creative studio celebrating Arab and global contemporary art.', ar: 'معرض واستوديو إبداعي يحتفي بالفن العربي والعالمي المعاصر.' } },
-    { id: 3, num: '03', title: { en: 'Alrayyan Lands', ar: 'أراضي الريان' }, img: 'images/main/biz-land.webp', href: 'land.html', desc: { en: 'Premium land plots across Amman\'s most sought-after districts — Abdoun, Dabouq, Khalda and beyond.', ar: 'قطع أراضٍ مميزة في أرقى أحياء عمّان — عبدون ودابوق وخلدا وما بعدها.' } }
+    { id: 1, num: '01', title: { en: 'Alrayyan Fashion', ar: 'أزياء الريان' }, img: 'images/main/biz-fashion.webp', href: 'fashion', desc: { en: 'Curated luxury fashion — an online store and physical boutique of refined everyday and evening wear.', ar: 'أزياء فاخرة منتقاة — متجر إلكتروني وبوتيك فعلي لملابس يومية وسهرة راقية.' } },
+    { id: 2, num: '02', title: { en: 'Alrayyan Arts', ar: 'فنون الريان' }, img: 'images/main/biz-arts.webp', href: 'arts', desc: { en: 'A gallery and creative studio celebrating Arab and global contemporary art.', ar: 'معرض واستوديو إبداعي يحتفي بالفن العربي والعالمي المعاصر.' } },
+    { id: 3, num: '03', title: { en: 'Alrayyan Lands', ar: 'أراضي الريان' }, img: 'images/main/biz-land.webp', href: 'land', desc: { en: 'Premium land plots across Amman\'s most sought-after districts — Abdoun, Dabouq, Khalda and beyond.', ar: 'قطع أراضٍ مميزة في أرقى أحياء عمّان — عبدون ودابوق وخلدا وما بعدها.' } }
   ];
 
   const GALLERY = [
@@ -148,7 +148,7 @@
     const revealCls = 'card reveal' + (isRerender ? ' in' : '');
     const viewLbl = L === 'ar' ? 'عرض التفاصيل →' : 'View details →';
     SPACES.forEach(function (s, i) {
-      const href = 'space.html?type=' + encodeURIComponent(s.slug);
+      const href = 'space?type=' + encodeURIComponent(s.slug);
       // The whole card is one anchor so a click anywhere on it navigates —
       // media/title/link are plain elements inside it, not separate anchors.
       const card = el('a', { class: revealCls, href: href, 'aria-label': s.title[L], 'data-d': String(i % 3) }, [
@@ -194,7 +194,7 @@
       // sub-page — nothing to view, so a plain (non-clickable) div instead of <a>.
       const rowCls = revealCls + (anyOn ? '' : ' avail-row--disabled');
       const row = anyOn
-        ? el('a', { class: rowCls, href: 'floor.html?floor=' + encodeURIComponent(a.id), 'data-d': String(i % 2) }, kids)
+        ? el('a', { class: rowCls, href: 'floor?floor=' + encodeURIComponent(a.id), 'data-d': String(i % 2) }, kids)
         : el('div', { class: rowCls, 'data-d': String(i % 2), 'aria-disabled': 'true' }, kids);
       wrap.appendChild(row);
     });
@@ -414,8 +414,10 @@
       e.preventDefault();
       const fname = $('#bk-fname').value.trim();
       const phone = $('#bk-phone').value.trim();
+      const email = $('#bk-email').value.trim();
       if (!fname) { $('#bk-fname').focus(); return; }
       if (!phone) { $('#bk-phone').focus(); return; }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { $('#bk-email').focus(); return; }
       const ref = 'ARG-' + Date.now().toString(36).toUpperCase().slice(-6);
 
       // The admin panel renders these values with textContent / the el()
@@ -424,7 +426,7 @@
         ref: ref,
         visitor_name: (fname + ' ' + $('#bk-lname').value.trim()).trim(),
         phone: phone,
-        email: $('#bk-email').value.trim(),
+        email: email,
         floor_preference: $('#bk-office').value,
         preferred_date: $('#bk-date').value,
         preferred_time: $('#bk-time').value,
@@ -444,10 +446,10 @@
   }
 
   /* ---------- Cookie bar --------------------------------------------------
-     Moved to /cookie-consent/{cookie-utils,cookie-api,cookie-banner}.js —
-     those files own showing/hiding #cookie, the Accept All / Reject /
-     Customize handlers, and the Firestore write to `cookie_acceptances`.
-     They're loaded before this file and self-initialize on DOMContentLoaded. */
+     Moved to /cookie-consent/{cookie-utils,cookie-banner}.js — those files
+     own showing/hiding #cookie and the Accept All / Reject handlers, storing
+     the choice locally only (no server-side log). They're loaded before this
+     file and self-initialize on DOMContentLoaded. */
 
   /* ---------- Theme (dark / light) --------------------------------------- */
   window.toggleTheme = function () {
@@ -486,11 +488,11 @@
       footAbout: 'مكاتب ومساحات واستثمارات راقية في عمّان، الأردن. عنوان أعمال مرموق مبنيّ على عقدين من الثقة.',
       footExplore: 'استكشف', footVentures: 'أعمالنا', footContact: 'اتصل', footTag: 'تأجير مكاتب راقية · حيث تلتقي المكانة بالإنتاجية', footPrivacy: 'سياسة الخصوصية',
       bkEye: 'زيارة خاصة', bkTitle: 'احجز جولة', bkSub: 'أخبرنا بما تحتاجه ومتى. سنؤكّد موعدك عبر البريد.',
-      bkFirst: 'الاسم الأول *', bkLast: 'اسم العائلة', bkPhone: 'هاتف / واتساب *', bkEmail: 'البريد', bkSpace: 'المساحة المطلوبة',
+      bkFirst: 'الاسم الأول *', bkLast: 'اسم العائلة', bkPhone: 'هاتف / واتساب *', bkEmail: 'البريد *', bkSpace: 'المساحة المطلوبة',
       bkDate: 'التاريخ المفضّل', bkTime: 'الوقت المفضّل', bkNotes: 'ملاحظات', bkSubmit: 'اطلب زيارة',
       bkNote: 'بإرسالك توافق على أن نتواصل معك بخصوص زيارتك. بلا إزعاج إطلاقاً.',
       bkDoneTitle: 'تم استلام الطلب', bkDoneSub: 'شكراً لك — سيؤكّد فريقنا زيارتك قريباً. رقمك المرجعي:', bkDoneClose: 'إغلاق',
-      cookie: 'نستخدم ملفات تعريف الارتباط لتحسين تجربتك. <a href="privacy.html">اعرف المزيد</a>.', cookieBtn: 'قبول الكل', cookieReject: 'رفض غير الضروري',
+      cookie: 'نستخدم ملفات تعريف الارتباط لتحسين تجربتك. <a href="privacy">اعرف المزيد</a>.', cookieBtn: 'قبول الكل', cookieReject: 'رفض غير الضروري',
       footCookieSettings: 'إعدادات الكوكيز'
     }
   };

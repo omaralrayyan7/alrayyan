@@ -48,7 +48,7 @@
   <meta property="og:image" content="og-image.webp"/>
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
-  <meta property="og:url" content="https://alrayyanjo.com/painting-detail.html"/>
+  <meta property="og:url" content="https://alrayyanjo.com/painting-detail"/>
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:image" content="og-image.webp"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -59,7 +59,7 @@
 <body>
 
 <nav>
-  <a href="arts.html"><div class="nav-brand">Alrayyan <em>Arts</em></div></a>
+  <a href="arts"><div class="nav-brand">Alrayyan <em>Arts</em></div></a>
   <div class="nav-right">
     <div class="lang-sw" dir="ltr" style="direction:ltr;display:inline-flex;">
       <button class="lang-btn active" onclick="setLang('en')" style="min-width:36px;">EN</button>
@@ -69,15 +69,15 @@
       <span class="theme-icon-sun">☀</span>
       <span class="theme-icon-moon">☾</span>
     </button>
-    <a href="arts.html#shop" class="nav-back" id="nav-back-btn">← Back to Gallery</a>
+    <a href="arts#shop" class="nav-back" id="nav-back-btn">← Back to Gallery</a>
   </div>
 </nav>
 <script>setTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');</script>
 
 <div class="breadcrumb">
-  <a href="index.html" data-i18n="bcHome">Home</a>
+  <a href="/" data-i18n="bcHome">Home</a>
   <span class="sep">/</span>
-  <a href="arts.html" data-i18n="bcArts">Arts</a>
+  <a href="arts" data-i18n="bcArts">Arts</a>
   <span class="sep">/</span>
   <span id="bc-name">Artwork</span>
 </div>
@@ -90,8 +90,8 @@
 </footer>
 
 <script>
-// Shared painting data — mirrors arts.html products.
-// Edit this array (or inject new items) to add new paintings. Cards in arts.html
+// Shared painting data — mirrors arts products.
+// Edit this array (or inject new items) to add new paintings. Cards in arts
 // already link here via ?id=<id>, so new entries automatically work end-to-end.
 const PAINTINGS = [
   {id:1,name:'Desert Horizons',      artist:'Layla Al-Rashidi',price:'380.00 JOD',category:'painting',   medium:'Oil on Canvas', size:'80cm × 120cm',       description:'Sweeping dunes captured in layered oil strokes — a meditation on the vastness and stillness of the Arabian desert at dawn.', hasCert:true,  img:'images/arts/product-01-desert-horizons.webp'},
@@ -136,7 +136,7 @@ function render(lang){
     root.innerHTML = `<div class="not-found">
       <h2>${t.notFoundH}</h2>
       <p>${t.notFoundP}</p>
-      <a href="arts.html" class="btn-ghost">${t.backBtn}</a>
+      <a href="arts" class="btn-ghost">${t.backBtn}</a>
     </div>`;
     return;
   }
@@ -166,7 +166,7 @@ function render(lang){
         </div>
         <div class="buy-row">
           <button class="btn-gold" onclick="addToCart()">${t.btnBuy}</button>
-          <a href="mailto:alrayyantower@gmail.com?subject=Enquiry about ${encodeURIComponent(painting.name)}" class="btn-ghost">${t.btnEnquire}</a>
+          <a href="mailto:info@alrayyanjo.com?subject=Enquiry about ${encodeURIComponent(painting.name)}" class="btn-ghost">${t.btnEnquire}</a>
         </div>
       </div>
     </div>`;

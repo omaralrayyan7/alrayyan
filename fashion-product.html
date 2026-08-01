@@ -48,7 +48,7 @@
   <meta property="og:image" content="og-image.webp"/>
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
-  <meta property="og:url" content="https://alrayyanjo.com/fashion-product.html"/>
+  <meta property="og:url" content="https://alrayyanjo.com/fashion-product"/>
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:image" content="og-image.webp"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -59,7 +59,7 @@
 <body>
 
 <nav id="navbar">
-  <a href="fashion.html">
+  <a href="fashion">
     <div class="nav-brand">ALRAYYAN <span>FASHION</span></div>
   </a>
   <div class="nav-right">
@@ -68,7 +68,7 @@
       Cart <span class="cart-badge" id="cartBadge">0</span>
     </button>
     <div class="nav-sep"></div>
-    <a href="fashion.html" class="nav-back">← Shop</a>
+    <a href="fashion" class="nav-back">← Shop</a>
     <div class="lang-sw-fp" dir="ltr" style="direction:ltr;display:inline-flex;align-items:center;margin-left:12px">
       <button class="lang-btn-fp active" onclick="setPageLang('en')" style="min-width:36px;">EN</button>
       <button class="lang-btn-fp" onclick="setPageLang('ar')" style="min-width:36px;">AR</button>
@@ -82,9 +82,9 @@
 <script>setTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');</script>
 
 <div class="breadcrumb" id="breadcrumb">
-  <a href="index.html">Alrayyan Group</a>
+  <a href="/">Alrayyan Group</a>
   <span>/</span>
-  <a href="fashion.html">Fashion</a>
+  <a href="fashion">Fashion</a>
   <span>/</span>
   <span id="bc-name">Product</span>
 </div>
@@ -231,7 +231,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ── PRODUCT DATA (must match fashion.html) ─────────────────────────────────
+// ── PRODUCT DATA (must match fashion) ─────────────────────────────────
 const products = [
   {
     id:1, name:'CHECK SHIRT WITH POCKETS', price:'45.00', category:'men',
@@ -552,7 +552,7 @@ document.querySelector('.acc-head .acc-icon').style.transform = 'rotate(45deg)';
 const relatedEl = document.getElementById('related-grid');
 const related = products.filter(x => x.id !== p.id).slice(0, 4);
 relatedEl.innerHTML = related.map(r => `
-  <div class="rel-card" onclick="location.href='fashion-product.html?id=${r.id}'">
+  <div class="rel-card" onclick="location.href='fashion-product?id=${r.id}'">
     <img src="${r.img}" alt="${r.name}" loading="lazy" decoding="async"/>
     <div class="rel-card-body">
       <div class="rel-name">${r.name}</div>

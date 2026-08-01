@@ -10,15 +10,23 @@ WhatsApp is wired but disabled until Meta WhatsApp Business API approval comes t
 
 ## ⏱  One-time setup (~15 minutes)
 
-### Step 1 — Generate a Gmail App Password
-The Cloud Function logs into Gmail via SMTP. Gmail no longer allows plain passwords — you need an **App Password**.
+### Step 1 — Add info@alrayyanjo.com as a "Send As" alias on zaid@alrayyanjo.com
+`info@alrayyanjo.com` is a forwarding alias, not a real mailbox — it can't log
+into anything on its own. Mail is actually sent through the real Outlook
+mailbox `zaid@alrayyanjo.com`, with `info@alrayyanjo.com` set up as a
+verified alias on that account so the emails genuinely show
+**From: info@alrayyanjo.com** instead of being rejected as spoofing.
 
-1. Sign into the Gmail account that will SEND emails (e.g. `omaralrayyan7@gmail.com`).
-2. Go to https://myaccount.google.com/security and turn on **2-Step Verification** if not already.
-3. Go to https://myaccount.google.com/apppasswords.
-4. App name: `Alrayyan Functions`. Click **Create**.
-5. Copy the 16-character password (e.g. `abcd efgh ijkl mnop`). Remove the spaces.
-6. **Keep this somewhere safe — you cannot view it again.**
+1. Sign into https://outlook.com as `zaid@alrayyanjo.com`.
+2. Go to **Settings (⚙) → Mail → Sync email → Connected accounts**, or
+   https://account.microsoft.com → **Your info** → **Manage how you sign in** → **Add email** (add `info@alrayyanjo.com` as an alias on the same Microsoft account).
+   - If `alrayyanjo.com` is on a Microsoft 365 **Business/Admin** plan instead of a personal Outlook account, do this instead in the Microsoft 365 admin center: **Users → zaid@alrayyanjo.com → Manage email aliases → Add alias → info@alrayyanjo.com**.
+3. Once added, Outlook will let this mailbox send mail that shows as coming from `info@alrayyanjo.com`.
+
+### Step 1b — Generate an Outlook App Password
+1. Go to https://account.microsoft.com/security → **Advanced security options** and turn on **2-Step Verification** if not already.
+2. Under **App passwords**, create one named `Alrayyan Functions`.
+3. Copy the generated password. **Keep this somewhere safe — you cannot view it again.**
 
 ### Step 2 — Install the Firebase CLI (only first time)
 Open PowerShell as Administrator:
@@ -48,15 +56,21 @@ cd ..
 ### Step 5 — Set the secrets in Firebase
 From the project root, run these one at a time and paste each value when prompted:
 ```powershell
-firebase functions:secrets:set GMAIL_EMAIL
-# Paste:  omaralrayyan7@gmail.com
+firebase functions:secrets:set SMTP_EMAIL
+# Paste:  zaid@alrayyanjo.com
 
-firebase functions:secrets:set GMAIL_APP_PASSWORD
-# Paste:  abcdefghijklmnop   (the 16-char App Password, no spaces)
+firebase functions:secrets:set SMTP_PASSWORD
+# Paste:  (the Outlook App Password from Step 1b, no spaces)
 
 firebase functions:secrets:set ADMIN_EMAIL
-# Paste:  alrayyantower@gmail.com   (where you want to RECEIVE booking alerts)
+# Paste:  info@alrayyanjo.com   (where you want to RECEIVE booking alerts)
 ```
+
+**Note on the "From" address:** the code always sends with `From: info@alrayyanjo.com` and
+`Reply-To: info@alrayyanjo.com` — every booking email is purely info@alrayyanjo.com from the
+recipient's point of view, with zaid@alrayyanjo.com only used internally to authenticate.
+This only works once Step 1's "Send As" alias is set up — otherwise Outlook will reject the
+send (see **Common errors** below).
 
 ### Step 6 — Deploy
 ```powershell
@@ -73,12 +87,12 @@ First deploy takes 2–3 minutes. You'll see:
 ## 🧪 How to test (end-to-end)
 
 ### Test 1 — Admin receives email when visitor submits form
-1. Open the public site (any of `office-detail.html`, `floor-detail.html`, `land-detail.html`).
+1. Open the public site (any of `floor`, `space`, `land-detail`).
 2. Fill the **Book a Site Visit** form with a real test email and submit.
-3. Check inbox of `alrayyantower@gmail.com`. You should receive within ~10 seconds:
+3. Check inbox of `info@alrayyanjo.com`. You should receive within ~10 seconds:
    > Subject: **🔔 New Visit Booking — \[Name\] (ARG-XXXXXX)**
 
-4. Open `mgmt-panel.html` → **Visit Bookings**. The new booking appears with status `pending`.
+4. Open `mgmt-panel` → **Visit Bookings**. The new booking appears with status `pending`.
 
 ### Test 2 — Customer receives confirmation email on Accept
 1. In the admin panel, click **✓ Accept** next to the pending booking.
@@ -137,7 +151,7 @@ The customer's WhatsApp number is already captured (`booking.phone`) so no form 
 | Component | Monthly cost (≤100 bookings) |
 |-----------|------------------------------|
 | Cloud Functions invocations | **$0** (free tier) |
-| Gmail SMTP | **$0** (free, 500/day limit) |
+| Outlook/Microsoft 365 SMTP | **$0** (covered by the existing mailbox plan) |
 | Firestore reads/writes | **$0** (already on free tier) |
 | WhatsApp (after Meta approval) | **$0** (Meta API is free) |
 | **Total** | **$0 / month** |
@@ -148,8 +162,9 @@ The customer's WhatsApp number is already captured (`booking.phone`) so no form 
 
 | Error | Fix |
 |-------|-----|
-| `Invalid login: 535-5.7.8 Username and Password not accepted` | App Password wrong, or 2FA not enabled. Regenerate. |
+| `535 5.7.139 Authentication unsuccessful` | App Password wrong, or 2FA not enabled on zaid@alrayyanjo.com. Regenerate. |
+| `550 5.7.60 SMTP; Client does not have permissions to send as this sender` | `info@alrayyanjo.com` isn't set up as a "Send As" alias on zaid@alrayyanjo.com yet — redo Step 1. |
 | `Function failed on loading user code` | Run `cd functions && npm install` again. |
 | `Permission denied` on deploy | Run `firebase login --reauth` |
 | No email arrives, no error | Check spam folder. Check `firebase functions:log`. |
-| `Quota exceeded` | You sent more than 500 emails in 24h on Gmail free tier. Switch to SendGrid or Workspace. |
+| `Quota exceeded` | Outlook/Microsoft 365 daily sending limit reached. Check your plan's limit or switch to SendGrid. |

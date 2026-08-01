@@ -6,47 +6,47 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://alrayyanjo.com/floor-detail.html</loc>
+    <loc>https://alrayyanjo.com/floor</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://alrayyanjo.com/office-detail.html</loc>
+    <loc>https://alrayyanjo.com/space</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://alrayyanjo.com/land.html</loc>
+    <loc>https://alrayyanjo.com/land</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://alrayyanjo.com/land-detail.html</loc>
+    <loc>https://alrayyanjo.com/land-detail</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://alrayyanjo.com/fashion.html</loc>
+    <loc>https://alrayyanjo.com/fashion</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://alrayyanjo.com/fashion-product.html</loc>
+    <loc>https://alrayyanjo.com/fashion-product</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://alrayyanjo.com/arts.html</loc>
+    <loc>https://alrayyanjo.com/arts</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://alrayyanjo.com/painting-detail.html</loc>
+    <loc>https://alrayyanjo.com/painting-detail</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://alrayyanjo.com/privacy.html</loc>
+    <loc>https://alrayyanjo.com/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
