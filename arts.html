@@ -260,10 +260,11 @@ const products = [
 
 let cart=JSON.parse(localStorage.getItem('aa_cart')||'[]');
 function saveCart(){localStorage.setItem('aa_cart',JSON.stringify(cart));}
+function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');}
 
 function productCardHTML(p){
   return `
-    <div class="product-card" onclick="location.href='painting-detail.html?id=${p.id}'">
+    <div class="product-card" onclick="location.href='/arts/${slugify(p.name)}'">
       <div class="product-img-wrap">
         <img src="${p.img}" alt="${p.name}" loading="lazy" decoding="async"/>
         <span class="prod-medium">${p.medium}</span>

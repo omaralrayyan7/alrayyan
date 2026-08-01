@@ -404,6 +404,8 @@ let cart = JSON.parse(localStorage.getItem('af_cart')||'[]');
 
 function saveCart(){localStorage.setItem('af_cart',JSON.stringify(cart));}
 
+function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');}
+
 function displayPrice(p){
   if(p.sale){
     return `<span class="price-original">${p.price} JOD</span><span class="price-sale">${p.salePrice} JOD</span>`;
@@ -417,7 +419,7 @@ function renderProducts(filter){
            : filter==='sale' ? products.filter(p=>p.sale)
            : products.filter(p=>p.category===filter);
   grid.innerHTML=list.map(p=>`
-    <div class="product-card" onclick="location.href='fashion-product.html?id=${p.id}'">
+    <div class="product-card" onclick="location.href='/fashion/${slugify(p.name)}'">
       <div class="product-img-wrap">
         <img src="${p.img}" alt="${p.name}" loading="lazy" decoding="async"/>
         ${p.sale?`<div class="sale-badge">−${p.salePercent}%</div>`:''}
@@ -431,7 +433,7 @@ function renderProducts(filter){
         <div class="product-meta">
           <div class="product-name">${p.name}</div>
           <div class="product-price">${displayPrice(p)}</div>
-          <a class="prod-detail-link" href="fashion-product.html?id=${p.id}" onclick="event.stopPropagation()">View Details →</a>
+          <a class="prod-detail-link" href="/fashion/${slugify(p.name)}" onclick="event.stopPropagation()">View Details →</a>
         </div>
         <button class="prod-info-add" onclick="addToCart(${p.id},event)">+</button>
       </div>
@@ -443,7 +445,7 @@ function renderSaleGrid(){
   const grid=document.getElementById('saleGrid');
   const saleItems=products.filter(p=>p.sale);
   grid.innerHTML=saleItems.map(p=>`
-    <div class="sale-card" onclick="location.href='fashion-product.html?id=${p.id}'">
+    <div class="sale-card" onclick="location.href='/fashion/${slugify(p.name)}'">
       <div class="sale-card-img">
         <img src="${p.img}" alt="${p.name}" loading="lazy" decoding="async"/>
         <div class="sale-badge-lg">−${p.salePercent}% OFF</div>
@@ -457,7 +459,7 @@ function renderSaleGrid(){
         </div>
         <div class="sale-card-links">
           <button class="sale-add-btn" onclick="addToCart(${p.id},event)">Add to Cart</button>
-          <a class="sale-detail-link" href="fashion-product.html?id=${p.id}" onclick="event.stopPropagation()">View Details →</a>
+          <a class="sale-detail-link" href="/fashion/${slugify(p.name)}" onclick="event.stopPropagation()">View Details →</a>
         </div>
       </div>
     </div>

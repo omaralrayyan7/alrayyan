@@ -5,48 +5,63 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- Office spaces -->
+  <url><loc>https://alrayyanjo.com/space/full-floor</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://alrayyanjo.com/space/small-spaces</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://alrayyanjo.com/space/open-space</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://alrayyanjo.com/space/9th-outdoor</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://alrayyanjo.com/space/9th-indoor</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://alrayyanjo.com/space/small-shops</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+
+  <!-- Floors -->
+  <url><loc>https://alrayyanjo.com/floor/b1</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alrayyanjo.com/floor/g</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alrayyanjo.com/floor/1</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alrayyanjo.com/floor/2</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alrayyanjo.com/floor/3</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alrayyanjo.com/floor/4</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alrayyanjo.com/floor/5</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alrayyanjo.com/floor/6</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alrayyanjo.com/floor/7</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alrayyanjo.com/floor/8</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alrayyanjo.com/floor/9</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- Lands -->
+  <url><loc>https://alrayyanjo.com/land</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://alrayyanjo.com/land/abdoun</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://alrayyanjo.com/land/dabouq</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://alrayyanjo.com/land/khalda</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://alrayyanjo.com/land/sweifieh</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://alrayyanjo.com/land/rabieh</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://alrayyanjo.com/land/um-uthaina</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+
+  <!-- Fashion -->
+  <url><loc>https://alrayyanjo.com/fashion</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://alrayyanjo.com/fashion/check-shirt-with-pockets</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/fashion/washed-relaxed-fit-shirt</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/fashion/oversized-linen-blazer</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/fashion/embroidered-abaya</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/fashion/slim-fit-trousers</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/fashion/leather-crossbody-bag</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/fashion/silk-scarf-geometric</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/fashion/tailored-jumpsuit</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/fashion/desert-linen-shirt</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Arts -->
+  <url><loc>https://alrayyanjo.com/arts</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://alrayyanjo.com/arts/desert-horizons</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/arts/golden-city</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/arts/calligraphy-in-motion</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/arts/layers-of-time</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/arts/light-shadow</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/arts/urban-fragments</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/arts/form-void</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/arts/wadi-reflections</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://alrayyanjo.com/arts/colour-study-no-7</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
   <url>
-    <loc>https://alrayyanjo.com/floor-detail.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://alrayyanjo.com/office-detail.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://alrayyanjo.com/land.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://alrayyanjo.com/land-detail.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://alrayyanjo.com/fashion.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://alrayyanjo.com/fashion-product.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://alrayyanjo.com/arts.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://alrayyanjo.com/painting-detail.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://alrayyanjo.com/privacy.html</loc>
+    <loc>https://alrayyanjo.com/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

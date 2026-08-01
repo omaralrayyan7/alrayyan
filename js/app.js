@@ -39,7 +39,7 @@
   ];
 
   // Source of truth: real available inventory at Alrayyan Tower.
-  // `id` maps each row to its floor sub-page (floor.html?floor=<id>).
+  // `id` maps each row to its floor sub-page (/floor/<id>).
   // Each `sizes[].key` is the exact Firestore key the admin panel's
   // Availability Toggles write to (settings/availability, "<floorId>_<sizeKey>"),
   // so toggling a unit there is reflected live here — no key, no live update.
@@ -68,7 +68,7 @@
     { id: '7', floor: '7', title: { en: 'Full Floor', ar: 'طابق كامل' }, sizes: officeSizes('7') },
     { id: '8', floor: '8', title: { en: 'Office Unit', ar: 'وحدة مكتبية' }, sizes: officeSizes('8') },
     // 9th floor combined (outdoor terrace + indoor space) into one row — links
-    // to the combined floor.html?floor=9 page. Office Rental Solutions cards
+    // to the combined /floor/9 page. Office Rental Solutions cards
     // keep the two 9th-floor types separate (unchanged). Keys match the
     // admin panel's separate '9-outdoor' / '9-indoor' floor entries.
     { id: '9', floor: '9', title: { en: 'Outdoor + Indoor', ar: 'خارجي + داخلي' }, sizes: [
@@ -148,7 +148,7 @@
     const revealCls = 'card reveal' + (isRerender ? ' in' : '');
     const viewLbl = L === 'ar' ? 'عرض التفاصيل →' : 'View details →';
     SPACES.forEach(function (s, i) {
-      const href = 'space.html?type=' + encodeURIComponent(s.slug);
+      const href = '/space/' + s.slug;
       // The whole card is one anchor so a click anywhere on it navigates —
       // media/title/link are plain elements inside it, not separate anchors.
       const card = el('a', { class: revealCls, href: href, 'aria-label': s.title[L], 'data-d': String(i % 3) }, [
@@ -194,7 +194,7 @@
       // sub-page — nothing to view, so a plain (non-clickable) div instead of <a>.
       const rowCls = revealCls + (anyOn ? '' : ' avail-row--disabled');
       const row = anyOn
-        ? el('a', { class: rowCls, href: 'floor.html?floor=' + encodeURIComponent(a.id), 'data-d': String(i % 2) }, kids)
+        ? el('a', { class: rowCls, href: '/floor/' + a.id, 'data-d': String(i % 2) }, kids)
         : el('div', { class: rowCls, 'data-d': String(i % 2), 'aria-disabled': 'true' }, kids);
       wrap.appendChild(row);
     });

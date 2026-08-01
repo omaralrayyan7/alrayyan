@@ -7,20 +7,21 @@
   <meta name="theme-color" content="#0b0a08" />
   <title>Floor Detail — Alrayyan Tower</title>
   <meta name="description" content="Explore floors and units available for lease at Alrayyan Tower, Queen Alia Street, Amman." />
-  <link rel="icon" type="image/png" href="images/logo/favicon.png" />
-  <link rel="apple-touch-icon" href="images/logo/favicon.png" />
+  <link rel="canonical" id="canonicalLink" href="" />
+  <link rel="icon" type="image/png" href="/images/logo/favicon.png" />
+  <link rel="apple-touch-icon" href="/images/logo/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..500&family=Hanken+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Markazi+Text:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=19" />
-  <link rel="stylesheet" href="css/floor.css?v=5" />
+  <link rel="stylesheet" href="/css/style.css?v=19" />
+  <link rel="stylesheet" href="/css/floor.css?v=5" />
 </head>
 <body>
   <!-- ===================== NAV ===================== -->
   <header class="nav scrolled" id="nav">
     <div class="container nav__inner">
-      <a href="index.html#top" class="brand" aria-label="Alrayyan Group home">
-        <img src="images/logo/logo.png" alt="Alrayyan Group" />
+      <a href="/index.html#top" class="brand" aria-label="Alrayyan Group home">
+        <img src="/images/logo/logo.png" alt="Alrayyan Group" />
         <span>
           <span class="brand__name">Alrayyan</span>
           <span class="brand__sub">Group · Amman</span>
@@ -28,15 +29,15 @@
       </a>
 
       <nav class="nav__links" aria-label="Primary">
-        <a href="index.html#about" data-i18n="navAbout">About</a>
-        <a href="index.html#spaces" data-i18n="navSpaces">Spaces</a>
-        <a href="index.html#availability" data-i18n="navAvail">Availability</a>
-        <a href="index.html#ventures" data-i18n="navVentures">Our Businesses</a>
-        <a href="index.html#contact" data-i18n="navContact">Contact</a>
+        <a href="/index.html#about" data-i18n="navAbout">About</a>
+        <a href="/index.html#spaces" data-i18n="navSpaces">Spaces</a>
+        <a href="/index.html#availability" data-i18n="navAvail">Availability</a>
+        <a href="/index.html#ventures" data-i18n="navVentures">Our Businesses</a>
+        <a href="/index.html#contact" data-i18n="navContact">Contact</a>
       </nav>
 
       <div class="nav__actions">
-        <a href="index.html#availability" class="link-underline nav__back" data-i18n="backToFloors">← All Floors</a>
+        <a href="/index.html#availability" class="link-underline nav__back" data-i18n="backToFloors">← All Floors</a>
         <button class="theme-btn" id="themeBtn" aria-label="Toggle light / dark mode"><span class="moon">☾</span><span class="sun">☀</span></button>
         <div class="lang" role="group" aria-label="Language">
           <button data-lang="en" class="active">EN</button>
@@ -50,11 +51,11 @@
   </header>
 
   <nav class="nav__mobile" id="navMobile" aria-label="Mobile">
-    <a href="index.html#about" data-i18n="navAbout">About</a>
-    <a href="index.html#spaces" data-i18n="navSpaces">Spaces</a>
-    <a href="index.html#availability" data-i18n="navAvail">Availability</a>
-    <a href="index.html#ventures" data-i18n="navVentures">Our Businesses</a>
-    <a href="index.html#contact" data-i18n="navContact">Contact</a>
+    <a href="/index.html#about" data-i18n="navAbout">About</a>
+    <a href="/index.html#spaces" data-i18n="navSpaces">Spaces</a>
+    <a href="/index.html#availability" data-i18n="navAvail">Availability</a>
+    <a href="/index.html#ventures" data-i18n="navVentures">Our Businesses</a>
+    <a href="/index.html#contact" data-i18n="navContact">Contact</a>
   </nav>
 
   <!-- ===================== HERO ===================== -->
@@ -62,9 +63,9 @@
     <div class="fl-hero__bg"><img id="flHeroImg" src="" alt="" /></div>
     <div class="container">
       <nav class="fl-breadcrumb" aria-label="Breadcrumb">
-        <a href="index.html#top" data-i18n="bcHome">Home</a>
+        <a href="/index.html#top" data-i18n="bcHome">Home</a>
         <span class="sep">/</span>
-        <a href="index.html#availability" data-i18n="bcAvail">Available Floors</a>
+        <a href="/index.html#availability" data-i18n="bcAvail">Available Floors</a>
         <span class="sep">/</span>
         <span class="cur" id="bcName">Floor</span>
       </nav>
@@ -177,7 +178,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer__bottom" style="margin-top:0;border-top:0;padding-top:0">
-        <a href="index.html#top" class="brand"><img src="images/logo/logo.png" alt="" width="36" height="36" /><span class="brand__name">Alrayyan Group</span></a>
+        <a href="/index.html#top" class="brand"><img src="/images/logo/logo.png" alt="" width="36" height="36" /><span class="brand__name">Alrayyan Group</span></a>
         <p>© <span id="year"></span> Alrayyan Group · Queen Alia Street, Amman</p>
       </div>
     </div>
@@ -220,7 +221,7 @@
   <!-- Firebase (compat) — real booking submissions, read by the admin panel. -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="js/firebase-config.js"></script>
-  <script src="js/floor.js?v=14"></script>
+  <script src="/js/firebase-config.js"></script>
+  <script src="/js/floor.js?v=14"></script>
 </body>
 </html>

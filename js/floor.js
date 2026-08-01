@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var IMG = 'images/';
+  var IMG = '/images/';
 
   /* ---------- safe DOM helper -------------------------------------------- */
   function el(tag, props, kids) {
@@ -411,9 +411,12 @@
 
   /* ---------- Render floor ----------------------------------------------- */
   var params = new URLSearchParams(location.search);
-  var floorId = params.get('floor');
+  var pathMatch = location.pathname.match(/^\/floor\/([^\/]+)\/?$/);
+  var floorId = pathMatch ? decodeURIComponent(pathMatch[1]) : params.get('floor');
   if (!FLOORS[floorId]) floorId = 'b1';
   var fl = FLOORS[floorId];
+  var canonicalEl = document.getElementById('canonicalLink');
+  if (canonicalEl) canonicalEl.href = location.origin + '/floor/' + floorId;
   var lang = 'en';
   try { lang = localStorage.getItem('arg_lang') || 'en'; } catch (e) {}
 

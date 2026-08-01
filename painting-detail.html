@@ -31,35 +31,36 @@
     }
   </script>
   <title>Artwork Detail – Alrayyan Arts</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico"/>
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
-  <link rel="icon" href="images/logo/logo.png" type="image/png"/>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+  <link rel="icon" href="/images/logo/logo.png" type="image/png"/>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Organization","name":"Alrayyan Group","url":"https://alrayyanjo.com","logo":"https://alrayyanjo.com/images/logo/logo.png"}
   </script>
-  <link rel="preload" as="image" href="images/logo/logo.png"/>
+  <link rel="preload" as="image" href="/images/logo/logo.png"/>
   <meta name="description" content="Artwork detail — Alrayyan Arts by Alrayyan Group."/>
+  <link rel="canonical" id="canonicalLink" href=""/>
   <meta property="og:type" content="website"/>
   <meta property="og:site_name" content="Alrayyan Group"/>
-  <meta property="og:title" content="Artwork Detail – Alrayyan Arts"/>
+  <meta property="og:title" id="ogTitle" content="Artwork Detail – Alrayyan Arts"/>
   <meta property="og:description" content="Detailed view of an artwork by Alrayyan Arts."/>
-  <meta property="og:image" content="og-image.webp"/>
+  <meta property="og:image" content="/og-image.webp"/>
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
-  <meta property="og:url" content="https://alrayyanjo.com/painting-detail.html"/>
+  <meta property="og:url" id="ogUrl" content="https://alrayyanjo.com/painting-detail.html"/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:image" content="og-image.webp"/>
+  <meta name="twitter:image" content="/og-image.webp"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="css/painting-detail.css">
+  <link rel="stylesheet" href="/css/painting-detail.css">
 </head>
 <body>
 
 <nav>
-  <a href="arts.html"><div class="nav-brand">Alrayyan <em>Arts</em></div></a>
+  <a href="/arts"><div class="nav-brand">Alrayyan <em>Arts</em></div></a>
   <div class="nav-right">
     <div class="lang-sw" dir="ltr" style="direction:ltr;display:inline-flex;">
       <button class="lang-btn active" onclick="setLang('en')" style="min-width:36px;">EN</button>
@@ -69,15 +70,15 @@
       <span class="theme-icon-sun">☀</span>
       <span class="theme-icon-moon">☾</span>
     </button>
-    <a href="arts.html#shop" class="nav-back" id="nav-back-btn">← Back to Gallery</a>
+    <a href="/arts#shop" class="nav-back" id="nav-back-btn">← Back to Gallery</a>
   </div>
 </nav>
 <script>setTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');</script>
 
 <div class="breadcrumb">
-  <a href="index.html" data-i18n="bcHome">Home</a>
+  <a href="/index.html" data-i18n="bcHome">Home</a>
   <span class="sep">/</span>
-  <a href="arts.html" data-i18n="bcArts">Arts</a>
+  <a href="/arts" data-i18n="bcArts">Arts</a>
   <span class="sep">/</span>
   <span id="bc-name">Artwork</span>
 </div>
@@ -92,17 +93,17 @@
 <script>
 // Shared painting data — mirrors arts.html products.
 // Edit this array (or inject new items) to add new paintings. Cards in arts.html
-// already link here via ?id=<id>, so new entries automatically work end-to-end.
+// already link here via /arts/<slugified-name>, so new entries automatically work end-to-end.
 const PAINTINGS = [
-  {id:1,name:'Desert Horizons',      artist:'Layla Al-Rashidi',price:'380.00 JOD',category:'painting',   medium:'Oil on Canvas', size:'80cm × 120cm',       description:'Sweeping dunes captured in layered oil strokes — a meditation on the vastness and stillness of the Arabian desert at dawn.', hasCert:true,  img:'images/arts/product-01-desert-horizons.webp'},
-  {id:2,name:'Golden City',          artist:'Omar Nasser',     price:'520.00 JOD',category:'painting',   medium:'Acrylic',       size:'100cm × 100cm',      description:'A stylised aerial view of old Amman at golden hour, rendered in gold leaf and deep ochre acrylics.', hasCert:true,  img:'images/arts/product-02-golden-city.webp'},
-  {id:3,name:'Calligraphy in Motion',artist:'Hind Khalifa',    price:'290.00 JOD',category:'print',      medium:'Giclée Print',  size:'60cm × 80cm',        description:'A contemporary interpretation of classical Arabic calligraphy, printed in limited edition of 50.', hasCert:false, img:'images/arts/product-03-calligraphy-motion.webp'},
-  {id:4,name:'Layers of Time',       artist:'Rami Barakat',    price:'640.00 JOD',category:'painting',   medium:'Mixed Media',   size:'90cm × 130cm',       description:'Mixed-media on canvas exploring the strata of memory, identity, and place through textured geological forms.', hasCert:true,  img:'images/arts/product-04-layers-of-time.webp'},
-  {id:5,name:'Light & Shadow',       artist:'Nour Zaki',       price:'220.00 JOD',category:'photography',medium:'Fine Art Print',size:'50cm × 70cm',        description:'A black-and-white study of morning light cutting through an old Amman alleyway, printed on archival fibre paper.', hasCert:false, img:'images/arts/product-05-light-shadow.webp'},
-  {id:6,name:'Urban Fragments',      artist:'Tarek Mansour',   price:'480.00 JOD',category:'photography',medium:'C-Print',       size:'80cm × 100cm',       description:'Large-format colour photograph documenting abstract compositions found in the textures of modern city walls.', hasCert:true,  img:'images/arts/product-06-urban-fragments.webp'},
-  {id:7,name:'Form & Void',          artist:'Dina Al-Sayed',   price:'850.00 JOD',category:'sculpture',  medium:'Bronze',        size:'45cm × 30cm × 30cm', description:'A cast-bronze sculpture that plays with positive and negative space — a tactile meditation on presence and absence.', hasCert:true,  img:'images/arts/product-07-form-void.webp'},
-  {id:8,name:'Wadi Reflections',     artist:'Samir Haddad',    price:'310.00 JOD',category:'print',      medium:'Lithograph',    size:'60cm × 75cm',        description:'A hand-pulled lithograph of mirrored canyon waters in Wadi Rum, produced in a numbered edition of 30.', hasCert:false, img:'images/arts/product-08-wadi-reflections.webp'},
-  {id:9,name:'Colour Study No.7',    artist:'Lina Yousef',     price:'195.00 JOD',category:'painting',   medium:'Watercolour',   size:'40cm × 50cm',        description:'A small jewel of a watercolour — one of a series exploring the colour palettes of spring in the Jordan valley.', hasCert:true,  img:'images/arts/product-09-colour-study.webp'},
+  {id:1,name:'Desert Horizons',      artist:'Layla Al-Rashidi',price:'380.00 JOD',category:'painting',   medium:'Oil on Canvas', size:'80cm × 120cm',       description:'Sweeping dunes captured in layered oil strokes — a meditation on the vastness and stillness of the Arabian desert at dawn.', hasCert:true,  img:'/images/arts/product-01-desert-horizons.webp'},
+  {id:2,name:'Golden City',          artist:'Omar Nasser',     price:'520.00 JOD',category:'painting',   medium:'Acrylic',       size:'100cm × 100cm',      description:'A stylised aerial view of old Amman at golden hour, rendered in gold leaf and deep ochre acrylics.', hasCert:true,  img:'/images/arts/product-02-golden-city.webp'},
+  {id:3,name:'Calligraphy in Motion',artist:'Hind Khalifa',    price:'290.00 JOD',category:'print',      medium:'Giclée Print',  size:'60cm × 80cm',        description:'A contemporary interpretation of classical Arabic calligraphy, printed in limited edition of 50.', hasCert:false, img:'/images/arts/product-03-calligraphy-motion.webp'},
+  {id:4,name:'Layers of Time',       artist:'Rami Barakat',    price:'640.00 JOD',category:'painting',   medium:'Mixed Media',   size:'90cm × 130cm',       description:'Mixed-media on canvas exploring the strata of memory, identity, and place through textured geological forms.', hasCert:true,  img:'/images/arts/product-04-layers-of-time.webp'},
+  {id:5,name:'Light & Shadow',       artist:'Nour Zaki',       price:'220.00 JOD',category:'photography',medium:'Fine Art Print',size:'50cm × 70cm',        description:'A black-and-white study of morning light cutting through an old Amman alleyway, printed on archival fibre paper.', hasCert:false, img:'/images/arts/product-05-light-shadow.webp'},
+  {id:6,name:'Urban Fragments',      artist:'Tarek Mansour',   price:'480.00 JOD',category:'photography',medium:'C-Print',       size:'80cm × 100cm',       description:'Large-format colour photograph documenting abstract compositions found in the textures of modern city walls.', hasCert:true,  img:'/images/arts/product-06-urban-fragments.webp'},
+  {id:7,name:'Form & Void',          artist:'Dina Al-Sayed',   price:'850.00 JOD',category:'sculpture',  medium:'Bronze',        size:'45cm × 30cm × 30cm', description:'A cast-bronze sculpture that plays with positive and negative space — a tactile meditation on presence and absence.', hasCert:true,  img:'/images/arts/product-07-form-void.webp'},
+  {id:8,name:'Wadi Reflections',     artist:'Samir Haddad',    price:'310.00 JOD',category:'print',      medium:'Lithograph',    size:'60cm × 75cm',        description:'A hand-pulled lithograph of mirrored canyon waters in Wadi Rum, produced in a numbered edition of 30.', hasCert:false, img:'/images/arts/product-08-wadi-reflections.webp'},
+  {id:9,name:'Colour Study No.7',    artist:'Lina Yousef',     price:'195.00 JOD',category:'painting',   medium:'Watercolour',   size:'40cm × 50cm',        description:'A small jewel of a watercolour — one of a series exploring the colour palettes of spring in the Jordan valley.', hasCert:true,  img:'/images/arts/product-09-colour-study.webp'},
 ];
 
 const I18N = {
@@ -124,9 +125,21 @@ const I18N = {
   }
 };
 
+function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');}
 const params = new URLSearchParams(location.search);
+const pathMatch = location.pathname.match(/^\/arts\/([^\/]+)\/?$/);
+const pSlug = pathMatch ? decodeURIComponent(pathMatch[1]) : null;
 const id = parseInt(params.get('id')) || 0;
-const painting = PAINTINGS.find(p=>p.id===id);
+const painting = (pSlug && PAINTINGS.find(p=>slugify(p.name)===pSlug)) || PAINTINGS.find(p=>p.id===id);
+const canonicalEl = document.getElementById('canonicalLink');
+if (canonicalEl && painting) {
+  const canonicalUrl = window.location.origin + '/arts/' + slugify(painting.name);
+  canonicalEl.href = canonicalUrl;
+  const ogUrlEl = document.getElementById('ogUrl');
+  if (ogUrlEl) ogUrlEl.setAttribute('content', canonicalUrl);
+  const ogTitleEl = document.getElementById('ogTitle');
+  if (ogTitleEl) ogTitleEl.setAttribute('content', painting.name + ' – Alrayyan Arts');
+}
 
 function render(lang){
   const t = I18N[lang] || I18N.en;
@@ -136,7 +149,7 @@ function render(lang){
     root.innerHTML = `<div class="not-found">
       <h2>${t.notFoundH}</h2>
       <p>${t.notFoundP}</p>
-      <a href="arts.html" class="btn-ghost">${t.backBtn}</a>
+      <a href="/arts" class="btn-ghost">${t.backBtn}</a>
     </div>`;
     return;
   }
@@ -202,8 +215,8 @@ function setLang(lang){
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" defer></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js" defer></script>
-<script src="js/firebase-config.js" defer></script>
-<script src="js/ar-data.js" defer></script>
+<script src="/js/firebase-config.js" defer></script>
+<script src="/js/ar-data.js" defer></script>
 <script>document.addEventListener("DOMContentLoaded",function(){if(window.ArData)ArData.init();});</script>
 </body>
 </html>

@@ -12,7 +12,15 @@
       "seed.html"
     ],
     "cleanUrls": true,
+    "trailingSlash": false,
     "errorPage": "404.html",
+    "rewrites": [
+      { "source": "/space/**", "destination": "/space.html" },
+      { "source": "/floor/**", "destination": "/floor.html" },
+      { "source": "/land/*", "destination": "/land-detail.html" },
+      { "source": "/fashion/*", "destination": "/fashion-product.html" },
+      { "source": "/arts/*", "destination": "/painting-detail.html" }
+    ],
     "headers": [
       {
         "source": "**",

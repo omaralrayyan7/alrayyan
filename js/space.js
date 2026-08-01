@@ -6,8 +6,8 @@
 (function () {
   'use strict';
 
-  var IMG = 'images/main/';
-  var IMGF = 'images/floors/';
+  var IMG = '/images/main/';
+  var IMGF = '/images/floors/';
 
   // "A Glimpse Inside" mixes real photos from the floor(s) that carry each
   // office-solution type (max 6, no duplicates), captioned with the floor
@@ -260,9 +260,12 @@
 
   /* ---------- Render space ------------------------------------------------ */
   var params = new URLSearchParams(location.search);
-  var typeId = params.get('type');
+  var pathMatch = location.pathname.match(/^\/space\/([^\/]+)\/?$/);
+  var typeId = pathMatch ? decodeURIComponent(pathMatch[1]) : params.get('type');
   if (!SPACES[typeId]) typeId = 'full-floor';
   var sp = SPACES[typeId];
+  var canonicalEl = document.getElementById('canonicalLink');
+  if (canonicalEl) canonicalEl.href = location.origin + '/space/' + typeId;
   var lang = 'en';
   try { lang = localStorage.getItem('arg_lang') || 'en'; } catch (e) {}
 
@@ -339,7 +342,7 @@
       if (links.length) {
         linksWrap.appendChild(el('span', { class: 'fl-floor-links__label', text: (I18N[L] && I18N[L].availIn) || 'Available In' }));
         links.forEach(function (lk) {
-          linksWrap.appendChild(el('a', { class: 'fl-floor-pill', href: 'floor.html?floor=' + lk.id, text: lk.label[L] }));
+          linksWrap.appendChild(el('a', { class: 'fl-floor-pill', href: '/floor/' + lk.id, text: lk.label[L] }));
         });
       }
     }
