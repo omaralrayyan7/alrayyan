@@ -254,7 +254,16 @@ body::before {
 /* ---- About --------------------------------------------------------------- */
 .about__grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(36px, 6vw, 84px); align-items: center; }
 .about__media { position: relative; }
-.about__media img { width: 100%; height: 100%; min-height: 420px; object-fit: cover; border-radius: var(--radius-lg); }
+.about__media-swap { position: relative; display: block; }
+/* The day photo stays a normal in-flow image — sized exactly like the old
+   single <img> (width 100%, height auto via intrinsic ratio, 420px floor)
+   — so it sets the box height. The night photo is absolutely positioned
+   over it at that same size. Both stay loaded and stacked so toggling
+   data-theme swaps them instantly, with no network delay or resize. */
+.about__media-day { display: block; width: 100%; height: 100%; min-height: 420px; object-fit: cover; border-radius: var(--radius-lg); }
+.about__media-night { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg); opacity: 0; }
+:root[data-theme="dark"] .about__media-day { opacity: 0; }
+:root[data-theme="dark"] .about__media-night { opacity: 1; }
 .about__frame { position: absolute; inset: -14px; border: 1px solid var(--line); border-radius: var(--radius-lg); z-index: -1; }
 .about__badge {
   position: absolute; right: -18px; bottom: -18px; width: 148px; height: 148px; border-radius: 50%;
@@ -398,7 +407,8 @@ body::before {
 .find-map > * { position: relative; z-index: 1; }
 .find-map__pin { font-size: 2.6rem; filter: drop-shadow(0 8px 14px rgba(0,0,0,.5)); animation: pinFloat 2.6s var(--ease) infinite; }
 @keyframes pinFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-.find-map__addr { font-family: var(--serif); font-size: clamp(1.2rem, 2.4vw, 1.7rem); color: var(--white); font-weight: 500; max-width: 22ch; }
+.find-map__addr { font-family: var(--serif); font-size: clamp(1.1rem, 2.2vw, 1.5rem); color: var(--white); font-weight: 500; max-width: 34ch; text-align: center; }
+.find-map__building { font-size: .82rem; color: var(--white); opacity: .75; margin-top: -8px; }
 .find-map__rule { width: 90px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
 .find-map__go { font-size: .74rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-soft); }
 .find-map:hover .find-map__go { color: var(--gold); }
@@ -721,7 +731,7 @@ body::before {
      treatment below that turns each into a short card, like the solutions
      cards, so the section doesn't dominate the mobile scroll. */
   .avail__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .about__media img { min-height: 340px; }
+  .about__media-day { min-height: 340px; }
   /* Contact info as compact boxes (2-up) instead of a long bordered list —
      cuts the section's height considerably to shorten the page scroll. */
   .contact__list { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 24px; }

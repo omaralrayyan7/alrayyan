@@ -137,7 +137,7 @@
   function buildWhatsAppLink(booking){
     const num = (window.ADMIN_WHATSAPP || '').replace(/[^0-9]/g,'');
     const lines = [
-      '*New Visit Booking — Alrayyan Group*',
+      '*New Visit Booking — Al-Rayyan Group*',
       `Name: ${booking.visitor_name || ''}`,
       `Phone: ${booking.phone || ''}`,
       booking.email ? `Email: ${booking.email}` : null,

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="color-scheme" content="dark" />
-  <meta name="theme-color" content="#0b0a08" />
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#f4efe6" />
   <title>Space Detail — Alrayyan Tower</title>
   <meta name="description" content="Explore office rental solutions available for lease at Alrayyan Tower, Queen Alia Street, Amman." />
   <link rel="canonical" id="canonicalLink" href="" />
@@ -13,17 +13,46 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..500&family=Hanken+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Markazi+Text:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/style.css?v=19" />
-  <link rel="stylesheet" href="/css/floor.css?v=5" />
+  <link rel="stylesheet" href="/css/style.css?v=23" />
+  <link rel="stylesheet" href="/css/floor.css?v=7" />
+  <!-- Inlined so the loading screen paints even if css/style.css or fonts
+       are still in flight on a slow connection. -->
+  <style>
+    #siteLoader { position: fixed; inset: 0; z-index: 9999; background: #0b0a08; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; transition: opacity .5s ease, visibility .5s ease; }
+    #siteLoader img { width: 76px; height: 76px; animation: siteLoaderPulse 1.6s ease-in-out infinite; }
+    #siteLoader .loadbar { width: 180px; height: 3px; border-radius: 100px; background: rgba(255,255,255,.12); overflow: hidden; }
+    #siteLoader .loadbar span { display: block; height: 100%; width: 40%; border-radius: 100px; background: linear-gradient(90deg, #a5801f, #e8c874, #a5801f); animation: siteLoaderBar 1.3s ease-in-out infinite; }
+    #siteLoader.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    body.is-loading { overflow: hidden; }
+    @keyframes siteLoaderPulse { 0%, 100% { opacity: .85; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+    @keyframes siteLoaderBar { 0% { transform: translateX(-100%); } 50% { transform: translateX(60%); } 100% { transform: translateX(220%); } }
+  </style>
 </head>
-<body>
+<body class="is-loading">
+  <div id="siteLoader" role="status" aria-live="polite" aria-label="Loading">
+    <img src="/images/logo/logo.png" alt="" />
+    <div class="loadbar"><span></span></div>
+  </div>
+  <script>
+    (function () {
+      function hideLoader() {
+        var el = document.getElementById('siteLoader');
+        if (!el) return;
+        el.classList.add('is-hidden');
+        document.body.classList.remove('is-loading');
+        setTimeout(function () { el.remove(); }, 600);
+      }
+      if (document.readyState === 'complete') hideLoader();
+      else window.addEventListener('load', hideLoader);
+    })();
+  </script>
   <!-- ===================== NAV ===================== -->
   <header class="nav scrolled" id="nav">
     <div class="container nav__inner">
-      <a href="/#top" class="brand" aria-label="Alrayyan Group home">
-        <img src="/images/logo/logo.png" alt="Alrayyan Group" />
+      <a href="/#top" class="brand" aria-label="Al-Rayyan Group home">
+        <img src="/images/logo/logo.png" alt="Al-Rayyan Group" />
         <span>
-          <span class="brand__name">Alrayyan</span>
+          <span class="brand__name">Al-Rayyan</span>
           <span class="brand__sub">Group · Amman</span>
         </span>
       </a>
@@ -117,7 +146,8 @@
           <div class="gold-line"></div>
           <a class="find-map" href="https://www.google.com/maps/search/Alrayyan+Tower+Queen+Alia+Street+Amman" target="_blank" rel="noopener" aria-label="Open in Google Maps">
             <span class="find-map__pin">📍</span>
-            <span class="find-map__addr" data-i18n="locAddr">Alrayyan Tower, Queen Alia Street, Amman</span>
+            <span class="find-map__addr" data-i18n="locAddr">Al-Rayyan Tower - Queen Alia Street - Shmeisani - Amman</span>
+            <span class="find-map__building" data-i18n="locBuilding">Building No.31</span>
             <span class="find-map__rule"></span>
             <span class="find-map__go" data-i18n="locGo">Click to open in Google Maps →</span>
           </a>
@@ -153,9 +183,9 @@
             <span class="ref" id="visitRef">—</span>
           </div>
           <div class="quick-contact">
-            <a class="q-chip" href="tel:+962796806100"><span class="ico">📞</span><span class="l" data-i18n="qcCall">Call</span></a>
+            <a class="q-chip" href="tel:+962797070970"><span class="ico">📞</span><span class="l" data-i18n="qcCall">Call</span></a>
             <a class="q-chip" href="tel:+962779880066"><span class="ico">📞</span><span class="l">Call (2nd line)</span></a>
-            <a class="q-chip" href="https://wa.me/962796806100" target="_blank" rel="noopener"><span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="#25d366" aria-hidden="true"><path d="M20.52 3.48A11.86 11.86 0 0012.04 0C5.47 0 .12 5.35.12 11.93c0 2.1.55 4.16 1.6 5.97L0 24l6.27-1.64a11.93 11.93 0 005.77 1.47h.01c6.57 0 11.92-5.35 11.92-11.93 0-3.19-1.24-6.19-3.45-8.42zm-8.48 18.36h-.01a9.9 9.9 0 01-5.04-1.38l-.36-.21-3.72.98.99-3.63-.24-.37a9.9 9.9 0 01-1.52-5.3c0-5.47 4.45-9.92 9.92-9.92 2.65 0 5.14 1.03 7.01 2.91a9.86 9.86 0 012.9 7.02c0 5.47-4.45 9.9-9.93 9.9zm5.43-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.67-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.49 1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.35.19 1.86.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg></span><span class="l" data-i18n="qcWA">WhatsApp</span></a>
+            <a class="q-chip" href="https://wa.me/962797070970" target="_blank" rel="noopener"><span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="#25d366" aria-hidden="true"><path d="M20.52 3.48A11.86 11.86 0 0012.04 0C5.47 0 .12 5.35.12 11.93c0 2.1.55 4.16 1.6 5.97L0 24l6.27-1.64a11.93 11.93 0 005.77 1.47h.01c6.57 0 11.92-5.35 11.92-11.93 0-3.19-1.24-6.19-3.45-8.42zm-8.48 18.36h-.01a9.9 9.9 0 01-5.04-1.38l-.36-.21-3.72.98.99-3.63-.24-.37a9.9 9.9 0 01-1.52-5.3c0-5.47 4.45-9.92 9.92-9.92 2.65 0 5.14 1.03 7.01 2.91a9.86 9.86 0 012.9 7.02c0 5.47-4.45 9.9-9.93 9.9zm5.43-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.67-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.49 1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.35.19 1.86.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg></span><span class="l" data-i18n="qcWA">WhatsApp</span></a>
             <a class="q-chip" href="https://www.instagram.com/alrayyan.tower/" target="_blank" rel="noopener"><span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="url(#igGradSpace)" aria-hidden="true"><defs><linearGradient id="igGradSpace" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f09433"/><stop offset="50%" stop-color="#dc2743"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs><path d="M12 2.2c3.2 0 3.584.012 4.85.07 1.17.054 1.805.248 2.227.413.56.217.96.477 1.38.896.42.42.68.82.896 1.38.165.422.36 1.057.413 2.227.058 1.266.07 1.65.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.248 1.805-.413 2.227a3.71 3.71 0 01-.896 1.38 3.71 3.71 0 01-1.38.896c-.422.165-1.057.36-2.227.413-1.266.058-1.65.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.248-2.227-.413a3.71 3.71 0 01-1.38-.896 3.71 3.71 0 01-.896-1.38c-.165-.422-.36-1.057-.413-2.227C2.212 15.584 2.2 15.2 2.2 12s.012-3.584.07-4.85c.054-1.17.248-1.805.413-2.227.217-.56.477-.96.896-1.38.42-.42.82-.68 1.38-.896.422-.165 1.057-.36 2.227-.413C8.416 2.212 8.8 2.2 12 2.2zm0-2.2C8.736 0 8.332.014 7.053.072 5.775.13 4.902.333 4.14.63a5.92 5.92 0 00-2.14 1.393A5.92 5.92 0 00.63 4.14c-.297.763-.5 1.635-.558 2.913C.014 8.332 0 8.736 0 12s.014 3.668.072 4.947c.058 1.278.261 2.15.558 2.913a5.92 5.92 0 001.393 2.14 5.92 5.92 0 002.14 1.393c.763.297 1.635.5 2.913.558C8.332 23.986 8.736 24 12 24s3.668-.014 4.947-.072c1.278-.058 2.15-.261 2.913-.558a5.92 5.92 0 002.14-1.393 5.92 5.92 0 001.393-2.14c.297-.763.5-1.635.558-2.913C23.986 15.668 24 15.264 24 12s-.014-3.668-.072-4.947c-.058-1.278-.261-2.15-.558-2.913a5.92 5.92 0 00-1.393-2.14A5.92 5.92 0 0019.86.63c-.763-.297-1.635-.5-2.913-.558C15.668.014 15.264 0 12 0zm0 5.838A6.162 6.162 0 105.838 12 6.162 6.162 0 0012 5.838zM12 16a4 4 0 114-4 4 4 0 01-4 4zm6.406-11.845a1.44 1.44 0 101.44 1.44 1.44 1.44 0 00-1.44-1.44z"/></svg></span><span class="l" data-i18n="qcIG">Instagram</span></a>
           </div>
         </div>
@@ -167,17 +197,17 @@
   <footer class="footer">
     <div class="container">
       <div class="footer__bottom" style="margin-top:0;border-top:0;padding-top:0">
-        <a href="/#top" class="brand"><img src="/images/logo/logo.png" alt="" width="36" height="36" /><span class="brand__name">Alrayyan Group</span></a>
-        <p>© <span id="year"></span> Alrayyan Group · Queen Alia Street, Amman</p>
+        <a href="/#top" class="brand"><img src="/images/logo/logo.png" alt="" width="36" height="36" /><span class="brand__name">Al-Rayyan Group</span></a>
+        <p>© <span id="year"></span> Al-Rayyan Group · Queen Alia Street, Amman</p>
       </div>
     </div>
   </footer>
 
   <div class="wa-pill-wrap">
     <div class="wa-pill-menu" id="waMenu" hidden>
-      <a href="https://wa.me/962796806100" target="_blank" rel="noopener">
+      <a href="https://wa.me/962797070970" target="_blank" rel="noopener">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.86 11.86 0 0012.04 0C5.47 0 .12 5.35.12 11.93c0 2.1.55 4.16 1.6 5.97L0 24l6.27-1.64a11.93 11.93 0 005.77 1.47h.01c6.57 0 11.92-5.35 11.92-11.93 0-3.19-1.24-6.19-3.45-8.42zm-8.48 18.36a9.9 9.9 0 01-5.04-1.38l-.36-.21-3.72.98.99-3.63-.24-.37a9.9 9.9 0 01-1.52-5.3c0-5.47 4.45-9.92 9.92-9.92 2.65 0 5.14 1.03 7.01 2.91a9.86 9.86 0 012.9 7.02c0 5.47-4.45 9.9-9.93 9.9zm5.43-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.67-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.49 1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.35.19 1.86.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg>
-        <span dir="ltr">+962 79 680 6100</span>
+        <span dir="ltr">+962 79 707 0970</span>
       </a>
       <a href="https://wa.me/962779880066" target="_blank" rel="noopener">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.86 11.86 0 0012.04 0C5.47 0 .12 5.35.12 11.93c0 2.1.55 4.16 1.6 5.97L0 24l6.27-1.64a11.93 11.93 0 005.77 1.47h.01c6.57 0 11.92-5.35 11.92-11.93 0-3.19-1.24-6.19-3.45-8.42zm-8.48 18.36a9.9 9.9 0 01-5.04-1.38l-.36-.21-3.72.98.99-3.63-.24-.37a9.9 9.9 0 01-1.52-5.3c0-5.47 4.45-9.92 9.92-9.92 2.65 0 5.14 1.03 7.01 2.91a9.86 9.86 0 012.9 7.02c0 5.47-4.45 9.9-9.93 9.9zm5.43-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.67-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.49 1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.35.19 1.86.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg>
@@ -211,6 +241,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="/js/firebase-config.js"></script>
-  <script src="/js/space.js?v=12"></script>
+  <script src="/js/space.js?v=13"></script>
 </body>
 </html>

@@ -84,7 +84,7 @@ function fmtField(label, value) {
 
 function emailHeader(subtitle) {
   return `<div style="background:#0a0a0a;padding:20px 24px;border-radius:8px 8px 0 0;text-align:center">
-    <img src="https://alrayyanjo.com/images/logo/logo.png" alt="Alrayyan Group" width="64" height="64" style="display:block;margin:0 auto 12px;border-radius:4px" />
+    <img src="https://alrayyanjo.com/images/logo/logo.png" alt="Al-Rayyan Group" width="64" height="64" style="display:block;margin:0 auto 12px;border-radius:4px" />
     <h2 style="margin:0;font-size:20px;letter-spacing:1px;color:#d4af37">ALRAYYAN GROUP</h2>
     <p style="margin:4px 0 0;color:#bbb;font-size:13px">${subtitle}</p>
   </div>`;
@@ -156,7 +156,7 @@ function customerApprovedHtml(b) {
         </a>
       </div>
       <p style="color:#999;font-size:12px;text-align:center;margin-top:14px">
-        Warm regards,<br/>The Alrayyan Group Team
+        Warm regards,<br/>The Al-Rayyan Group Team
       </p>
     </div>
   </div>`;
@@ -189,7 +189,7 @@ function customerRescheduledHtml(b) {
         time that works for you. You may also call us directly.
       </p>
       <p style="color:#999;font-size:12px;text-align:center;margin-top:24px">
-        Warm regards,<br/>The Alrayyan Group Team
+        Warm regards,<br/>The Al-Rayyan Group Team
       </p>
     </div>
   </div>`;
@@ -216,7 +216,7 @@ function customerRejectedHtml(b) {
         Reference: <strong>${esc(b.ref || '—')}</strong>
       </p>
       <p style="color:#999;font-size:12px;text-align:center;margin-top:24px">
-        Warm regards,<br/>The Alrayyan Group Team
+        Warm regards,<br/>The Al-Rayyan Group Team
       </p>
     </div>
   </div>`;
@@ -276,7 +276,7 @@ exports.onBookingCreated = onDocumentCreated(
     try {
       const transporter = buildTransporter();
       await transporter.sendMail({
-        from: `"Alrayyan Group Bookings" <${FROM_EMAIL}>`,
+        from: `"Al-Rayyan Group Bookings" <${FROM_EMAIL}>`,
         to: ADMIN_EMAIL.value(),
         subject: `🔔 New Visit Booking — ${booking.visitor_name || 'Unknown'} (${booking.ref || id})`,
         html: adminEmailHtml(booking),
@@ -337,7 +337,7 @@ exports.onBookingStatusChanged = onDocumentUpdated(
         html = customerRejectedHtml(after);
       }
       await transporter.sendMail({
-        from: `"Alrayyan Group" <${FROM_EMAIL}>`,
+        from: `"Al-Rayyan Group" <${FROM_EMAIL}>`,
         to: after.email,
         replyTo: FROM_EMAIL,
         subject,
