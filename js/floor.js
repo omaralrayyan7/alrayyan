@@ -260,7 +260,7 @@
       rnEye: 'تصوّر', rnTitleA: 'صور', rnTitleB: 'تخيلية للطابق',
       amEye: 'ما هو مشمول', amTitleA: 'المرافق', amTitleB: 'والميزات',
       fuEye: 'الموقع', fuTitleA: 'ابحث', fuTitleB: 'عنا',
-      locAddr: 'برج الريان، شارع الملكة علياء، عمّان', locGo: 'انقر للفتح في خرائط جوجل →',
+      locAddr: 'برج الريان - شارع الملكة علياء - الشميساني - عمّان', locBuilding: 'مبنى رقم 31', locGo: 'انقر للفتح في خرائط جوجل →',
       bkHead: 'اطلب زيارة', bkSub: 'يؤكّد فريقنا خلال 24 ساعة',
       lblFirst: 'الاسم الأول *', lblLast: 'اسم العائلة', lblPhone: 'الهاتف / واتساب *', lblEmail: 'البريد *',
       lblDate: 'التاريخ المفضّل', lblTime: 'الوقت المفضّل', lblNotes: 'ملاحظات', phNotes: 'أي أسئلة أو متطلبات…',
@@ -465,9 +465,10 @@
     fl.specs.forEach(function (s) {
       var v = typeof s.v === 'object' ? s.v[L] : s.v;
       var k = typeof s.k === 'object' ? s.k[L] : s.k;
+      var isAvailable = v === 'Available' || v === 'متاح';
       specs.appendChild(el('div', { class: 'spec' }, [
         el('div', { class: 'spec__k', text: k }),
-        el('div', { class: 'spec__v sm', text: v })
+        el('div', { class: 'spec__v sm' + (isAvailable ? ' spec__v--available' : ''), text: v })
       ]));
     });
 
@@ -523,8 +524,8 @@
     try { localStorage.setItem('arg_theme', next); } catch (e) {}
   }
   function initTheme() {
-    var t = 'dark';
-    try { t = localStorage.getItem('arg_theme') || 'dark'; } catch (e) {}
+    var t = 'light';
+    try { t = localStorage.getItem('arg_theme') || 'light'; } catch (e) {}
     document.documentElement.setAttribute('data-theme', t);
   }
 

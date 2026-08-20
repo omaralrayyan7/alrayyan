@@ -4,13 +4,13 @@
   <meta charset="UTF-8"/>
   <meta name="darkreader-lock">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <meta name="color-scheme" content="dark"/>
-  <meta name="theme-color" content="#080a06"/>
+  <meta name="color-scheme" content="light"/>
+  <meta name="theme-color" content="#fdfbf3"/>
   <script>
     (function(){
       try {
         var t = localStorage.getItem('al_theme');
-        if (t !== 'light' && t !== 'dark') t = 'dark';
+        if (t !== 'light' && t !== 'dark') t = 'light';
         document.documentElement.setAttribute('data-theme', t);
       } catch(e){}
     })();
@@ -19,14 +19,14 @@
       if (meta) meta.setAttribute('content', theme === 'light' ? '#fdfbf3' : '#080a06');
     }
     function setTheme(theme) {
-      theme = theme === 'light' ? 'light' : 'dark';
+      theme = theme === 'dark' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', theme);
       try { localStorage.setItem('al_theme', theme); } catch(e){}
       applyThemeMeta(theme);
       document.querySelectorAll('.theme-toggle-btn').forEach(function(btn){ btn.classList.toggle('is-light', theme === 'light'); });
     }
     function toggleTheme() {
-      var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      var current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
       setTheme(current === 'light' ? 'dark' : 'light');
     }
   </script>
@@ -36,12 +36,12 @@
   <link rel="shortcut icon" href="images/logo/favicon.png"/>
   <link rel="apple-touch-icon" href="images/logo/favicon.png"/>
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Organization","name":"Alrayyan Group","url":"https://alrayyanjo.com","logo":"https://alrayyanjo.com/images/logo/logo.png"}
+  {"@context":"https://schema.org","@type":"Organization","name":"Al-Rayyan Group","url":"https://alrayyanjo.com","logo":"https://alrayyanjo.com/images/logo/logo.png"}
   </script>
   <link rel="preload" as="image" href="images/land/hero-bg.webp"/>
   <meta name="description" content="Alrayyan Lands — premium land plots across Amman's most sought-after districts."/>
   <meta property="og:type" content="website"/>
-  <meta property="og:site_name" content="Alrayyan Group"/>
+  <meta property="og:site_name" content="Al-Rayyan Group"/>
   <meta property="og:title" content="Alrayyan Lands – Prime Land in Amman, Jordan"/>
   <meta property="og:description" content="Prime land plots in Abdoun, Dabouq, Khalda and more — Alrayyan Lands."/>
   <meta property="og:image" content="og-image.webp"/>
@@ -54,13 +54,42 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/land.css">
+  <!-- Inlined so the loading screen paints even if css or fonts are still
+       in flight on a slow connection. -->
+  <style>
+    #siteLoader { position: fixed; inset: 0; z-index: 9999; background: #0b0a08; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; transition: opacity .5s ease, visibility .5s ease; }
+    #siteLoader img { width: 76px; height: 76px; animation: siteLoaderPulse 1.6s ease-in-out infinite; }
+    #siteLoader .loadbar { width: 180px; height: 3px; border-radius: 100px; background: rgba(255,255,255,.12); overflow: hidden; }
+    #siteLoader .loadbar span { display: block; height: 100%; width: 40%; border-radius: 100px; background: linear-gradient(90deg, #a5801f, #e8c874, #a5801f); animation: siteLoaderBar 1.3s ease-in-out infinite; }
+    #siteLoader.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    body.is-loading { overflow: hidden; }
+    @keyframes siteLoaderPulse { 0%, 100% { opacity: .85; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+    @keyframes siteLoaderBar { 0% { transform: translateX(-100%); } 50% { transform: translateX(60%); } 100% { transform: translateX(220%); } }
+  </style>
 </head>
-<body>
+<body class="is-loading">
+  <div id="siteLoader" role="status" aria-live="polite" aria-label="Loading">
+    <img src="/images/logo/logo.png" alt="" />
+    <div class="loadbar"><span></span></div>
+  </div>
+  <script>
+    (function () {
+      function hideLoader() {
+        var el = document.getElementById('siteLoader');
+        if (!el) return;
+        el.classList.add('is-hidden');
+        document.body.classList.remove('is-loading');
+        setTimeout(function () { el.remove(); }, 600);
+      }
+      if (document.readyState === 'complete') hideLoader();
+      else window.addEventListener('load', hideLoader);
+    })();
+  </script>
 
   <nav id="navbar">
     <div>
       <div class="nav-brand">ALRAYYAN <span>LANDS</span></div>
-      <div class="nav-sub">by Alrayyan Group</div>
+      <div class="nav-sub">by Al-Rayyan Group</div>
     </div>
     <ul class="nav-links">
       <li><a href="#listings">Listings</a></li>
@@ -355,7 +384,7 @@
       </p>
       <div class="c-cards-l">
         <div class="c-chip-l"><div class="ico">📍</div><h5>Location</h5><p>Amman, Jordan</p></div>
-        <div class="c-chip-l"><div class="ico">📞</div><h5>Phone</h5><p>+962 79 680 6100</p></div>
+        <div class="c-chip-l"><div class="ico">📞</div><h5>Phone</h5><p>+962 79 707 0970</p></div>
         <div class="c-chip-l"><div class="ico">✉️</div><h5>Email</h5><p><a href="mailto:info@alrayyanjo.com">info@alrayyanjo.com</a></p></div>
         <div class="c-chip-l"><div class="ico">🕐</div><h5>Hours</h5><p>Sat–Thu: 9am–6pm</p></div>
       </div>
@@ -364,7 +393,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.584.012 4.85.07 1.17.054 1.805.248 2.227.413.56.217.96.477 1.38.896.42.42.68.82.896 1.38.165.422.36 1.057.413 2.227.058 1.266.07 1.65.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.248 1.805-.413 2.227a3.71 3.71 0 01-.896 1.38 3.71 3.71 0 01-1.38.896c-.422.165-1.057.36-2.227.413-1.266.058-1.65.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.248-2.227-.413a3.71 3.71 0 01-1.38-.896 3.71 3.71 0 01-.896-1.38c-.165-.422-.36-1.057-.413-2.227C2.212 15.584 2.2 15.2 2.2 12s.012-3.584.07-4.85c.054-1.17.248-1.805.413-2.227.217-.56.477-.96.896-1.38.42-.42.82-.68 1.38-.896.422-.165 1.057-.36 2.227-.413C8.416 2.212 8.8 2.2 12 2.2zm0-2.2C8.736 0 8.332.014 7.053.072 5.775.13 4.902.333 4.14.63a5.92 5.92 0 00-2.14 1.393A5.92 5.92 0 00.63 4.14c-.297.763-.5 1.635-.558 2.913C.014 8.332 0 8.736 0 12s.014 3.668.072 4.947c.058 1.278.261 2.15.558 2.913a5.92 5.92 0 001.393 2.14 5.92 5.92 0 002.14 1.393c.763.297 1.635.5 2.913.558C8.332 23.986 8.736 24 12 24s3.668-.014 4.947-.072c1.278-.058 2.15-.261 2.913-.558a5.92 5.92 0 002.14-1.393 5.92 5.92 0 001.393-2.14c.297-.763.5-1.635.558-2.913C23.986 15.668 24 15.264 24 12s-.014-3.668-.072-4.947c-.058-1.278-.261-2.15-.558-2.913a5.92 5.92 0 00-1.393-2.14A5.92 5.92 0 0019.86.63c-.763-.297-1.635-.5-2.913-.558C15.668.014 15.264 0 12 0zm0 5.838A6.162 6.162 0 105.838 12 6.162 6.162 0 0012 5.838zM12 16a4 4 0 114-4 4 4 0 01-4 4zm6.406-11.845a1.44 1.44 0 101.44 1.44 1.44 1.44 0 00-1.44-1.44z"/></svg>
           Instagram
         </a>
-        <a href="https://wa.me/962796806100" class="btn-olive" target="_blank">WhatsApp Us</a>
+        <a href="https://wa.me/962797070970" class="btn-olive" target="_blank">WhatsApp Us</a>
         <a href="https://wa.me/962779880066" class="btn-olive" target="_blank">WhatsApp (2nd line)</a>
         <a href="mailto:info@alrayyanjo.com" class="btn-outline-o">Send Email</a>
       </div>
@@ -374,7 +403,7 @@
   <footer>
     <div>
       <div class="f-brand-l">ALRAYYAN <em>LANDS</em></div>
-      <div class="f-parent-l">Part of <a href="/">Alrayyan Group</a></div>
+      <div class="f-parent-l">Part of <a href="/">Al-Rayyan Group</a></div>
     </div>
     <div class="f-copy-l">© 2026 Alrayyan Lands. All rights reserved.</div>
   </footer>
@@ -420,7 +449,7 @@
 
 const li18n = {
   en: {
-    navSub:'by Alrayyan Group', navBack:'← Back to Group',
+    navSub:'by Al-Rayyan Group', navBack:'← Back to Group',
     heroEye:'Prime Land · Amman, Jordan',
     heroTitle:'Own a Piece of<br/><em>Amman.</em>',
     heroDesc:'Exclusive land plots across Amman\'s most coveted districts — Abdoun, Dabouq, Khalda, Sweifieh and beyond. Build your vision on Jordan\'s most valuable real estate.',

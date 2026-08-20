@@ -182,8 +182,9 @@
         const on = !!availability[sz.key];
         return el('span', { class: 'size-tag ' + (on ? 'size-tag--on' : 'size-tag--off'), text: sz.label[L] });
       });
+      const floorLbl = /^\d+$/.test(a.floor) ? (L === 'ar' ? 'الطابق ' + a.floor : 'Floor ' + a.floor) : a.floor;
       const kids = [
-        el('div', { class: 'avail-row__floor', text: a.floor }),
+        el('div', { class: 'avail-row__floor', text: floorLbl }),
         el('div', { class: 'avail-row__meta' }, [
           el('div', { class: 't', text: a.title[L] }),
           el('div', { class: 'avail-row__sizes' }, sizeEls)
@@ -458,8 +459,8 @@
     try { localStorage.setItem('arg_theme', next); } catch (e) {}
   };
   function initTheme() {
-    let t = 'dark';
-    try { t = localStorage.getItem('arg_theme') || 'dark'; } catch (e) {}
+    let t = 'light';
+    try { t = localStorage.getItem('arg_theme') || 'light'; } catch (e) {}
     document.documentElement.setAttribute('data-theme', t);
   }
 
@@ -467,7 +468,7 @@
   const I18N = {
     ar: {
       navAbout: 'من نحن', navSpaces: 'المساحات', navAvail: 'المتاح', navVentures: 'أعمالنا', navGallery: 'المعرض', navContact: 'اتصل بنا', navBook: 'احجز زيارة',
-      heroEye: 'برج الريان، شارع الملكة علياء، عمّان، الأردن',
+      heroEye: 'برج الريان، الشميساني، عمّان، الأردن',
       heroTagline: 'حيث تلتقي المكانة بالإنتاجية',
       heroCta1: 'استكشف المساحات', heroCta2: 'احجز زيارة خاصة', scroll: 'مرّر',
       stat1: 'طوابق للإيجار', stat2: 'عاماً من الثقة', stat3: 'مساحات متاحة', stat4: 'شامل الخدمات',
@@ -480,7 +481,7 @@
       whyEye: 'لماذا نحن', whyTitle: 'مستوى يتفوّق <br/>على البقية',
       ventEye: 'عالم الريان', ventTitle: 'أعمالنا', ventSub: 'أبعد من العقارات — ثلاث علامات تحت اسم واحد.',
       galEye: 'داخل البرج', galTitle: 'لمحة من الداخل', cardDetails: 'عرض التفاصيل →',
-      mapAddr: 'برج الريان، شارع الملكة علياء، عمّان', mapGo: 'انقر للفتح في خرائط جوجل →',
+      mapAddr: 'برج الريان - شارع الملكة علياء - الشميساني - عمّان', mapBuilding: 'مبنى رقم 31', mapGo: 'انقر للفتح في خرائط جوجل →',
       ctaEye: 'نحن جاهزون', ctaTitle: 'اعثر على عنوانك في برج الريان', ctaBtn: 'احجز زيارة',
       conEye: 'تواصل معنا', conTitle: 'لنتحدّث عن مساحتك', conSub: 'زُرنا، اتصل، أو أرسل رسالة — يردّ فريقنا خلال يوم عمل واحد.',
       conAddrK: 'العنوان', conAddrV: 'برج الريان، شارع الملكة علياء، عمّان، الأردن',
