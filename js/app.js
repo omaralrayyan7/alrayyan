@@ -435,15 +435,32 @@
         source: 'redesign_index',
         status: 'pending'
       };
-      if (window.db) {
-        booking.created_at = firebase.firestore.FieldValue.serverTimestamp();
-        window.db.collection('bookings').add(booking).catch(function (e) { console.warn('[booking] write failed', e && e.code); });
-      }
-
-      $('#bkRef').textContent = ref;              // safe: textContent
-      $('#bkFormWrap').style.display = 'none';
-      $('#bkSuccess').style.display = 'block';
+      // Only show the confirmation once the booking is actually saved —
+      // otherwise a failed write looks like a successful request.
+      const btn = form.querySelector('[type="submit"]');
+      if (btn) btn.disabled = true;
+      saveBooking(booking).then(function () {
+        $('#bkRef').textContent = ref;              // safe: textContent
+        $('#bkFormWrap').style.display = 'none';
+        $('#bkSuccess').style.display = 'block';
+      }, function (e) {
+        console.warn('[booking] write failed', e && e.code);
+        if (btn) btn.disabled = false;
+        alert(bookingFailedMsg());
+      });
     });
+  }
+
+  function saveBooking(booking) {
+    if (!window.db) return Promise.reject(new Error('Firestore not initialised'));
+    booking.created_at = firebase.firestore.FieldValue.serverTimestamp();
+    return window.db.collection('bookings').add(booking);
+  }
+
+  function bookingFailedMsg() {
+    return document.documentElement.dir === 'rtl'
+      ? 'تعذّر إرسال طلب الزيارة. يرجى المحاولة مرة أخرى أو التواصل معنا عبر الهاتف أو واتساب.'
+      : 'Your visit request could not be sent. Please try again, or contact us by phone or WhatsApp.';
   }
 
   /* ---------- Cookie bar --------------------------------------------------

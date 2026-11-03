@@ -540,7 +540,10 @@
       if (!bfEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bfEmail)) { $('#bf-email').focus(); return; }
       var ref = 'ARG-' + Date.now().toString(36).toUpperCase().slice(-6);
       // Admin panel renders these with textContent (XSS-safe) — see js/admin.js.
-      if (window.db) {
+      // Only show the confirmation once the booking is actually saved.
+      var btn = form.querySelector('[type="submit"]');
+      if (btn) btn.disabled = true;
+      var save = !window.db ? Promise.reject(new Error('Firestore not initialised')) :
         window.db.collection('bookings').add({
           ref: ref,
           visitor_name: ($('#bf-fname').value.trim() + ' ' + $('#bf-lname').value.trim()).trim(),
@@ -553,11 +556,18 @@
           source: 'redesign_floor',
           status: 'pending',
           created_at: firebase.firestore.FieldValue.serverTimestamp()
-        }).catch(function (e2) { console.warn('[booking] write failed', e2 && e2.code); });
-      }
-      $('#visitRef').textContent = ref;                 // safe
-      form.style.display = 'none';
-      $('#bookSuccess').classList.add('show');
+        });
+      save.then(function () {
+        $('#visitRef').textContent = ref;               // safe
+        form.style.display = 'none';
+        $('#bookSuccess').classList.add('show');
+      }, function (e2) {
+        console.warn('[booking] write failed', e2 && e2.code);
+        if (btn) btn.disabled = false;
+        alert(document.documentElement.dir === 'rtl'
+          ? 'تعذّر إرسال طلب الزيارة. يرجى المحاولة مرة أخرى أو التواصل معنا عبر الهاتف أو واتساب.'
+          : 'Your visit request could not be sent. Please try again, or contact us by phone or WhatsApp.');
+      });
     });
   }
 

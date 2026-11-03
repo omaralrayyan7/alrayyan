@@ -655,16 +655,26 @@
         land_id: landId, kind: 'land',
         source: 'land-detail', status: 'pending'
       };
+      // Only show the confirmation once the booking is actually saved.
+      const btn = document.querySelector('#book-form [type="submit"]');
+      if (btn) btn.disabled = true;
+      try {
+        if (!window.ArData) throw new Error('ArData not loaded');
+        await ArData.addBooking(booking);
+      } catch(err){
+        console.error('[booking]', err);
+        if (btn) btn.disabled = false;
+        alert(document.documentElement.dir === 'rtl'
+          ? 'تعذّر إرسال طلب الزيارة. يرجى المحاولة مرة أخرى أو التواصل معنا عبر الهاتف أو واتساب.'
+          : 'Your visit request could not be sent. Please try again, or contact us by phone or WhatsApp.');
+        return;
+      }
       document.getElementById('booking-ref').textContent = ref;
       document.getElementById('book-form').style.display = 'none';
       document.getElementById('book-success').style.display = 'block';
-      try {
-        if (window.ArData){
-          await ArData.addVisitor({ name: booking.visitor_name, phone, email, source: 'land_detail_booking' });
-          await ArData.addBooking(booking);
-          ArData.notifyWhatsApp(booking);
-        }
-      } catch(err){ console.error('[booking]', err); }
+      ArData.addVisitor({ name: booking.visitor_name, phone, email, source: 'land_detail_booking' })
+        .catch(function(err){ console.warn('[visitor]', err); });
+      ArData.notifyWhatsApp(booking);
     }
 
     // ── Lightbox ───────────────────────────────────────────────────────────────
