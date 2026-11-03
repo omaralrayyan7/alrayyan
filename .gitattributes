@@ -1,0 +1,3 @@
+# Cloud Functions lint enforces LF line endings; keep them LF on Windows checkouts.
+functions/**/*.js text eol=lf
+functions/**/*.json text eol=lf
