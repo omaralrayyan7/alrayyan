@@ -402,7 +402,9 @@
       e.preventDefault();
       var bfEmail = $('#bf-email').value.trim();
       if (!$('#bf-fname').value.trim()) { $('#bf-fname').focus(); return; }
-      if (!$('#bf-phone').value.trim()) { $('#bf-phone').focus(); return; }
+      // Firestore rules require a 5–30 character phone — say so up front.
+      var bfPhone = $('#bf-phone').value.trim();
+      if (bfPhone.length < 5 || bfPhone.length > 30) { alert(document.documentElement.dir === 'rtl' ? 'يرجى إدخال رقم هاتف صحيح (5 أرقام على الأقل).' : 'Please enter a valid phone number (at least 5 digits).'); $('#bf-phone').focus(); return; }
       if (!bfEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bfEmail)) { $('#bf-email').focus(); return; }
       var ref = 'ARG-' + Date.now().toString(36).toUpperCase().slice(-6);
       // Only show the confirmation once the booking is actually saved.

@@ -417,7 +417,8 @@
       const phone = $('#bk-phone').value.trim();
       const email = $('#bk-email').value.trim();
       if (!fname) { $('#bk-fname').focus(); return; }
-      if (!phone) { $('#bk-phone').focus(); return; }
+      // Firestore rules require a 5–30 character phone — say so up front.
+      if (phone.length < 5 || phone.length > 30) { alert(document.documentElement.dir === 'rtl' ? 'يرجى إدخال رقم هاتف صحيح (5 أرقام على الأقل).' : 'Please enter a valid phone number (at least 5 digits).'); $('#bk-phone').focus(); return; }
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { $('#bk-email').focus(); return; }
       const ref = 'ARG-' + Date.now().toString(36).toUpperCase().slice(-6);
 
