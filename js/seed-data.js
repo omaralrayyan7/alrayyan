@@ -46,7 +46,7 @@
     aboutBodyEn: 'Al-Rayyan Group is a diversified holding company based in Amman, Jordan, operating across premium real estate, luxury fashion, arts, and land investments.',
     aboutBodyAr: 'مجموعة الريان هي شركة قابضة متنوعة مقرها عمان، الأردن، تعمل في العقارات الفاخرة والأزياء الراقية والفنون والاستثمار في الأراضي.',
     phone: '+962 79 707 0970',
-    email: 'info@alrayyanjo.com',
+    email: 'alrayyantower@gmail.com',
     address: 'Alrayyan Tower, Queen Alia Street, Amman',
     show_pricing: true
   };

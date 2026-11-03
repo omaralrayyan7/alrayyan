@@ -4,7 +4,8 @@ rules_version = '2';
 // Alrayyan Tower — Firestore Security Rules (Production)
 //
 // isAdmin() restricts ALL sensitive reads/writes to the specific admin
-// account (info@alrayyanjo.com).  Public users can only CREATE
+// account (alrayyantower@gmail.com; info@alrayyanjo.com is still accepted so
+// the existing admin login keeps working).  Public users can only CREATE
 // documents in a handful of collections, and every public write is
 // validated for field types and sizes to block spam/flooding.
 // ────────────────────────────────────────────────────────────────────────────
@@ -16,7 +17,7 @@ service cloud.firestore {
 
     function isAdmin() {
       return request.auth != null
-          && request.auth.token.email == 'info@alrayyanjo.com';
+          && request.auth.token.email in ['alrayyantower@gmail.com', 'info@alrayyanjo.com'];
     }
 
     function strOpt(field, maxLen) {

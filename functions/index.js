@@ -11,18 +11,14 @@
  *                          decline email (with optional reason). If
  *                          'rescheduled' → sends new-slot proposal.
  *
- * Mail is relayed through zaid@alrayyanjo.com's Outlook/Microsoft 365
- * mailbox (info@alrayyanjo.com is a forwarding alias, not a real inbox, so
- * it can't authenticate SMTP on its own). Every message is sent with
- * `from: info@alrayyanjo.com` — for that to be accepted by Microsoft's
- * SMTP relay (rather than rejected as spoofing), info@alrayyanjo.com must
- * be added as a "Send As" alias on the zaid@alrayyanjo.com account. See
- * functions/SETUP.md for the exact steps.
+ * Mail is sent through Gmail SMTP from alrayyantower@gmail.com, which is
+ * both the sender of every customer confirmation and the inbox that receives
+ * new-booking notifications. See functions/SETUP.md.
  *
  * Secrets (set via `firebase functions:secrets:set`):
- *   - SMTP_EMAIL     The Outlook mailbox that authenticates (zaid@alrayyanjo.com).
- *   - SMTP_PASSWORD  App password for that mailbox (NOT the normal login password).
- *   - ADMIN_EMAIL    Where the "new booking" notification is sent (info@alrayyanjo.com).
+ *   - SMTP_EMAIL     The Gmail account that authenticates (alrayyantower@gmail.com).
+ *   - SMTP_PASSWORD  Gmail App Password for that account (NOT the normal login password).
+ *   - ADMIN_EMAIL    Where the "new booking" notification is sent (alrayyantower@gmail.com).
  */
 
 const {onDocumentCreated, onDocumentUpdated} = require('firebase-functions/v2/firestore');
@@ -39,17 +35,14 @@ const SMTP_EMAIL = defineSecret('SMTP_EMAIL');
 const SMTP_PASSWORD = defineSecret('SMTP_PASSWORD');
 const ADMIN_EMAIL = defineSecret('ADMIN_EMAIL');
 
-// The address every outgoing email shows as sender/reply-to. Requires
-// SMTP_EMAIL's mailbox to have info@alrayyanjo.com set up as a "Send As"
-// alias — otherwise Outlook will reject the send (see SETUP.md).
-const FROM_EMAIL = 'info@alrayyanjo.com';
+// The address every outgoing email shows as sender/reply-to. Must match the
+// Gmail account in SMTP_EMAIL — Gmail rewrites any other From address.
+const FROM_EMAIL = 'alrayyantower@gmail.com';
 
-// Build a Nodemailer transporter using Outlook/Microsoft 365 SMTP + App Password.
+// Build a Nodemailer transporter using Gmail SMTP + App Password.
 function buildTransporter() {
   return nodemailer.createTransport({
-    host: 'smtp.office365.com',
-    port: 587,
-    secure: false, // STARTTLS, upgraded automatically on port 587
+    service: 'gmail',
     auth: {
       user: SMTP_EMAIL.value(),
       pass: SMTP_PASSWORD.value(),
