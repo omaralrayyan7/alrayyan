@@ -1,5 +1,5 @@
 /**
- * Alrayyan Tower — Cloud Functions for booking notifications.
+ * Al-Rayyan Tower — Cloud Functions for booking notifications.
  *
  * Two Firestore-triggered functions:
  *   1) onBookingCreated  — fires when a NEW booking is added.
@@ -78,7 +78,7 @@ function fmtField(label, value) {
 function emailHeader(subtitle) {
   return `<div style="background:#0a0a0a;padding:20px 24px;border-radius:8px 8px 0 0;text-align:center">
     <img src="https://alrayyanjo.com/images/logo/logo.png" alt="Al-Rayyan Group" width="64" height="64" style="display:block;margin:0 auto 12px;border-radius:4px" />
-    <h2 style="margin:0;font-size:20px;letter-spacing:1px;color:#d4af37">ALRAYYAN GROUP</h2>
+    <h2 style="margin:0;font-size:20px;letter-spacing:1px;color:#d4af37">AL-RAYYAN GROUP</h2>
     <p style="margin:4px 0 0;color:#bbb;font-size:13px">${subtitle}</p>
   </div>`;
 }
@@ -124,21 +124,21 @@ function customerApprovedHtml(b) {
     <div style="background:#fff;border:1px solid #eee;border-top:none;border-radius:0 0 8px 8px;padding:28px 28px">
       <p style="font-size:15px;color:#111">Dear ${esc(b.visitor_name || 'guest')},</p>
       <p style="font-size:14px;color:#444;line-height:1.6">
-        Thank you for your interest in <strong>Alrayyan Tower</strong>.
+        Thank you for your interest in <strong>Al-Rayyan Tower</strong>.
         Your site visit request has been <strong style="color:#1a8a3a">confirmed</strong>.
       </p>
       <table style="width:100%;border-collapse:collapse;margin:18px 0;background:#fafafa;border-radius:6px">
         ${fmtField('Reference', b.ref)}
         ${fmtField('Date', b.preferred_date)}
         ${fmtField('Time', b.preferred_time || 'To be confirmed')}
-        ${fmtField('Location', b.floor_preference || b.office || 'Alrayyan Tower, Queen Alia St, Amman')}
+        ${fmtField('Location', b.floor_preference || b.office || 'Al-Rayyan Tower, Queen Alia St, Amman')}
       </table>
       <p style="font-size:14px;color:#444;line-height:1.6">
         Our team will meet you on the agreed date.
         If you need to reschedule, simply reply to this email or call us.
       </p>
       <p style="font-size:14px;color:#444;margin-top:20px">
-        <strong>Address:</strong> Alrayyan Tower, Queen Alia Street, Amman, Jordan<br/>
+        <strong>Address:</strong> Al-Rayyan Tower, Queen Alia Street, Amman, Jordan<br/>
         <strong>Hours:</strong> Saturday – Thursday, 9:00 AM – 6:00 PM
       </p>
       <div style="text-align:center;padding:18px 0">
@@ -165,7 +165,7 @@ function customerRescheduledHtml(b) {
     <div style="background:#fff;border:1px solid #eee;border-top:none;border-radius:0 0 8px 8px;padding:28px">
       <p style="font-size:15px;color:#111">Dear ${esc(b.visitor_name || 'guest')},</p>
       <p style="font-size:14px;color:#444;line-height:1.6">
-        Thank you for your interest in <strong>Alrayyan Tower</strong>.
+        Thank you for your interest in <strong>Al-Rayyan Tower</strong>.
         Unfortunately your originally requested slot is not available, and we
         would like to propose a new time for your site visit:
       </p>
@@ -174,7 +174,7 @@ function customerRescheduledHtml(b) {
         ${fmtField('Originally requested', (b.preferred_date||'—') + ' ' + (b.preferred_time||''))}
         ${fmtField('New proposed date', b.proposed_date)}
         ${fmtField('New proposed time', b.proposed_time || 'To be confirmed')}
-        ${fmtField('Location', b.floor_preference || b.office || 'Alrayyan Tower, Queen Alia St, Amman')}
+        ${fmtField('Location', b.floor_preference || b.office || 'Al-Rayyan Tower, Queen Alia St, Amman')}
       </table>
       ${note}
       <p style="font-size:14px;color:#444;line-height:1.6">
@@ -198,7 +198,7 @@ function customerRejectedHtml(b) {
     <div style="background:#fff;border:1px solid #eee;border-top:none;border-radius:0 0 8px 8px;padding:28px">
       <p style="font-size:15px;color:#111">Dear ${esc(b.visitor_name || 'guest')},</p>
       <p style="font-size:14px;color:#444;line-height:1.6">
-        Thank you for your interest in Alrayyan Tower. Unfortunately we are
+        Thank you for your interest in Al-Rayyan Tower. Unfortunately we are
         unable to accommodate your requested time slot.
       </p>
       ${reasonBlock}
@@ -320,13 +320,13 @@ exports.onBookingStatusChanged = onDocumentUpdated(
       const transporter = buildTransporter();
       let subject; let html;
       if (after.status === 'confirmed') {
-        subject = `✅ Your visit to Alrayyan Tower is confirmed — ${after.ref || id}`;
+        subject = `✅ Your visit to Al-Rayyan Tower is confirmed — ${after.ref || id}`;
         html = customerApprovedHtml(after);
       } else if (after.status === 'rescheduled') {
-        subject = `🗓 Alrayyan Tower — Proposed new visit time — ${after.ref || id}`;
+        subject = `🗓 Al-Rayyan Tower — Proposed new visit time — ${after.ref || id}`;
         html = customerRescheduledHtml(after);
       } else {
-        subject = `Alrayyan Tower — Visit request update — ${after.ref || id}`;
+        subject = `Al-Rayyan Tower — Visit request update — ${after.ref || id}`;
         html = customerRejectedHtml(after);
       }
       await transporter.sendMail({
