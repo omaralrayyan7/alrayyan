@@ -1,3 +1,16 @@
+# Internal files that must never be served publicly (docs, config, Cloud
+# Functions source, the one-off seeder). First match wins, so keep these on top.
+/DEPLOY_COMMANDS.md    /404.html    404!
+/README.md             /404.html    404!
+/LICENSE               /404.html    404!
+/firebase.json         /404.html    404!
+/firestore.rules       /404.html    404!
+/seed.html             /404.html    404!
+/seed                  /404.html    404!
+/docs/*                /404.html    404!
+/functions/*           /404.html    404!
+/.claude/*             /404.html    404!
+
 /space/*    /space.html    200
 /floor/*    /floor.html    200
 /land/*     /land-detail.html    200

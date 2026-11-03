@@ -9,7 +9,14 @@
       "**/.*",
       "**/node_modules/**",
       "functions/**",
-      "seed.html"
+      "seed.html",
+      ".claude/**",
+      "docs/**",
+      "**/*.md",
+      "LICENSE",
+      "firestore.rules",
+      "_redirects",
+      "desktop.ini"
     ],
     "cleanUrls": true,
     "trailingSlash": false,

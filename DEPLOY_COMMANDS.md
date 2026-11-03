@@ -9,7 +9,8 @@ Do this ONCE in the Firebase Console:
 1. Go to: https://console.firebase.google.com/project/alrayyan-group/authentication/users
 2. Click **Add user**
 3. Email:    alrayyantower@gmail.com
-4. Password: tower@1969
+4. Password: (choose a strong password — never write it in this file;
+   this file is in a public repo)
 5. Click **Add user**
 
 ---
@@ -62,7 +63,7 @@ This deploys:
 
 ## STEP 6 — Verify
 1. Open https://alrayyanjo.com/mgmt-panel
-2. Sign in with: alrayyantower@gmail.com / tower@1969
+2. Sign in with alrayyantower@gmail.com and the admin password
 3. Submit a test booking from the public site
 4. Check alrayyantower@gmail.com inbox — you should get the notification email within ~10 seconds
 5. Accept the booking in admin — customer gets confirmation email
