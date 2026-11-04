@@ -1,0 +1,233 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Superseded PR runs are cancelled; runs on main always finish (CD waits on them).
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  NODE_VERSION: "24"
+
+jobs:
+  changes:
+    name: Changed areas
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      site: ${{ steps.areas.outputs.site }}
+      functions: ${{ steps.areas.outputs.functions }}
+      rules: ${{ steps.areas.outputs.rules }}
+      deploy: ${{ steps.areas.outputs.deploy }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - id: areas
+        run: node tools/ci/scripts/changed-areas.mjs
+
+  site:
+    name: Site
+    needs: changes
+    if: needs.changes.outputs.site == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: tools/ci
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: tools/ci/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - name: html-validate
+        run: npm run -s lint:html
+      - name: ESLint (site JS)
+        run: npm run -s lint:js
+      - name: JSON and JSON-LD parse
+        run: npm run -s check:json
+      - name: Old domain references (warning only)
+        run: npm run -s check:old-domain
+      - name: Assemble publish dir (exactly as CD does)
+        run: node scripts/assemble-publish.mjs --out "$RUNNER_TEMP/publish" --version-sha "$GITHUB_SHA"
+      - name: Internal links and assets
+        run: node scripts/check-links.mjs --dir "$RUNNER_TEMP/publish"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: publish-dir
+          path: ${{ runner.temp }}/publish
+          retention-days: 7
+
+  functions:
+    name: Functions
+    needs: changes
+    if: needs.changes.outputs.functions == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: functions/package-lock.json
+      - name: engines.node is a supported Cloud Functions runtime
+        run: node tools/ci/scripts/check-engines.mjs
+      - run: npm ci --no-audit --no-fund
+        working-directory: functions
+      - run: npm run lint
+        working-directory: functions
+      - name: Unit tests (if any)
+        working-directory: functions
+        run: |
+          if [ "$(npm pkg get scripts.test)" = "{}" ]; then
+            echo "functions/ has no unit tests yet."
+          else
+            npm test
+          fi
+
+  rules:
+    name: Firestore rules
+    needs: changes
+    if: needs.changes.outputs.rules == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: tools/ci
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: tools/ci/package-lock.json
+      - uses: actions/cache@v6
+        with:
+          path: ~/.cache/firebase/emulators
+          key: firebase-emulators-${{ hashFiles('tools/ci/package-lock.json') }}
+      - run: npm ci --no-audit --no-fund
+      - name: Rules tests in the Firestore emulator
+        run: |
+          if [ ! -f ../../firestore.rules ]; then
+            echo "No firestore.rules in the repo; nothing to test."
+            exit 0
+          fi
+          npm run -s test:rules
+
+  security:
+    name: Security
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      GITLEAKS_VERSION: 8.30.1
+      GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install gitleaks (pinned, checksum-verified)
+        run: |
+          cd "$RUNNER_TEMP"
+          curl -sSfL -o gitleaks.tar.gz \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - name: gitleaks (PR diff, or full history on main)
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            gitleaks git --redact --no-banner --log-opts="$BASE..$HEAD" .
+          else
+            gitleaks git --redact --no-banner .
+          fi
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: npm audit (production deps, high/critical fail)
+        run: |
+          status=0
+          for dir in tools/ci functions; do
+            echo "::group::npm audit $dir (production deps)"
+            (cd "$dir" && npm audit --omit=dev --audit-level=high) || status=1
+            echo "::endgroup::"
+          done
+          exit $status
+      - name: npm audit (all deps, informational)
+        run: |
+          for dir in tools/ci functions; do
+            echo "::group::npm audit $dir (all deps, never fails)"
+            (cd "$dir" && npm audit --audit-level=high) || echo "::warning::npm audit found issues in $dir dev dependencies"
+            echo "::endgroup::"
+          done
+
+  deploy-scripts:
+    name: Deploy scripts
+    needs: changes
+    if: needs.changes.outputs.deploy == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: tools/ci
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: tools/ci/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - name: Pipeline tests (mock Netlify / GitHub / Secret Manager) and guard tests
+        run: npm run -s test:pipeline
+
+  ci-passed:
+    # The single required status check. Skipped jobs are fine; failed or
+    # cancelled ones are not.
+    name: CI passed
+    needs: [changes, site, functions, rules, security, deploy-scripts]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: All jobs succeeded or were skipped
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          echo "$NEEDS" | jq -r 'to_entries[] | "\(.key): \(.value.result)"'
+          bad=$(echo "$NEEDS" | jq -r '[to_entries[] | select(.value.result != "success" and .value.result != "skipped") | .key] | join(", ")')
+          if [ -n "$bad" ]; then
+            echo "::error::Failed or cancelled: $bad"
+            exit 1
+          fi
