@@ -1,5 +1,10 @@
 # Alrayyan Group — Deploy & Operations Guide
 
+> **CI/CD:** site, Firestore rules and Cloud Functions are deployed by GitHub
+> Actions. Once `CD_ENABLED` / `FIREBASE_CD_ENABLED` are on, don't run the
+> `firebase deploy` commands below (a bare `firebase deploy` also deploys the
+> legacy Firebase Hosting). See `docs/ops/cd-setup.md`.
+
 Run these in PowerShell from your project folder (alrayyan tower).
 
 ---
