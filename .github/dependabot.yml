@@ -23,3 +23,8 @@ updates:
     groups:
       functions-minor-patch:
         update-types: [minor, patch]
+    ignore:
+      # firebase-admin 14 removes the legacy namespace API (admin.firestore.*)
+      # that functions/index.js uses. Migrate and test before taking it.
+      - dependency-name: firebase-admin
+        versions: ["14.x"]
