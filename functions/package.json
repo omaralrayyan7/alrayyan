@@ -21,8 +21,10 @@
     "nodemailer": "^10.3.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "eslint": "^10.14.0",
-    "eslint-config-google": "^0.14.0"
+    "eslint-config-google": "^0.14.0",
+    "globals": "^17.14.0"
   },
   "private": true
 }
