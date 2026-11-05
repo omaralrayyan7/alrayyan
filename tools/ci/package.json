@@ -1,0 +1,30 @@
+{
+  "name": "alrayyan-ci-tools",
+  "private": true,
+  "description": "Dev-only CI/CD tooling. Lives outside the site root so Netlify never detects a build.",
+  "type": "module",
+  "engines": {
+    "node": ">=24.12.0"
+  },
+  "scripts": {
+    "lint:html": "html-validate --config htmlvalidate.config.mjs \"../../*.html\"",
+    "lint:js": "cd ../.. && eslint --config tools/ci/eslint.config.mjs --max-warnings=-1 js cookie-consent",
+    "check:json": "node scripts/check-json.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "check:old-domain": "node scripts/check-old-domain.mjs",
+    "check:engines": "node scripts/check-engines.mjs",
+    "assemble": "node scripts/assemble-publish.mjs",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-alrayyan-ci \"node --test test/rules/*.test.mjs\"",
+    "test:pipeline": "node --test \"test/pipeline/*.test.mjs\" \"test/guards/*.test.mjs\""
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@firebase/rules-unit-testing": "6.0.0",
+    "eslint": "10.14.0",
+    "firebase": "13.2.0",
+    "firebase-tools": "15.35.0",
+    "globals": "17.14.0",
+    "html-validate": "11.18.0",
+    "yaml": "2.9.1"
+  }
+}

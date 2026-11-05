@@ -1,0 +1,61 @@
+name: CD (site)
+
+# Deploys the site to Netlify production from the runner, health-checks it and
+# rolls back automatically. Off until the repository variable CD_ENABLED=true.
+# See docs/ops/cd-setup.md and docs/ops/rollback.md.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+# One production deploy at a time; a running deploy is never cancelled.
+concurrency:
+  group: cd-netlify-production
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: "24"
+  NETLIFY_CLI_VERSION: "27.16.2"
+
+jobs:
+  deploy:
+    name: Deploy site to Netlify
+    # Gates: this repo, main, kill switch on. "CI passed" for this exact
+    # commit is checked through the API inside the deploy step.
+    if: github.repository == 'omaralrayyan7/alrayyan' && github.ref == 'refs/heads/main' && vars.CD_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    environment:
+      name: production
+      url: https://alrayyanjo.com
+    permissions:
+      contents: read
+      checks: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Assemble publish dir from this commit
+        id: assemble
+        run: node tools/ci/scripts/assemble-publish.mjs --out "$RUNNER_TEMP/publish" --version-sha "$GITHUB_SHA"
+      - name: Wait for CI, deploy, health-check, roll back on failure
+        id: deploy
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+          GITHUB_TOKEN: ${{ github.token }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          PUBLISH_DIR: ${{ runner.temp }}/publish
+        run: node tools/ci/deploy/netlify-deploy.mjs
+      - name: Result
+        if: failure() && steps.deploy.outcome == 'skipped'
+        run: |
+          echo "Nothing was published; the live site was not touched."
+          echo "RESULT: FAILED and ROLLED BACK"

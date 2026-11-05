@@ -1,0 +1,8 @@
+{
+  "_comment": "Broken references already on the live site. Reported, not fixed: CI must not change site content. Remove an entry once the page is fixed. These 3 load a Cloudflare email-decode script left over from a Cloudflare-proxied copy of the pages; Netlify has no /cdn-cgi/, so it 404s. Nothing on the pages uses Cloudflare email obfuscation, so visitors see no difference.",
+  "known": [
+    { "file": "arts.html", "ref": "/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js" },
+    { "file": "fashion.html", "ref": "/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js" },
+    { "file": "land.html", "ref": "/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js" }
+  ]
+}

@@ -1,0 +1,10 @@
+# gitleaks allowlist. Every entry needs a reason.
+#
+# Firebase web config apiKey (js/firebase-config.js). Public by design: it only
+# identifies the Firebase project to the browser SDK and must ship to every
+# visitor. Access is controlled by firestore.rules and Firebase Auth, not by
+# keeping this key secret.
+# https://firebase.google.com/docs/projects/api-keys
+e24bd8365685724f04376d5748bc9fe30c321a19:js/firebase-config.js:gcp-api-key:5
+# Same finding when scanning the working tree (`gitleaks dir`).
+js/firebase-config.js:gcp-api-key:5

@@ -1,5 +1,6 @@
 # Alrayyan Group Website
 
+[![CI](https://github.com/omaralrayyan7/alrayyan/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/omaralrayyan7/alrayyan/actions/workflows/ci.yml)
 [![Live](https://img.shields.io/badge/Live-alrayyanjo.com-brightgreen)](https://alrayyanjo.com)
 [![Firebase](https://img.shields.io/badge/Firebase-Hosting-FFCA28?logo=firebase)](https://firebase.google.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -72,6 +73,10 @@ firebase deploy --only functions
 ```
 
 You'll need your own Firebase project config in `js/firebase-config.js`.
+
+## CI/CD
+
+Every PR and every push to `main` runs **CI** (`.github/workflows/ci.yml`): HTML validation, ESLint, JSON/JSON-LD and internal-link checks, Cloud Functions lint and runtime check, Firestore rules tests in the emulator, gitleaks and npm audit. All of it reports as one required check, **CI passed**. Once that check is green on a `main` commit, **CD (site)** deploys the site to Netlify from GitHub Actions, health-checks the apex, `www`, `/fashion`, `/arts`, `/land` and `/mgmt-panel`, and rolls back automatically if anything fails. **CD (Firebase)** deploys Firestore rules and Cloud Functions when they change, using keyless Workload Identity Federation. Both are behind kill switches (`CD_ENABLED`, `FIREBASE_CD_ENABLED`). See [docs/ops](docs/ops/cd-setup.md).
 
 ## License
 

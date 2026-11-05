@@ -1,0 +1,115 @@
+name: CD (Firebase)
+
+# Deploys Firestore rules and/or Cloud Functions when they change on main.
+# Off until the repository variable FIREBASE_CD_ENABLED=true. Auth is Workload
+# Identity Federation (no service-account key). No automatic rollback: to
+# redeploy an earlier commit, run this workflow manually with `ref`.
+# See docs/ops/cd-setup.md and docs/ops/rollback.md.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Commit SHA or tag on main to deploy (empty = current main)"
+        required: false
+        default: ""
+      targets:
+        description: "What to deploy"
+        type: choice
+        options: [both, rules, functions]
+        default: both
+
+permissions: {}
+
+concurrency:
+  group: cd-firebase-production
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: "24"
+  FIREBASE_PROJECT: alrayyan-group
+
+jobs:
+  deploy:
+    name: Deploy rules/functions to Firebase
+    if: github.repository == 'omaralrayyan7/alrayyan' && github.ref == 'refs/heads/main' && vars.FIREBASE_CD_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    environment:
+      name: production
+    permissions:
+      contents: read
+      checks: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: tools/ci/package-lock.json
+      - name: Plan (what changed across all commits in the push, or the dispatch inputs)
+        id: plan
+        env:
+          INPUT_REF: ${{ inputs.ref }}
+          INPUT_TARGETS: ${{ inputs.targets }}
+        run: node tools/ci/deploy/firebase-plan.mjs
+      - name: Nothing to deploy
+        if: steps.plan.outputs.targets == ''
+        run: |
+          echo "RESULT: Nothing to deploy"
+      - name: Wait for "CI passed" on the commit being deployed
+        if: steps.plan.outputs.targets != ''
+        env:
+          CHECK_SHA: ${{ steps.plan.outputs.sha }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/ci/deploy/wait-for-check.mjs
+      - name: Check WIF variables are set
+        if: steps.plan.outputs.targets != ''
+        env:
+          WIF_PROVIDER: ${{ vars.GCP_WIF_PROVIDER }}
+          DEPLOY_SA: ${{ vars.GCP_DEPLOY_SA }}
+        run: |
+          if [ -z "$WIF_PROVIDER" ] || [ -z "$DEPLOY_SA" ]; then
+            echo "::error::Set the production environment variables GCP_WIF_PROVIDER and GCP_DEPLOY_SA (docs/ops/cd-setup.md)."
+            exit 1
+          fi
+      - name: Check out the commit being deployed (tools stay from main)
+        if: steps.plan.outputs.targets != ''
+        env:
+          SHA: ${{ steps.plan.outputs.sha }}
+        run: git worktree add --detach "$RUNNER_TEMP/target" "$SHA"
+      - name: Install pinned firebase-tools
+        if: steps.plan.outputs.targets != ''
+        working-directory: tools/ci
+        run: npm ci --no-audit --no-fund
+      - name: Install functions dependencies
+        if: contains(steps.plan.outputs.targets, 'functions')
+        working-directory: ${{ runner.temp }}/target/functions
+        run: npm ci --no-audit --no-fund
+      - name: Authenticate to Google Cloud (Workload Identity Federation)
+        id: auth
+        if: steps.plan.outputs.targets != ''
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SA }}
+          token_format: access_token
+      - name: Secret preflight and firebase deploy
+        id: deploy
+        if: steps.plan.outputs.targets != ''
+        env:
+          REPO_ROOT: ${{ runner.temp }}/target
+          DEPLOY_SHA: ${{ steps.plan.outputs.sha }}
+          DEPLOY_TARGETS: ${{ steps.plan.outputs.targets }}
+          GCP_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+        run: node tools/ci/deploy/firebase-deploy.mjs
+      - name: Result
+        if: failure() && steps.deploy.outcome != 'failure'
+        run: |
+          echo "RESULT: FIREBASE FAILED"
