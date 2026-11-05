@@ -19,6 +19,8 @@ const EXCLUDED_ROOT_FILES = new Set([
   "package-lock.json",
   "netlify.toml",
   "seed.html",
+  // Only seed.html loads it, and it holds admin seed data.
+  "js/seed-data.js",
 ]);
 
 export function isExcluded(file) {
