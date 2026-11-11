@@ -24,7 +24,7 @@
     "firebase": "13.2.0",
     "firebase-tools": "15.35.0",
     "globals": "17.14.0",
-    "html-validate": "11.18.0",
+    "html-validate": "11.19.0",
     "yaml": "2.9.1"
   }
 }
